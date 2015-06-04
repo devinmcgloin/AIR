@@ -11,8 +11,7 @@ public class HashSearch {
     //TODO: change
 
     ArrayList<TreeNode> hits; //first BaseNodes then TreeNodes where we derived BaseNodes from.
-    //TODO: Consider. are we ever going to need to know the TreeNodes (term matched nodes in tree) that we
-    //	derived the base nodes from?
+    //TODO: Consider. are we ever going to need to know the TreeNodes (term matched nodes in tree) that we derived the base nodes from?
 
     HashSearch(){
         hits = new ArrayList<TreeNode>();

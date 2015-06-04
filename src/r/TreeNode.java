@@ -38,7 +38,9 @@ public class TreeNode implements Comparable<TreeNode>{
 
     //-----------------Interesting/newest methods -----------//
 
-    //INSERT PARENT
+    /**
+     * INSERT PARENT
+     */
     public boolean insertParent(TreeNode n){
         if(n==null){	//n is the new parent of current
             return false;
@@ -51,7 +53,11 @@ public class TreeNode implements Comparable<TreeNode>{
         return true;
     }
 
-    //BASE NODE
+    /**
+     * BASE NODE
+     * @param n - TreeNode
+     * @return n - TreeNode set to Parent.
+     */
     public TreeNode getBaseNode(TreeNode n){
         if( n.getParent().getParent().getName() == null)
             return null;
@@ -61,7 +67,11 @@ public class TreeNode implements Comparable<TreeNode>{
         return n;
     }
 
-    //CONTAINS
+    /**
+     * CONTAINS
+     * @param name
+     * @return Boolean
+     */
     public boolean containsAnyChildWithName(String name){
         ArrayList<String> children = this.getAllNames();
         return children.contains(name);
@@ -145,6 +155,7 @@ public class TreeNode implements Comparable<TreeNode>{
 
     /**
      * LS RECURSIVE
+     * @devinmcgloin How is this working? each time its printing this.name which is not changed when you call the function recursively.
      */
     public void printAll(){
         System.out.println(this.name);
@@ -155,7 +166,7 @@ public class TreeNode implements Comparable<TreeNode>{
     }
 
     /**
-     * ADDRESSES Wrapper
+     * ADDRESSES Wrapper, used for first iteration then handed over to getAllAddressesRec.
      * @return
      */
     public ArrayList<String> getAllAddresses(){
@@ -185,7 +196,7 @@ public class TreeNode implements Comparable<TreeNode>{
     }
 
     /**
-     * NAMES Wrapper
+     * NAMES Wrapper, used for first iteration then handed over to getAllNamesRec.
      * @return
      */
     public ArrayList<String> getAllNames(){
@@ -214,7 +225,7 @@ public class TreeNode implements Comparable<TreeNode>{
     }
 
     /**
-     * EXPORT Wrapper
+     * EXPORT Wrapper, used for first iteration then handed over to prettyPrintRec.
      * @return
      */
     public String prettyPrint(){
@@ -250,7 +261,12 @@ public class TreeNode implements Comparable<TreeNode>{
     }
     //------------------------END Recursive Methods ------------------------//
 
-
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
 
 

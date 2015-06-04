@@ -3,17 +3,19 @@ package main;
 import pa.PA;
 import r.TreeNode;
 
+import java.util.ArrayList;
+
 /**
  * Created by devinmcgloin on 6/3/15.
- * Nulp is a command parser for the time being. 
+ * Terminal is a command parser for the time being.
  */
-public class Nulp {
+public class Terminal {
 
     TreeNode current;
     pa.PA PA = new PA();
 
 
-    Nulp(){
+    Terminal(){
 
         current = PA.get("R/");
         //current.setAddress("R/");
@@ -26,7 +28,7 @@ public class Nulp {
 
         input = input.trim();
         String words[] = input.split(" ");
-
+        ArrayList<TreeNode> tmp = new ArrayList<TreeNode>();
 
         //check for keywords
         if( words[0].equals("ADD") && words.length>1  ){
@@ -35,7 +37,14 @@ public class Nulp {
 
             PA.add(input, current.getAddress());
 
-
+        }
+        else if (input.startsWith("SEARCH")){
+            input = input.replaceAll("SEARCH", "");
+            input = input.trim();
+            tmp = PA.hashSearch(input);
+            for (TreeNode node : tmp){
+                node.printChildren();
+            }
         }
         else if(input.startsWith("+")){
             input = input.replace('+', ' ');

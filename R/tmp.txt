@@ -1,7 +1,7 @@
 Accountant
 CEO
     Salary
-        $2
+        $1
 Janitor
     Bonus
         <$2,000

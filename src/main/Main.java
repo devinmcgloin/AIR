@@ -1,10 +1,9 @@
 package main;
 
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import r.R;
+import pa.PA;
 import r.TreeNode;
 
 /**
@@ -15,7 +14,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Nulp smart = new Nulp();
+        Terminal smart = new Terminal();
+        PA PA = new PA();
 
         Scanner console = new Scanner(System.in);
         String dir = "R/";
@@ -43,9 +43,6 @@ public class Main {
                 //dir = hits.get(0).getAddress();
                 dir = hit.getAddress();
             }
-
-
-
         }
     }
 }
