@@ -28,14 +28,12 @@ public class TreeNode implements Comparable<TreeNode>{
     }
     //------------------------END CONSTRUCTORS-----------------------//
 
-    //TODO: rename node. think about effects that has on hash search.
-    //	^^Also--SHIT! What if you rename something that is a value in something else?
-    //	like we add another value to blue, so now blue+color needs to be re-written errywhere.
-    //	Nah. for now don't care about it. Especially since we'll be grabbing and returning the BaseNode/Header
-    //  anyway! It's up to PA to think about if we're pulling out something metaphorical or a literal value.
-    //  Yeah. Let's let it slide for now. Hm.
-    //  DB Should really be handling the insert parent and the rename stuff to consider the hashbrowns it's
-    //  controlling.
+    /* TODO: rename node. think about effects that has on hash search.
+    ^^Also--SHIT! What if you rename something that is a value in something else?
+     like we add another value to blue, so now blue+color needs to be re-written errywhere. Nah. for now don't care about it. Especially since we'll be grabbing and returning the BaseNode/Header anyway! It's up to PA to think about if we're pulling out something metaphorical or a literal value.
+      Yeah. Let's let it slide for now. Hm.
+      DB Should really be handling the insert parent and the rename stuff to consider the hashbrowns it's controlling.
+      */
 
 
     //-----------------Interesting/newest methods -----------//
@@ -115,7 +113,11 @@ public class TreeNode implements Comparable<TreeNode>{
             children.remove(child);
 
     }
-    //ADD a child, update its address.
+
+    /**
+     * ADD a child, update its address.
+     * @param child
+     */
     public void addChildNode(TreeNode child) {
         child.parent = this;
         child.updateAddress();
@@ -129,7 +131,10 @@ public class TreeNode implements Comparable<TreeNode>{
 
 
     //------------------------- Recursive Methods --------------------------//
-    //LS
+
+    /**
+     * LS
+     */
     public void printChildren(){
         for(int i = 0; i<this.children.size(); i++){
             tmp = this.children.get(i);
@@ -137,7 +142,10 @@ public class TreeNode implements Comparable<TreeNode>{
         }
         System.out.print("\n");
     }
-    //LS RECURSIVE
+
+    /**
+     * LS RECURSIVE
+     */
     public void printAll(){
         System.out.println(this.name);
         for(int i = 0; i<this.children.size(); i++){
@@ -145,7 +153,11 @@ public class TreeNode implements Comparable<TreeNode>{
             tmp.printAll();
         }
     }
-    //ADDRESSES Wrapper
+
+    /**
+     * ADDRESSES Wrapper
+     * @return
+     */
     public ArrayList<String> getAllAddresses(){
         ArrayList<String> a = new ArrayList<String>();
         a.add(this.address);
@@ -155,7 +167,13 @@ public class TreeNode implements Comparable<TreeNode>{
         }
         return a;
     }
-    //ADDRESSES Wrapper Recursive
+
+    /**
+     * ADDRESSES Wrapper Recursive
+     * @param n
+     * @param a
+     * @return
+     */
     private ArrayList<String> getAllAddressesRec(TreeNode n, ArrayList<String> a){
         a.add(n.address);
         for(int i = 0; i<n.children.size(); i++){
@@ -165,7 +183,11 @@ public class TreeNode implements Comparable<TreeNode>{
         System.out.print("\n");
         return a;
     }
-    //NAMES Wrapper
+
+    /**
+     * NAMES Wrapper
+     * @return
+     */
     public ArrayList<String> getAllNames(){
         ArrayList<String> a = new ArrayList<String>();
         a.add(this.name);
@@ -175,7 +197,13 @@ public class TreeNode implements Comparable<TreeNode>{
         }
         return a;
     }
-    //NAMES Wrapper Recursive
+
+    /**
+     * NAMES Wrapper Recursive
+     * @param n
+     * @param a
+     * @return
+     */
     private ArrayList<String> getAllNamesRec(TreeNode n, ArrayList<String> a){
         a.add(n.name);
         for(int i = 0; i<n.children.size(); i++){
@@ -184,7 +212,11 @@ public class TreeNode implements Comparable<TreeNode>{
         }
         return a;
     }
-    //EXPORT Wrapper
+
+    /**
+     * EXPORT Wrapper
+     * @return
+     */
     public String prettyPrint(){
         String DBout = "";
         String buffer = "";
@@ -197,7 +229,12 @@ public class TreeNode implements Comparable<TreeNode>{
         }
         return DBout;
     }
-    //EXPORT RECURSION
+
+    /**
+     * EXPORT RECURSION
+     * @param buffer
+     * @return
+     */
     private String prettyPrintRec(String buffer){
         String DBout = "";
         buffer+="    ";

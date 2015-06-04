@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 
-/*
+/**
  * Interprets commands, navigates logic.
  *
  */
