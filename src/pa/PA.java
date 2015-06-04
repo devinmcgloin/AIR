@@ -15,11 +15,7 @@ public class PA {
 
 
     /**
-     * Add
-     * Del
      * HashSearch (Get set -> set logic???)
-     * addParent
-     * rename
      *
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
@@ -27,26 +23,26 @@ public class PA {
      * merging nodes --> tricky, idk how that function would look like
      */
 
-    R R = new R();
+    R R;
     public PA(){
+        R = new R();
 
     }
 
-    public void rename(String nodeName, String rAdress){
-        R.rename(nodeName, rAdress);
+    //---------------------------------R WRAPPERS---------------------------------//
+    public void rename(String nodeName, String rAddress){
+        R.rename(nodeName, rAddress);
     }
-    public void del(String nodeName, String rAdress){
-        R.del(nodeName, rAdress);
-
-    }
-
-    public void add(String nodeName, String rAdress){
-        R.add(nodeName, rAdress);
+    public void del(String nodeName, String rAddress){
+        R.del(nodeName, rAddress);
 
     }
+    public void add(String nodeName, String rAddress){
+        R.add(nodeName, rAddress);
 
-    public void addParent(String nodeName, String rAdress){
-        R.addParent(nodeName, rAdress);
+    }
+    public void addParent(String nodeName, String rAddress){
+        R.addParent(nodeName, rAddress);
 
     }
 
@@ -57,21 +53,40 @@ public class PA {
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
 
         //Check size
+        int termSize = terms.split("`").length;
 
-
-        for(int i =0; i<baseNodes.size(); i++){
-            System.out.println(baseNodes.get(i).getOrigin().getName());
+        if(baseNodes.size() == 0){
+            return treeNodes; // no dice
         }
+
+        //Number of terms matches baseNode hits
+        if(baseNodes.get(0).getRank() == termSize){
+            int i = 0;
+            while(baseNodes.get(i).getRank() == termSize){
+                treeNodes.add(baseNodes.get(i).getOrigin());
+            }
+        }
+        //Use the next highest number of matched terms
+        else{
+            termSize = baseNodes.get(0).getRank();
+            int i =0;
+            while(baseNodes.get(i).getRank() == termSize){
+                treeNodes.add(baseNodes.get(i).getOrigin());
+            }
+        }
+        
 
         return treeNodes;
 
     }
 
-    public TreeNode get(String address) {
-        return R.get(address);
+    public TreeNode get(String rAddress) {
+        return R.get(rAddress);
     }
     public void save(){
         R.save();
     }
+
+    // ----------------------------- END R WRAPPERS ----------------------------------//
 
 }

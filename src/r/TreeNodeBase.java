@@ -32,6 +32,10 @@ public class TreeNodeBase implements Comparable<TreeNodeBase>{
         this.rank = rank;
     }
 
+    public int getRank(){
+        return rank;
+    }
+
     public TreeNode getOrigin(){
         return origin;
     }
@@ -53,7 +57,7 @@ public class TreeNodeBase implements Comparable<TreeNodeBase>{
     }
 
 
-    public int getRank() {
-        return rank;
-    }
+
+
+
 }
