@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Terminal smart = new Terminal();
+        Terminal terminal = new Terminal();
         PA PA = new PA();
 
         Scanner console = new Scanner(System.in);
@@ -32,12 +32,12 @@ public class Main {
 
             //Exit terminal & Save DB
             if(input.equals("q")){
-                smart.save();   //which calls DBInterface.save()
+                terminal.save();   //which calls DBInterface.save()
                 break;
             }
 
             //Get DB response (might make it return error and then the dir?)
-           TreeNode hit = smart.parse(input);
+           TreeNode hit = terminal.parse(input);
             if(hit != null){
 
                 //dir = hits.get(0).getAddress();

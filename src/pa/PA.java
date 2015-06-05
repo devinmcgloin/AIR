@@ -48,6 +48,7 @@ public class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
+    //TODO: Dont know where its coming from but trying to move into a child node that doesnt exist causes "Trying hash del for first time! Only on failed search." to be printed to the console. followed by a nullPointer.
     public ArrayList<TreeNode> hashSearch(String terms){
         ArrayList<TreeNodeBase> baseNodes = R.hashSearch(terms);
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
@@ -88,4 +89,23 @@ public class PA {
 
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
+    /**
+     * TODO: Implement recursive get children function in TreeNode.
+     * TODO: Implement CD function inside TreeNode.
+     * TODO: Implement combined check if node exists, and if so CD into that node.
+     * @param from - node that to is inheriting from.
+     * @param to - node that only has characteristics are copied to
+     */
+    public void inherit(TreeNode from, TreeNode to){
+        to.changeDir("is");
+        to.addChildNode(from);
+        if(from.containsImmediateChildWithName("has")){
+            from.changeDir("has");
+            ArrayList<TreeNode> children = from.getChildren();
+            for(TreeNode node : children){
+                to.addChildNode(node);
+            }
+
+        }
+    }
 }

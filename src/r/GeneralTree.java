@@ -13,7 +13,7 @@ import java.util.List;
 //TODO: navigate by address!
 //could just create a func(addressOfNodeToDoFuncOn, valueOfNameFuncShouldTake)
 //Then rrename genTree to R
-/*
+/**
  * Thinks of the General tree as a whole.
  * Makes all changes and everything to the tree. TODO: is that true? yeah.
  * Keeps last used node in memory.
@@ -21,6 +21,8 @@ import java.util.List;
  * This is also what will handle loading in databases to populate a tree.
  * This is basically the tree.
  * Will also handle saving it.
+ *
+ * TODO: Need to make the split between general Tree and treenode more apparent. TreeNode should be the datatype we ferry around, and general tree should be methods used on a node when it is inside R. OUtside R the methods in treeNode need to be enough.
  */
 public class GeneralTree {
 
@@ -240,7 +242,7 @@ public class GeneralTree {
             goBack();
         }
 
-        String DBout = current.prettyPrint();
+        String DBout = current.export();
 
         //Save file to the DB name
         try{

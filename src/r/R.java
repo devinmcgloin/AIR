@@ -83,10 +83,12 @@ public class R {
         }
 
 
-        //TODO: holla at yo boy. Y'all gotta know, you gotta keep your currents your currents.
-        //Earlier I had TreeNode tmp = genTree.getNode(address).
-        //bruh, that's like have two nodes to the same tree in the same db. ain't worth it. not cool.
-        //That's why we was getting a doubling up on the db.
+        /*TODO: holla at yo boy. Y'all gotta know, you gotta keep your currents your currents.
+        Earlier I had TreeNode tmp = genTree.getNode(address).
+        bruh, that's like have two nodes to the same tree in the same db. ain't worth it. not cool.
+        That's why we was getting a doubling up on the db.
+        TODO: looks like there is still an issue when you move into a node, then back out and save. It doubles up and creates a new text file.
+        */
         current =  genTree.getNode(address);
 
 

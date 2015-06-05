@@ -2,6 +2,12 @@ Accountant
 CEO
     Salary
         $1
+    has
+        Salary
+        bonus
+        car
+        etc
+        house
 Janitor
     Bonus
         <$2,000

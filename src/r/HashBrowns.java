@@ -64,6 +64,7 @@ public class HashBrowns {
         if( map.get(name) != null){
             addresses = map.get(name);
         }
+        //TODO: Why does this show up for matched commands in Terminal?
         System.out.println("Trying hash del for first time! Only on failed search.");
         addresses.remove(address);
 
