@@ -9,7 +9,39 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	public T data;
 	public TreeNode<T> parent;
 	public List<TreeNode<T>> children;
-	private List<TreeNode<T>> elementsIndex;
+//	private List<TreeNode<T>> elementsIndex;
+
+	public TreeNode(T data) {
+		this.data = data;
+		this.children = new LinkedList<TreeNode<T>>();
+//		this.elementsIndex = new LinkedList<TreeNode<T>>();
+//		this.elementsIndex.add(this);
+	}
+
+	public T getData() {
+		return data;
+	}
+
+	public void setData(T data) {
+		this.data = data;
+	}
+
+	public TreeNode<T> getParent() {
+		return parent;
+	}
+
+	public void setParent(TreeNode<T> parent) {
+		this.parent = parent;
+	}
+
+	public List<TreeNode<T>> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<TreeNode<T>> children) {
+		this.children = children;
+	}
+
 
 	public boolean isRoot() {
 		return parent == null;
@@ -19,20 +51,24 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return children.size() == 0;
 	}
 
-	public TreeNode(T data) {
-		this.data = data;
-		this.children = new LinkedList<TreeNode<T>>();
-		this.elementsIndex = new LinkedList<TreeNode<T>>();
-		this.elementsIndex.add(this);
-	}
-
 	public TreeNode<T> addChild(T child) {
 		TreeNode<T> childNode = new TreeNode<T>(child);
 		childNode.parent = this;
+//		childNode.elementsIndex = elementsIndex;
 		this.children.add(childNode);
-		this.registerChildForSearch(childNode);
+//		this.registerChildForSearch(childNode);
 		return childNode;
 	}
+
+//	public TreeNode<T> findTreeNode(Comparable<T> cmp) {
+//		for (TreeNode<T> element : this.elementsIndex) {
+//			T elData = element.data;
+//			if (cmp.compareTo(elData) == 0)
+//				return element;
+//		}
+//
+//		return null;
+//	}
 
 	public int getLevel() {
 		if (this.isRoot())
@@ -42,19 +78,9 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	private void registerChildForSearch(TreeNode<T> node) {
-		elementsIndex.add(node);
+//		elementsIndex.add(node);
 		if (parent != null)
 			parent.registerChildForSearch(node);
-	}
-
-	public TreeNode<T> findTreeNode(Comparable<T> cmp) {
-		for (TreeNode<T> element : this.elementsIndex) {
-			T elData = element.data;
-			if (cmp.compareTo(elData) == 0)
-				return element;
-		}
-
-		return null;
 	}
 
 	@Override
@@ -74,10 +100,11 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 */
 	public TreeNode<T> toParent(){
 		if(!isRoot()) {
-			data = parent.data;
-			children = parent.children;
-			elementsIndex = parent.elementsIndex;
-			parent = parent.parent;
+			System.out.println("IS PARENT ACTIVATED");
+			this.setData(parent.getData());
+			this.setChildren(parent.getChildren());
+//			elementsIndex = parent.elementsIndex;
+			this.setParent(parent.getParent());
 		}
 		return this;
 	}
@@ -89,15 +116,16 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 * @param specifiedChild - node to be changed to.
 	 * @return boolean
 	 */
-	public boolean toChild(TreeNode<T> specifiedChild){
+	public boolean toChild(T specifiedChild){
 		TreeNode<T> tmp = contains(specifiedChild);
 
 		for(TreeNode<T> child : children){
 			if(child.equals(tmp)){
-				data = child.data;
-				children = child.children;
-				elementsIndex = child.elementsIndex;
-				parent = child.parent;
+				this.setData(child.getData());
+
+				this.setChildren(child.getChildren());
+//				elementsIndex = child.elementsIndex;
+				this.setChildren(child.getChildren());
 				return true;
 			}
 
@@ -124,7 +152,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	public TreeNode<T> changeDir(TreeNode<T>[] path){
 		toRoot();
 		for(TreeNode<T>child : path){
-			toChild(child);
+			toChild(child.data);
 		}
 		return this;
 	}
@@ -135,33 +163,26 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 * @param node
 	 * @return TreeNode<T>
 	 */
-	public TreeNode<T> contains(TreeNode<T> node){
+	public TreeNode<T> contains(T node){
 		for(TreeNode<T> child : children){
-			if(shallowEquals(child, node))
-				System.out.println("CONTAINS FUNCTION SUCCESFUL\n");
+			if(shallowEquals(child, node)) {
 				return child;
+			}
 		}
-		System.out.println("CONTAINS FUNCTION UNSUCCESFUL\n");
 		return null;
 	}
 
 	/**
 	 *
 	 * equals compares data only, and ignores all other attributes.
-	 * @param node
+	 * @param nodeA
+	 * @param nodeB
 	 * @return
 	 */
-	public boolean shallowEquals (TreeNode<T> nodeA, TreeNode<T> nodeB){
-		return nodeA.data.equals(nodeB.data);
-	}
-
-
-	private static String createIndent(int depth) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < depth; i++) {
-			sb.append("    ");
-		}
-		return sb.toString();
+	public boolean shallowEquals (TreeNode<T> nodeA, T nodeB){
+		Boolean result = nodeA.data.equals(nodeB);
+//		System.out.println("shallowEquals Result: " + result);
+		return result;
 	}
 
 	/**
@@ -171,6 +192,14 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		for(TreeNode<T> child : children){
 			System.out.println(child);
 		}
+	}
+
+	private static String createIndent(int depth) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < depth; i++) {
+			sb.append("    ");
+		}
+		return sb.toString();
 	}
 
 	public static void main(String[] args){
@@ -183,18 +212,21 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		current.addChild("desk");
 		current.addChild("stool");
 		current.printChildren();
+		System.out.println(current.contains("desk"));
+
 
 		System.out.println("\ntoChild TEST: ");
-		current.toChild(new TreeNode<String>("stool"));
+		current.toChild("stool");
 		System.out.println("stool" == current.toString());
 
-//		System.out.println("\ncontains TEST: ");
-//		current.addChild("has");
-//		System.out.println(current.contains(new TreeNode<String>("has")));
-//
-//		System.out.println("\ntoParent TEST: ");
-//		current.toParent();
-//		System.out.println("R" == current.toString());
+		System.out.println("\ncontains TEST: ");
+		current.addChild("has");
+		System.out.println(current.contains("has"));
+
+		System.out.println("\ntoParent TEST: ");
+		current.toParent();
+		System.out.println(current.toString());
+		System.out.println("R" == current.toString());
 
 
 	}
