@@ -1,301 +1,114 @@
 package r;
 
-import java.util.ArrayList;
-import java.util.Collections;
-//import java.util.List;    //TODO: hope that's okay
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
-/**
- * A TreeNode just holds value as a name as a string.
- */
-public class TreeNode implements Comparable<TreeNode> {
-    public ArrayList<TreeNode> children = null;
-    private String name; // EG "Accountant"
-    private String address;        //gets set when declared a child of a node.
-    private TreeNode parent = null;
-    private TreeNode tmp = null;    //Utility Variable.
+public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
+	public T data;
+	public TreeNode<T> parent;
+	public List<TreeNode<T>> children;
 
-    //--------------------------CONSTRUCTORS-------------------------//
-    public TreeNode() {      //TODO: is this ever used?
-        this.parent = null;
-        this.children = new ArrayList<TreeNode>();
-    }
+	public boolean isRoot() {
+		return parent == null;
+	}
 
-    //Create a new tree node with a name.
-    public TreeNode(String name) {
-        this.name = name;
-        this.parent = null;
-        this.children = new ArrayList<TreeNode>();
-    }
-    //------------------------END CONSTRUCTORS-----------------------//
+	public boolean isLeaf() {
+		return children.size() == 0;
+	}
 
-    /* TODO: rename node. think about effects that has on hash search.
-    ^^Also--SHIT! What if you rename something that is a value in something else?
-     like we add another value to blue, so now blue+color needs to be re-written errywhere. Nah. for now don't care about it. Especially since we'll be grabbing and returning the BaseNode/Header anyway! It's up to PA to think about if we're pulling out something metaphorical or a literal value.
-      Yeah. Let's let it slide for now. Hm.
-      DB Should really be handling the insert parent and the rename stuff to consider the hashbrowns it's controlling.
-      */
+	private List<TreeNode<T>> elementsIndex;
 
+	public TreeNode(T data) {
+		this.data = data;
+		this.children = new LinkedList<TreeNode<T>>();
+		this.elementsIndex = new LinkedList<TreeNode<T>>();
+		this.elementsIndex.add(this);
+	}
 
-    //-----------------Interesting/newest methods -----------//
+	public TreeNode<T> addChild(T child) {
+		TreeNode<T> childNode = new TreeNode<T>(child);
+		childNode.parent = this;
+		this.children.add(childNode);
+		this.registerChildForSearch(childNode);
+		return childNode;
+	}
 
-    /**
-     * INSERT PARENT
-     */
-    public boolean insertParent(TreeNode n) {
-        if (n == null) {    //n is the new parent of current
-            return false;
-        }
+	public int getLevel() {
+		if (this.isRoot())
+			return 0;
+		else
+			return parent.getLevel() + 1;
+	}
 
-        parent.addChildNode(n);    //make n a child of current's parent.
-        parent.removeChild(this); //n's parent removes the old child.
-        n.addChildNode(this);    //n gets current as a child
-        this.parent = n;
-        return true;
-    }
+	private void registerChildForSearch(TreeNode<T> node) {
+		elementsIndex.add(node);
+		if (parent != null)
+			parent.registerChildForSearch(node);
+	}
 
-    /**
-     * BASE NODE
-     *
-     * @param n - TreeNode
-     * @return n - TreeNode set to Parent.
-     */
-    public TreeNode getBaseNode(TreeNode n) {
-        if (n.getParent().getParent().getName() == null)
-            return null;
-        while (!(n.getParent().getParent().getName().equals("R"))) {
-            n = n.getParent();
-        }
-        return n;
-    }
+	public TreeNode<T> findTreeNode(Comparable<T> cmp) {
+		for (TreeNode<T> element : this.elementsIndex) {
+			T elData = element.data;
+			if (cmp.compareTo(elData) == 0)
+				return element;
+		}
 
-    /**
-     * CONTAINS
-     *
-     * @param name
-     * @return Boolean
-     */
-    public boolean containsAnyChildWithName(String name) {
-        ArrayList<String> children = this.getAllNames();
-        return children.contains(name);
-    }
+		return null;
+	}
 
-    public boolean containsImmediateChildWithName(String name) {
-        ArrayList<String> a = new ArrayList<String>();
-        for (int i = 0; i < this.children.size(); i++) {
-            a.add(this.children.get(i).getName());    //get all names of children
-        }
-        return a.contains(name);
-    }
+	@Override
+	public String toString() {
+		return data != null ? data.toString() : "[data null]";
+	}
 
-    @Override
-    public int compareTo(TreeNode n) {
-        return this.address.compareTo(n.address);
-    }
+	@Override
+	public Iterator<TreeNode<T>> iterator() {
+		TreeNodeIter<T> iter = new TreeNodeIter<T>(this);
+		return iter;
+	}
 
-    //----------------- General Tree stuff ---------------//
-    //REMOVE Wrapper
-    public String getAddress() {
-        return address;
-    }
+	/**
+	 * TODO: Implement toParent Method.
+	 * @return
+	 */
+	public TreeNode<T> toParent(){
+		parent = this;
+		return this;
+	}
 
-    public void setAddress(String address) {
-        this.address = address + "/";
-    }
+	/**
+	 * TODO: Implement toChild method.
+	 * @param specifiedChild
+	 * @return
+	 */
+	public TreeNode<T> toChild(T specifiedChild){
+		for(TreeNode<T> child : children){
+			if(child.equals(specifiedChild))
+				this = child;
+		}
+	}
 
-    public void updateAddress() {
-        address = parent.getAddress() + name + "/";
-    }
+	/**
+	 * TODO: Implement toRoot Method.
+	 */
+	public void toRoot(){
+		while(!isRoot()){
+			toParent();
+		}
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	/**
+	 * TODO: Implement changeDir
+	 * Ensure at root, the proceed through the absolute path.
+	 * NO RELATIVE PATHS EVER.
+	 * @param pathName
+	 * @return
+	 */
+	public TreeNode<T> changeDir( String pathName){
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public TreeNode getParent() {
-        return parent;
-    }
-
-    public ArrayList<TreeNode> getChildren() {
-        return children;
-    }
-
-    public void remove() {
-        if (parent != null) {
-            parent.removeChild(this);
-        }
-    }
-
-    public void removeChild(TreeNode child) {
-        if (children.contains(child))
-            children.remove(child);
-
-    }
-
-    /**
-     * ADD a child, update its address.
-     *
-     * @param child
-     */
-    public void addChildNode(TreeNode child) {
-        child.parent = this;
-        child.updateAddress();
-        if (!children.contains(child))
-            children.add(child);
-    }
-
-    //----------------END General Tree stuff --------------//
-
-
-    //------------------------- Recursive Methods --------------------------//
-
-    /**
-     * LS
-     */
-    public void printChildren() {
-        for (int i = 0; i < this.children.size(); i++) {
-            tmp = this.children.get(i);
-            System.out.print(tmp.name + "     ");
-        }
-        System.out.print("\n");
-    }
-
-    /**
-     * LS RECURSIVE
-     */
-    public void printAll() {
-        System.out.println(this.name);
-        for (int i = 0; i < this.children.size(); i++) {
-            tmp = this.children.get(i);
-            tmp.printAll();
-        }
-    }
-
-    /**
-     * ADDRESSES Wrapper, used for first iteration then handed over to getAllAddressesRec.
-     *
-     * @return
-     */
-    public ArrayList<String> getAllAddresses() {
-        ArrayList<String> a = new ArrayList<String>();
-        a.add(this.address);
-        for (int i = 0; i < this.children.size(); i++) {
-            tmp = this.children.get(i);
-            a = getAllAddressesRec(tmp, a);
-        }
-        return a;
-    }
-
-    /**
-     * ADDRESSES Wrapper Recursive
-     *
-     * @param n
-     * @param a
-     * @return
-     */
-    private ArrayList<String> getAllAddressesRec(TreeNode n, ArrayList<String> a) {
-        a.add(n.address);
-        for (int i = 0; i < n.children.size(); i++) {
-            tmp = n.children.get(i);
-            a = getAllAddressesRec(tmp, a);
-        }
-        System.out.print("\n");
-        return a;
-    }
-
-    /**
-     * NAMES Wrapper, used for first iteration then handed over to getAllNamesRec.
-     *
-     * @return a String ArrayList composed of the titles of the children nodes.
-     * @devinmcgloin TODO: Doesn't setting a to getAllNamesRec overwrite for each iteration of the loop?
-     */
-    public ArrayList<String> getAllNames() {
-        ArrayList<String> a = new ArrayList<String>();
-        a.add(this.name);
-        for (int i = 0; i < this.children.size(); i++) {
-            tmp = this.children.get(i);
-            a = getAllNamesRec(tmp, a);
-        }
-        return a;
-    }
-
-    /**
-     * NAMES Wrapper Recursive
-     *
-     * @param n
-     * @param a
-     * @return
-     */
-    private ArrayList<String> getAllNamesRec(TreeNode n, ArrayList<String> a) {
-        a.add(n.name);
-        for (int i = 0; i < n.children.size(); i++) {
-            tmp = n.children.get(i);
-            a = getAllNamesRec(tmp, a);
-        }
-        return a;
-    }
-
-    /**
-     * EXPORT Wrapper, used for first iteration then handed over to PrettyPrintRec.
-     *
-     * @return
-     */
-    public String PrettyPrint() {
-        String DBout = "";
-        String buffer = "";
-        //TODO: Organize children alphabetically on PrettyPrint. (Check if already sorted, duh).
-        Collections.sort(children);
-        for (int i = 0; i < this.children.size(); i++) {
-            tmp = this.children.get(i);  //get next child
-            DBout += buffer + tmp.name + "\r\n";
-            DBout += tmp.PrettyPrintRec(buffer);
-        }
-        return DBout;
-    }
-
-    /**
-     * EXPORT RECURSION
-     *
-     * @param buffer
-     * @return
-     */
-    private String PrettyPrintRec(String buffer) {
-        String DBout = "";
-        buffer += "    ";
-        //TODO: Organize children alphabetically on PrettyPrint. (Check if already sorted, duh).
-        Collections.sort(children);
-
-        for (int i = 0; i < this.children.size(); i++) {
-            tmp = this.children.get(i);  //get next child
-            DBout += buffer + tmp.name + "\r\n";
-            DBout += tmp.PrettyPrintRec(buffer);
-        }
-        return DBout;
-    }
-    //------------------------END Recursive Methods ------------------------//
-
-
-    //------------------------Devins New Methods ------------------------//
-
-    public void changeDir(String name){
-        if(!containsImmediateChildWithName(name)){
-            addChildNode(new TreeNode(name));
-        }
-        setName(name);
-        updateAddress();
-    }
-
-    @Override
-    public String toString() {
-        return "TreeNode{" +
-                "name='" + name + '\'' +
-                '}';
-    }
+	}
 
 
 }
-
-

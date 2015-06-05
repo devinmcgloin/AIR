@@ -34,9 +34,7 @@ public class Terminal {
         if( words[0].equals("ADD") && words.length>1  ){
             input = input.replaceAll("ADD", "");
             input = input.trim();
-
             PA.add(input, current.getAddress());
-
         }
         else if (input.startsWith("SEARCH")){
             input = input.replaceAll("SEARCH", "");
@@ -59,12 +57,10 @@ public class Terminal {
             PA.del(input, current.getAddress());
         }
         else if(words[0].equals("PRINT") || words[0].equals("ls")){
-
             current.printChildren();
         }
         else if(words[0].equals("BACK") || words[0].equals("..")){
             current =  current.getParent();
-
         }
         else if(words[0].equals("RENAME") || words[0].equals("mv")){
             input = input.replaceAll("mv", "");

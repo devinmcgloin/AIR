@@ -1,129 +1,104 @@
 package r;
 
-/**
- * Created by Blazej on 6/1/2015.
- */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-
-
+import java.util.List;
+import r.TreeNode;
 
 /**
- * Interprets commands, navigates logic.
- *
+ * Created by devinmcgloin on 6/5/15.
  */
 public class R {
 
-    GeneralTree genTree;
-    ArrayList<TreeNodeBase> hits;
-    TreeNode current;
-    HashSearch cmdHash = new HashSearch();
 
-    //Start R Interface
-    public R(){
-        genTree = new GeneralTree();
-        hits = new ArrayList<TreeNodeBase>();
-        current = genTree.getCurrent();
-    }
+    TreeNode<String> current;
+    String tmp;
+    final String FILEEXTENSION = "./R/";
+    File rFolder = new File(FILEEXTENSION);
 
-    public void rename(String nodeName, String rAddress){
-        current = get(rAddress);
-        genTree.rename(nodeName);
-        genTree.current.updateAddress();
-        //R.rename(nodeName, rAdress);
-    }
-    public void del(String nodeName, String rAddress){
+    public void loadDB(String dbName){
 
-        current = get(rAddress);
-        //System.out.println("did that work: "+current.getAddress());
-        genTree.delNode(nodeName);
+        FileReader in = null;
+        BufferedReader br = null;
+        String line = "";
+        String name = "";
+        String lastAdded = "";
+        int i = 0;
+        int curTabs = 0;
+        int prevTabs = 0;
 
-    }
-
-    public void add(String nodeName, String rAddress){
-        current = get(rAddress);
-        //System.out.println("did that work: "+current.getAddress());
-        genTree.addNode(nodeName);
-
-    }
-
-    public void addParent(String nodeName, String rAddress){
-       // R.addParent(nodeName, rAdress);
-        current = get(rAddress);
-        genTree.addParent(nodeName);
-
-    }
-
-    public void copyContents(String rAddressA, String rAddressB, String qualifiers){
-        genTree.copyContents(rAddressA, rAddressB, qualifiers);
-    }
-
-    /**
-     * Returns the current node once it is set to Address,
-     * TODO: not sure if it is best to not reset it to initial current.
-     * @param rAddress
-     * @return
-     */
-    public TreeNode get(String rAddress) {
-        System.out.println(rAddress);
-        //TODO: Make sure you have the right directory and GenTree has files right.
-        rAddress = rAddress.trim();
-        String[] tmpS = rAddress.split("/");
-
-       // System.out.println("address: "+address);
-
-
-        if(!rAddress.contains("/")){
-            System.out.println("R -- Incorrect format: " + rAddress);
-            return null;
-        }
-        //We are sending a command to "R/" directory.
-        if(tmpS.length==1 && rAddress.equals("R/")){
-            System.out.println("R -- root operation triggered!!!");
-            return genTree.root;
-        }
-        String dbName = rAddress.split("/")[1];
-
-        //Options, we're in R, or we're at the db.
-        //Wrong db or no DB or right db.
-
-        //NO DB loaded
-        if( current.getAddress().equals("R/")){
-
-            genTree.childTraverse(dbName);
-            genTree.loadDB(dbName);
+        //Open File
+        try {
+            in = new FileReader(FILEEXTENSION + dbName);
+        } catch (FileNotFoundException e) {
+            System.out.println("Invalid database name.");
+            return;
         }
 
+        //Create a reader
+        br = new BufferedReader(in);
+        try {
+            //int tst = 0;
+            //LOOP: Read line by line. "name" of node starts at first character, ends at "\r\n"
+            while ( (line = br.readLine()) != null ) {
+                //Break line into characters to count number of tabs. (Four spaces per tab).
+                i = 0;
 
-        /*TODO: holla at yo boy. Y'all gotta know, you gotta keep your currents your currents.
-        Earlier I had TreeNode tmp = genTree.getNode(address).
-        bruh, that's like have two nodes to the same tree in the same db. ain't worth it. not cool.
-        That's why we was getting a doubling up on the db.
-        TODO: looks like there is still an issue when you move into a node, then back out and save. It doubles up and creates a new text file.
-        */
-        current =  genTree.getNode(rAddress);
-        return current;
+                while(line.charAt(i) == ' '){
+                    i++;
+                }
+                //tst++;
+                //System.out.println(tst);
+
+                prevTabs = curTabs;
+                curTabs = i/4;
+                lastAdded = name;
+                name = line.trim();
+
+                //Adding to the same level.
+                if(prevTabs == curTabs){
+                    tmp = new String(name);
+                    current.addChild(tmp);
+                }
+                //Up a level (always increments by 1)
+                else if(prevTabs < curTabs){
+                    root.(lastAdded);
+                    tmp = new String(name);
+                    current.addChild(tmp);
+
+                }
+                //Most complex. Going backwards by some number of levels in the tree.
+                else{
+                    for(i = prevTabs-curTabs; i>0; i--){
+                        goBack();
+                    }
+                    tmp = new String(name);
+                    current.addChild(tmp);
+                    hash.add(tmp);
+                }
+            }
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Loop back to R/
+        while(current.getParent().getParent()!= null){
+            goBack();
+        }
+
     }
 
-
-    public ArrayList<TreeNodeBase> hashSearch(String terms){
-        //TERMs must be separated by `
-
-        //Then try hash searching.
-        TreeNode tmp = getCurrent();
-        hits = cmdHash.hashSearch(terms, genTree);
-        genTree.setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
-        return hits;
+    private static String createIndent(int depth) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            sb.append("    ");
+        }
+        return sb.toString();
     }
-
-    public void save(){
-        genTree.exportDB();
-    }
-
-    public TreeNode getCurrent(){
-        return genTree.getCurrent();
-    }
-
-
-
-
 }
