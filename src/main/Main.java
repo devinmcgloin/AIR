@@ -13,6 +13,7 @@ import r.TreeNode;
 public class Main {
 
     public static void main(String[] args) {
+        System.out.println("SYSTEM LIVE");
 
         Terminal terminal = new Terminal();
         PA PA = new PA();
@@ -33,6 +34,13 @@ public class Main {
             //Exit terminal & Save DB
             if(input.equals("q")){
                 terminal.save();   //which calls DBInterface.save()
+                break;
+            }
+
+            if(input.equals("t")){
+                System.out.println("TEST TRIGGERED: ");
+                PA.inherit("tmp.txt/CEO", "tmp.txt/Accountant", "has");
+                terminal.save();
                 break;
             }
 

@@ -1,28 +1,23 @@
 package r;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO: navigate by address!
 //could just create a func(addressOfNodeToDoFuncOn, valueOfNameFuncShouldTake)
 //Then rrename genTree to R
+
 /**
  * Thinks of the General tree as a whole.
  * Makes all changes and everything to the tree. TODO: is that true? yeah.
  * Keeps last used node in memory.
- *
+ * <p>
  * This is also what will handle loading in databases to populate a tree.
  * This is basically the tree.
  * Will also handle saving it.
- *
- * TODO: Need to make the split between general Tree and treenode more apparent. TreeNode should be the datatype we ferry around, and general tree should be methods used on a node when it is inside R. OUtside R the methods in treeNode need to be enough.
+ * <p>
+ * TODO: Need to return nodes within the greater context fo the tree, if we return a individual treenode then it becomes much more difficult to perform operations on it.
  */
 public class GeneralTree {
 
@@ -34,7 +29,7 @@ public class GeneralTree {
     HashBrowns hash;
 
 
-    GeneralTree(){
+    GeneralTree() {
         //Start the R/ node.
         root = new TreeNode("R");
         root.setAddress("R");
@@ -57,7 +52,7 @@ public class GeneralTree {
     }
 
     //LOAD DB
-    public void loadDB(String dbName){
+    public void loadDB(String dbName) {
 
         FileReader in = null;
         BufferedReader br = null;
@@ -81,37 +76,37 @@ public class GeneralTree {
         try {
             //int tst = 0;
             //LOOP: Read line by line. "name" of node starts at first character, ends at "\r\n"
-            while ( (line = br.readLine()) != null ) {
+            while ((line = br.readLine()) != null) {
                 //Break line into characters to count number of tabs. (Four spaces per tab).
                 i = 0;
 
-                while(line.charAt(i) == ' '){
+                while (line.charAt(i) == ' ') {
                     i++;
                 }
                 //tst++;
                 //System.out.println(tst);
 
                 prevTabs = curTabs;
-                curTabs = i/4;
+                curTabs = i / 4;
                 lastAdded = name;
                 name = line.trim();
 
                 //Adding to the same level.
-                if(prevTabs == curTabs){
+                if (prevTabs == curTabs) {
                     tmp = new TreeNode(name);
                     current.addChildNode(tmp);
                     hash.add(tmp);
                 }
                 //Up a level (always increments by 1)
-                else if(prevTabs < curTabs){
+                else if (prevTabs < curTabs) {
                     childTraverse(lastAdded);
                     tmp = new TreeNode(name);
                     current.addChildNode(tmp);
                     hash.add(tmp);
                 }
                 //Most complex. Going backwards by some number of levels in the tree.
-                else{
-                    for(i = prevTabs-curTabs; i>0; i--){
+                else {
+                    for (i = prevTabs - curTabs; i > 0; i--) {
                         goBack();
                     }
                     tmp = new TreeNode(name);
@@ -124,17 +119,17 @@ public class GeneralTree {
             e.printStackTrace();
         }
         //Loop back to R/
-        while(current.getParent().getParent()!= null){
+        while (current.getParent().getParent() != null) {
             goBack();
         }
 
     }
 
     //Rename attempt
-    public void rename(String newName){
+    public void rename(String newName) {
         String oldName = current.getName();
         goBack();
-        if(hasChild(newName)==true){
+        if (hasChild(newName) == true) {
             System.out.printf("Dimension: %s already exists.\n", newName);
             return;
         }
@@ -146,52 +141,81 @@ public class GeneralTree {
     }
 
     //ADD PARENT
-    public void addParent(String name){
+    public void addParent(String name) {
         //Please keep in mind it is impossible to change the text file or "R"
         //Nada				//R								//foo.txt
-        if(current == null || current.getParent() == null || current.getParent().getParent() == null ){
+        if (current == null || current.getParent() == null || current.getParent().getParent() == null) {
             return;
         }
         //Check if that name is already being used. (Implies you must rename the node you want to add first)...
-        if(current.getParent().containsImmediateChildWithName(name)==true){
+        if (current.getParent().containsImmediateChildWithName(name) == true) {
             System.out.printf("Add Parent Dimension: %s already exists.\n", name);
             return;
         }
-        System.out.println("Hey this is where we are: " +current.getAddress());
+        System.out.println("Hey this is where we are: " + current.getAddress());
         //Create the new node
         tmp = new TreeNode(name);
         current.insertParent(tmp);
-        System.out.println("Hey this is where we are: " +current.getAddress());
+        System.out.println("Hey this is where we are: " + current.getAddress());
 
         hash.add(tmp);
     }
 
-    //TODO: Change search  -AT LEAST BE ALPHABETIC. Implement a BST search.
-    //Check if children have this.
-    public boolean childTraverse(String next){
-        for(int i = 0; i<current.children.size(); i++){
+    /**
+     * TODO: Change search  -AT LEAST BE ALPHABETIC. Implement a BST search.
+     * Check if children have this.
+     *
+     * @param next
+     * @return
+     */
+    public boolean childTraverse(String next) {
+        for (int i = 0; i < current.children.size(); i++) {
             String childName = current.children.get(i).getName();
-            if(next.equals(childName)){
+            if (next.equals(childName)) {
                 current = current.children.get(i);
                 return true;
             }
         }
         return false;
     }
-    //TODO: Change search
-    //Essentially the same function as above. Marginally faster.
-    //OH LAWD CHANGE THIS TOO (to a binary search)
-    public boolean hasChild(String next){
-        for(int i = 0; i<current.children.size(); i++){
+
+    /**
+     * TODO: Change search
+     * Essentially the same function as childTraverse. Marginally faster.
+     * IMPORTANT - Does not set child to current node.
+     *
+     * @param next
+     * @return
+     */
+    public boolean hasChild(String next) {
+        for (int i = 0; i < current.children.size(); i++) {
             String childName = current.children.get(i).getName();
-            if(next.equals(childName)){
+            if (next.equals(childName)) {
                 return true;
             }
         }
         return false;
     }
 
-    public TreeNode getNode(String address){
+    /**
+     *
+     * @return Arraylist of children of the current node.
+     */
+    public ArrayList<String> getChildren(){
+        ArrayList<String> childrenString = new ArrayList<String>();
+        for (int i = 0; i < current.children.size(); i++) {
+            childrenString.add(current.children.get(i).getName());
+
+        }
+        return childrenString;
+
+    }
+
+    /**
+     * @param address - full path address of node.
+     * @return
+     */
+    public TreeNode getNode(String address) {
 
         String[] nodeNames = address.split("/");
         //(genTree will need to split up the address on "/", go to root, and then as long as the
@@ -199,22 +223,22 @@ public class GeneralTree {
         //e.g. [R, foo.txt, people, George Clooney, Pets, Oscar]
 
         //Go back till R is two away.
-        if(current==root)
+        if (current == root)
             return null;
-        while(current.getParent()!=root){
+        while (current.getParent() != root) {
             goBack();
         }
 
         //Start at second dimension
-        for(int i = 2; i< nodeNames.length; i++){
+        for (int i = 2; i < nodeNames.length; i++) {
             //System.out.println("smkemltm:  " + nodeNames[i] + tabs);
             boolean foundNextNode = childTraverse(nodeNames[i]);
 
             //Deletes from Hashmap if it couldn't find the node name.
             String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
-            if( !foundNextNode ){
+            if (!foundNextNode) {
                 //Iterate over all the words that contain that address.
-                for(int j = 2; j<nodeNames.length; j++){
+                for (int j = 2; j < nodeNames.length; j++) {
                     delAddress += nodeNames[j];
                     hash.del(nodeNames[j], delAddress);
                 }
@@ -225,71 +249,86 @@ public class GeneralTree {
         return current;
     }
 
-
-    //Returns list of all addresses that contain that node name.
-    public ArrayList<String> hashSearch(String input){
+    /**
+     * Returns list of all addresses that contain that node name.
+     * @param input
+     * @return
+     */
+    public ArrayList<String> hashSearch(String input) {
         ArrayList<String> addresses = new ArrayList<String>();
         addresses = hash.search(input);
         return addresses;
     }
 
-    //SAVE
-    public void exportDB(){
+
+    /**
+     * Save DB
+     */
+    public void exportDB() {
         //Go back until we're at Foo.txt
-        if(current==root)
+        if (current == root)
             return;
-        while(current.getParent()!=root){
+        while (current.getParent() != root) {
             goBack();
         }
 
-        String DBout = current.export();
+        String DBout = current.PrettyPrint();
 
         //Save file to the DB name
-        try{
+        try {
             String name = "";
             name = current.getName();
-            if(!name.endsWith(".txt")){
+            if (!name.endsWith(".txt")) {
                 name += ".txt";
             }
-            BufferedWriter out = new BufferedWriter( new FileWriter(FILEEXTENSION + name) );
+            BufferedWriter out = new BufferedWriter(new FileWriter(FILEEXTENSION + name));
             out.write(DBout);
             out.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("You suck at writing to files");
         }
     }
 
-    //GO BACK
-    public void goBack(){
-        if(current.getParent()!= null){
+    /**
+     * Go Back in tree
+     */
+    public void goBack() {
+        if (current.getParent() != null) {
             //Check if backing out of DB (triggers save)
-            if(current.getParent()==root){
+            if (current.getParent() == root) {
                 exportDB();
             }
             current = current.getParent();
         }
     }
 
-    //ADD NODE --HOPEFULLY HASH WORKS
-    public void addNode(String name){
-        if(hasChild(name)==true){
+    /**
+     * ADD NODE --HOPEFULLY HASH WORKS
+     * @param name
+     */
+    public boolean addNode(String name) {
+        if (hasChild(name) == true) {
             System.out.printf("Dimension: %s already exists.\n", name);
-            return;
+            return false;
         }
         tmp = new TreeNode(name);
         current.addChildNode(tmp);
 
         hash.add(tmp);
+        return true;
 
     }
 
-    //DEL NODE
-    public void delNode(String name){
+    /**
+     * Delete Node
+     * @param name
+     */
+    public void delNode(String name) {
         List<TreeNode> children = current.children;
         //COULD REPLACE WITH A GETNODE() func
-        for(int i = 0; i<children.size(); i++){
+        for (int i = 0; i < children.size(); i++) {
             String childName = children.get(i).getName();
-            if(name.equals(childName)){
+            if (name.equals(childName)) {
                 //Go into that node, go into all it's children, delete everything.
                 current.removeChild(children.get(i));
                 //Delete for HashMap happens on a failed search for a specific node address.
@@ -298,9 +337,49 @@ public class GeneralTree {
         }
     }
 
-    public TreeNode getCurrent(){
+    /**
+     * Get current Node
+     * @return
+     */
+    public TreeNode getCurrent() {
         return current;
     }
-    public void setCurrent(TreeNode lol){ this.current = lol;}
 
+    /**
+     * Set current node
+     * @param node
+     */
+    public void setCurrent(TreeNode node) {
+        this.current = node;
+    }
+
+    /**
+     *
+     * @param rAddressA - address copying from
+     * @param rAddressB - address copying to
+     * @param qualifiers - specific subsection to copy
+     * @return
+     */
+    public void copyContents(String rAddressA, String rAddressB, String qualifiers){
+        tmp = getCurrent();
+        getNode(rAddressA);
+        childTraverse(qualifiers);
+        ArrayList<String> children = new ArrayList<String>();
+        getNode(rAddressB);
+        for (String child : children){
+            addNode(child);
+            copyContentsRec(child);
+        }
+
+
+    }
+
+    public void copyContentsRec(String qualifier){
+        childTraverse(qualifier);
+        for (String child : getChildren()){
+            if(!addNode(child))
+                return;
+            copyContentsRec(child);
+        }
+    }
 }

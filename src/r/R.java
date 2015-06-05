@@ -25,52 +25,63 @@ public class R {
         current = genTree.getCurrent();
     }
 
-    public void rename(String nodeName, String rAdress){
-        current = get(rAdress);
+    public void rename(String nodeName, String rAddress){
+        current = get(rAddress);
         genTree.rename(nodeName);
         genTree.current.updateAddress();
         //R.rename(nodeName, rAdress);
     }
-    public void del(String nodeName, String rAdress){
+    public void del(String nodeName, String rAddress){
 
-        current = get(rAdress);
+        current = get(rAddress);
         //System.out.println("did that work: "+current.getAddress());
         genTree.delNode(nodeName);
 
     }
 
-    public void add(String nodeName, String rAdress){
-        current = get(rAdress);
+    public void add(String nodeName, String rAddress){
+        current = get(rAddress);
         //System.out.println("did that work: "+current.getAddress());
         genTree.addNode(nodeName);
 
     }
 
-    public void addParent(String nodeName, String rAdress){
+    public void addParent(String nodeName, String rAddress){
        // R.addParent(nodeName, rAdress);
-        current = get(rAdress);
+        current = get(rAddress);
         genTree.addParent(nodeName);
 
     }
 
-    public TreeNode get(String address) {
+    public void copyContents(String rAddressA, String rAddressB, String qualifiers){
+        genTree.copyContents(rAddressA, rAddressB, qualifiers);
+    }
+
+    /**
+     * Returns the current node once it is set to Address,
+     * TODO: not sure if it is best to not reset it to initial current.
+     * @param rAddress
+     * @return
+     */
+    public TreeNode get(String rAddress) {
+        System.out.println(rAddress);
         //TODO: Make sure you have the right directory and GenTree has files right.
-        address = address.trim();
-        String[] tmpS = address.split("/");
+        rAddress = rAddress.trim();
+        String[] tmpS = rAddress.split("/");
 
        // System.out.println("address: "+address);
 
 
-        if(!address.contains("/")){
-            System.out.println("R -- Incorrect format: " + address);
+        if(!rAddress.contains("/")){
+            System.out.println("R -- Incorrect format: " + rAddress);
             return null;
         }
         //We are sending a command to "R/" directory.
-        if(tmpS.length==1 && address.equals("R/")){
+        if(tmpS.length==1 && rAddress.equals("R/")){
             System.out.println("R -- root operation triggered!!!");
             return genTree.root;
         }
-        String dbName = address.split("/")[1];
+        String dbName = rAddress.split("/")[1];
 
         //Options, we're in R, or we're at the db.
         //Wrong db or no DB or right db.
@@ -89,13 +100,10 @@ public class R {
         That's why we was getting a doubling up on the db.
         TODO: looks like there is still an issue when you move into a node, then back out and save. It doubles up and creates a new text file.
         */
-        current =  genTree.getNode(address);
-
-
-
-
+        current =  genTree.getNode(rAddress);
         return current;
     }
+
 
     public ArrayList<TreeNodeBase> hashSearch(String terms){
         //TERMs must be separated by `
@@ -106,9 +114,6 @@ public class R {
         genTree.setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
         return hits;
     }
-
-
-
 
     public void save(){
         genTree.exportDB();

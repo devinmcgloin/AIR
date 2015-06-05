@@ -21,7 +21,7 @@ public class HashSearch {
      * For the purposes of AIR it returns an ArrayList of TreeNodes, with TreeNodeBase nodes at the
      * very beginning. This is cause they are the BASE dimension words we are interested in for PA's
      *
-     * @param input    - search input coming from cmd.
+     * @param input - search input coming from cmd.
      * @param GenTree - Reference to the genTree General Tree we're currently using.
      *
      * @return - ArrayList of hit nodes, ranked by most terms matched within a BASE node.

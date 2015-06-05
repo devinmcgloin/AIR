@@ -26,13 +26,13 @@ public class PA {
     R R;
     public PA(){
         R = new R();
-
     }
 
     //---------------------------------R WRAPPERS---------------------------------//
     public void rename(String nodeName, String rAddress){
         R.rename(nodeName, rAddress);
     }
+
     public void del(String nodeName, String rAddress){
         R.del(nodeName, rAddress);
 
@@ -46,9 +46,13 @@ public class PA {
 
     }
 
-    //TODO: has to count if base nodes returned match the number of terms being asked for.
-    //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    //TODO: Dont know where its coming from but trying to move into a child node that doesnt exist causes "Trying hash del for first time! Only on failed search." to be printed to the console. followed by a nullPointer.
+    /**
+     * TODO: has to count if base nodes returned match the number of terms being asked for.
+     * if not, PA needs to flag it's about to return the highest number of matched terms it could.
+     * TODO: Dont know where its coming from but trying to move into a child node that doesnt exist causes "Trying hash del for first time! Only on failed search." to be printed to the console. followed by a nullPointer.
+     * @param terms
+     * @return
+     */
     public ArrayList<TreeNode> hashSearch(String terms){
         ArrayList<TreeNodeBase> baseNodes = R.hashSearch(terms);
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
@@ -96,16 +100,7 @@ public class PA {
      * @param from - node that to is inheriting from.
      * @param to - node that only has characteristics are copied to
      */
-    public void inherit(TreeNode from, TreeNode to){
-        to.changeDir("is");
-        to.addChildNode(from);
-        if(from.containsImmediateChildWithName("has")){
-            from.changeDir("has");
-            ArrayList<TreeNode> children = from.getChildren();
-            for(TreeNode node : children){
-                to.addChildNode(node);
-            }
-
-        }
+    public void inherit(String rAddressA, String rAddressB, String qualifiers){
+        R.copyContents(rAddressA, rAddressB, qualifiers);
     }
 }

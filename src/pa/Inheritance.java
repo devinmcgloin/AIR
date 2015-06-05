@@ -14,15 +14,10 @@ public class Inheritance {
      * TODO: Implement recursive get children function in TreeNode.
      * TODO: Implement CD function inside TreeNode.
      * TODO: Implement combined check if node exists, and if so CD into that node.
-     * @param from - node that to is inheriting from.
-     * @param to - node that only has characteristics are copied to
+     * @param fromAddress - node that to is inheriting from.
+     * @param toAddress - node that only has characteristics are copied to
      */
-    public void inherit(TreeNode from, TreeNode to){
-        if(from.containsImmediateChildWithName("has")){
-            from.changeDir("has");
-            ArrayList<TreeNode> children = from.getChildren();
+    public void inherit(String fromAddress, String toAddress){
 
-
-        }
     }
 }

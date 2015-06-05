@@ -38,9 +38,6 @@ public class Terminal {
             PA.add(input, current.getAddress());
 
         }
-        else if (words[1].equals("is") && words.length == 3){
-            PA.inherit(PA.get(words[0]), PA.get(words[2]));
-        }
         else if (input.startsWith("SEARCH")){
             input = input.replaceAll("SEARCH", "");
             input = input.trim();

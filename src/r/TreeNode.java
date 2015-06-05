@@ -9,7 +9,7 @@ import java.util.Collections;
  */
 public class TreeNode implements Comparable<TreeNode> {
     public ArrayList<TreeNode> children = null;
-    private String name;
+    private String name; // EG "Accountant"
     private String address;        //gets set when declared a child of a node.
     private TreeNode parent = null;
     private TreeNode tmp = null;    //Utility Variable.
@@ -239,19 +239,19 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     /**
-     * EXPORT Wrapper, used for first iteration then handed over to exportRec.
+     * EXPORT Wrapper, used for first iteration then handed over to PrettyPrintRec.
      *
      * @return
      */
-    public String export() {
+    public String PrettyPrint() {
         String DBout = "";
         String buffer = "";
-        //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
+        //TODO: Organize children alphabetically on PrettyPrint. (Check if already sorted, duh).
         Collections.sort(children);
         for (int i = 0; i < this.children.size(); i++) {
             tmp = this.children.get(i);  //get next child
             DBout += buffer + tmp.name + "\r\n";
-            DBout += tmp.exportRec(buffer);
+            DBout += tmp.PrettyPrintRec(buffer);
         }
         return DBout;
     }
@@ -262,16 +262,16 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param buffer
      * @return
      */
-    private String exportRec(String buffer) {
+    private String PrettyPrintRec(String buffer) {
         String DBout = "";
         buffer += "    ";
-        //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
+        //TODO: Organize children alphabetically on PrettyPrint. (Check if already sorted, duh).
         Collections.sort(children);
 
         for (int i = 0; i < this.children.size(); i++) {
             tmp = this.children.get(i);  //get next child
             DBout += buffer + tmp.name + "\r\n";
-            DBout += tmp.exportRec(buffer);
+            DBout += tmp.PrettyPrintRec(buffer);
         }
         return DBout;
     }
