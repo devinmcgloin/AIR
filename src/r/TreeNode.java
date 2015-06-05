@@ -27,7 +27,9 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	public TreeNode<T> getParent() {
-		return parent;
+		if(parent != null)
+			return parent;
+		return this;
 	}
 
 	public void setParent(TreeNode<T> parent) {
@@ -95,67 +97,24 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	/**
-	 *
-	 * @return
-	 */
-	public TreeNode<T> toParent(){
-		if(!isRoot()) {
-			System.out.println("IS PARENT ACTIVATED");
-			this.setData(parent.getData());
-			this.setChildren(parent.getChildren());
-//			elementsIndex = parent.elementsIndex;
-			this.setParent(parent.getParent());
-		}
-		return this;
-	}
-
-	/**
 	 * TODO: Ensure that the specifiedChild is the child referenced inside current. Will most likely have to be routed through another function.
 	 * TODO: Method seems to be replacing all other data with only information about itself.
 	 * Makes the current node the specifiedChild.
 	 * @param specifiedChild - node to be changed to.
 	 * @return boolean
 	 */
-	public boolean toChild(T specifiedChild){
+	public TreeNode<T> getChild(T specifiedChild){
 		TreeNode<T> tmp = contains(specifiedChild);
 
 		for(TreeNode<T> child : children){
 			if(child.equals(tmp)){
-				this.setData(child.getData());
-
-				this.setChildren(child.getChildren());
-//				elementsIndex = child.elementsIndex;
-				this.setChildren(child.getChildren());
-				return true;
+				return child;
 			}
 
 		}
-		return false;
+		return null;
 	}
 
-	/**
-	 *
-	 */
-	public void toRoot(){
-		while(!isRoot()){
-			toParent();
-		}
-	}
-
-	/**
-	 * TODO: Test after fixing toChild and toParent
-	 * Ensure at root, the proceed through the absolute path.
-	 * NO RELATIVE PATHS EVER.
-	 * @param path
-	 * @return
-	 */
-	public TreeNode<T> changeDir(TreeNode<T>[] path){
-		toRoot();
-		for(TreeNode<T>child : path){
-			toChild(child.data);
-		}
-		return this;
-	}
 
 	/**
 	 *
@@ -185,14 +144,6 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return result;
 	}
 
-	/**
-	 * TESTING ONLY
-	 */
-	public void printChildren(){
-		for(TreeNode<T> child : children){
-			System.out.println(child);
-		}
-	}
 
 	private static String createIndent(int depth) {
 		StringBuilder sb = new StringBuilder();
@@ -202,32 +153,5 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return sb.toString();
 	}
 
-	public static void main(String[] args){
-		System.out.println("INSTANTIATION TEST: ");
-		TreeNode<String> current = new TreeNode<String>("R");
-		System.out.println("R" == current.toString());
 
-		System.out.println("\nCHILDREN TEST: ");
-		current.addChild("chair");
-		current.addChild("desk");
-		current.addChild("stool");
-		current.printChildren();
-		System.out.println(current.contains("desk"));
-
-
-		System.out.println("\ntoChild TEST: ");
-		current.toChild("stool");
-		System.out.println("stool" == current.toString());
-
-		System.out.println("\ncontains TEST: ");
-		current.addChild("has");
-		System.out.println(current.contains("has"));
-
-		System.out.println("\ntoParent TEST: ");
-		current.toParent();
-		System.out.println(current.toString());
-		System.out.println("R" == current.toString());
-
-
-	}
 }

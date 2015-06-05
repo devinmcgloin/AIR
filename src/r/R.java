@@ -13,92 +13,168 @@ import r.TreeNode;
 
 /**
  * Created by devinmcgloin on 6/5/15.
+ * PATHS EXCLUDE BASE NODE R.
+ * ALL FUNCTIONS EXCEPT THOSE THAT BEGIN WITH TO, RETURN TO THEIR ORGINAL rAddress.
+ *
  */
 public class R {
 
-
     TreeNode<String> current;
-    String tmp;
-    final String FILEEXTENSION = "./R/";
-    File rFolder = new File(FILEEXTENSION);
+    TreeNode<String> tmp = current;
 
-//    public void loadDB(String dbName){
-//
-//        FileReader in = null;
-//        BufferedReader br = null;
-//        String line = "";
-//        String name = "";
-//        String lastAdded = "";
-//        int i = 0;
-//        int curTabs = 0;
-//        int prevTabs = 0;
-//
-//        //Open File
-//        try {
-//            in = new FileReader(FILEEXTENSION + dbName);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Invalid database name.");
-//            return;
-//        }
-//
-//        //Create a reader
-//        br = new BufferedReader(in);
-//        try {
-//            //int tst = 0;
-//            //LOOP: Read line by line. "name" of node starts at first character, ends at "\r\n"
-//            while ( (line = br.readLine()) != null ) {
-//                //Break line into characters to count number of tabs. (Four spaces per tab).
-//                i = 0;
-//
-//                while(line.charAt(i) == ' '){
-//                    i++;
-//                }
-//                //tst++;
-//                //System.out.println(tst);
-//
-//                prevTabs = curTabs;
-//                curTabs = i/4;
-//                lastAdded = name;
-//                name = line.trim();
-//
-//                //Adding to the same level.
-//                if(prevTabs == curTabs){
-//                    tmp = new String(name);
-//                    current.addChild(tmp);
-//                }
-//                //Up a level (always increments by 1)
-//                else if(prevTabs < curTabs){
-//                    root.(lastAdded);
-//                    tmp = new String(name);
-//                    current.addChild(tmp);
-//
-//                }
-//                //Most complex. Going backwards by some number of levels in the tree.
-//                else{
-//                    for(i = prevTabs-curTabs; i>0; i--){
-//                        goBack();
-//                    }
-//                    tmp = new String(name);
-//                    current.addChild(tmp);
-//                    hash.add(tmp);
-//                }
-//            }
-//            in.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        //Loop back to R/
-//        while(current.getParent().getParent()!= null){
-//            goBack();
-//        }
+    public R(){
+        current = new TreeNode<String>("R");
+    }
+
+    public void toRoot(){
+        while(!current.isRoot())
+            toParent();
+    }
+
+    /**
+     * PATH NAME EXCLUDING THE BASE NODE R.
+     * @param path
+     */
+    public void toDir(String path){
+        toRoot();
+        String[] rAddress = formatRAddress(path);
+        for(String address : rAddress)
+            toChild(address);
+
+    }
+
+    public String[] formatRAddress(String path){
+        return path.split("/");
+    }
+    public void toParent(){
+        current = current.getParent();
+    }
+
+    public void toChild(String specifiedChild){
+        current = current.getChild(specifiedChild);
+    }
+
+    public void addChild(String child){
+        current.addChild(child);
+    }
+
+    public ArrayList<String> getChildren(){
+        ArrayList<String> children = new ArrayList<String>();
+        for(TreeNode<String> child : current.getChildren()){
+            children.add(child.getData());
+        }
+        return children;
+    }
+
+    public boolean contains(String searchTerm){
+        if(current.contains(searchTerm) != null)
+            return true;
+        return false;
+    }
+
+//    public boolean del(String rAddress){
 //
 //    }
 
-    private static String createIndent(int depth) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            sb.append("    ");
+    public void rename(String rAddress, String newName){
+        tmp = current;
+        toDir(rAddress);
+        current.setData(newName);
+        current = tmp;
+
+    }
+
+    public void add(String rAddress, String term){
+        tmp = current;
+        toDir(rAddress);
+        current.addChild(term);
+        current = tmp;
+
+    }
+
+    public TreeNode<String> get(String rAddress){
+        tmp = current;
+        toDir(rAddress);
+        TreeNode<String> returnVar = current;
+        current = tmp;
+        return returnVar;
+
+    }
+
+//    public ArrayList<TreeNode<String>> search(String terms){
+//
+//    }
+
+    public void save(){
+
+    }
+
+    public void populate(){
+
+    }
+
+    public void printChildren(){
+        for(String data : getChildren()){
+            System.out.print(data + "    ");
         }
-        return sb.toString();
+        System.out.print("\n");
+    }
+
+
+    public static void main(String[] args ){
+        R r = new R();
+
+        System.out.println(r.current.toString());
+        r.addChild("has");
+        r.addChild("is");
+        r.printChildren();
+
+        r.toChild("has");
+
+        r.addChild("car");
+        r.addChild("home");
+        r.addChild("bag");
+        r.addChild("dog");
+        r.addChild("cat");
+
+        r.printChildren();
+
+        r.toChild("car");
+        r.addChild("has");
+        System.out.println(r.current.getParent().toString());
+        r.toRoot();
+        System.out.println(r.current.toString());
+        r.printChildren();
+
+
+
+
+
+
+//        System.out.println("INSTANTIATION TEST: ");
+//        System.out.println("R" == current.toString());
+//        current = current.getParent();
+//
+//        System.out.println("\nCHILDREN TEST: ");
+//        current.addChild("chair");
+//        current.addChild("desk");
+//        current.addChild("stool");
+//        current.printChildren();
+//        System.out.println(current.contains("desk"));
+//
+//
+//        System.out.println("\ntoChild TEST: ");
+//        current = current.getChild("stool");
+//        System.out.println("stool" == current.toString());
+//
+//        System.out.println("\ncontains TEST: ");
+//        current.addChild("has");
+//        System.out.println(current.contains("has"));
+//
+//        System.out.println("\ntoParent TEST: ");
+//        current = current.getParent();
+//        System.out.println(current.toString());
+//        System.out.println("R" == current.toString());
+
     }
 }
