@@ -25,9 +25,14 @@ public class Terminal {
 
         input = input.trim();
         String words[] = input.split(" ");
+//        for(String word : words){
+//            System.out.print("["+word+"]");
+//        }
 
         //check for keywords
-        if( words[0].equals("ADD") && words.length>1  ){
+        if(words[0].equals("") || words[0].equals(" "))
+            return null;
+        else if( words[0].equals("ADD") && words.length>1  ){
             input = input.replaceAll("ADD", "");
             input = input.trim();
             input = input.toLowerCase();
@@ -42,12 +47,12 @@ public class Terminal {
         else if(words[0].equals("DEL") && words.length>1){
             input = input.replaceAll("DEL", "");
             input = input.trim();
-            PA.del(formatPrompt() + input);
+            PA.del(input);
         }
         else if(input.startsWith("-")){
             input = input.replace('-', ' ');
             input = input.trim();
-            PA.del(formatPrompt() + input);
+            PA.del(input);
         }
         else if(words[0].equals("PRINT") || words[0].equals("ls")){
             System.out.println(printChildren());
@@ -62,14 +67,16 @@ public class Terminal {
             input = input.replaceAll("mv", "");
             input = input.replaceAll("RENAME", "");
             input = input.trim();
-            //TODO: genTree.current.updateAddress();
+            PA.rename(words[1], words[2]);
         }
         //Fun stuff
         else{
-            if(PA.contains(input))
+            if(PA.contains(input)) {
                 PA.toChild(input);
-            else
+            }
+            else {
                 PA.addChild(input);
+            }
         }
 
     return null;
@@ -104,10 +111,8 @@ public class Terminal {
         System.out.println("SYSTEM LIVE");
 
         Terminal terminal = new Terminal();
-        PA PA = new PA();
 
         Scanner console = new Scanner(System.in);
-        String dir = "R/";
         String input;
 
 
@@ -129,7 +134,6 @@ public class Terminal {
             TreeNode hit = terminal.parse(input);
             if(hit != null){
                 System.out.println("Invalid command");
-                //dir = hits.get(0).getAddress();
 
             }
         }

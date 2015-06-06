@@ -22,13 +22,19 @@ import r.TreeNode;
 public class R {
 
     ArrayList<String> currentPath = new ArrayList<String>();
-    ArrayList<String> tempPath = currentPath;
+    ArrayList<String> tempPath = new ArrayList<String>();
     TreeNode<String> current;
-    TreeNode<String> tmp = current;
+    TreeNode<String> tmp = new TreeNode<String>("");
 
     public R(){
         current = new TreeNode<String>("R");
-        populate(new File("./R/tmp.txt"));
+        populate(new File("./R/R.txt"));
+        tempPath = copyCurrentPath();
+        tmp = current;
+    }
+
+    public void setCurrent(TreeNode<String> current) {
+        this.current = current;
     }
 
     /**
@@ -41,6 +47,9 @@ public class R {
         currentPath.add("R");
     }
 
+    public ArrayList<String> copyCurrentPath(){
+        return (ArrayList<String>) currentPath.clone();
+    }
     /**
      *
      * @return
@@ -57,7 +66,9 @@ public class R {
     public void toDir(String path){
         toRoot();
         String[] rAddress = formatRAddress(path);
+
         for(String address : rAddress) {
+//            System.out.print("["+address+"]");
             currentPath.add(address);
             toChild(address);
         }
@@ -131,7 +142,7 @@ public class R {
      */
     public void del(String rAddress){
         tmp = current;
-        tempPath = currentPath;
+        tempPath = copyCurrentPath();
         toDir(rAddress);
         toParent();
         String[] address = formatRAddress(rAddress);
@@ -149,7 +160,7 @@ public class R {
      */
     public void rename(String rAddress, String newName){
         tmp = current;
-        tempPath = currentPath;
+        tempPath = copyCurrentPath();
         toDir(rAddress);
         current.setData(newName);
         current = tmp;
@@ -164,7 +175,7 @@ public class R {
      */
     public void add(String rAddress, String term){
         tmp = current;
-        tempPath = currentPath;
+        tempPath = copyCurrentPath();
         toDir(rAddress);
         current.addChild(term);
         current = tmp;
@@ -180,7 +191,7 @@ public class R {
     public TreeNode<String> get(String rAddress){
 
         tmp = current;
-        tempPath = currentPath;
+        tempPath = copyCurrentPath();
         toDir(rAddress);
         TreeNode<String> returnVar = current;
         current = tmp;
@@ -198,10 +209,10 @@ public class R {
     public String export(TreeNode<String> node){
         toRoot();
         if(node.isRoot()){
-            String returnStatement = current.toString() + "\n";
+            String returnStatement = ""; //current.toString() + "\n";
             for(TreeNode<String> child : current.getChildren()){
                 if(!child.isLeaf())
-                    returnStatement += (lvlSpacing(child.getLevel()) + child.toString() + "\n");
+                    returnStatement += (child.toString() + "\n");
                 returnStatement += export(child);
             }
             return returnStatement;
@@ -210,16 +221,16 @@ public class R {
             String returnStatement = "";
             for(TreeNode<String> child : node.getChildren()){
                 if(!child.isLeaf())
-                    returnStatement += (lvlSpacing(child.getLevel())+ child.toString() + "\n");
+                    returnStatement += (lvlSpacing(child.getLevel() - 1)+ child.toString() + "\n");
                 returnStatement += export(child);
             }
             return returnStatement;
         }
         else if(node.isLeaf()){
             String returnStatement = "";
-            returnStatement += (lvlSpacing(node.getLevel())+ node.toString() + "\n");
+            returnStatement += (lvlSpacing(node.getLevel() - 1)+ node.toString() + "\n");
             return returnStatement;
-            }
+        }
 
 
         return "";
@@ -233,10 +244,6 @@ public class R {
     private String lvlSpacing(int level){
         return new String(new char[level]).replace("\0", "    ");
     }
-
-//    public ArrayList<TreeNode<String>> search(String terms){
-//
-//    }
 
     /**
      * saves the whole tree.
@@ -277,39 +284,40 @@ public class R {
             System.out.println("Invalid database name.");
             return;
         }
+        //TODO: Wtf why arent you sticking?
 
-       while(db.hasNextLine()) {
-           i = 0;
-           String input = db.nextLine();
+        while(db.hasNextLine()) {
+            i = 0;
+            String input = db.nextLine();
 
-           while (input.charAt(i) == ' ') {
-               i++;
-           }
-           preName = term;
-           prevTabs = curTabs;
-           curTabs = i / 4;
-           term = input.trim();
+            while (input.charAt(i) == ' ') {
+                i++;
+            }
+            preName = term;
+            prevTabs = curTabs;
+            curTabs = i / 4;
+            term = input.trim();
 
-           //Adding to the same level
-           if(prevTabs == curTabs){
-               addChild(term);
-           }
+            //Adding to the same level
+            if(prevTabs == curTabs){
+                addChild(term);
+            }
 
-           //Adding Child
-           else if(prevTabs < curTabs){
-               toChild(preName);
-               addChild(term);
-           }
+            //Adding Child
+            else if(prevTabs < curTabs){
+                toChild(preName);
+                addChild(term);
+            }
 
-           //going up
-           else{
-               for(i = prevTabs-curTabs; i>0; i--){
-                   toParent();
-               }
-               addChild(term);
-           }
+            //going up
+            else{
+                for(i = prevTabs-curTabs; i>0; i--){
+                    toParent();
+                }
+                addChild(term);
+            }
 
-       }
+        }
         db.close();
         toRoot();
     }

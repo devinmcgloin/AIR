@@ -76,6 +76,10 @@ public class PA {
         return R.getCurrentPath();
     }
 
+    public void rename(String rAddress, String newName){
+        R.rename(rAddress, newName);
+    }
+
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
 }
