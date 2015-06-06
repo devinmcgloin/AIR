@@ -144,13 +144,20 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return result;
 	}
 
-
 	private static String createIndent(int depth) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < depth; i++) {
 			sb.append("    ");
 		}
 		return sb.toString();
+	}
+
+	public void delAllChildren(){
+		this.children = new LinkedList<TreeNode<T>>();
+	}
+
+	public void delChild(T node){
+		children.remove(contains(node));
 	}
 
 

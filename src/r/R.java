@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import r.TreeNode;
 
 /**
@@ -19,16 +21,33 @@ import r.TreeNode;
  */
 public class R {
 
+    ArrayList<String> currentPath = new ArrayList<String>();
+    ArrayList<String> tempPath = currentPath;
     TreeNode<String> current;
     TreeNode<String> tmp = current;
 
     public R(){
         current = new TreeNode<String>("R");
+        populate(new File("./R/tmp.txt"));
     }
 
+    /**
+     * Returns the current node to root.
+     */
     public void toRoot(){
         while(!current.isRoot())
             toParent();
+        currentPath.clear();
+        currentPath.add("R");
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<String> getCurrentPath(){
+        return currentPath;
+
     }
 
     /**
@@ -38,26 +57,54 @@ public class R {
     public void toDir(String path){
         toRoot();
         String[] rAddress = formatRAddress(path);
-        for(String address : rAddress)
+        for(String address : rAddress) {
+            currentPath.add(address);
             toChild(address);
+        }
 
     }
 
-    public String[] formatRAddress(String path){
+    /**
+     * Format address utility
+     * @param path
+     * @return - tring array
+     */
+    private String[] formatRAddress(String path){
         return path.split("/");
     }
+
+    /**
+     * Sets current to its parent.
+     */
     public void toParent(){
+        int index = currentPath.lastIndexOf(current.data);
+        if(index > 0)
+            currentPath.remove(index);
         current = current.getParent();
+
     }
 
+    /**
+     * sets current to the specified child node.
+     * @param specifiedChild
+     */
     public void toChild(String specifiedChild){
         current = current.getChild(specifiedChild);
+        currentPath.add(specifiedChild);
     }
 
+    /**
+     * adds a child at the current's path.
+     * @param child
+     */
     public void addChild(String child){
         current.addChild(child);
     }
 
+    /**
+     * gets all children from current's path.
+     * @return
+     */
     public ArrayList<String> getChildren(){
         ArrayList<String> children = new ArrayList<String>();
         for(TreeNode<String> child : current.getChildren()){
@@ -66,53 +113,210 @@ public class R {
         return children;
     }
 
+    /**
+     * checks if current has children with the given term.
+     * @param searchTerm
+     * @return
+     */
     public boolean contains(String searchTerm){
         if(current.contains(searchTerm) != null)
             return true;
         return false;
     }
 
-//    public boolean del(String rAddress){
-//
-//    }
+    /**
+     * deletes the specified node, including its children.
+     * @param rAddress
+     * @return
+     */
+    public void del(String rAddress){
+        tmp = current;
+        tempPath = currentPath;
+        toDir(rAddress);
+        toParent();
+        String[] address = formatRAddress(rAddress);
+        current.delChild(address[address.length - 1]);
+        current = tmp;
+        currentPath = tempPath;
 
+    }
+
+    /**
+     * renames the node at the specified address.
+     * @param rAddress - address at which you want to change to take effect.
+     *                 NOTE, IT WILL CHANGE THE GIVEN ADDRESS'S NAME, Not its child.
+     * @param newName -  new data field. has to be a string.
+     */
     public void rename(String rAddress, String newName){
         tmp = current;
+        tempPath = currentPath;
         toDir(rAddress);
         current.setData(newName);
         current = tmp;
+        currentPath = tempPath;
 
     }
 
+    /**
+     * adds a child at the given address.
+     * @param rAddress
+     * @param term
+     */
     public void add(String rAddress, String term){
         tmp = current;
+        tempPath = currentPath;
         toDir(rAddress);
         current.addChild(term);
         current = tmp;
+        currentPath = tempPath;
 
     }
 
+    /**
+     * returns the node at the given address.
+     * @param rAddress
+     * @return
+     */
     public TreeNode<String> get(String rAddress){
+
         tmp = current;
+        tempPath = currentPath;
         toDir(rAddress);
         TreeNode<String> returnVar = current;
         current = tmp;
+        currentPath = tempPath;
         return returnVar;
 
+    }
+
+
+    /**
+     * recursive export.
+     * @param node
+     * @return
+     */
+    public String export(TreeNode<String> node){
+        toRoot();
+        if(node.isRoot()){
+            String returnStatement = current.toString() + "\n";
+            for(TreeNode<String> child : current.getChildren()){
+                if(!child.isLeaf())
+                    returnStatement += (lvlSpacing(child.getLevel()) + child.toString() + "\n");
+                returnStatement += export(child);
+            }
+            return returnStatement;
+        }
+        else if(!node.isLeaf()){
+            String returnStatement = "";
+            for(TreeNode<String> child : node.getChildren()){
+                if(!child.isLeaf())
+                    returnStatement += (lvlSpacing(child.getLevel())+ child.toString() + "\n");
+                returnStatement += export(child);
+            }
+            return returnStatement;
+        }
+        else if(node.isLeaf()){
+            String returnStatement = "";
+            returnStatement += (lvlSpacing(node.getLevel())+ node.toString() + "\n");
+            return returnStatement;
+            }
+
+
+        return "";
+    }
+
+    /**
+     * utility for proper spacing on output.
+     * @param level
+     * @return
+     */
+    private String lvlSpacing(int level){
+        return new String(new char[level]).replace("\0", "    ");
     }
 
 //    public ArrayList<TreeNode<String>> search(String terms){
 //
 //    }
 
+    /**
+     * saves the whole tree.
+     */
     public void save(){
+        toRoot();
+        try{
+            String name = "";
+            name = "R.txt";
+            if(!name.endsWith(".txt")){
+                name += ".txt";
+            }
+            BufferedWriter out = new BufferedWriter( new FileWriter("./R/" + name) );
+            out.write(export(current));
+            out.close();
+        } catch (Exception e){
+            System.out.println("You suck at writing to files");
+        }
 
     }
 
-    public void populate(){
 
+    /**
+     * Pulls all the database info out of the text file.
+     * @param f - file to load
+     */
+    public void populate(File f){
+        int i = 0;
+        int curTabs = 0;
+        int prevTabs = 0;
+        String term = "";
+        String preName;
+        Scanner db;
+
+        try{
+            db = new Scanner(f);
+        }catch (FileNotFoundException e) {
+            System.out.println("Invalid database name.");
+            return;
+        }
+
+       while(db.hasNextLine()) {
+           i = 0;
+           String input = db.nextLine();
+
+           while (input.charAt(i) == ' ') {
+               i++;
+           }
+           preName = term;
+           prevTabs = curTabs;
+           curTabs = i / 4;
+           term = input.trim();
+
+           //Adding to the same level
+           if(prevTabs == curTabs){
+               addChild(term);
+           }
+
+           //Adding Child
+           else if(prevTabs < curTabs){
+               toChild(preName);
+               addChild(term);
+           }
+
+           //going up
+           else{
+               for(i = prevTabs-curTabs; i>0; i--){
+                   toParent();
+               }
+               addChild(term);
+           }
+
+       }
+        db.close();
+        toRoot();
     }
 
+    /**
+     * prints all children to the standard console. Not used for exports.
+     */
     public void printChildren(){
         for(String data : getChildren()){
             System.out.print(data + "    ");
@@ -120,61 +324,4 @@ public class R {
         System.out.print("\n");
     }
 
-
-    public static void main(String[] args ){
-        R r = new R();
-
-        System.out.println(r.current.toString());
-        r.addChild("has");
-        r.addChild("is");
-        r.printChildren();
-
-        r.toChild("has");
-
-        r.addChild("car");
-        r.addChild("home");
-        r.addChild("bag");
-        r.addChild("dog");
-        r.addChild("cat");
-
-        r.printChildren();
-
-        r.toChild("car");
-        r.addChild("has");
-        System.out.println(r.current.getParent().toString());
-        r.toRoot();
-        System.out.println(r.current.toString());
-        r.printChildren();
-
-
-
-
-
-
-//        System.out.println("INSTANTIATION TEST: ");
-//        System.out.println("R" == current.toString());
-//        current = current.getParent();
-//
-//        System.out.println("\nCHILDREN TEST: ");
-//        current.addChild("chair");
-//        current.addChild("desk");
-//        current.addChild("stool");
-//        current.printChildren();
-//        System.out.println(current.contains("desk"));
-//
-//
-//        System.out.println("\ntoChild TEST: ");
-//        current = current.getChild("stool");
-//        System.out.println("stool" == current.toString());
-//
-//        System.out.println("\ncontains TEST: ");
-//        current.addChild("has");
-//        System.out.println(current.contains("has"));
-//
-//        System.out.println("\ntoParent TEST: ");
-//        current = current.getParent();
-//        System.out.println(current.toString());
-//        System.out.println("R" == current.toString());
-
-    }
 }
