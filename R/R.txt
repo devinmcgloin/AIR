@@ -5,6 +5,7 @@ verbs
     has
         actor
         actee
+    q
 noun
     is
     has

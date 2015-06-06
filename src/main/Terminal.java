@@ -143,7 +143,7 @@ public class Terminal {
             input = console.nextLine();
 
             //Exit terminal & Save DB
-            if(input.equals("q")){
+            if(input.equals("Q") || input.equals("q")){
                 terminal.save();   //which calls DBInterface.save()
                 break;
             }

@@ -14,15 +14,15 @@ public class PA {
 
 
     /**
-     * HashSearch (Get set -> set logic???)
+     * TODO: HashSearch (Get set -> set logic???)
      *
-     * user defined matrices --> export set of BN in a csv file?
-     * header logic --> failed add: create header, in all set logic, make sure to
-     *      reanalyze headers into their true base nodes and re-rank them.
-     * merging nodes --> tricky, idk how that function would look like
+     * TODO: user defined matrices --> export set of BN in a csv file?
+     * TODO: header logic --> failed add: create header, in all set logic, make sure to reanalyze headers into their true base nodes and re-rank them.
+     * TODO: merging nodes --> tricky, idk how that function would look like
      */
 
     R R;
+
     public PA(){
         R = new R();
     }
