@@ -96,8 +96,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	/**
-	 * TODO: Ensure that the specifiedChild is the child referenced inside current. Will most likely have to be routed through another function.
-	 * TODO: Method seems to be replacing all other data with only information about itself.
+	 *
 	 * Makes the current node the specifiedChild.
 	 * @param specifiedChild - node to be changed to.
 	 * @return boolean

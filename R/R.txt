@@ -1,0 +1,20 @@
+adjectives
+    has
+    is
+verbs
+    has
+        actor
+        actee
+noun
+    is
+    has
+        space
+            ldata
+                length
+                width
+                height
+        color
+            ldata
+                red
+                blue
+                green

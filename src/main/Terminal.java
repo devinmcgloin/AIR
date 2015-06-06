@@ -23,7 +23,7 @@ public class Terminal {
 
 
 
-        input = input.trim();
+        input = input.trim().toLowerCase();
         String words[] = input.split(" ");
 //        for(String word : words){
 //            System.out.print("["+word+"]");
@@ -32,8 +32,11 @@ public class Terminal {
         //check for keywords
         if(words[0].equals("") || words[0].equals(" "))
             return null;
-        else if( words[0].equals("ADD") && words.length>1  ){
-            input = input.replaceAll("ADD", "");
+        else if(words[0].equals("help") || words[0].equals("?")){
+            System.out.print(getHelp());
+        }
+        else if( words[0].equals("add") && words.length>1  ){
+            input = input.replaceAll("add", "");
             input = input.trim();
             input = input.toLowerCase();
             PA.addChild(input);
@@ -44,8 +47,8 @@ public class Terminal {
             input = input.toLowerCase();
             PA.addChild(input);
         }
-        else if(words[0].equals("DEL") && words.length>1){
-            input = input.replaceAll("DEL", "");
+        else if(words[0].equals("del") && words.length>1){
+            input = input.replaceAll("del", "");
             input = input.trim();
             PA.del(input);
         }
@@ -54,18 +57,18 @@ public class Terminal {
             input = input.trim();
             PA.del(input);
         }
-        else if(words[0].equals("PRINT") || words[0].equals("ls")){
+        else if(words[0].equals("print") || words[0].equals("ls")){
             System.out.println(printChildren());
         }
-        else if(words[0].equals("BACK") || words[0].equals("..")){
+        else if(words[0].equals("back") || words[0].equals("..")){
             PA.toParent();
         }
-        else if(words[0].equals("CD") || words[0].equals("cd")){
+        else if(words[0].equals("cd") || words[0].equals("cd")){
             PA.toRoot();
         }
-        else if(words[0].equals("RENAME") || words[0].equals("mv")){
+        else if(words[0].equals("rename") || words[0].equals("mv")){
             input = input.replaceAll("mv", "");
-            input = input.replaceAll("RENAME", "");
+            input = input.replaceAll("rename", "");
             input = input.trim();
             PA.rename(words[1], words[2]);
         }
@@ -107,13 +110,28 @@ public class Terminal {
         return path;
     }
 
+    public String getHelp(){
+        return String.format(
+                        "PATHS must be formatted as follows:\n'nouns/places/nations'\n" +
+                        "(ADD    | +  ): Add node at current directory\n" +
+                        "(DEL    | -  ): PATH\n" +
+                        "(PRINT  | ls ): List directory.\n" +
+                        "(BACK   | .. ): Back one level.\n" +
+                        "(CD     | cd ): Return to root.\n" +
+                        "(RENAME | mv ): PATH - newName\n" +
+                        "(Help   | ?  ): For help.\n\n");
+    }
+
     public static void main(String[] args) {
-        System.out.println("SYSTEM LIVE");
+
 
         Terminal terminal = new Terminal();
 
         Scanner console = new Scanner(System.in);
         String input;
+
+        System.out.println("WELCOME TO AIR.\n");
+        System.out.println(terminal.getHelp());
 
 
         while(true){
