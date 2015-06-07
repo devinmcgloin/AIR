@@ -9,6 +9,7 @@ import java.util.Scanner;
 /**
  * Created by devinmcgloin on 6/3/15.
  * Terminal is a command parser for the time being.
+ *
  */
 public class Terminal {
 
@@ -67,6 +68,7 @@ public class Terminal {
             PA.toRoot();
         }
         else if(words[0].equals("rename") || words[0].equals("mv")){
+            //TODO: Needs fixing, r.RENAME throws nullpointer when Terminal triggers rename. Due to parsing error, when nodes include spaces. - Temp solution, no spaces allowed.
             input = input.replaceAll("mv", "");
             input = input.replaceAll("rename", "");
             input = input.trim();
@@ -74,9 +76,7 @@ public class Terminal {
         }
         //Fun stuff
         else{
-            if(PA.contains(input)) {
-                PA.toChild(input);
-            }
+            if(PA.ifExistsCD(input));
             else {
                 PA.addChild(input);
             }
@@ -112,7 +112,9 @@ public class Terminal {
 
     public String getHelp(){
         return String.format(
-                        "PATHS must be formatted as follows:\n'nouns/places/nations'\n" +
+                        "PATHS must be formatted as follows:\n" +
+                                "'nouns/places/nations'\n" +
+                                "\nCommands:\n"+
                         "(ADD    | +  ): Add node at current directory\n" +
                         "(DEL    | -  ): PATH\n" +
                         "(PRINT  | ls ): List directory.\n" +

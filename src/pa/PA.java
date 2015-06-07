@@ -14,6 +14,10 @@ public class PA {
 
 
     /**
+     * PACKAGE GOD.
+     *
+     * TODO: Implement recursive get all children function in R. - Not sure if needed.
+     *
      * TODO: HashSearch (Get set -> set logic???)
      *
      * TODO: user defined matrices --> export set of BN in a csv file?
@@ -60,6 +64,9 @@ public class PA {
         return R.contains(searchTerm);
     }
 
+    public boolean containsAll(String searchTerm) {
+        return R.containsAll(searchTerm);
+    }
     public TreeNode<String> get(String rAddress){
         return R.get(rAddress);
     }
@@ -80,6 +87,39 @@ public class PA {
         R.rename(rAddress, newName);
     }
 
+    public boolean isRoot(){
+        return R.isRoot();
+    }
+
+    public boolean isLeaf(){
+        return R.isLeaf();
+    }
+
+    public boolean isKeyVal(){
+        return R.isKeyVal();
+    }
+
+    public void move(String rAddressFrom, String rAddressTo){
+        R.move(rAddressFrom, rAddressTo);
+    }
+
     // ----------------------------- END R WRAPPERS ----------------------------------//
+
+    /**
+     * TODO: QA on ifExistsCD method.
+     * @param node
+     * @return
+     */
+    public boolean ifExistsCD(String node){
+        if(R.contains(node)) {
+            R.toChild(node);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 
 }

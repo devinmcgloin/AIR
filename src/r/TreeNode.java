@@ -54,6 +54,10 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
 	public TreeNode<T> addChild(T child) {
 		TreeNode<T> childNode = new TreeNode<T>(child);
+		return addChild(childNode);
+	}
+
+	public TreeNode<T> addChild(TreeNode<T> childNode){
 		childNode.parent = this;
 		childNode.elementsIndex = elementsIndex;
 		this.children.add(childNode);
@@ -61,6 +65,11 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return childNode;
 	}
 
+	/**
+	 * TODO: See if this is enough for our searching needs, if not it may be useful for narrowing results.
+	 * @param cmp
+	 * @return
+	 */
 	public TreeNode<T> findTreeNode(Comparable<T> cmp) {
 		for (TreeNode<T> element : this.elementsIndex) {
 			T elData = element.data;
@@ -125,6 +134,22 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 			if(shallowEquals(child, node)) {
 				return child;
 			}
+		}
+		return null;
+	}
+
+	/**
+	 * TODO: QA on containsAll
+	 * @param node
+	 * @return
+	 */
+	public TreeNode<T> containsAll(T node){
+		for(TreeNode<T> child : children){
+			if(shallowEquals(child, node))
+				return child;
+			else if(isLeaf())
+				return null;
+			containsAll(child.data);
 		}
 		return null;
 	}

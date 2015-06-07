@@ -5,10 +5,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * Created by devinmcgloin on 6/5/15.
+ *
+ * PACKAGE GOD.
+ *
  * PATHS EXCLUDE BASE NODE R. are of the form "nouns/places/nations"
  * ALL FUNCTIONS EXCEPT THOSE THAT BEGIN WITH TO, RETURN TO THEIR ORGINAL rAddress.
  */
@@ -38,6 +42,31 @@ public class R {
             toParent();
         currentPath.clear();
         currentPath.add("R");
+    }
+
+    public boolean isRoot(){
+        return current.isRoot();
+    }
+
+    public boolean isLeaf(){
+        return current.isLeaf();
+    }
+
+    /**
+     * TODO: QA isKeyVal
+     * @return
+     */
+    public boolean isKeyVal(){
+        List<TreeNode<String>> children = current.getChildren();
+        if(children.size() == 1){
+            for (TreeNode<String> child : children){
+                if(child.isLeaf())
+                    return true;
+            }
+            return false;
+        }
+        return false;
+
     }
 
     public ArrayList<String> copyCurrentPath() {
@@ -111,6 +140,14 @@ public class R {
     }
 
     /**
+     * Here for move function. Dont use for anything else.
+     * @param node
+     */
+    public void addChild(TreeNode<String> node){
+        current.addChild(node);
+    }
+
+    /**
      * gets all children from current's path.
      *
      * @return
@@ -136,6 +173,17 @@ public class R {
     }
 
     /**
+     * checks if current has children with the given term all the way to leaf.
+     * @param searchTerm
+     * @return
+     */
+    public boolean containsAll(String searchTerm) {
+        if (current.containsAll(searchTerm) != null)
+            return true;
+        return false;
+    }
+
+    /**
      * deletes the specified node, including its children.
      *
      * @param rAddress
@@ -154,6 +202,7 @@ public class R {
     }
 
     /**
+     *
      * renames the node at the specified address.
      *
      * @param rAddress - address at which you want to change to take effect.
@@ -326,13 +375,23 @@ public class R {
     }
 
     /**
-     * prints all children to the standard console. Not used for exports.
+     * TODO: QA on move method
+     * @param rAddressFrom
+     * @param rAddressTo
      */
-    public void printChildren() {
-        for (String data : getChildren()) {
-            System.out.print(data + "    ");
-        }
-        System.out.print("\n");
+    public void move(String rAddressFrom, String rAddressTo){
+        TreeNode<String> nodeA = get(rAddressFrom);
+        toDir(rAddressFrom);
+        del(rAddressFrom);
+        toDir(rAddressTo);
+        addChild(nodeA);
+
     }
+
+    public int getLevel(){
+        return current.getLevel();
+    }
+
+
 
 }

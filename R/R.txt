@@ -1,21 +1,9 @@
-adjectives
-    has
-    is
-verbs
-    has
-        actor
-        actee
-    q
-noun
-    is
-    has
-        space
-            ldata
-                length
-                width
-                height
-        color
-            ldata
-                red
-                blue
-                green
+basenodes
+    nouns
+        is
+        has
+            dimensions
+            color
+    verbs
+    adjectives
+instatiations

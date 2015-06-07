@@ -11,8 +11,6 @@ import java.util.ArrayList;
 public class Inheritance {
 
     /**
-     * TODO: Implement recursive get children function in R.
-     * TODO: Implement combined check if node exists, and if so CD into that node.
      * @param fromAddress - node that to is inheriting from.
      * @param toAddress - node that only has characteristics are copied to
      */
