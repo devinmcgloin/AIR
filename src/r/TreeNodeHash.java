@@ -16,7 +16,4 @@ public class TreeNodeHash<T> {
         map = new HashMap<>(100);
     }
 
-    public static void main(String[] args) {
-
-    }
 }

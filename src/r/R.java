@@ -53,7 +53,7 @@ public class R {
     }
 
     /**
-     * TODO: QA isKeyVal
+     * TODO: QA on isKeyVal method.
      * @return
      */
     public boolean isKeyVal(){
@@ -260,32 +260,32 @@ public class R {
      * @param node
      * @return
      */
-    public String export(TreeNode<String> node) {
+    public StringBuilder export(TreeNode<String> node) {
         toRoot();
         if (node.isRoot()) {
-            String returnStatement = ""; //current.toString() + "\n";
+            StringBuilder returnStatement = new StringBuilder("");
             for (TreeNode<String> child : current.getChildren()) {
                 if (!child.isLeaf())
-                    returnStatement += (child.toString() + "\n");
-                returnStatement += export(child);
+                    returnStatement.append(child.toString() + "\n");
+                returnStatement.append(export(child));
             }
             return returnStatement;
         } else if (!node.isLeaf()) {
-            String returnStatement = "";
+            StringBuilder returnStatement = new StringBuilder("");
             for (TreeNode<String> child : node.getChildren()) {
                 if (!child.isLeaf())
-                    returnStatement += (lvlSpacing(child.getLevel() - 1) + child.toString() + "\n");
-                returnStatement += export(child);
+                    returnStatement.append(lvlSpacing(child.getLevel() - 1) + child.toString() + "\n");
+                returnStatement.append(export(child));
             }
             return returnStatement;
         } else if (node.isLeaf()) {
-            String returnStatement = "";
-            returnStatement += (lvlSpacing(node.getLevel() - 1) + node.toString() + "\n");
+            StringBuilder returnStatement = new StringBuilder("");
+            returnStatement.append(lvlSpacing(node.getLevel() - 1) + node.toString() + "\n");
             return returnStatement;
         }
 
 
-        return "";
+        return new StringBuilder("");
     }
 
     /**
@@ -310,7 +310,7 @@ public class R {
                 name += ".txt";
             }
             BufferedWriter out = new BufferedWriter(new FileWriter("./R/" + name));
-            out.write(export(current));
+            out.write(export(current).toString());
             out.close();
         } catch (Exception e) {
             System.out.println("You suck at writing to files");
@@ -322,6 +322,8 @@ public class R {
     /**
      * Pulls all the database info out of the text file.
      *
+     * TODO: Fix db loading speed, ~7 seconds currently.
+     *
      * @param f - file to load
      */
     public void populate(File f) {
@@ -331,6 +333,7 @@ public class R {
         String term = "";
         String preName;
         Scanner db;
+        String input;
 
         try {
             db = new Scanner(f);
@@ -340,7 +343,7 @@ public class R {
         }
         while (db.hasNextLine()) {
             i = 0;
-            String input = db.nextLine();
+            input = db.nextLine();
 
             while (input.charAt(i) == ' ') {
                 i++;
