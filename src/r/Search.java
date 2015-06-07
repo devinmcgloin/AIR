@@ -3,7 +3,9 @@ package r;
 /**
  * Created by devinmcgloin on 6/6/15.
  * Controls TreeNodeHash and is present in R.
+ *
  * TODO: Consider the Following:
+ *
  * ------- BASIC SEARCH ----------
  * SEARCH FORM: "tree`leaves`green"
  * First word is the primary term.
@@ -23,4 +25,12 @@ package r;
  * EG "How tall is the Empire State Building" etc etc ad infinitum.
  */
 public class Search {
+
+    TreeNode<String> current;
+
+    public Search(TreeNode<String> current){
+        this.current = current;
+    }
+
+
 }

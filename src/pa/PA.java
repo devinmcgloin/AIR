@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Blazej on 6/3/2015.
+ * PACKAGE GOD.
  */
 
 //External Methods of PA
@@ -14,12 +15,10 @@ public class PA {
 
 
     /**
-     * PACKAGE GOD.
      *
      * TODO: Implement recursive get all children function in R. - Not sure if needed.
      *
      * TODO: HashSearch (Get set -> set logic???)
-     *
      * TODO: user defined matrices --> export set of BN in a csv file?
      * TODO: header logic --> failed add: create header, in all set logic, make sure to reanalyze headers into their true base nodes and re-rank them.
      * TODO: merging nodes --> tricky, idk how that function would look like
