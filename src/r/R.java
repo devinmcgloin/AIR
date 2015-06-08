@@ -16,7 +16,6 @@ public class R {
     GeneralTree genTree;
     ArrayList<TreeNodeBase> hits;
     TreeNode current;
-    HashSearch cmdHash = new HashSearch();
 
     //Start R Interface
     public R(){
@@ -95,14 +94,8 @@ public class R {
         return current;
     }
 
-    public ArrayList<TreeNodeBase> hashSearch(String terms){
-        //TERMs must be separated by `
-
-        //Then try hash searching.
-        TreeNode tmp = getCurrent();
-        hits = cmdHash.hashSearch(terms, genTree);
-        genTree.setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
-        return hits;
+    public ArrayList<TreeNodeBase> rFullHashSearch(String terms){
+        return genTree.fullHashSearch(terms);
     }
 
 

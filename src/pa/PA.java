@@ -29,6 +29,14 @@ public class PA {
 
     }
 
+    public void devintest(){
+
+    }
+
+    public void blazetest(){
+
+    }
+
     //---------------------------------R WRAPPERS---------------------------------//
     public void rename(String nodeName, String rAddress){
         R.rename(nodeName, rAddress);
@@ -49,7 +57,7 @@ public class PA {
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
     public ArrayList<TreeNode> hashSearch(String terms){
-        ArrayList<TreeNodeBase> baseNodes = R.hashSearch(terms);
+        ArrayList<TreeNodeBase> baseNodes = R.rFullHashSearch(terms);
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
 
         //Check size

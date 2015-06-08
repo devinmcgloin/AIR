@@ -72,6 +72,12 @@ public class Nulp {
             input = input.trim();
             PA.addParent(input, current.getAddress());
         }
+        else if(words[0].equals("ddev")){
+            PA.devintest();
+        }
+        else if(words[0].equals("bdev")){
+            PA.blazetest();
+        }
         //Fun stuff
         else{
 

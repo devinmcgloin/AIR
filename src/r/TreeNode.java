@@ -73,6 +73,17 @@ public class TreeNode implements Comparable<TreeNode>{
         return n;
     }
 
+    /**
+     * R/foo/goo
+     * R - level 0
+     * foo - level 1
+     * goo - level 2 ...etc.
+     * @return
+     */
+    public int getLevel(){
+        return this.getAddress().split("/").length -1;
+    }
+
     //CONTAINS
     public boolean containsAnyChildWithName(String name){
         ArrayList<String> children = this.getAllNames();
@@ -140,7 +151,7 @@ public class TreeNode implements Comparable<TreeNode>{
 
     //------------------------- Recursive Methods --------------------------//
     //LS
-    protected void printChildren(){
+    public void printChildren(){
         for(int i = 0; i<this.children.size(); i++){
             tmp = this.children.get(i);
             System.out.print(tmp.name + "     ");
@@ -155,6 +166,27 @@ public class TreeNode implements Comparable<TreeNode>{
             tmp.printAll();
         }
     }
+
+    //ALL CHILDREN Wrapper -- TODO: check if works
+    public ArrayList<TreeNode> getAllChildren(){
+        ArrayList<TreeNode> a = new ArrayList<TreeNode>();
+        a.add(this);
+        for(int i = 0; i<this.children.size(); i++){
+            tmp = this.children.get(i);
+            a = getAllChildrenRec(tmp, a);
+        }
+        return a;
+    }
+    //ALL Children Recursive
+    private ArrayList<TreeNode> getAllChildrenRec(TreeNode n, ArrayList<TreeNode> a){
+        a.add(n);
+        for(int i = 0; i<n.children.size(); i++){
+            tmp = n.children.get(i);
+            a = getAllChildrenRec(tmp, a);
+        }
+        return a;
+    }
+
     //ADDRESSES Wrapper
     public ArrayList<String> getAllAddresses(){
         ArrayList<String> a = new ArrayList<String>();

@@ -231,6 +231,15 @@ public class GeneralTree {
         return addresses;
     }
 
+    public ArrayList<TreeNodeBase> fullHashSearch(String terms){
+        //TERMs must be separated by `
+        //Then try hash searching.
+        TreeNode tmp = getCurrent();
+        ArrayList<TreeNodeBase> hits = hash.fullHashSearch(terms, this);
+        setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
+        return hits;
+    }
+
     //SAVE
     public void exportDB(){
         //Go back until we're at Foo.txt
@@ -256,7 +265,6 @@ public class GeneralTree {
             System.out.println("You suck at writing to files");
         }
     }
-
     //GO BACK
     public void goBack(){
         if(current.getParent()!= null){
@@ -267,7 +275,6 @@ public class GeneralTree {
             current = current.getParent();
         }
     }
-
     //ADD NODE --HOPEFULLY HASH WORKS
     public void addNode(String name){
         if(hasChild(name)==true){
@@ -280,7 +287,6 @@ public class GeneralTree {
         hash.add(tmp);
 
     }
-
     //DEL NODE
     public void delNode(String name){
         List<TreeNode> children = current.children;
@@ -295,7 +301,6 @@ public class GeneralTree {
             }
         }
     }
-
     public TreeNode getCurrent(){
         return current;
     }

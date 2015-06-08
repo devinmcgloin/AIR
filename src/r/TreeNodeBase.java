@@ -42,7 +42,7 @@ public class TreeNodeBase implements Comparable<TreeNodeBase>{
 
     /**
      * They are ranked by how many other search terms it contains (including itself).
-     * hashSearch(Strawberry, red, green, sweet)
+     * fullHashSearch(Strawberry, red, green, sweet)
      * BASE = Strawberry  rank = 4 (contains all four search terms)	 *
      */
     @Override
