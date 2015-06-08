@@ -1,7 +1,8 @@
 package pa;
 
 import r.TreeNode;
-import r.TreeNodeBase;
+
+import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/3/15.
@@ -10,15 +11,10 @@ import r.TreeNodeBase;
 public class Inheritance {
 
     /**
-     * TODO: Implement recursive get children function in TreeNode.
-     * TODO: Implement CD function inside TreeNode.
-     * @param from - node that to is inheriting from.
-     * @param to
+     * @param fromAddress - node that to is inheriting from.
+     * @param toAddress - node that only has characteristics are copied to
      */
-    public void inherit(TreeNode from, TreeNode to){
-        if(from.containsImmediateChildWithName("has")){
-            from.setName("has");
-            from.updateAddress();
-        }
+    public void inherit(String fromAddress, String toAddress){
+
     }
 }

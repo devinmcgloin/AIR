@@ -1,13 +1,13 @@
 package pa;
 
-import r.TreeNode;
 import r.R;
-import r.TreeNodeBase;
+import r.TreeNode;
 
 import java.util.ArrayList;
 
 /**
  * Created by Blazej on 6/3/2015.
+ * PACKAGE GOD.
  */
 
 //External Methods of PA
@@ -15,78 +15,111 @@ public class PA {
 
 
     /**
-     * HashSearch (Get set -> set logic???)
      *
-     * user defined matrices --> export set of BN in a csv file?
-     * header logic --> failed add: create header, in all set logic, make sure to
-     *      reanalyze headers into their true base nodes and re-rank them.
-     * merging nodes --> tricky, idk how that function would look like
+     * TODO: Implement recursive get all children function in R. - Not sure if needed.
+     *
+     * TODO: HashSearch (Get set -> set logic???)
+     * TODO: user defined matrices --> export set of BN in a csv file?
+     * TODO: header logic --> failed add: create header, in all set logic, make sure to reanalyze headers into their true base nodes and re-rank them.
+     * TODO: merging nodes --> tricky, idk how that function would look like
      */
 
     R R;
+
     public PA(){
         R = new R();
-
     }
 
     //---------------------------------R WRAPPERS---------------------------------//
-    public void rename(String nodeName, String rAddress){
-        R.rename(nodeName, rAddress);
-    }
-    public void del(String nodeName, String rAddress){
-        R.del(nodeName, rAddress);
-
-    }
-    public void add(String nodeName, String rAddress){
-        R.add(nodeName, rAddress);
-
-    }
-    public void addParent(String nodeName, String rAddress){
-        R.addParent(nodeName, rAddress);
-
-    }
-
-    //TODO: has to count if base nodes returned match the number of terms being asked for.
-    //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<TreeNode> hashSearch(String terms){
-        ArrayList<TreeNodeBase> baseNodes = R.hashSearch(terms);
-        ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
-
-        //Check size
-        int termSize = terms.split("`").length;
-
-        if(baseNodes.size() == 0){
-            return treeNodes; // no dice
-        }
-
-        //Number of terms matches baseNode hits
-        if(baseNodes.get(0).getRank() == termSize){
-            int i = 0;
-            while(baseNodes.get(i).getRank() == termSize){
-                treeNodes.add(baseNodes.get(i).getOrigin());
-            }
-        }
-        //Use the next highest number of matched terms
-        else{
-            termSize = baseNodes.get(0).getRank();
-            int i =0;
-            while(baseNodes.get(i).getRank() == termSize){
-                treeNodes.add(baseNodes.get(i).getOrigin());
-            }
-        }
-        
-
-        return treeNodes;
-
-    }
-
-    public TreeNode get(String rAddress) {
-        return R.get(rAddress);
-    }
     public void save(){
         R.save();
     }
 
+    public void toDir(String rAddress){
+        R.toDir(rAddress);
+    }
+
+    public void toParent(){
+        R.toParent();
+    }
+
+    public void toChild(String child){
+        R.toChild(child);
+    }
+
+    public void del(String rAddress){
+        R.del(rAddress);
+    }
+
+    public void addChild(String child){
+        R.addChild(child);
+    }
+
+    public void add(String rAddress, String term){
+        R.add(rAddress, term);
+    }
+
+    public boolean contains(String searchTerm){
+        return R.contains(searchTerm);
+    }
+
+    public boolean containsAll(String searchTerm) {
+        return R.containsAll(searchTerm);
+    }
+
+    public TreeNode<String> get(String rAddress){
+        return R.get(rAddress);
+    }
+
+    public void toRoot(){
+        R.toRoot();
+    }
+
+    public ArrayList<String> getChildren(){
+        return R.getChildren();
+    }
+
+    public ArrayList<String> getPath(){
+        return R.getCurrentPath();
+    }
+
+    public void rename(String rAddress, String newName){
+        R.rename(rAddress, newName);
+    }
+
+    public boolean isRoot(){
+        return R.isRoot();
+    }
+
+    public boolean isLeaf(){
+        return R.isLeaf();
+    }
+
+    public boolean isKeyVal(){
+        return R.isKeyVal();
+    }
+
+    public void move(String rAddressFrom, String rAddressTo){
+        R.move(rAddressFrom, rAddressTo);
+    }
+
     // ----------------------------- END R WRAPPERS ----------------------------------//
+
+    /**
+     * QA on ifExistsCD method.
+     * @param node
+     * @return
+     */
+    public boolean ifExistsCD(String node){
+        if(R.contains(node)) {
+            R.toChild(node);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 
 }

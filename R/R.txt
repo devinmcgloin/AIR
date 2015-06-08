@@ -1,0 +1,43 @@
+nouns
+    people
+        leader
+        follower
+        doer
+    places
+        planets
+            nations
+                states
+    things
+        car
+            has
+            is
+        bike
+            has
+            is
+        motorcycle
+            has
+            is
+        train
+            has
+            is
+        bus
+            has
+            is
+        tram
+            has
+            is
+        subway
+            has
+            is
+        boat
+            has
+            is
+        water
+            has
+            is
+verbs
+adverbs
+adjectives
+    happy
+    sad
+basenodes

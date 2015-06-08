@@ -2,6 +2,8 @@ Accountant
 CEO
     Salary
         $2
+    has
+        home
 Janitor
     Bonus
         <$2,000
