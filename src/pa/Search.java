@@ -1,10 +1,12 @@
-package r;
+package pa;
+
+import r.TreeNode;
 
 /**
  * Created by devinmcgloin on 6/6/15.
  * Controls TreeNodeHash and is present in R.
  *
- * TODO: Consider the Following:
+ * CONSIDER the Following:
  *
  * ------- BASIC SEARCH ----------
  * SEARCH FORM: "tree`leaves`green"

@@ -1,15 +1,21 @@
 package r;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * TODO: Initialize hash map for only base nodes.
+ * @param <T>
+ */
 public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
 	public T data;
 	public TreeNode<T> parent;
 	public List<TreeNode<T>> children;
 	private List<TreeNode<T>> elementsIndex;
+	TreeHash<T, TreeNode<T>> hash;
 
 	public TreeNode(T data) {
 		this.data = data;
@@ -22,6 +28,10 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return data;
 	}
 
+	/**
+	 * TODO: Update hash keys.
+	 * @param data
+	 */
 	public void setData(T data) {
 		this.data = data;
 	}
@@ -57,6 +67,11 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return addChild(childNode);
 	}
 
+	/**
+	 * TODO Add to hash here.
+	 * @param childNode
+	 * @return
+	 */
 	public TreeNode<T> addChild(TreeNode<T> childNode){
 		childNode.parent = this;
 		childNode.elementsIndex = elementsIndex;
@@ -67,6 +82,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
 	/**
 	 * TODO: See if this is enough for our searching needs, if not it may be useful for narrowing results.
+	 * TODO: Wtf is this doing.
 	 * @param cmp
 	 * @return
 	 */
@@ -87,10 +103,14 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 			return parent.getLevel() + 1;
 	}
 
+	/**
+	 * TODO: Wtf is this doing.
+	 * @param node
+	 */
 	private void registerChildForSearch(TreeNode<T> node) {
 		elementsIndex.add(node);
 		if (parent != null)
-			parent.registerChildForSearch(node);
+			parent.registerChildForSearch(node); //TODO: Why do this?
 	}
 
 	@Override
@@ -124,7 +144,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
 
 	/**
-	 *
+	 * TODO: rewrite using hash
 	 * Checks if current node contains specified node inside children.
 	 * @param node
 	 * @return TreeNode<T>
@@ -139,7 +159,8 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	/**
-	 * TODO: QA on containsAll
+	 * TODO: rewrite using hash
+	 * QA on containsAll
 	 * @param node
 	 * @return
 	 */
@@ -175,12 +196,16 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return sb.toString();
 	}
 
-	public void delAllChildren(){
-		this.children = new LinkedList<TreeNode<T>>();
-	}
-
+	/**
+	 * TODO: remove from hash
+	 * @param node
+	 */
 	public void delChild(T node){
 		children.remove(contains(node));
+	}
+
+	public boolean isBaseNode(){
+		return getLevel() == 1;
 	}
 
 

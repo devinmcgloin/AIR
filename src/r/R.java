@@ -15,6 +15,17 @@ import java.util.Scanner;
  *
  * PATHS EXCLUDE BASE NODE R. are of the form "nouns/places/nations"
  * ALL FUNCTIONS EXCEPT THOSE THAT BEGIN WITH TO, RETURN TO THEIR ORGINAL rAddress.
+ *
+ * CONSIDER HashNode Responsibilities:
+ *
+ * R contains hash for base nodes
+ * base nodes contain hash for all their children.
+ *
+ * R contains a hashMap of all of the base nodes, the assumption being that questions are generally about something.
+ * First we try to find the specific base node as outlined in search.java, then if it is not found then we ove on to
+ * fuzzy search.
+ *
+ * CONSIDER: Maybe able to navigate by hash not path names? Do we really even need paths at all?
  */
 public class R {
 
@@ -22,6 +33,7 @@ public class R {
     ArrayList<String> tempPath = new ArrayList<String>();
     TreeNode<String> current;
     TreeNode<String> tmp = new TreeNode<String>("");
+    TreeHash<String, TreeNode<String>> baseHash = new TreeHash<>();
 
     public R() {
         current = new TreeNode<String>("R");
@@ -53,7 +65,7 @@ public class R {
     }
 
     /**
-     * TODO: QA on isKeyVal method.
+     * QA on isKeyVal method.
      * @return
      */
     public boolean isKeyVal(){
@@ -133,18 +145,26 @@ public class R {
     /**
      * adds a child at the current's path.
      *
+     *
      * @param child
      */
     public void addChild(String child) {
         current.addChild(child);
+        if(current.isRoot()) {
+            baseHash.put(child, current.getChild(child));
+        }
     }
 
     /**
      * Here for move function. Dont use for anything else.
+     *
      * @param node
      */
     public void addChild(TreeNode<String> node){
         current.addChild(node);
+        if(current.isRoot()) {
+            baseHash.put(node.data, current.getChild(node.data));
+        }
     }
 
     /**
@@ -174,6 +194,7 @@ public class R {
 
     /**
      * checks if current has children with the given term all the way to leaf.
+     *
      * @param searchTerm
      * @return
      */
@@ -186,6 +207,8 @@ public class R {
     /**
      * deletes the specified node, including its children.
      *
+     * QA
+     *
      * @param rAddress
      * @return
      */
@@ -194,6 +217,9 @@ public class R {
         tempPath = copyCurrentPath();
         toDir(rAddress);
         toParent();
+        if(current.isRoot()){
+            baseHash.remove(rAddress);
+        }
         String[] address = formatRAddress(rAddress);
         current.delChild(address[address.length - 1]);
         current = tmp;
@@ -205,6 +231,8 @@ public class R {
      *
      * renames the node at the specified address.
      *
+     * QA
+     *
      * @param rAddress - address at which you want to change to take effect.
      *                 NOTE, IT WILL CHANGE THE GIVEN ADDRESS'S NAME, Not its child.
      * @param newName  -  new data field. has to be a string.
@@ -214,6 +242,9 @@ public class R {
         tempPath = copyCurrentPath();
         toDir(rAddress);
         current.setData(newName);
+        if(current.isBaseNode()) {
+            baseHash.replaceKey(rAddress, newName);
+        }
         current = tmp;
         currentPath = tempPath;
 
@@ -378,7 +409,8 @@ public class R {
     }
 
     /**
-     * TODO: QA on move method
+     * QA on move method
+     * TODO: Update hash if needed.
      * @param rAddressFrom
      * @param rAddressTo
      */
