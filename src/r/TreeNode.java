@@ -41,7 +41,7 @@ public class TreeNode implements Comparable<TreeNode>{
     //-----------------Interesting/newest methods -----------//
 
     //INSERT PARENT
-    public boolean insertParent(TreeNode n){
+    protected boolean insertParent(TreeNode n){
         if(n==null){	//n is the new parent of current
             return false;
         }
@@ -54,10 +54,20 @@ public class TreeNode implements Comparable<TreeNode>{
     }
 
     //BASE NODE
-    public TreeNode getBaseNode(TreeNode n){
+    protected TreeNode getBaseNode(TreeNode n){
         if( n.getParent().getParent().getName() == null)
             return null;
         while(! ( n.getParent().getParent().getName().equals("R")  )){
+            n = n.getParent();
+        }
+        return n;
+    }
+    //TODO: check if works
+    public TreeNode getBaseNode(){
+        TreeNode n = this;
+        if( n.getParent().getParent().getName() == null)
+            return null;
+        while(! ( this.getParent().getParent().getName().equals("R")  )){
             n = n.getParent();
         }
         return n;
@@ -87,16 +97,16 @@ public class TreeNode implements Comparable<TreeNode>{
     public String getAddress() {
         return address;
     }
-    public void setAddress(String address) {
+    protected void setAddress(String address) {
         this.address = address +"/";
     }
-    public void updateAddress() {
+    protected void updateAddress() {
         address = parent.getAddress() + name + "/";
     }
     public String getName(){
         return this.name;
     }
-    public void setName(String name){
+    protected void setName(String name){
         this.name = name;
     }
     public TreeNode getParent() {
@@ -105,18 +115,18 @@ public class TreeNode implements Comparable<TreeNode>{
     public ArrayList<TreeNode> getChildren(){
         return children;
     }
-    public void remove(){
+    protected void remove(){
         if (parent != null) {
             parent.removeChild(this);
         }
     }
-    public void removeChild(TreeNode child) {
+    protected void removeChild(TreeNode child) {
         if (children.contains(child))
             children.remove(child);
 
     }
     //ADD a child, update its address.
-    public void addChildNode(TreeNode child) {
+    protected void addChildNode(TreeNode child) {
         child.parent = this;
         child.updateAddress();
         if (!children.contains(child))
