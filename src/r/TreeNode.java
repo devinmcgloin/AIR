@@ -140,7 +140,7 @@ public class TreeNode implements Comparable<TreeNode>{
 
     //------------------------- Recursive Methods --------------------------//
     //LS
-    public void printChildren(){
+    protected void printChildren(){
         for(int i = 0; i<this.children.size(); i++){
             tmp = this.children.get(i);
             System.out.print(tmp.name + "     ");
@@ -148,7 +148,7 @@ public class TreeNode implements Comparable<TreeNode>{
         System.out.print("\n");
     }
     //LS RECURSIVE
-    public void printAll(){
+    protected void printAll(){
         System.out.println(this.name);
         for(int i = 0; i<this.children.size(); i++){
             tmp = this.children.get(i);
@@ -195,7 +195,7 @@ public class TreeNode implements Comparable<TreeNode>{
         return a;
     }
     //EXPORT Wrapper
-    public String prettyPrint(){
+    protected String prettyPrint(){
         String DBout = "";
         String buffer = "";
         //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
