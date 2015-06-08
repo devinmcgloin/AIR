@@ -5,10 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * TODO: Initialize hash map for only base nodes.
- * @param <T>
- */
 public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
 	public T data;
@@ -17,11 +13,18 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	private List<TreeNode<T>> elementsIndex;
 	TreeHash<T, TreeNode<T>> hash;
 
+	/**
+	 * TODO: Initialize hash map for only base nodes.
+	 * @param data
+	 */
 	public TreeNode(T data) {
 		this.data = data;
 		this.children = new LinkedList<TreeNode<T>>();
 		this.elementsIndex = new LinkedList<TreeNode<T>>();
 		this.elementsIndex.add(this);
+		if(parent.isRoot()){
+			hash = new TreeHash<>();
+		}
 	}
 
 	public T getData() {
@@ -104,7 +107,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	/**
-	 * TODO: Wtf is this doing.
+	 *
 	 * @param node
 	 */
 	private void registerChildForSearch(TreeNode<T> node) {
@@ -176,7 +179,6 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	}
 
 	/**
-	 *
 	 * equals compares data only, and ignores all other attributes.
 	 * @param nodeA
 	 * @param nodeB

@@ -66,6 +66,7 @@ public class PA {
     public boolean containsAll(String searchTerm) {
         return R.containsAll(searchTerm);
     }
+
     public TreeNode<String> get(String rAddress){
         return R.get(rAddress);
     }
@@ -105,7 +106,7 @@ public class PA {
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
     /**
-     * TODO: QA on ifExistsCD method.
+     * QA on ifExistsCD method.
      * @param node
      * @return
      */

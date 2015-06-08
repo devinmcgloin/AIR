@@ -19,20 +19,24 @@ import r.TreeNode;
  * Do the same for the third search and so on.
  * Always keep nodes that do not meet the all search terms, but push them to the end of the list.
  *
+ * ------- FUZZY SEARCH ----------
+ * What happens when Basic search cant locate a node?
+ *
  * ------- SET SEARCH ----------
  * There will be situations in which a special search is needed, this is mostly for set logic.
+ *
+ * First:
+ * What are sets? And what kinds of things do we want from them?
+ * Sets are
  *
  * ------- KEY VAL SEARCH ----------
  * This type of search should only return key value pairs.
  * EG "How tall is the Empire State Building" etc etc ad infinitum.
+ *
+ * Steps:
+ * Goto Empire State Building node, hash search for tall or synonyms.
+ * Pull out key value pair related to query.
  */
 public class Search {
-
-    TreeNode<String> current;
-
-    public Search(TreeNode<String> current){
-        this.current = current;
-    }
-
 
 }

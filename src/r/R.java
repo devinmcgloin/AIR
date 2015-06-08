@@ -78,7 +78,6 @@ public class R {
             return false;
         }
         return false;
-
     }
 
     public ArrayList<String> copyCurrentPath() {
@@ -207,7 +206,7 @@ public class R {
     /**
      * deletes the specified node, including its children.
      *
-     * QA
+     * QA - del with hashMap
      *
      * @param rAddress
      * @return
@@ -231,7 +230,7 @@ public class R {
      *
      * renames the node at the specified address.
      *
-     * QA
+     * QA - rename with hashmap
      *
      * @param rAddress - address at which you want to change to take effect.
      *                 NOTE, IT WILL CHANGE THE GIVEN ADDRESS'S NAME, Not its child.
