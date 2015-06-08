@@ -45,6 +45,7 @@ public class R {
 
     }
 
+    //INSERT parent for node
     public void addParent(String nodeName, String rAdress){
        // R.addParent(nodeName, rAdress);
         current = get(rAdress);

@@ -15,10 +15,10 @@ public class Inheritance {
      * @param from - node that to is inheriting from.
      * @param to
      */
-    public void inherit(TreeNode from, TreeNode to){
-        if(from.containsImmediateChildWithName("has")){
-            from.setName("has");
-            from.updateAddress();
-        }
-    }
+//    public void inherit(TreeNode from, TreeNode to){
+//        if(from.containsImmediateChildWithName("has")){
+//            from.setName("has");
+//            from.updateAddress();
+//        }
+//    }
 }
