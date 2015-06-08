@@ -128,11 +128,70 @@ public class GeneralTree {
 
     }
 
+
+
+    /**
+     * Handles exiting DB and larger bits of logic for the getNode() function.
+     * @param address
+     * @return
+     */
+    public TreeNode getNodeByAddress(String address) {
+
+
+        //TODO: Make sure you have the right directory and GenTree has files right.
+        address = address.trim();
+        String[] tmpS = address.split("/");
+
+        // System.out.println("address: "+address);
+
+        if(!address.contains("/")){
+            System.out.println("R -- Incorrect format: " + address);
+            return null;
+        }
+        //We are sending a command to "R/" directory.
+        if(tmpS.length==1 && address.equals("R/")){
+            System.out.println("R -- root operation triggered!!!");
+            return root;
+        }
+        String dbName = address.split("/")[1];
+
+        //Options, we're in R, or we're at the db.
+        //Wrong db or no DB or right db.
+
+        //NO DB loaded
+        if( current.getAddress().equals("R/")){
+            childTraverse(dbName);
+            loadDB(dbName);
+        }
+
+        //Wrong DB loaded
+        if( !current.getAddress().split("/")[1].equals(dbName) ){
+            while(current!=root){
+                goBack();
+            }
+            //Now load db of the address we were given.
+            childTraverse(dbName);
+            loadDB(dbName);
+        }
+
+
+        //TODO: holla at yo boy. Y'all gotta know, you gotta keep your currents your currents.
+        //Earlier I had TreeNode tmp = genTree.getNode(address).
+        //bruh, that's like have two nodes to the same tree in the same db. ain't worth it. not cool.
+        //That's why we was getting a doubling up on the db.
+        current =  getNode(address);
+
+
+
+
+        return current;
+    }
+
     //Rename attempt
     public void rename(String newName){
         String oldName = current.getName();
         goBack();
-        if(hasChild(newName)==true){
+        if(hasChild(newName)){
             System.out.printf("Dimension: %s already exists.\n", newName);
             return;
         }
@@ -151,7 +210,7 @@ public class GeneralTree {
             return;
         }
         //Check if that name is already being used. (Implies you must rename the node you want to add first)...
-        if(current.getParent().containsImmediateChildWithName(name)==true){
+        if(current.getParent().containsImmediateChildWithName(name)){
             System.out.printf("Add Parent Dimension: %s already exists.\n", name);
             return;
         }
@@ -277,7 +336,7 @@ public class GeneralTree {
     }
     //ADD NODE --HOPEFULLY HASH WORKS
     public void addNode(String name){
-        if(hasChild(name)==true){
+        if(hasChild(name)){
             System.out.printf("Dimension: %s already exists.\n", name);
             return;
         }

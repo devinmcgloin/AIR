@@ -22,6 +22,8 @@ public class Main {
         String input;
 
 
+        System.out.println("once you traverse into a db, use 'ddev' to trigger your devintest() function in PA");
+
         while(true){
             //Display where we are in the folder hierarchy
             System.out.print(dir);
