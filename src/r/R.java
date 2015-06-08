@@ -31,18 +31,18 @@ public class R {
 
     ArrayList<String> currentPath = new ArrayList<String>();
     ArrayList<String> tempPath = new ArrayList<String>();
-    TreeNode<String> current;
-    TreeNode<String> tmp = new TreeNode<String>("");
-    TreeHash<String, TreeNode<String>> baseHash = new TreeHash<>();
+    TreeNode current;
+    TreeNode tmp = new TreeNode("");
+    TreeHash<String, TreeNode> baseHash = new TreeHash<>();
 
     public R() {
-        current = new TreeNode<String>("R");
+        current = new TreeNode("R");
         populate(new File("./R/R.txt"));
         tempPath = copyCurrentPath();
         tmp = current;
     }
 
-    public void setCurrent(TreeNode<String> current) {
+    public void setCurrent(TreeNode current) {
         this.current = current;
     }
 
@@ -69,9 +69,9 @@ public class R {
      * @return
      */
     public boolean isKeyVal(){
-        List<TreeNode<String>> children = current.getChildren();
+        List<TreeNode> children = current.getChildren();
         if(children.size() == 1){
-            for (TreeNode<String> child : children){
+            for (TreeNode child : children){
                 if(child.isLeaf())
                     return true;
             }
@@ -124,7 +124,7 @@ public class R {
      */
     public void toParent() {
         if(!current.isRoot()) {
-            int index = currentPath.lastIndexOf(current.data);
+            int index = currentPath.lastIndexOf(current.name);
             if (index > 0)
                 currentPath.remove(index);
             current = current.getParent();
@@ -162,7 +162,7 @@ public class R {
     public void addChild(TreeNode<String> node){
         current.addChild(node);
         if(current.isRoot()) {
-            baseHash.put(node.data, current.getChild(node.data));
+            baseHash.put(node.name, current.getChild(node.name));
         }
     }
 
@@ -174,7 +174,7 @@ public class R {
     public ArrayList<String> getChildren() {
         ArrayList<String> children = new ArrayList<String>();
         for (TreeNode<String> child : current.getChildren()) {
-            children.add(child.getData());
+            children.add(child.getName());
         }
         return children;
     }
@@ -234,13 +234,13 @@ public class R {
      *
      * @param rAddress - address at which you want to change to take effect.
      *                 NOTE, IT WILL CHANGE THE GIVEN ADDRESS'S NAME, Not its child.
-     * @param newName  -  new data field. has to be a string.
+     * @param newName  -  new name field. has to be a string.
      */
     public void rename(String rAddress, String newName) {
         tmp = current;
         tempPath = copyCurrentPath();
         toDir(rAddress);
-        current.setData(newName);
+        current.setName(newName);
         if(current.isBaseNode()) {
             baseHash.replaceKey(rAddress, newName);
         }

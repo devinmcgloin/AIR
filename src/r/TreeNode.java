@@ -1,60 +1,131 @@
 package r;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
-public class TreeNode<T> implements Iterable<TreeNode<T>> {
+/**
+ * TODO Search for child nodes - not urgent
+ * TODO update addresses for each node.
+ */
+public class TreeNode implements Iterable<TreeNode> {
 
-	public T data;
-	public TreeNode<T> parent;
-	public List<TreeNode<T>> children;
-	private List<TreeNode<T>> elementsIndex;
-	TreeHash<T, TreeNode<T>> hash;
+	public String name;
+	public String address;
+	public TreeNode parent;
+	public List<TreeNode> children;
+	private List<TreeNode> elementsIndex;
 
 	/**
-	 * TODO: Initialize hash map for only base nodes.
-	 * @param data
+	 *
+	 * @param name
 	 */
-	public TreeNode(T data) {
-		this.data = data;
-		this.children = new LinkedList<TreeNode<T>>();
-		this.elementsIndex = new LinkedList<TreeNode<T>>();
+	public TreeNode(String name) {
+		this.name = name;
+		this.children = new LinkedList<TreeNode>();
+		this.elementsIndex = new LinkedList<TreeNode>();
 		this.elementsIndex.add(this);
-		if(parent.isRoot()){
-			hash = new TreeHash<>();
-		}
+
 	}
 
-	public T getData() {
-		return data;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * TODO: Update hash keys.
-	 * @param data
+	 *
+	 * @param name
 	 */
-	public void setData(T data) {
-		this.data = data;
+	public void setName(String name) {
+
+		this.name = name;
+
 	}
 
-	public TreeNode<T> getParent() {
+	public String[] splitAddress(){
+		return address.split("/");
+	}
+
+	public ArrayList<String> getAllNames(){
+		ArrayList<String> names = new ArrayList<String>();
+		names.add(getName());
+		ArrayList<TreeNode> allChildren = new ArrayList<>();
+		for(TreeNode child : getAllChildren(allChildren)){
+			names.add(child.getName());
+		}
+		return names;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	protected void setAddress(String address) {
+		this.address = address +"/";
+	}
+	protected void updateAddress() {
+		address = parent.getAddress() + name + "/";
+	}
+
+	/**
+	 * x
+	 * @return
+	 */
+	public ArrayList<String> getAllAddresses(){
+		ArrayList<String> addresses = new ArrayList<String>();
+		addresses.add(getName());
+		ArrayList<TreeNode> allChildren = new ArrayList<>();
+		for(TreeNode child : getAllChildren(allChildren)){
+			addresses.add(child.getAddress());
+		}
+		return addresses;
+	}
+
+	public TreeNode getParent() {
 		if(parent != null)
 			return parent;
 		return this;
 	}
 
-	public void setParent(TreeNode<T> parent) {
+	public void setParent(TreeNode parent) {
 		this.parent = parent;
 	}
 
-	public List<TreeNode<T>> getChildren() {
+	public List<TreeNode> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<TreeNode<T>> children) {
+	public void removeChild(TreeNode childToRemove){
+		if(childToRemove == null)
+			return;
+		children.remove(childToRemove);
+	}
+
+	public void setChildren(List<TreeNode> children) {
 		this.children = children;
+	}
+
+	public ArrayList<TreeNode> getAllChildren(ArrayList<TreeNode> a){
+		for (TreeNode child : children){
+			if(isLeaf())
+				a.add(child);
+			else{
+				a.add(child);
+				child.getAllChildren(a);
+			}
+		}
+		return a;
+	}
+
+	protected boolean insertParent(TreeNode n){
+		if(n==null){	//n is the new parent of current
+			return false;
+		}
+
+		parent.addChild(n);	//make n a child of current's parent.
+		parent.removeChild(this); //n's parent removes the old child.
+		n.addChild(this);	//n gets current as a child
+		this.parent = n;
+		return true;
 	}
 
 	public boolean isRoot() {
@@ -65,21 +136,24 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 		return children.size() == 0;
 	}
 
-	public TreeNode<T> addChild(T child) {
-		TreeNode<T> childNode = new TreeNode<T>(child);
+	public TreeNode addChild(String child) {
+		TreeNode childNode = new TreeNode(child);
 		return addChild(childNode);
 	}
 
 	/**
-	 * TODO Add to hash here.
+	 *
 	 * @param childNode
 	 * @return
 	 */
-	public TreeNode<T> addChild(TreeNode<T> childNode){
+	public TreeNode addChild(TreeNode childNode){
 		childNode.parent = this;
+		childNode.updateAddress();
 		childNode.elementsIndex = elementsIndex;
-		this.children.add(childNode);
-		this.registerChildForSearch(childNode);
+		if(!children.contains(childNode)) {
+			this.children.add(childNode);
+			this.registerChildForSearch(childNode);
+		}
 		return childNode;
 	}
 
@@ -89,9 +163,9 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 * @param cmp
 	 * @return
 	 */
-	public TreeNode<T> findTreeNode(Comparable<T> cmp) {
-		for (TreeNode<T> element : this.elementsIndex) {
-			T elData = element.data;
+	public TreeNode findTreeNode(Comparable<String> cmp) {
+		for (TreeNode element : this.elementsIndex) {
+			String elData = element.name;
 			if (cmp.compareTo(elData) == 0)
 				return element;
 		}
@@ -110,20 +184,20 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 *
 	 * @param node
 	 */
-	private void registerChildForSearch(TreeNode<T> node) {
+	private void registerChildForSearch(TreeNode node) {
 		elementsIndex.add(node);
 		if (parent != null)
 			parent.registerChildForSearch(node); //TODO: Why do this?
 	}
 
 	@Override
-	public String toString() {
-		return data != null ? data.toString() : "[data null]";
+	public java.lang.String toString() {
+		return name != null ? name.toString() : "[name null]";
 	}
 
 	@Override
-	public Iterator<TreeNode<T>> iterator() {
-		TreeNodeIter<T> iter = new TreeNodeIter<T>(this);
+	public Iterator<TreeNode> iterator() {
+		TreeNodeIter iter = new TreeNodeIter(this);
 		return iter;
 	}
 
@@ -133,10 +207,10 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 * @param specifiedChild - node to be changed to.
 	 * @return boolean
 	 */
-	public TreeNode<T> getChild(T specifiedChild){
-		TreeNode<T> tmp = contains(specifiedChild);
+	public TreeNode getChild(String specifiedChild){
+		TreeNode tmp = contains(specifiedChild);
 
-		for(TreeNode<T> child : children){
+		for(TreeNode child : children){
 			if(child.equals(tmp)){
 				return child;
 			}
@@ -150,10 +224,10 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 * TODO: rewrite using hash
 	 * Checks if current node contains specified node inside children.
 	 * @param node
-	 * @return TreeNode<T>
+	 * @return TreeNode<String>
 	 */
-	public TreeNode<T> contains(T node){
-		for(TreeNode<T> child : children){
+	public TreeNode contains(String node){
+		for(TreeNode child : children){
 			if(shallowEquals(child, node)) {
 				return child;
 			}
@@ -167,48 +241,58 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 * @param node
 	 * @return
 	 */
-	public TreeNode<T> containsAll(T node){
-		for(TreeNode<T> child : children){
+	public TreeNode containsAll(String node){
+		for(TreeNode child : children){
 			if(shallowEquals(child, node))
 				return child;
 			else if(isLeaf())
 				return null;
-			containsAll(child.data);
+			containsAll(child.name);
 		}
 		return null;
 	}
 
 	/**
-	 * equals compares data only, and ignores all other attributes.
+	 * equals compares name only, and ignores all other attributes.
 	 * @param nodeA
 	 * @param nodeB
 	 * @return
 	 */
-	public boolean shallowEquals (TreeNode<T> nodeA, T nodeB){
-		Boolean result = nodeA.data.equals(nodeB);
+	public boolean shallowEquals (TreeNode nodeA, String nodeB){
+		Boolean result = nodeA.name.equals(nodeB);
 //		System.out.println("shallowEquals Result: " + result);
 		return result;
-	}
-
-	private static String createIndent(int depth) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < depth; i++) {
-			sb.append("    ");
-		}
-		return sb.toString();
 	}
 
 	/**
 	 * TODO: remove from hash
 	 * @param node
 	 */
-	public void delChild(T node){
+	public void delChild(String node){
 		children.remove(contains(node));
 	}
 
 	public boolean isBaseNode(){
-		return getLevel() == 1;
+		return getLevel() == 2;
 	}
+
+	public int compareTo(TreeNode n){
+		return this.address.compareTo(n.address);
+	}
+
+	public TreeNode getBaseNode(){
+		TreeNode n = this;
+		if( n.getParent().getParent().getName() == null)
+			return null;
+		while(! ( this.getParent().getParent().getName().equals("R")  )){
+			n = n.getParent();
+		}
+		return n;
+
+	}
+
+
+
 
 
 }

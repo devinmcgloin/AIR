@@ -2,24 +2,24 @@ package r;
 
 import java.util.Iterator;
 
-public class TreeNodeIter<T> implements Iterator<TreeNode<T>> {
+public class TreeNodeIter implements Iterator<TreeNode> {
 
 	enum ProcessStages {
 		ProcessParent, ProcessChildCurNode, ProcessChildSubNode
 	}
 
-	private TreeNode<T> treeNode;
+	private TreeNode treeNode;
 
-	public TreeNodeIter(TreeNode<T> treeNode) {
+	public TreeNodeIter(TreeNode treeNode) {
 		this.treeNode = treeNode;
 		this.doNext = ProcessStages.ProcessParent;
 		this.childrenCurNodeIter = treeNode.children.iterator();
 	}
 
 	private ProcessStages doNext;
-	private TreeNode<T> next;
-	private Iterator<TreeNode<T>> childrenCurNodeIter;
-	private Iterator<TreeNode<T>> childrenSubNodeIter;
+	private TreeNode next;
+	private Iterator<TreeNode> childrenCurNodeIter;
+	private Iterator<TreeNode> childrenSubNodeIter;
 
 	@Override
 	public boolean hasNext() {
@@ -32,7 +32,7 @@ public class TreeNodeIter<T> implements Iterator<TreeNode<T>> {
 
 		if (this.doNext == ProcessStages.ProcessChildCurNode) {
 			if (childrenCurNodeIter.hasNext()) {
-				TreeNode<T> childDirect = childrenCurNodeIter.next();
+				TreeNode childDirect = childrenCurNodeIter.next();
 				childrenSubNodeIter = childDirect.iterator();
 				this.doNext = ProcessStages.ProcessChildSubNode;
 				return hasNext();
@@ -60,7 +60,7 @@ public class TreeNodeIter<T> implements Iterator<TreeNode<T>> {
 	}
 
 	@Override
-	public TreeNode<T> next() {
+	public TreeNode next() {
 		return this.next;
 	}
 
