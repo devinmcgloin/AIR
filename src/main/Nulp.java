@@ -54,7 +54,11 @@ public class Nulp {
         }
         else if(words[0].equals("PRINT") || words[0].equals("ls")){
 
-            current.printChildren();
+            //current.printChildren();
+
+            for(int i=0; i<current.children.size(); i++){
+                System.out.println(current.children.get(i).getName());
+            }
         }
         else if(words[0].equals("BACK") || words[0].equals("..")){
             current =  current.getParent();

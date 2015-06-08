@@ -46,7 +46,7 @@ public class GeneralTree {
                 continue;
             } else {
                 tmp = new TreeNode(fileEntry.getName());
-                root.addChildNode(tmp);
+                root.addChild(tmp);
             }
         }
 
@@ -97,14 +97,14 @@ public class GeneralTree {
                 //Adding to the same level.
                 if(prevTabs == curTabs){
                     tmp = new TreeNode(name);
-                    current.addChildNode(tmp);
+                    current.addChild(tmp);
                     hash.add(tmp);
                 }
                 //Up a level (always increments by 1)
                 else if(prevTabs < curTabs){
                     childTraverse(lastAdded);
                     tmp = new TreeNode(name);
-                    current.addChildNode(tmp);
+                    current.addChild(tmp);
                     hash.add(tmp);
                 }
                 //Most complex. Going backwards by some number of levels in the tree.
@@ -113,7 +113,7 @@ public class GeneralTree {
                         goBack();
                     }
                     tmp = new TreeNode(name);
-                    current.addChildNode(tmp);
+                    current.addChild(tmp);
                     hash.add(tmp);
                 }
             }
@@ -121,10 +121,12 @@ public class GeneralTree {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Loop back to R/
+
+        //Loop back to R/foo.txt
         while(current.getParent().getParent()!= null){
             goBack();
         }
+
 
     }
 
@@ -210,7 +212,7 @@ public class GeneralTree {
             return;
         }
         //Check if that name is already being used. (Implies you must rename the node you want to add first)...
-        if(current.getParent().containsImmediateChildWithName(name)){
+        if(current.getParent().contains(name)){
             System.out.printf("Add Parent Dimension: %s already exists.\n", name);
             return;
         }
@@ -308,7 +310,7 @@ public class GeneralTree {
             goBack();
         }
 
-        String DBout = current.prettyPrint();
+        String DBout = "";//current.prettyPrint();
 
         //Save file to the DB name
         try{
@@ -341,7 +343,7 @@ public class GeneralTree {
             return;
         }
         tmp = new TreeNode(name);
-        current.addChildNode(tmp);
+        current.addChild(tmp);
 
         hash.add(tmp);
 

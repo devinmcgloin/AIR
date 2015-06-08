@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class HashBrowns {
 
-    TreeNode node;
+
     ArrayList<String> addresses;
     HashMap<String, ArrayList<String> > map;
     String name = "";
@@ -71,7 +71,7 @@ public class HashBrowns {
         //Create a set of each node reversed to BASE addresses.
         for(int i = 0; i<hits.size(); i++){
             TreeNode tmp = hits.get(i);
-            tmp = tmp.getBaseNode(tmp);
+            tmp = tmp.getBaseNode();
             if(basePrep.contains(tmp))
                 continue;
             basePrep.add(tmp);
@@ -88,7 +88,7 @@ public class HashBrowns {
 
             //Count how many it contains.
             for(int j=0; j<terms.length; j++){
-                if(tmp.containsAnyChildWithName(terms[j])){
+                if(tmp.containsAll(terms[j])){
                     matchedTerms++;
                 }
             }
