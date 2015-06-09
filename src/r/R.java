@@ -77,11 +77,6 @@ public class R {
         return genTree.getCurrent();
     }
 
-    public String getAddress(){
-        return current.getAddress();
-    }
-
-
 
 
 }

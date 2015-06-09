@@ -103,11 +103,6 @@ public class PA {
     public void addParent(String nodeName, String rAddress){
         R.addParent(nodeName, rAddress);
     }
-
-    public String getAddress(){
-        return R.getAddress();
-    }
-
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
 }

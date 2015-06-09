@@ -378,7 +378,7 @@ public class GeneralTree {
         }
 
         //Wrong DB loaded
-        if( !current.getAddress().split("/")[1].equals(dbName) ){
+        else if( !current.getAddress().split("/")[1].equals(dbName) ){
             while(current!=root){
                 goBack();
             }

@@ -15,13 +15,15 @@ public class Terminal {
 
     pa.PA PA = new PA();
     TreeNode current;
+    ArrayList<String> path = new ArrayList<String>();
 
 
     Terminal(){
-        current = PA.get("/R");
+        current = PA.get("R/");
+        path.add("R");
     }
 
-    public TreeNode parse(String input){
+    public void parse(String input){
 
 
 
@@ -60,6 +62,7 @@ public class Terminal {
             }
         }
         else if(words[0].equals("BACK") || words[0].equals("..")){
+            path.remove(path.size() - 1);
             current =  current.getParent();
 
         }
@@ -85,16 +88,14 @@ public class Terminal {
         else{
 
             if(current.getName().equals("R/")){
+                path.add(input);
                 current = PA.get("R/" + input);
             }else {
+                path.add(input);
                 current = PA.get(current.getAddress() + input);
             }
 
         }
-
-
-
-        return current;
     }
 
     //Calls save for whole project
@@ -105,11 +106,19 @@ public class Terminal {
     }
 
     public String printChildren(){
-        ArrayList<String> children = PA.getChildren(getAddress());
+        ArrayList<String> children = PA.getChildren(formatPath());
         String returnString = "";
         for (String child : children)
             returnString += child + "    ";
         return returnString;
+    }
+
+    public String formatPath(){
+        String output = "";
+        for(String term : path){
+            output += term + "/";
+        }
+        return output;
     }
 
     public String getHelp(){
@@ -126,10 +135,6 @@ public class Terminal {
                         "(Help   | ?  ): For help.\n\n");
     }
 
-    public String getAddress(){
-        return PA.getAddress();
-    }
-
     public static void main(String[] args) {
 
 
@@ -144,7 +149,7 @@ public class Terminal {
 
         while(true){
             //Display where we are in the folder hierarchy
-            System.out.print(terminal.getAddress());
+            System.out.print(terminal.formatPath());
 
 
             //Wait for next input
@@ -157,12 +162,9 @@ public class Terminal {
             }
 
             //Get DB response (might make it return error and then the dir?)
-            TreeNode hit = terminal.parse(input);
-            if(hit != null){
-                System.out.println("Invalid command");
+            terminal.parse(input);
+
 
             }
         }
     }
-
-}
