@@ -32,7 +32,7 @@ public class GeneralTree {
     HashBrowns hash;
 
 
-    GeneralTree(){
+    public GeneralTree(){
         //Start the R/ node.
         root = new TreeNode("R");
         root.setAddress("R");
@@ -54,17 +54,228 @@ public class GeneralTree {
         hash = new HashBrowns();
     }
 
+    /**
+     * Returns the current node to root.
+     */
+    public void toRoot() {
+        while (!current.isRoot())
+            toParent();
+
+    }
+
+    /**
+     * Sets current to its parent.
+     */
+    public void toParent() {
+        if(!current.isRoot()) {
+            current = current.getParent();
+        }
+    }
+
+    public boolean isRoot(){
+        return current.isRoot();
+    }
+    public boolean isLeaf(){
+        return current.isLeaf();
+    }
+
+    /**
+     * QA on isKeyVal method.
+     * @return
+     */
+    public boolean isKeyVal(){
+        List<TreeNode> children = current.getChildren();
+        if(children.size() == 1){
+            for (TreeNode child : children){
+                if(child.isLeaf())
+                    return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Format address utility
+     *
+     * @param path
+     * @return - tring array
+     */
+    private String[] formatRAddress(String path) {
+        return path.split("/");
+    }
+
+
+    public int getLevel(){
+        return current.getLevel();
+    }
+
+    /**
+     * gets all children from current's path.
+     *
+     * @return
+     */
+    public ArrayList<String> getChildren() {
+        ArrayList<String> children = new ArrayList<String>();
+        for (TreeNode child : current.getChildren()) {
+            children.add(child.getName());
+        }
+        return children;
+    }
+
+
+    /**
+     * checks if current has children with the given term.
+     *
+     * @param searchTerm
+     * @return
+     */
+    public boolean contains(String searchTerm) {
+        if (current.contains(searchTerm)) //TODO : re-write in treenode with a BS
+            return true;
+        return false;
+    }
+
+    /**
+     * checks if current has children with the given term all the way to leaf.
+     *
+     * @param searchTerm
+     * @return
+     */
+    public boolean containsAll(String searchTerm) {
+        if (current.containsAll(searchTerm))
+            return true;
+        return false;
+    }
+
+    //FUCK: MAKE SURE contains replace this correctly
+    //Essentially the same function as above. Marginally faster.
+    //OH LAWD CHANGE THIS TOO (to a binary search)
+//    public boolean contains(String next){
+//        for(int i = 0; i<current.children.size(); i++){
+//            String childName = current.children.get(i).getName();
+//            if(next.equals(childName)){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+
+
+
+    /**
+     * No negative levels, you cant navigate to a higher level here, wouldn't
+     * know what tree to choose.
+     * @param level
+     */
+    public void upLevel(int level){
+        if(level < 0 )
+            return;
+        if(level > current.getLevel())
+            return;
+        while(current.getLevel() != level)
+            toParent();
+    }
+
+
+
+
+    //-----------------------------OUT
+
+
+    //SAVE
+    public void exportDB(){
+        //Go back until we're at Foo.txt
+        if(current==root)
+            return;
+        while(current.getParent()!=root){
+            goBack();
+        }
+
+        String DBout = export(current).toString();//current.prettyPrint();
+
+        //Save file to the DB name
+        try{
+            String name = "";
+            name = current.getName(); //gets the .txt file nam
+            if(!name.endsWith(".txt")){
+                name += ".txt";
+            }
+            BufferedWriter out = new BufferedWriter( new FileWriter(FILEEXTENSION + name) );
+            out.write(DBout);
+            out.close();
+        } catch (Exception e){
+            System.out.println("You suck at writing to files");
+        }
+    }
+
+
+    /**
+     * utility for proper spacing on output.
+     *
+     * @param level
+     * @return
+     */
+    private String lvlSpacing(int level) {
+        return new String(new char[level]).replace("\0", "    ");
+    }
+
+    /**
+     * recursive export.
+     *
+     * @param node
+     * @return StringBuilder --> call toString on it for export.
+     */
+    public StringBuilder export(TreeNode node) {
+        upLevel(1);
+        if (node.isRoot()) {
+            StringBuilder returnStatement = new StringBuilder("");
+            for (TreeNode child : current.getChildren()) {
+                if (!child.isLeaf())
+                    returnStatement.append(child.toString() + "\n");
+                returnStatement.append(export(child));
+            }
+            return returnStatement;
+        } else if (!node.isLeaf()) {
+            StringBuilder returnStatement = new StringBuilder("");
+            for (TreeNode child : node.getChildren()) {
+                if (!child.isLeaf())
+                    returnStatement.append(lvlSpacing(child.getLevel() - 1) + child.toString() + "\n");
+                returnStatement.append(export(child));
+            }
+            return returnStatement;
+        } else if (node.isLeaf()) {
+            StringBuilder returnStatement = new StringBuilder("");
+            returnStatement.append(lvlSpacing(node.getLevel() - 1) + node.toString() + "\n");
+            return returnStatement;
+        }
+
+
+        return new StringBuilder("");
+    }
+
+    ///---------------------------------OUT END
+
+
+
+
+
+    //------------------------------------blaze's methods ---------------------------------//
+
+
     //LOAD DB
     public void loadDB(String dbName){
 
+        int i = 0;
+        int curTabs = 0;
+        int prevTabs = 0;
         FileReader in = null;
         BufferedReader br = null;
         String line = "";
         String name = "";
         String lastAdded = "";
-        int i = 0;
-        int curTabs = 0;
-        int prevTabs = 0;
+
 
         //Open File
         try {
@@ -192,8 +403,8 @@ public class GeneralTree {
     //Rename attempt
     public void rename(String newName){
         String oldName = current.getName();
-        goBack();
-        if(hasChild(newName)){
+        goBack(); //TODO: null pointer
+        if(contains(newName)){
             System.out.printf("Dimension: %s already exists.\n", newName);
             return;
         }
@@ -225,6 +436,7 @@ public class GeneralTree {
         hash.add(tmp);
     }
 
+
     //TODO: Change search  -AT LEAST BE ALPHABETIC. Implement a BST search.
     //Check if children have this.
     public boolean childTraverse(String next){
@@ -237,18 +449,9 @@ public class GeneralTree {
         }
         return false;
     }
-    //TODO: Change search
-    //Essentially the same function as above. Marginally faster.
-    //OH LAWD CHANGE THIS TOO (to a binary search)
-    public boolean hasChild(String next){
-        for(int i = 0; i<current.children.size(); i++){
-            String childName = current.children.get(i).getName();
-            if(next.equals(childName)){
-                return true;
-            }
-        }
-        return false;
-    }
+
+
+
 
     public TreeNode getNode(String address){
 
@@ -301,31 +504,31 @@ public class GeneralTree {
         return hits;
     }
 
-    //SAVE
-    public void exportDB(){
-        //Go back until we're at Foo.txt
-        if(current==root)
-            return;
-        while(current.getParent()!=root){
-            goBack();
-        }
-
-        String DBout = "";//current.prettyPrint();
-
-        //Save file to the DB name
-        try{
-            String name = "";
-            name = current.getName();
-            if(!name.endsWith(".txt")){
-                name += ".txt";
-            }
-            BufferedWriter out = new BufferedWriter( new FileWriter(FILEEXTENSION + name) );
-            out.write(DBout);
-            out.close();
-        } catch (Exception e){
-            System.out.println("You suck at writing to files");
-        }
-    }
+//    //SAVE
+//    public void exportDB(){
+//        //Go back until we're at Foo.txt
+//        if(current==root)
+//            return;
+//        while(current.getParent()!=root){
+//            goBack();
+//        }
+//
+//        String DBout = "";//current.prettyPrint();
+//
+//        //Save file to the DB name
+//        try{
+//            String name = "";
+//            name = current.getName();
+//            if(!name.endsWith(".txt")){
+//                name += ".txt";
+//            }
+//            BufferedWriter out = new BufferedWriter( new FileWriter(FILEEXTENSION + name) );
+//            out.write(DBout);
+//            out.close();
+//        } catch (Exception e){
+//            System.out.println("You suck at writing to files");
+//        }
+//    }
     //GO BACK
     public void goBack(){
         if(current.getParent()!= null){
@@ -336,15 +539,14 @@ public class GeneralTree {
             current = current.getParent();
         }
     }
-    //ADD NODE --HOPEFULLY HASH WORKS
+    //ADD NODE --HOPEFULLY HASH WORKS //FUCK Change to addChild
     public void addNode(String name){
-        if(hasChild(name)){
+        if(contains(name)){
             System.out.printf("Dimension: %s already exists.\n", name);
             return;
         }
         tmp = new TreeNode(name);
         current.addChild(tmp);
-
         hash.add(tmp);
 
     }
