@@ -358,12 +358,12 @@ public class GeneralTree {
         // System.out.println("address: "+address);
 
         if(!address.contains("/")){
-            System.out.println("R -- Incorrect format: " + address);
-            return null;
+            System.out.println("GenTree -- Incorrect format for address: " + address);
+            return current;
         }
         //We are sending a command to "R/" directory.
         if(tmpS.length==1 && address.equals("R/")){
-            System.out.println("R -- root operation triggered!!!");
+            System.out.println("GenTree -- root operation triggered!!!");
             return root;
         }
         String dbName = address.split("/")[1];
@@ -371,14 +371,20 @@ public class GeneralTree {
         //Options, we're in R, or we're at the db.
         //Wrong db or no DB or right db.
 
+        System.out.println("Let's clear this up: " + current.getAddress());
         //NO DB loaded
-        if( current.getAddress().equals("R/")){
+        if( current.equals(root) /*&& current.contains(dbName)*/){
             childTraverse(dbName);
             loadDB(dbName);
         }
+        else{
+            // FUCK FUCK FUCK
+            System.out.println("GenTree -- No db with name: " + dbName);
+            return current;
+        }
 
         //Wrong DB loaded
-        else if( !current.getAddress().split("/")[1].equals(dbName) ){
+        if( !current.getAddress().split("/")[1].equals(dbName) ){
             while(current!=root){
                 goBack();
             }

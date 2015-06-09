@@ -35,7 +35,7 @@ public class PA {
 
     public void blazetest(){
 
-        System.out.println(R.rFullHashSearch("1`a").get(0).getOrigin().getName());
+        //System.out.println(R.rFullHashSearch("1`a").get(0).getOrigin().getName());
 
     }
 

@@ -145,7 +145,8 @@ public class TreeNode implements Comparable<TreeNode> {
         return children.size() == 0;
     }
 
-    public TreeNode addChild(String child) {
+    //TODO: ....does this work?
+    public boolean addChild(String child) {
         TreeNode childNode = new TreeNode(child);
         return addChild(childNode);
     }
@@ -155,7 +156,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param childNode
      * @return
      */
-    public TreeNode addChild(TreeNode childNode){
+    public boolean addChild(TreeNode childNode){
         childNode.parent = this;
         childNode.updateAddress();
         childNode.elementsIndex = elementsIndex;
@@ -163,7 +164,7 @@ public class TreeNode implements Comparable<TreeNode> {
             this.children.add(childNode);
             this.registerChildForSearch(childNode);
         }
-        return childNode;
+        return true;
     }
 
     /**

@@ -88,7 +88,10 @@ public class Terminal {
             if(current.getName().equals("R/")){
                 current = PA.get("R/" + input);
             }else {
-                current = PA.get(current.getAddress() + input);
+                if( PA.get(current.getAddress() + input) != null){
+                    current = PA.get(current.getAddress() + input);
+                }
+
             }
 
         }
