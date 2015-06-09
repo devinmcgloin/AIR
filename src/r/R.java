@@ -33,7 +33,6 @@ public class R {
     ArrayList<String> tempPath = new ArrayList<String>();
     TreeNode current;
     TreeNode tmp = new TreeNode("");
-    TreeHash<String, TreeNode> baseHash = new TreeHash<>();
 
     public R() {
         current = new TreeNode("R");

@@ -7,7 +7,7 @@ import java.util.*;
  * TODO Search for child nodes - not urgent
  * TODO update addresses for each node.
  */
-public class TreeNode implements Iterable<TreeNode> {
+public class TreeNode implements Comparable<TreeNode> {
 
 	public String name;
 	public String address;
@@ -48,7 +48,7 @@ public class TreeNode implements Iterable<TreeNode> {
 	public ArrayList<String> getAllNames(){
 		ArrayList<String> names = new ArrayList<String>();
 		names.add(getName());
-		ArrayList<TreeNode> allChildren = new ArrayList<>();
+		ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
 		for(TreeNode child : getAllChildren(allChildren)){
 			names.add(child.getName());
 		}
@@ -73,7 +73,7 @@ public class TreeNode implements Iterable<TreeNode> {
 	public ArrayList<String> getAllAddresses(){
 		ArrayList<String> addresses = new ArrayList<String>();
 		addresses.add(getName());
-		ArrayList<TreeNode> allChildren = new ArrayList<>();
+		ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
 		for(TreeNode child : getAllChildren(allChildren)){
 			addresses.add(child.getAddress());
 		}
@@ -195,11 +195,6 @@ public class TreeNode implements Iterable<TreeNode> {
 		return name != null ? name.toString() : "[name null]";
 	}
 
-	@Override
-	public Iterator<TreeNode> iterator() {
-		TreeNodeIter iter = new TreeNodeIter(this);
-		return iter;
-	}
 
 	/**
 	 *
