@@ -314,6 +314,35 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
 
+    //FUCK -- TODO: I'm testing to see what the db looks like at any moment in time before export.
+    //EXPORT Wrapper
+    public String prettyPrint(){
+        String DBout = "";
+        String buffer = "";
+        //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
+        Collections.sort(children);
+        TreeNode tmp;
+        for(int i = 0; i<this.children.size(); i++){
+            tmp = this.children.get(i);  //get next child
+            DBout+= buffer+tmp.name+"\r\n";
+            DBout+= tmp.prettyPrintRec(buffer);
+        }
+        return DBout;
+    }
+    //EXPORT RECURSION
+    private String prettyPrintRec(String buffer){
+        String DBout = "";
+        buffer+="    ";
+        //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
+        Collections.sort(children);
+        TreeNode tmp;
+        for(int i = 0; i<this.children.size(); i++){
+            tmp = this.children.get(i);  //get next child
+            DBout+= buffer+tmp.name+"\r\n";
+            DBout+= tmp.prettyPrintRec(buffer);
+        }
+        return DBout;
+    }
 
 
 

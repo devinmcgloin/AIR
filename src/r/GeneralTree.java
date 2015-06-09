@@ -186,6 +186,7 @@ public class GeneralTree {
 
     //SAVE
     public void exportDB(){
+        System.out.println("export called");
         //Go back until we're at Foo.txt
         if(current.isRoot())
             return;
@@ -193,7 +194,7 @@ public class GeneralTree {
             goBack();
         }
 
-        String DBout = export(current).toString();//current.prettyPrint();
+        String DBout = current.prettyPrint();//export(current).toString();
 
         //Save file to the DB name
         try{
@@ -542,6 +543,7 @@ public class GeneralTree {
         if(current.getParent()!= null){
             //Check if backing out of DB (triggers save)
             if(current.getParent().isRoot()){
+                System.out.println("goBack() -- > Is this why exporting twice? ");
                 exportDB();
             }
             current = current.getParent();

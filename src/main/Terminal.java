@@ -69,6 +69,10 @@ public class Terminal {
             input = input.trim();
             PA.rename(words[1], words[2]);
         }
+        else if(words[0].equals("bdev") ){
+            //System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
+            PA.blazetest();
+        }
         //Fun stuff
         else {
 
