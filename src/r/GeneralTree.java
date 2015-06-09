@@ -244,6 +244,10 @@ public class GeneralTree {
     public void add(String rAddress, String term) {
         tmp = current;
         toDir(rAddress);
+        if(contains(term)){
+            System.out.printf("Dimension: %s already exists.\n", term);
+            return;
+        }
         current.addChild(term);
         current = tmp;
 
@@ -260,7 +264,7 @@ public class GeneralTree {
         rAddress = rAddress.trim();
         String[] tmpS = rAddress.split("/");
 
-        if(!rAddress.contains("/")){
+        if(!rAddress.contains("R/")){
             System.out.println("GenTree -- Incorrect format for address: " + rAddress);
             return current;
         }
@@ -286,18 +290,19 @@ public class GeneralTree {
             populate(dbName);
         }
 
+//        rAddress = rAddress.replace(current.getParent().getAddress(), "");
         String[] nodeNames = rAddress.split("/");
 
         for(String name : nodeNames){
             if(current.contains(name) != null)
                 toChild(name);
-            else{
-                String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
-                for(int j = 2; j<nodeNames.length; j++){
-                    delAddress += nodeNames[j];
-                    hash.del(nodeNames[j], delAddress);
-                }
-            }
+//            else{
+//                String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
+//                for(int j = 2; j<nodeNames.length; j++){
+//                    delAddress += nodeNames[j];
+//                    hash.del(nodeNames[j], delAddress);
+//                }
+//            }
 
         }
         return current;
