@@ -29,7 +29,7 @@ public class PA {
     protected R currentR = null;
 
     public PA(String user) {
-        if(user == "Terminal") {
+        if(!user.equals("Terminal")) {
             if (rFolder.length() >= 1) {
                 for (File fileEntry : rFolder.listFiles()) {
                     if (fileEntry.isDirectory()) {
@@ -40,6 +40,7 @@ public class PA {
                 }
             }
         }
+        currentR = new R();
 
 
     }
