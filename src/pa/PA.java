@@ -122,6 +122,9 @@ public class PA {
     public void save() {
         for(R r : rDB)
             r.save();
+
+        //Terminal Only
+        currentR.save();
     }
 
     public void addParent(String nodeName, String rAddress) {
