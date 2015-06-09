@@ -28,16 +28,19 @@ public class PA {
     protected ArrayList<R> rDB = new ArrayList<R>();
     protected R currentR = null;
 
-    public PA() {
-        if (rFolder.length() >= 1) {
-            for (File fileEntry : rFolder.listFiles()) {
-                if (fileEntry.isDirectory()) {
-                    continue;
-                } else {
-                    rDB.add(new R(fileEntry.getName()));
+    public PA(String user) {
+        if(user == "Terminal") {
+            if (rFolder.length() >= 1) {
+                for (File fileEntry : rFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        continue;
+                    } else {
+                        rDB.add(new R(fileEntry.getName()));
+                    }
                 }
             }
         }
+
 
     }
 

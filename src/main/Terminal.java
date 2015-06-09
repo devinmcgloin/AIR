@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class Terminal {
 
-    pa.PA PA = new PA();
+    pa.PA PA = new PA("Terminal");
     TreeNode current;
 
 

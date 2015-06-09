@@ -24,6 +24,13 @@ public class R {
         genTree = new GeneralTree();
         hits = new ArrayList<TreeNodeBase>();
         current = genTree.getCurrent();
+        genTree.loadDB(name);
+    }
+
+    public R(){
+        genTree = new GeneralTree();
+        hits = new ArrayList<TreeNodeBase>();
+        current = genTree.getCurrent();
     }
 
     public String getName(){
