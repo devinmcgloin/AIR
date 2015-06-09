@@ -376,9 +376,13 @@ public class GeneralTree {
         //Wrong db or no DB or right db.
 
         //NO DB loaded
-        if( current.isRoot() /*&& current.contains(dbName)*/){
+        if( current.isRoot() && current.contains(dbName)){
             childTraverse(dbName);
             loadDB(dbName);
+        }
+        if(!current.contains(dbName) && current.isRoot()){
+            System.out.println("No DB by name: " + dbName);
+            return current;
         }
 //        else{
 //            // FUCK FUCK FUCK
