@@ -1,9 +1,6 @@
 package r;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,46 +10,62 @@ import java.util.Scanner;
  *
  * PACKAGE GOD.
  *
- * PATHS EXCLUDE BASE NODE R. are of the form "nouns/places/nations"
+ * PATHS EXCLUDE BASE NODE GeneralTree. are of the form "nouns/places/nations"
  * ALL FUNCTIONS EXCEPT THOSE THAT BEGIN WITH TO, RETURN TO THEIR ORGINAL rAddress.
  *
  * CONSIDER HashNode Responsibilities:
  *
- * R contains hash for base nodes
+ * GeneralTree contains hash for base nodes
  * base nodes contain hash for all their children.
  *
- * R contains a hashMap of all of the base nodes, the assumption being that questions are generally about something.
+ * GeneralTree contains a hashMap of all of the base nodes, the assumption being that questions are generally about something.
  * First we try to find the specific base node as outlined in search.java, then if it is not found then we ove on to
  * fuzzy search.
  *
  * CONSIDER: Maybe able to navigate by hash not path names? Do we really even need paths at all?
  */
-public class R {
+public class GeneralTree {
 
-    ArrayList<String> currentPath = new ArrayList<String>();
-    ArrayList<String> tempPath = new ArrayList<String>();
     TreeNode current;
-    TreeNode tmp = new TreeNode("");
+    TreeNode tmp;
+    HashBrowns hash;
+    final String FILEEXTENSION = "./R/";
+    File rFolder = new File(FILEEXTENSION);
 
-    public R() {
-        current = new TreeNode("R");
-        populate(new File("./R/R.txt"));
-        tempPath = copyCurrentPath();
+    public GeneralTree() {
         tmp = current;
+        current = new TreeNode("R");
+        current.setAddress("R");
+
+        if(rFolder.length() >= 1) {
+            for (File fileEntry : rFolder.listFiles()) {
+                if (fileEntry.isDirectory()) {
+                    continue;
+                } else {
+                    tmp = new TreeNode(fileEntry.getName());
+                    current.addChild(tmp);
+                }
+            }
+        }
+
+        //Start a new hashmap.
+        hash = new HashBrowns();
     }
 
     public void setCurrent(TreeNode current) {
         this.current = current;
     }
 
+    public String getCurrentPath(){
+        return current.getAddress();
+    }
     /**
      * Returns the current node to root.
      */
     public void toRoot() {
         while (!current.isRoot())
             toParent();
-        currentPath.clear();
-        currentPath.add("R");
+
     }
 
     public boolean isRoot(){
@@ -79,20 +92,10 @@ public class R {
         return false;
     }
 
-    public ArrayList<String> copyCurrentPath() {
-        return (ArrayList<String>) currentPath.clone();
-    }
+
 
     /**
-     * @return
-     */
-    public ArrayList<String> getCurrentPath() {
-        return currentPath;
-
-    }
-
-    /**
-     * PATH NAME EXCLUDING THE BASE NODE R.
+     * PATH NAME EXCLUDING THE BASE NODE GeneralTree.
      *
      * @param path
      */
@@ -102,7 +105,7 @@ public class R {
 
         for (String address : rAddress) {
 //            System.out.print("[" + address + "]");
-            currentPath.add(address);
+
             toChild(address);
         }
 
@@ -123,9 +126,9 @@ public class R {
      */
     public void toParent() {
         if(!current.isRoot()) {
-            int index = currentPath.lastIndexOf(current.name);
-            if (index > 0)
-                currentPath.remove(index);
+            if(current.getParent().isRoot()){
+                export(current);
+            }
             current = current.getParent();
         }
     }
@@ -137,7 +140,7 @@ public class R {
      */
     public void toChild(String specifiedChild) {
         current = current.getChild(specifiedChild);
-        currentPath.add(specifiedChild);
+
     }
 
     /**
@@ -148,9 +151,6 @@ public class R {
      */
     public void addChild(String child) {
         current.addChild(child);
-        if(current.isRoot()) {
-            baseHash.put(child, current.getChild(child));
-        }
     }
 
     /**
@@ -158,11 +158,8 @@ public class R {
      *
      * @param node
      */
-    public void addChild(TreeNode<String> node){
+    public void addChild(TreeNode node){
         current.addChild(node);
-        if(current.isRoot()) {
-            baseHash.put(node.name, current.getChild(node.name));
-        }
     }
 
     /**
@@ -172,7 +169,7 @@ public class R {
      */
     public ArrayList<String> getChildren() {
         ArrayList<String> children = new ArrayList<String>();
-        for (TreeNode<String> child : current.getChildren()) {
+        for (TreeNode child : current.getChildren()) {
             children.add(child.getName());
         }
         return children;
@@ -212,16 +209,11 @@ public class R {
      */
     public void del(String rAddress) {
         tmp = current;
-        tempPath = copyCurrentPath();
         toDir(rAddress);
         toParent();
-        if(current.isRoot()){
-            baseHash.remove(rAddress);
-        }
         String[] address = formatRAddress(rAddress);
         current.delChild(address[address.length - 1]);
         current = tmp;
-        currentPath = tempPath;
 
     }
 
@@ -237,14 +229,9 @@ public class R {
      */
     public void rename(String rAddress, String newName) {
         tmp = current;
-        tempPath = copyCurrentPath();
         toDir(rAddress);
         current.setName(newName);
-        if(current.isBaseNode()) {
-            baseHash.replaceKey(rAddress, newName);
-        }
         current = tmp;
-        currentPath = tempPath;
 
     }
 
@@ -256,30 +243,79 @@ public class R {
      */
     public void add(String rAddress, String term) {
         tmp = current;
-        tempPath = copyCurrentPath();
         toDir(rAddress);
         current.addChild(term);
         current = tmp;
-        currentPath = tempPath;
 
     }
 
     /**
      * returns the node at the given address.
-     *
+     * TODO
      * @param rAddress
      * @return
      */
-    public TreeNode<String> get(String rAddress) {
+    public TreeNode get(String rAddress) {
 
-        tmp = current;
-        tempPath = copyCurrentPath();
-        toDir(rAddress);
-        TreeNode<String> returnVar = current;
-        current = tmp;
-        currentPath = tempPath;
-        return returnVar;
+        rAddress = rAddress.trim();
+        String[] tmpS = rAddress.split("/");
 
+        if(!rAddress.contains("/")){
+            System.out.println("GenTree -- Incorrect format for address: " + rAddress);
+            return current;
+        }
+
+        if(tmpS.length==1 && rAddress.equals("R/")){
+            System.out.println("GenTree -- root operation triggered!!!");
+            return getRoot();
+        }
+
+        String dbName = rAddress.split("/")[1];
+
+        if(current.isRoot()){
+            toChild(dbName);
+            populate(dbName);
+        }
+
+        if(!current.getAddress().split("/")[1].equals(dbName)){
+            while(!current.isRoot()){
+                toParent();
+            }
+            //Now load db of the address we were given.
+            toChild(dbName);
+            populate(dbName);
+        }
+
+        String[] nodeNames = rAddress.split("/");
+
+        for(String name : nodeNames){
+            if(current.contains(name) != null)
+                toChild(name);
+            else{
+                String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
+                for(int j = 2; j<nodeNames.length; j++){
+                    delAddress += nodeNames[j];
+                    hash.del(nodeNames[j], delAddress);
+                }
+            }
+
+        }
+        return current;
+    }
+
+    public ArrayList<String> hashSearch(String input){
+        ArrayList<String> addresses = new ArrayList<String>();
+        addresses = hash.search(input);
+        return addresses;
+    }
+
+    public ArrayList<TreeNodeBase> fullHashSearch(String terms){
+        //TERMs must be separated by `
+        //Then try hash searching.
+        TreeNode tmp = current;
+        ArrayList<TreeNodeBase> hits = hash.fullHashSearch(terms, this);
+        setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
+        return hits;
     }
 
 
@@ -289,11 +325,10 @@ public class R {
      * @param node
      * @return
      */
-    public StringBuilder export(TreeNode<String> node) {
-        toRoot();
-        if (node.isRoot()) {
+    public StringBuilder export(TreeNode node) {
+        if (node.getParent().isRoot()) {
             StringBuilder returnStatement = new StringBuilder("");
-            for (TreeNode<String> child : current.getChildren()) {
+            for (TreeNode child : current.getChildren()) {
                 if (!child.isLeaf())
                     returnStatement.append(child.toString() + "\n");
                 returnStatement.append(export(child));
@@ -301,7 +336,7 @@ public class R {
             return returnStatement;
         } else if (!node.isLeaf()) {
             StringBuilder returnStatement = new StringBuilder("");
-            for (TreeNode<String> child : node.getChildren()) {
+            for (TreeNode child : node.getChildren()) {
                 if (!child.isLeaf())
                     returnStatement.append(lvlSpacing(child.getLevel() - 1) + child.toString() + "\n");
                 returnStatement.append(export(child));
@@ -331,17 +366,26 @@ public class R {
      * saves the whole tree.
      */
     public void save() {
-        toRoot();
-        try {
+        //Go back until we're at Foo.txt
+        if(current.isRoot())
+            return;
+        while(!current.getParent().isRoot()){
+            toParent();
+        }
+
+        String DBout = export(current).toString();
+
+        //Save file to the DB name
+        try{
             String name = "";
-            name = "R.txt";
-            if (!name.endsWith(".txt")) {
+            name = current.getName(); //gets the .txt file nam
+            if(!name.endsWith(".txt")){
                 name += ".txt";
             }
-            BufferedWriter out = new BufferedWriter(new FileWriter("./R/" + name));
-            out.write(export(current).toString());
+            BufferedWriter out = new BufferedWriter( new FileWriter(FILEEXTENSION + name) );
+            out.write(DBout);
             out.close();
-        } catch (Exception e) {
+        } catch (Exception e){
             System.out.println("You suck at writing to files");
         }
 
@@ -355,74 +399,113 @@ public class R {
      *
      * @param f - file to load
      */
-    public void populate(File f) {
+    public void populate(String f) {
         int i = 0;
         int curTabs = 0;
         int prevTabs = 0;
-        String term = "";
-        String preName;
-        Scanner db;
-        String input;
+        FileReader in = null;
+        BufferedReader br = null;
+        String line = "";
+        String name = "";
+        String lastAdded = "";
 
+
+        //Open File
         try {
-            db = new Scanner(f);
+            in = new FileReader(FILEEXTENSION + f);
         } catch (FileNotFoundException e) {
             System.out.println("Invalid database name.");
             return;
         }
-        while (db.hasNextLine()) {
-            i = 0;
-            input = db.nextLine();
 
-            while (input.charAt(i) == ' ') {
-                i++;
-            }
-            preName = term;
-            prevTabs = curTabs;
-            curTabs = i / 4;
-            term = input.trim();
+        //Create a reader
+        br = new BufferedReader(in);
+        try {
+            System.out.println("FILE READ INITALIZED");
+            //int tst = 0;
+            //LOOP: Read line by line. "name" of node starts at first character, ends at "\r\n"
+            while ( (line = br.readLine()) != null ) {
+                //Break line into characters to count number of tabs. (Four spaces per tab).
+                i = 0;
 
-            //Adding to the same level
-            if (prevTabs == curTabs) {
-                addChild(term);
-            }
-
-            //Adding Child
-            else if (prevTabs < curTabs) {
-                toChild(preName);
-                addChild(term);
-            }
-
-            //going up
-            else {
-                for (i = prevTabs - curTabs; i > 0; i--) {
-                    toParent();
+                while(line.charAt(i) == ' '){
+                    i++;
                 }
-                addChild(term);
+                //tst++;
+                //System.out.println(tst);
+
+                prevTabs = curTabs;
+                curTabs = i/4;
+                lastAdded = name;
+                name = line.trim();
+
+                //Adding to the same level.
+                if(prevTabs == curTabs){
+                    tmp = new TreeNode(name);
+                    current.addChild(tmp);
+                    hash.add(tmp);
+                }
+                //Up a level (always increments by 1)
+                else if(prevTabs < curTabs){
+                    toChild(lastAdded);
+                    tmp = new TreeNode(name);
+                    current.addChild(tmp);
+                    hash.add(tmp);
+                }
+                //Most complex. Going backwards by some number of levels in the tree.
+                else{
+                    for(i = prevTabs-curTabs; i>0; i--){
+                        toParent();
+                    }
+                    tmp = new TreeNode(name);
+                    current.addChild(tmp);
+                    hash.add(tmp);
+                }
             }
-
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        db.close();
-        toRoot();
-    }
 
-    /**
-     * QA on move method
-     * TODO: Update hash if needed.
-     * @param rAddressFrom
-     * @param rAddressTo
-     */
-    public void move(String rAddressFrom, String rAddressTo){
-        TreeNode<String> nodeA = get(rAddressFrom);
-        toDir(rAddressFrom);
-        del(rAddressFrom);
-        toDir(rAddressTo);
-        addChild(nodeA);
+        //Loop back to R/foo.txt
+        toDBLevel();
+
 
     }
+
 
     public int getLevel(){
         return current.getLevel();
+    }
+
+    public TreeNode getRoot() {
+        tmp = current;
+        TreeNode temp2;
+        toRoot();
+        temp2 = current;
+        current = tmp;
+        return temp2;
+    }
+
+    /**
+     * QA on ifExistsCD method.
+     * @param node
+     * @return
+     */
+    public boolean ifExistsCD(String node){
+        if(contains(node)) {
+            get(current.getAddress() + node + "/");
+            return true;
+        }
+        return false;
+    }
+
+    public void toDBLevel(){
+        if(current.getLevel() >= 1)
+            return;
+        while(current.getLevel() >= 2)
+            toParent();
+
     }
 
 

@@ -279,7 +279,7 @@ public class TreeNode implements Comparable<TreeNode> {
 		TreeNode n = this;
 		if( n.getParent().getParent().getName() == null)
 			return null;
-		while(! ( this.getParent().getParent().getName().equals("R")  )){
+		while(! ( this.getParent().getParent().getName().equals("GeneralTree")  )){
 			n = n.getParent();
 		}
 		return n;

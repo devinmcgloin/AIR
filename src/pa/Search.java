@@ -4,7 +4,7 @@ import r.TreeNode;
 
 /**
  * Created by devinmcgloin on 6/6/15.
- * Controls TreeNodeHash and is present in R.
+ * Controls TreeNodeHash and is present in GeneralTree.
  *
  * CONSIDER the Following:
  *

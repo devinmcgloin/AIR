@@ -1,6 +1,6 @@
 package pa;
 
-import r.R;
+import r.GeneralTree;
 import r.TreeNode;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class PA {
 
     /**
      *
-     * TODO: Implement recursive get all children function in R. - Not sure if needed.
+     * TODO: Implement recursive get all children function in GeneralTree. - Not sure if needed.
      *
      * TODO: HashSearch (Get set -> set logic???)
      * TODO: user defined matrices --> export set of BN in a csv file?
@@ -24,99 +24,87 @@ public class PA {
      * TODO: merging nodes --> tricky, idk how that function would look like
      */
 
-    R R;
+    GeneralTree GeneralTree;
 
     public PA(){
-        R = new R();
+        GeneralTree = new GeneralTree();
     }
 
-    //---------------------------------R WRAPPERS---------------------------------//
+    //---------------------------------GeneralTree WRAPPERS---------------------------------//
     public void save(){
-        R.save();
+        GeneralTree.save();
     }
 
     public void toDir(String rAddress){
-        R.toDir(rAddress);
+        GeneralTree.toDir(rAddress);
     }
 
     public void toParent(){
-        R.toParent();
+        GeneralTree.toParent();
     }
 
     public void toChild(String child){
-        R.toChild(child);
+        GeneralTree.toChild(child);
     }
 
     public void del(String rAddress){
-        R.del(rAddress);
+        GeneralTree.del(rAddress);
     }
 
     public void addChild(String child){
-        R.addChild(child);
+        GeneralTree.addChild(child);
     }
 
     public void add(String rAddress, String term){
-        R.add(rAddress, term);
+        GeneralTree.add(rAddress, term);
     }
 
     public boolean contains(String searchTerm){
-        return R.contains(searchTerm);
+        return GeneralTree.contains(searchTerm);
     }
 
     public boolean containsAll(String searchTerm) {
-        return R.containsAll(searchTerm);
+        return GeneralTree.containsAll(searchTerm);
     }
 
-    public TreeNode<String> get(String rAddress){
-        return R.get(rAddress);
+    public TreeNode get(String rAddress){
+        return GeneralTree.get(rAddress);
     }
 
     public void toRoot(){
-        R.toRoot();
+        GeneralTree.toRoot();
     }
 
     public ArrayList<String> getChildren(){
-        return R.getChildren();
+        return GeneralTree.getChildren();
     }
 
-    public ArrayList<String> getPath(){
-        return R.getCurrentPath();
+    public String getPath(){
+        return GeneralTree.getCurrentPath();
     }
 
     public void rename(String rAddress, String newName){
-        R.rename(rAddress, newName);
+        GeneralTree.rename(rAddress, newName);
     }
 
     public boolean isRoot(){
-        return R.isRoot();
+        return GeneralTree.isRoot();
     }
 
     public boolean isLeaf(){
-        return R.isLeaf();
+        return GeneralTree.isLeaf();
     }
 
     public boolean isKeyVal(){
-        return R.isKeyVal();
+        return GeneralTree.isKeyVal();
     }
 
-    public void move(String rAddressFrom, String rAddressTo){
-        R.move(rAddressFrom, rAddressTo);
-    }
-
-    // ----------------------------- END R WRAPPERS ----------------------------------//
-
-    /**
-     * QA on ifExistsCD method.
-     * @param node
-     * @return
-     */
     public boolean ifExistsCD(String node){
-        if(R.contains(node)) {
-            R.toChild(node);
-            return true;
-        }
-        return false;
+        return GeneralTree.ifExistsCD(node);
     }
+
+    // ----------------------------- END GeneralTree WRAPPERS ----------------------------------//
+
 
 
 
