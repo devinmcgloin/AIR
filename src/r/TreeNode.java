@@ -292,9 +292,13 @@ public class TreeNode implements Comparable<TreeNode> {
 
     public TreeNode getBaseNode() {
         TreeNode n = this;
-        if (n.getParent().getParent().getName() == null)
+        if(n.isRoot()) {
+            System.out.println("Base node function is called on root.");
             return null;
-        while (!(this.getParent().getParent().getName().equals("R"))) {
+        }
+        if (n.isBaseNode())
+            return n;
+        while (!n.isBaseNode()) {
             n = n.getParent();
         }
         return n;
