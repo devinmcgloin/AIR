@@ -70,7 +70,7 @@ public class Terminal {
             PA.rename(words[1], words[2]);
         }
         else if(words[0].equals("bdev") ){
-            //System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
+            System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
             PA.blazetest();
         }
         //Fun stuff

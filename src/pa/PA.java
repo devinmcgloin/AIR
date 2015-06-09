@@ -35,11 +35,14 @@ public class PA {
 
     public void blazetest(){
         TreeNode curr = R.getCurrent(); //Wrapper for GenTree.getCurrent()
-//        System.out.println("GenTree's Current: " + curr.getName() + " -  " + curr.getAddress());
-//        //System.out.println(R.rFullHashSearch("1`a").get(0).getOrigin().getName());
-        curr = R.get("R/0.txt/");
 
-        System.out.println(curr.prettyPrint());
+
+
+        System.out.println("GenTree's Current: " + curr.getName() + " -  " + curr.getAddress());
+        //System.out.println(R.rFullHashSearch("1`a").get(0).getOrigin().getName());
+        //curr = R.get("R/0.txt/");
+
+        //System.out.println(curr.prettyPrint());
 
     }
 

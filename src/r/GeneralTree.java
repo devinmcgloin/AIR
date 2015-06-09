@@ -371,6 +371,10 @@ public class GeneralTree {
             return getRoot();
         }
         String dbName = address.split("/")[1];
+        if(dbName.equals("") || dbName.equals("\n")){
+            System.out.println("No DB Name provided.");
+            return current;
+        }
 
         //Options, we're in R, or we're at the db.
         //Wrong db or no DB or right db.
@@ -385,6 +389,7 @@ public class GeneralTree {
             System.out.println("No DB by name: " + dbName);
             return current;
         }
+
 
 
         //FUCK
@@ -497,7 +502,7 @@ public class GeneralTree {
                     delAddress += nodeNames[j];
                     hash.del(nodeNames[j], delAddress);
                 }
-                return null;
+                return current; //FUCK
             }
         }
 
