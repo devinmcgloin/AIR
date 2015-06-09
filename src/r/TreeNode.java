@@ -48,7 +48,7 @@ public class TreeNode implements Comparable<TreeNode> {
     public ArrayList<String> getAllNames(){
         ArrayList<String> names = new ArrayList<String>();
         names.add(getName());
-        ArrayList<TreeNode> allChildren = new ArrayList<>();
+        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
         for(TreeNode child : getAllChildren(allChildren)){
             names.add(child.getName());
         }
@@ -73,7 +73,7 @@ public class TreeNode implements Comparable<TreeNode> {
     public ArrayList<String> getAllAddresses(){
         ArrayList<String> addresses = new ArrayList<String>();
         addresses.add(getName());
-        ArrayList<TreeNode> allChildren = new ArrayList<>();
+        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
         for(TreeNode child : getAllChildren(allChildren)){
             addresses.add(child.getAddress());
         }
@@ -197,25 +197,39 @@ public class TreeNode implements Comparable<TreeNode> {
 
 
 
-
     /**
      *
      * Makes the current node the specifiedChild.
      * @param specifiedChild - node to be changed to.
      * @return boolean
      */
-//    public TreeNode getChild(String specifiedChild){
-//        TreeNode tmp = contains(specifiedChild);
-//
-//        for(TreeNode child : children){
-//            if(child.equals(tmp)){
-//                return child;
-//            }
-//
-//        }
-//        return null;
-//    }
+    public TreeNode getChild(String specifiedChild){
+        TreeNode tmp = getContains(specifiedChild);
 
+        for(TreeNode child : children){
+            if(child.equals(tmp)){
+                return child;
+            }
+
+        }
+        return null;
+    }
+
+
+    /**
+     * TODO: rewrite using hash
+     * Checks if current node contains specified node inside children.
+     * @param node
+     * @return TreeNode<String>
+     */
+    private TreeNode getContains(String node){
+        for(TreeNode child : children){
+            if(shallowEquals(child, node)) {
+                return child;
+            }
+        }
+        return null;
+    }
 
     /**
      * TODO: rewrite using hash
@@ -273,7 +287,7 @@ public class TreeNode implements Comparable<TreeNode> {
         return getLevel() == 2;
     }
 
-
+    @Override
     public int compareTo(TreeNode n){
         return this.address.compareTo(n.address);
     }
@@ -282,7 +296,7 @@ public class TreeNode implements Comparable<TreeNode> {
         TreeNode n = this;
         if( n.getParent().getParent().getName() == null)
             return null;
-        while(! ( n.getParent().getParent().getName().equals("R")  )){
+        while(! ( this.getParent().getParent().getName().equals("R")  )){
             n = n.getParent();
         }
         return n;
