@@ -40,21 +40,23 @@ public class PA {
     }
 
     //---------------------------------R WRAPPERS---------------------------------//
-    public void rename(String nodeName, String rAddress){
+
+    public void del(String nodeName, String rAddress ){
+        R.del(nodeName, rAddress);
+    }
+
+    public ArrayList<String> getChildren( String rAddress ){
+        return R.getChildren(rAddress);
+    }
+
+    public void rename(String nodeName, String rAddress ){
         R.rename(nodeName, rAddress);
     }
-    public void del(String nodeName, String rAddress){
-        R.del(nodeName, rAddress);
 
-    }
-    public void add(String nodeName, String rAddress){
+    public void add(String nodeName, String rAddress ){
         R.add(nodeName, rAddress);
-
     }
-    public void addParent(String nodeName, String rAddress){
-        R.addParent(nodeName, rAddress);
 
-    }
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
@@ -95,6 +97,14 @@ public class PA {
     }
     public void save(){
         R.save();
+    }
+
+    public void addParent(String nodeName, String rAddress){
+        R.addParent(nodeName, rAddress);
+    }
+
+    public String getAddress(){
+        return R.getAddress();
     }
 
     // ----------------------------- END R WRAPPERS ----------------------------------//

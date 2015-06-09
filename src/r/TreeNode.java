@@ -94,6 +94,15 @@ public class TreeNode implements Comparable<TreeNode> {
         return children;
     }
 
+    public ArrayList<String> getChildrenString(){
+        ArrayList<String> a = new ArrayList<String>();
+        for(TreeNode child : children ){
+            a.add(child.getName());
+        }
+        return a;
+
+    }
+
     public void removeChild(TreeNode childToRemove){
         if(childToRemove == null)
             return;

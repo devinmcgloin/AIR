@@ -54,11 +54,12 @@ public class R {
     }
 
     public TreeNode get(String rAddress) {
-
-
         return genTree.getNodeByAddress(rAddress);
 
+    }
 
+    public ArrayList<String> getChildren(String rAddress){
+        return genTree.getNodeByAddress(rAddress).getChildrenString();
     }
 
     public ArrayList<TreeNodeBase> rFullHashSearch(String terms){
@@ -74,6 +75,10 @@ public class R {
 
     public TreeNode getCurrent(){
         return genTree.getCurrent();
+    }
+
+    public String getAddress(){
+        return current.getAddress();
     }
 
 
