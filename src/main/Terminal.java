@@ -9,7 +9,6 @@ import java.util.Scanner;
 /**
  * Created by devinmcgloin on 6/3/15.
  * Terminal is a command parser for the time being.
- *
  */
 public class Terminal {
 
@@ -29,47 +28,39 @@ public class Terminal {
 
 
         //check for keywords
-        if(words[0].equals("") || words[0].equals(" "))
+        if (words[0].equals("") || words[0].equals(" "))
             return;
-        else if(words[0].equals("help") || words[0].equals("?")){
+        else if (words[0].equals("help") || words[0].equals("?")) {
             System.out.print(getHelp());
-        }
-        else if( words[0].equals("add") && words.length>1  ){
+        } else if (words[0].equals("add") && words.length > 1) {
             input = input.replaceAll("add", "");
             input = input.trim();
             input = input.toLowerCase();
             PA.add(input, current.getAddress());
-        }
-        else if(input.startsWith("+")){
+        } else if (input.startsWith("+")) {
             input = input.replace('+', ' ');
             input = input.trim();
             input = input.toLowerCase();
             PA.add(input, current.getAddress());
-        }
-        else if(words[0].equals("del") && words.length>1){
+        } else if (words[0].equals("del") && words.length > 1) {
             input = input.replaceAll("del", "");
             input = input.trim();
             PA.del(input, current.getAddress());
-        }
-        else if(input.startsWith("-")){
+        } else if (input.startsWith("-")) {
             input = input.replace('-', ' ');
             input = input.trim();
             PA.del(input, current.getAddress());
-        }
-        else if(words[0].equals("print") || words[0].equals("ls")){
+        } else if (words[0].equals("print") || words[0].equals("ls")) {
             System.out.println(printChildren());
-        }
-        else if(words[0].equals("back") || words[0].equals("..")){
+        } else if (words[0].equals("back") || words[0].equals("..")) {
             current = current.getParent();
-        }
-        else if(words[0].equals("rename") || words[0].equals("mv")){
+        } else if (words[0].equals("rename") || words[0].equals("mv")) {
             //TODO: Needs fixing, r.RENAME throws nullpointer when Terminal triggers rename. Due to parsing error, when nodes include spaces. - Temp solution, no spaces allowed.
             input = input.replaceAll("mv", "");
             input = input.replaceAll("rename", "");
             input = input.trim();
             PA.rename(words[1], words[2]);
-        }
-        else if(words[0].equals("bdev") ){
+        } else if (words[0].equals("bdev")) {
             System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
             PA.blazetest();
         }
@@ -79,20 +70,13 @@ public class Terminal {
             if (current.getAddress().equals("R/")) {
                 current = PA.get("R/" + input);
             } else {
-                if (PA.get(current.getAddress() + input) != null) {
+                if (current.contains(input)) {
                     current = PA.get(current.getAddress() + input);
                 }
 
             }
 
         }
-    }
-
-    //Calls save for whole project
-    public void save() {
-
-        PA.save();
-
     }
 
     public String printChildren() {
@@ -115,6 +99,13 @@ public class Terminal {
                         "(CD     | cd ): Return to root.\n" +
                         "(RENAME | mv ): PATH - newName\n" +
                         "(Help   | ?  ): For help.\n\n");
+    }
+
+    //Calls save for whole project
+    public void save() {
+
+        PA.save();
+
     }
 
 }

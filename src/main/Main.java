@@ -25,7 +25,7 @@ public class Main {
         System.out.println(terminal.getHelp());
 
 
-        while(true){
+        while (true) {
             //Display where we are in the folder hierarchy
             System.out.print(terminal.current.getAddress());
 
@@ -34,7 +34,7 @@ public class Main {
             input = console.nextLine();
 
             //Exit terminal & Save DB
-            if(input.equals("Q") || input.equals("q")){
+            if (input.equals("Q") || input.equals("q")) {
                 terminal.save();   //which calls DBInterface.save()
                 break;
             }

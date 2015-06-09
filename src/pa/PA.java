@@ -16,26 +16,26 @@ public class PA {
 
     /**
      * HashSearch (Get set -> set logic???)
-     *
+     * <p/>
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
-     *      reanalyze headers into their true base nodes and re-rank them.
+     * reanalyze headers into their true base nodes and re-rank them.
      * merging nodes --> tricky, idk how that function would look like
      */
 
     R R;
-    public PA(){
+
+    public PA() {
         R = new R();
 
     }
 
-    public void devintest(){
+    public void devintest() {
 
     }
 
-    public void blazetest(){
+    public void blazetest() {
         TreeNode curr = R.getCurrent(); //Wrapper for GenTree.getCurrent()
-
 
 
         System.out.println("GenTree's Current: " + curr.getName() + " -  " + curr.getAddress());
@@ -48,52 +48,52 @@ public class PA {
 
     //---------------------------------R WRAPPERS---------------------------------//
 
-    public void del(String nodeName, String rAddress ){
+    public void del(String nodeName, String rAddress) {
         R.del(nodeName, rAddress);
     }
 
-    public ArrayList<String> getChildren( String rAddress ){
+    public ArrayList<String> getChildren(String rAddress) {
         return R.getChildren(rAddress);
     }
 
-    public void rename(String nodeName, String rAddress ){
+    public void rename(String nodeName, String rAddress) {
         R.rename(nodeName, rAddress);
     }
 
-    public void add(String nodeName, String rAddress ){
+    public void add(String nodeName, String rAddress) {
         R.add(nodeName, rAddress);
     }
 
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<TreeNode> hashSearch(String terms){
+    public ArrayList<TreeNode> hashSearch(String terms) {
         ArrayList<TreeNodeBase> baseNodes = R.rFullHashSearch(terms);
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
 
         //Check size
         int termSize = terms.split("`").length;
 
-        if(baseNodes.size() == 0){
+        if (baseNodes.size() == 0) {
             return treeNodes; // no dice
         }
 
         //Number of terms matches baseNode hits
-        if(baseNodes.get(0).getRank() == termSize){
+        if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
-            while(baseNodes.get(i).getRank() == termSize){
+            while (baseNodes.get(i).getRank() == termSize) {
                 treeNodes.add(baseNodes.get(i).getOrigin());
             }
         }
         //Use the next highest number of matched terms
-        else{
+        else {
             termSize = baseNodes.get(0).getRank();
-            int i =0;
-            while(baseNodes.get(i).getRank() == termSize){
+            int i = 0;
+            while (baseNodes.get(i).getRank() == termSize) {
                 treeNodes.add(baseNodes.get(i).getOrigin());
             }
         }
-        
+
 
         return treeNodes;
 
@@ -104,11 +104,11 @@ public class PA {
         return R.get(rAddress);
     }
 
-    public void save(){
+    public void save() {
         R.save();
     }
 
-    public void addParent(String nodeName, String rAddress){
+    public void addParent(String nodeName, String rAddress) {
         R.addParent(nodeName, rAddress);
     }
     // ----------------------------- END R WRAPPERS ----------------------------------//
