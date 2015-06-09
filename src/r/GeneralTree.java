@@ -26,14 +26,14 @@ import java.util.List;
  */
 public class GeneralTree {
 
-    final String FILEEXTENSION = "./R/";
-    TreeNode current;
-    TreeNode tmp;
-    File rFolder = new File(FILEEXTENSION);
-    HashBrowns hash;
+    protected final String FILEEXTENSION = "./R/";
+    protected TreeNode current;
+    protected TreeNode tmp;
+    protected File rFolder = new File(FILEEXTENSION);
+    protected HashBrowns hash;
 
 
-    public GeneralTree() {
+    protected GeneralTree() {
         //Start the R/ node.
         current = new TreeNode("R");
         current.setAddress("R");
@@ -59,17 +59,17 @@ public class GeneralTree {
     /**
      * Returns the current node to root.
      */
-    public void toRoot() {
+    protected void toRoot() {
         while (!current.isRoot())
             toParent();
 
     }
 
-    public boolean isRoot() {
+    protected boolean isRoot() {
         return current.isRoot();
     }
 
-    public boolean isLeaf() {
+    protected boolean isLeaf() {
         return current.isLeaf();
     }
 
@@ -78,7 +78,7 @@ public class GeneralTree {
      *
      * @return
      */
-    public boolean isKeyVal() {
+    protected boolean isKeyVal() {
         List<TreeNode> children = current.getChildren();
         if (children.size() == 1) {
             for (TreeNode child : children) {
@@ -100,7 +100,7 @@ public class GeneralTree {
         return path.split("/");
     }
 
-    public int getLevel() {
+    protected int getLevel() {
         return current.getLevel();
     }
 
@@ -109,7 +109,7 @@ public class GeneralTree {
      *
      * @return
      */
-    public ArrayList<String> getChildren() {
+    protected ArrayList<String> getChildren() {
         ArrayList<String> children = new ArrayList<String>();
         for (TreeNode child : current.getChildren()) {
             children.add(child.getName());
@@ -123,7 +123,7 @@ public class GeneralTree {
      * @param searchTerm
      * @return
      */
-    public boolean containsAll(String searchTerm) {
+    protected boolean containsAll(String searchTerm) {
         if (current.containsAll(searchTerm))
             return true;
         return false;
@@ -135,7 +135,7 @@ public class GeneralTree {
      *
      * @param level
      */
-    public void upLevel(int level) {
+    protected void upLevel(int level) {
         if (level < 0)
             return;
         if (level > current.getLevel())
@@ -147,7 +147,7 @@ public class GeneralTree {
     /**
      * Sets current to its parent.
      */
-    public void toParent() {
+    protected void toParent() {
         if (!current.isRoot()) {
             current = current.getParent();
         }
@@ -157,7 +157,7 @@ public class GeneralTree {
     /**
      * SAVE
      */
-    public void exportDB() {
+    protected void exportDB() {
         System.out.println("export called");
         //Go back until we're at Foo.txt
         if (current.isRoot())
@@ -200,7 +200,7 @@ public class GeneralTree {
      * @param node - .txt node
      * @return StringBuilder --> call toString on it for export.
      */
-    public StringBuilder export(TreeNode node) {
+    protected StringBuilder export(TreeNode node) {
         StringBuilder DBout = new StringBuilder();
         if (node.getLevel() == 1) {
             String buffer = "";
@@ -237,7 +237,7 @@ public class GeneralTree {
      *
      * @param dbName
      */
-    public void loadDB(String dbName) {
+    protected void loadDB(String dbName) {
 
         int i = 0;
         int curTabs = 0;
@@ -319,7 +319,7 @@ public class GeneralTree {
      * @param address
      * @return
      */
-    public TreeNode getNodeByAddress(String address) {
+    protected TreeNode getNodeByAddress(String address) {
 
 
         //TODO: Make sure you have the right directory and GenTree has files right.
@@ -390,7 +390,7 @@ public class GeneralTree {
      *
      * @param newName
      */
-    public void rename(String newName) {
+    protected void rename(String newName) {
         String oldName = current.getName();
         goBack(); //TODO: null pointer
         if (contains(newName)) {
@@ -408,7 +408,7 @@ public class GeneralTree {
      *
      * @param name
      */
-    public void addParent(String name) {
+    protected void addParent(String name) {
         //Please keep in mind it is impossible to change the text file or "R"
         //Nada				//R								//foo.txt
         if (current == null || current.getParent() == null || current.getParent().getParent() == null) {
@@ -435,7 +435,7 @@ public class GeneralTree {
      * @param next
      * @return
      */
-    public boolean childTraverse(String next) {
+    protected boolean childTraverse(String next) {
         for (int i = 0; i < current.getChildren().size(); i++) {
             String childName = current.getChildren().get(i).getName();
             if (next.equals(childName)) {
@@ -451,7 +451,7 @@ public class GeneralTree {
      * @param address
      * @return
      */
-    public TreeNode getNode(String address) {
+    protected TreeNode getNode(String address) {
 
         String[] nodeNames = address.split("/");
         //(genTree will need to split up the address on "/", go to root, and then as long as the
@@ -490,7 +490,7 @@ public class GeneralTree {
      * @param input
      * @return - list of all addresses that contain that node name.
      */
-    public ArrayList<String> hashSearch(String input) {
+    protected ArrayList<String> hashSearch(String input) {
         ArrayList<String> addresses = new ArrayList<String>();
         addresses = hash.search(input);
         return addresses;
@@ -501,7 +501,7 @@ public class GeneralTree {
      * @param terms
      * @return
      */
-    public ArrayList<TreeNodeBase> fullHashSearch(String terms) {
+    protected ArrayList<TreeNodeBase> fullHashSearch(String terms) {
         //TERMs must be separated by `
         //Then try hash searching.
         TreeNode tmp = getCurrent();
@@ -510,18 +510,18 @@ public class GeneralTree {
         return hits;
     }
 
-    public TreeNode getCurrent() {
+    protected TreeNode getCurrent() {
         return current;
     }
 
-    public void setCurrent(TreeNode lol) {
+    protected void setCurrent(TreeNode lol) {
         this.current = lol;
     }
 
     /**
      * Sets current to the parent node.
      */
-    public void goBack() {
+    protected void goBack() {
         if (current.getParent() != null) {
             //Check if backing out of DB (triggers save)
             if (current.getParent().isRoot()) {
@@ -538,7 +538,7 @@ public class GeneralTree {
      * ADD NODE --HOPEFULLY HASH WORKS FUCK Change to addChild
      * @param name
      */
-    public void addNode(String name) {
+    protected void addNode(String name) {
         if (contains(name)) {
             System.out.printf("Dimension: %s already exists.\n", name);
             return;
@@ -555,7 +555,7 @@ public class GeneralTree {
      * @param searchTerm
      * @return
      */
-    public boolean contains(String searchTerm) {
+    protected boolean contains(String searchTerm) {
         if (current.contains(searchTerm)) //TODO : re-write in treenode with a BS
             return true;
         return false;
@@ -565,7 +565,7 @@ public class GeneralTree {
      * DEL NODE
      * @param name
      */
-    public void delNode(String name) {
+    protected void delNode(String name) {
         List<TreeNode> children = current.getChildren();
         //COULD REPLACE WITH A GETNODE() func
         for (int i = 0; i < children.size(); i++) {
@@ -583,7 +583,7 @@ public class GeneralTree {
      *
      * @return - root of current node.
      */
-    public TreeNode getRoot() {
+    protected TreeNode getRoot() {
         tmp = current;
         TreeNode temp2;
         toRoot();

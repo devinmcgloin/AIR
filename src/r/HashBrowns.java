@@ -8,17 +8,17 @@ import java.util.HashMap;
 public class HashBrowns {
 
 
-    ArrayList<String> addresses;
-    HashMap<String, ArrayList<String> > map;
-    String name = "";
-    String address = "";
+    protected ArrayList<String> addresses;
+    protected HashMap<String, ArrayList<String> > map;
+    protected String name = "";
+    protected String address = "";
 
     HashBrowns(){
         map = new HashMap<String, ArrayList<String> >();
         addresses = new ArrayList<String>();
     }
 
-    public ArrayList<String> search(String key){
+    protected ArrayList<String> search(String key){
         //Get the list of addresses related to this node.
         addresses = map.get(key);
         if(addresses == null){
@@ -27,7 +27,7 @@ public class HashBrowns {
         return addresses;
     }
 
-    public ArrayList<TreeNodeBase> fullHashSearch(String input, GeneralTree GenTree){
+    protected ArrayList<TreeNodeBase> fullHashSearch(String input, GeneralTree GenTree){
         String address = "";
         ArrayList<TreeNode> hits = new ArrayList<TreeNode>();
         ArrayList<String> addresses = new ArrayList<String>();
@@ -122,7 +122,7 @@ public class HashBrowns {
 
     //TODO: will eventually need a customized "black list" of words to NOT save the addresses of.
     //i.e. has, is, parent (literally any header).
-    public boolean add(TreeNode n){
+    protected boolean add(TreeNode n){
         name = n.getName();
         address = n.getAddress();
 
@@ -150,7 +150,7 @@ public class HashBrowns {
         return true;
     }
 
-    public boolean del(String name, String address){
+    protected boolean del(String name, String address){
 
         //Gets a key and address. Address is inside of arrayList of addresses.
         //Remove the address from the arrayList of addresses and add the updated list.

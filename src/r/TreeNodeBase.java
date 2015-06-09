@@ -28,15 +28,15 @@ public class TreeNodeBase implements Comparable<TreeNodeBase>{
         origin = n;
     }
 
-    public void setRank(int rank){
+    protected void setRank(int rank){
         this.rank = rank;
     }
 
-    public int getRank(){
+    protected int getRank(){
         return rank;
     }
 
-    public TreeNode getOrigin(){
+    protected TreeNode getOrigin(){
         return origin;
     }
 
