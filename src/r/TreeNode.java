@@ -68,7 +68,7 @@ public class TreeNode implements Comparable<TreeNode> {
         return children;
     }
 
-    public void setChildren(List<TreeNode> children) {
+    protected void setChildren(List<TreeNode> children) {
         this.children = children;
     }
 
@@ -88,13 +88,13 @@ public class TreeNode implements Comparable<TreeNode> {
     /**
      * @param name
      */
-    public void setName(String name) {
+    protected void setName(String name) {
 
         this.name = name;
 
     }
 
-    public void removeChild(TreeNode childToRemove) {
+    protected void removeChild(TreeNode childToRemove) {
         if (childToRemove == null)
             return;
         children.remove(childToRemove);
@@ -133,7 +133,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     //TODO: ....does this work?
-    public boolean addChild(String child) {
+    protected boolean addChild(String child) {
         TreeNode childNode = new TreeNode(child);
         return addChild(childNode);
     }
@@ -142,7 +142,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param childNode
      * @return
      */
-    public boolean addChild(TreeNode childNode) {
+    protected boolean addChild(TreeNode childNode) {
         childNode.parent = this;
         childNode.updateAddress();
         childNode.elementsIndex = elementsIndex;
@@ -261,7 +261,7 @@ public class TreeNode implements Comparable<TreeNode> {
      *
      * @param node
      */
-    public void delChild(String node) {
+    protected void delChild(String node) {
         children.remove(contains(node));
     }
 
@@ -307,7 +307,7 @@ public class TreeNode implements Comparable<TreeNode> {
         return null;
     }
 
-    public void setParent(TreeNode parent) {
+    protected void setParent(TreeNode parent) {
         this.parent = parent;
     }
 

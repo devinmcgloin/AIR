@@ -4,6 +4,7 @@ import r.TreeNode;
 import r.R;
 import r.TreeNodeBase;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -23,10 +24,20 @@ public class PA {
      * merging nodes --> tricky, idk how that function would look like
      */
 
-    R R;
+    protected File rFolder = new File("./R/");
+    protected ArrayList<R> rDB = new ArrayList<R>();
+    protected R currentR = null;
 
     public PA() {
-        R = new R();
+        if (rFolder.length() >= 1) {
+            for (File fileEntry : rFolder.listFiles()) {
+                if (fileEntry.isDirectory()) {
+                    continue;
+                } else {
+                    rDB.add(new R(fileEntry.getName()));
+                }
+            }
+        }
 
     }
 
@@ -35,7 +46,7 @@ public class PA {
     }
 
     public void blazetest() {
-        TreeNode curr = R.getCurrent(); //Wrapper for GenTree.getCurrent()
+        TreeNode curr = currentR.getCurrent(); //Wrapper for GenTree.getCurrent()
 
 
         System.out.println("GenTree's Current: " + curr.getName() + " -  " + curr.getAddress());
@@ -49,26 +60,26 @@ public class PA {
     //---------------------------------R WRAPPERS---------------------------------//
 
     public void del(String nodeName, String rAddress) {
-        R.del(nodeName, rAddress);
+        currentR.del(nodeName, rAddress);
     }
 
     public ArrayList<String> getChildren(String rAddress) {
-        return R.getChildren(rAddress);
+        return currentR.getChildren(rAddress);
     }
 
     public void rename(String nodeName, String rAddress) {
-        R.rename(nodeName, rAddress);
+        currentR.rename(nodeName, rAddress);
     }
 
     public void add(String nodeName, String rAddress) {
-        R.add(nodeName, rAddress);
+        currentR.add(nodeName, rAddress);
     }
 
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
     public ArrayList<TreeNode> hashSearch(String terms) {
-        ArrayList<TreeNodeBase> baseNodes = R.rFullHashSearch(terms);
+        ArrayList<TreeNodeBase> baseNodes = currentR.rFullHashSearch(terms);
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
 
         //Check size
@@ -101,15 +112,23 @@ public class PA {
 
     public TreeNode get(String rAddress) {
 
-        return R.get(rAddress);
+        return currentR.get(rAddress);
     }
 
     public void save() {
-        R.save();
+        for(R r : rDB)
+            r.save();
     }
 
     public void addParent(String nodeName, String rAddress) {
-        R.addParent(nodeName, rAddress);
+        currentR.addParent(nodeName, rAddress);
+    }
+
+    public void goToDB(String rAddress){
+        for(R r : rDB){
+            if(r.getName() == rAddress.split("/")[1])
+                currentR = r;
+        }
     }
     // ----------------------------- END R WRAPPERS ----------------------------------//
 

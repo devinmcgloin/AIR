@@ -13,15 +13,21 @@ import java.util.ArrayList;
  */
 public class R {
 
+    String name;
     GeneralTree genTree;
     ArrayList<TreeNodeBase> hits;
     TreeNode current;
 
     //Start R Interface
-    public R(){
+    public R(String name){
+        this.name = name;
         genTree = new GeneralTree();
         hits = new ArrayList<TreeNodeBase>();
         current = genTree.getCurrent();
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void rename(String nodeName, String rAddress){
