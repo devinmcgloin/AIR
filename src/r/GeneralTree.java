@@ -229,7 +229,7 @@ public class GeneralTree {
      */
     public StringBuilder export(TreeNode node) {
         upLevel(1);
-        if (node.isRoot()) {
+        if (node.getLevel() == 1) {
             StringBuilder returnStatement = new StringBuilder("");
             for (TreeNode child : current.getChildren()) {
                 if (!child.isLeaf())
