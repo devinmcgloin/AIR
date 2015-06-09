@@ -17,12 +17,11 @@ public class Terminal {
     TreeNode current;
 
 
-    Terminal(){
+    Terminal() {
         current = PA.get("R/");
     }
 
-    public void parse(String input){
-
+    public void parse(String input) {
 
 
         input = input.trim();
@@ -30,20 +29,25 @@ public class Terminal {
 
 
         //check for keywords
-        if( words[0].equals("ADD") && words.length>1  ){
-            input = input.replaceAll("ADD", "");
+        if(words[0].equals("") || words[0].equals(" "))
+            return;
+        else if(words[0].equals("help") || words[0].equals("?")){
+            System.out.print(getHelp());
+        }
+        else if( words[0].equals("add") && words.length>1  ){
+            input = input.replaceAll("add", "");
             input = input.trim();
-
-            PA.add( input,current.getAddress());
+            input = input.toLowerCase();
+            PA.add(input, current.getAddress());
         }
         else if(input.startsWith("+")){
             input = input.replace('+', ' ');
             input = input.trim();
-            System.out.println("current:  "+ current.getAddress());
-            PA.add(input, current.getAddress() );
+            input = input.toLowerCase();
+            PA.add(input, current.getAddress());
         }
-        else if(words[0].equals("DEL") && words.length>1){
-            input = input.replaceAll("DEL", "");
+        else if(words[0].equals("del") && words.length>1){
+            input = input.replaceAll("del", "");
             input = input.trim();
             PA.del(input, current.getAddress());
         }
@@ -52,43 +56,26 @@ public class Terminal {
             input = input.trim();
             PA.del(input, current.getAddress());
         }
-        else if(words[0].equals("PRINT") || words[0].equals("ls")){
-
-            //current.printChildren();
-
-            for(int i=0; i<current.children.size(); i++){
-                System.out.println(current.children.get(i).getName());
-            }
+        else if(words[0].equals("print") || words[0].equals("ls")){
+            System.out.println(printChildren());
         }
-        else if(words[0].equals("BACK") || words[0].equals("..")){
-            current =  current.getParent();
-
+        else if(words[0].equals("back") || words[0].equals("..")){
+            current = current.getParent();
         }
-        else if(words[0].equals("RENAME") || words[0].equals("mv")){
+        else if(words[0].equals("rename") || words[0].equals("mv")){
+            //TODO: Needs fixing, r.RENAME throws nullpointer when Terminal triggers rename. Due to parsing error, when nodes include spaces. - Temp solution, no spaces allowed.
             input = input.replaceAll("mv", "");
-            input = input.replaceAll("RENAME", "");
+            input = input.replaceAll("rename", "");
             input = input.trim();
-            PA.rename(input, current.getAddress());
-            //TODO: genTree.current.updateAddress();
-        }
-        else if( words[0].equals("PARENT") ){
-            input = input.replaceAll("PARENT", "");
-            input = input.trim();
-            PA.addParent(input, current.getAddress());
-        }
-        else if(words[0].equals("ddev")){
-            PA.devintest();
-        }
-        else if(words[0].equals("bdev")){
-            PA.blazetest();
+            PA.rename(words[1], words[2]);
         }
         //Fun stuff
-        else{
+        else {
 
-            if(current.getName().equals("R/")){
+            if (current.getAddress().equals("R/")) {
                 current = PA.get("R/" + input);
-            }else {
-                if( PA.get(current.getAddress() + input) != null){
+            } else {
+                if (PA.get(current.getAddress() + input) != null) {
                     current = PA.get(current.getAddress() + input);
                 }
 
@@ -98,13 +85,13 @@ public class Terminal {
     }
 
     //Calls save for whole project
-    public void save(){
+    public void save() {
 
         PA.save();
 
     }
 
-    public String printChildren(){
+    public String printChildren() {
         ArrayList<String> children = current.getChildrenString();
         String returnString = "";
         for (String child : children)
@@ -112,7 +99,7 @@ public class Terminal {
         return returnString;
     }
 
-    public String getHelp(){
+    public String getHelp() {
         return String.format(
                 "PATHS must be formatted as follows:\n" +
                         "'nouns/places/nations'\n" +
@@ -126,36 +113,4 @@ public class Terminal {
                         "(Help   | ?  ): For help.\n\n");
     }
 
-    public static void main(String[] args) {
-
-
-        Terminal terminal = new Terminal();
-
-        Scanner console = new Scanner(System.in);
-        String input;
-
-        System.out.println("WELCOME TO AIR.\n");
-        System.out.println(terminal.getHelp());
-
-
-        while(true){
-            //Display where we are in the folder hierarchy
-            System.out.print(terminal.current.getAddress());
-
-
-            //Wait for next input
-            input = console.nextLine();
-
-            //Exit terminal & Save DB
-            if(input.equals("Q") || input.equals("q")){
-                terminal.save();   //which calls DBInterface.save()
-                break;
-            }
-
-            //Get DB response (might make it return error and then the dir?)
-            terminal.parse(input);
-
-
-            }
-        }
-    }
+}

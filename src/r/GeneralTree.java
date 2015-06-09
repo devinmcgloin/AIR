@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class GeneralTree {
 
-    TreeNode root;
     TreeNode current;
     TreeNode tmp;
     final String FILEEXTENSION = "./R/";
@@ -34,19 +33,20 @@ public class GeneralTree {
 
     public GeneralTree(){
         //Start the R/ node.
-        root = new TreeNode("R");
-        root.setAddress("R");
-        current = root;
+        current = new TreeNode("R");
+        current.setAddress("R");
 
         //Add the possible files it could have. (DBs)
         //TODO: Could be a null pointer...do i throw an error? jeez. it's such a big program.
         //maybe we could have an error log for the program as a whole!
-        for (File fileEntry : rFolder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                continue;
-            } else {
-                tmp = new TreeNode(fileEntry.getName());
-                root.addChild(tmp);
+        if(rFolder.length() >= 1) {
+            for (File fileEntry : rFolder.listFiles()) {
+                if (fileEntry.isDirectory()) {
+                    continue;
+                } else {
+                    tmp = new TreeNode(fileEntry.getName());
+                    current.addChild(tmp);
+                }
             }
         }
 
@@ -187,9 +187,9 @@ public class GeneralTree {
     //SAVE
     public void exportDB(){
         //Go back until we're at Foo.txt
-        if(current==root)
+        if(current.isRoot())
             return;
-        while(current.getParent()!=root){
+        while(!current.getParent().isRoot()){
             goBack();
         }
 
@@ -232,12 +232,13 @@ public class GeneralTree {
         if (node.getLevel() == 1) {
             StringBuilder returnStatement = new StringBuilder("");
             for (TreeNode child : current.getChildren()) {
-                if (!child.isLeaf())
-                    returnStatement.append(child.toString() + "\n");
+                returnStatement.append(child.toString() + "\n");
                 returnStatement.append(export(child));
             }
             return returnStatement;
-        } else if (!node.isLeaf()) {
+        }
+
+        else if (!node.isLeaf()) {
             StringBuilder returnStatement = new StringBuilder("");
             for (TreeNode child : node.getChildren()) {
                 if (!child.isLeaf())
@@ -245,7 +246,9 @@ public class GeneralTree {
                 returnStatement.append(export(child));
             }
             return returnStatement;
-        } else if (node.isLeaf()) {
+        }
+
+        else if (node.isLeaf()) {
             StringBuilder returnStatement = new StringBuilder("");
             returnStatement.append(lvlSpacing(node.getLevel() - 1) + node.toString() + "\n");
             return returnStatement;
@@ -364,28 +367,27 @@ public class GeneralTree {
         //We are sending a command to "R/" directory.
         if(tmpS.length==1 && address.equals("R/")){
             System.out.println("GenTree -- root operation triggered!!!");
-            return root;
+            return getRoot();
         }
         String dbName = address.split("/")[1];
 
         //Options, we're in R, or we're at the db.
         //Wrong db or no DB or right db.
 
-        System.out.println("Let's clear this up: " + current.getAddress());
         //NO DB loaded
-        if( current.equals(root) /*&& current.contains(dbName)*/){
+        if( current.isRoot() /*&& current.contains(dbName)*/){
             childTraverse(dbName);
             loadDB(dbName);
         }
-        else{
-            // FUCK FUCK FUCK
-            System.out.println("GenTree -- No db with name: " + dbName);
-            return current;
-        }
+//        else{
+//            // FUCK FUCK FUCK
+//            System.out.println("GenTree -- No db with name: " + dbName);
+//            return current;
+//        }
 
         //Wrong DB loaded
         if( !current.getAddress().split("/")[1].equals(dbName) ){
-            while(current!=root){
+            while(!current.isRoot()){
                 goBack();
             }
             //Now load db of the address we were given.
@@ -467,9 +469,9 @@ public class GeneralTree {
         //e.g. [R, foo.txt, people, George Clooney, Pets, Oscar]
 
         //Go back till R is two away.
-        if(current==root)
+        if(current.isRoot())
             return null;
-        while(current.getParent()!=root){
+        while(!current.getParent().isRoot()){
             goBack();
         }
 
@@ -539,7 +541,7 @@ public class GeneralTree {
     public void goBack(){
         if(current.getParent()!= null){
             //Check if backing out of DB (triggers save)
-            if(current.getParent()==root){
+            if(current.getParent().isRoot()){
                 exportDB();
             }
             current = current.getParent();
@@ -575,4 +577,12 @@ public class GeneralTree {
     }
     public void setCurrent(TreeNode lol){ this.current = lol;}
 
+    public TreeNode getRoot() {
+        tmp = current;
+        TreeNode temp2;
+        toRoot();
+        temp2 = current;
+        current = tmp;
+        return temp2;
+    }
 }
