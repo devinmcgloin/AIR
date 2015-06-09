@@ -4,6 +4,7 @@ import r.TreeNode;
 import r.R;
 import r.TreeNodeBase;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -16,85 +17,126 @@ public class PA {
 
     /**
      * HashSearch (Get set -> set logic???)
-     *
+     * <p/>
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
-     *      reanalyze headers into their true base nodes and re-rank them.
+     * reanalyze headers into their true base nodes and re-rank them.
      * merging nodes --> tricky, idk how that function would look like
      */
 
-    R R;
-    public PA(){
-        R = new R();
+    protected File rFolder = new File("./R/");
+    protected ArrayList<R> rDB = new ArrayList<R>();
+    protected R currentR = null;
+
+    public PA(String user) {
+        if(!user.equals("Terminal")) {
+            if (rFolder.length() >= 1) {
+                for (File fileEntry : rFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        continue;
+                    } else {
+                        rDB.add(new R(fileEntry.getName()));
+                    }
+                }
+            }
+        }
+        currentR = new R();
+
 
     }
 
-    public void devintest(){
+    public void devintest() {
 
     }
 
-    public void blazetest(){
+    public void blazetest() {
+        TreeNode curr = currentR.getCurrent(); //Wrapper for GenTree.getCurrent()
+
+
+        System.out.println("GenTree's Current: " + curr.getName() + " -  " + curr.getAddress());
+        //System.out.println(R.rFullHashSearch("1`a").get(0).getOrigin().getName());
+        //curr = R.get("R/0.txt/");
+
+        //System.out.println(curr.prettyPrint());
 
     }
 
     //---------------------------------R WRAPPERS---------------------------------//
-    public void rename(String nodeName, String rAddress){
-        R.rename(nodeName, rAddress);
-    }
-    public void del(String nodeName, String rAddress){
-        R.del(nodeName, rAddress);
 
+    public void del(String nodeName, String rAddress) {
+        currentR.del(nodeName, rAddress);
     }
-    public void add(String nodeName, String rAddress){
-        R.add(nodeName, rAddress);
 
+    public ArrayList<String> getChildren(String rAddress) {
+        return currentR.getChildren(rAddress);
     }
-    public void addParent(String nodeName, String rAddress){
-        R.addParent(nodeName, rAddress);
 
+    public void rename(String nodeName, String rAddress) {
+        currentR.rename(nodeName, rAddress);
     }
+
+    public void add(String nodeName, String rAddress) {
+        currentR.add(nodeName, rAddress);
+    }
+
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<TreeNode> hashSearch(String terms){
-        ArrayList<TreeNodeBase> baseNodes = R.rFullHashSearch(terms);
+    public ArrayList<TreeNode> hashSearch(String terms) {
+        ArrayList<TreeNodeBase> baseNodes = currentR.rFullHashSearch(terms);
         ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
 
         //Check size
         int termSize = terms.split("`").length;
 
-        if(baseNodes.size() == 0){
+        if (baseNodes.size() == 0) {
             return treeNodes; // no dice
         }
 
         //Number of terms matches baseNode hits
-        if(baseNodes.get(0).getRank() == termSize){
+        if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
-            while(baseNodes.get(i).getRank() == termSize){
+            while (baseNodes.get(i).getRank() == termSize) {
                 treeNodes.add(baseNodes.get(i).getOrigin());
             }
         }
         //Use the next highest number of matched terms
-        else{
+        else {
             termSize = baseNodes.get(0).getRank();
-            int i =0;
-            while(baseNodes.get(i).getRank() == termSize){
+            int i = 0;
+            while (baseNodes.get(i).getRank() == termSize) {
                 treeNodes.add(baseNodes.get(i).getOrigin());
             }
         }
-        
+
 
         return treeNodes;
 
     }
 
     public TreeNode get(String rAddress) {
-        return R.get(rAddress);
-    }
-    public void save(){
-        R.save();
+
+        return currentR.get(rAddress);
     }
 
+    public void save() {
+        for(R r : rDB)
+            r.save();
+
+        //Terminal Only
+        currentR.save();
+    }
+
+    public void addParent(String nodeName, String rAddress) {
+        currentR.addParent(nodeName, rAddress);
+    }
+
+    public void goToDB(String rAddress){
+        for(R r : rDB){
+            if(r.getName() == rAddress.split("/")[1])
+                currentR = r;
+        }
+    }
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
 }

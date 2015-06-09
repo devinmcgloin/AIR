@@ -1,6 +1,9 @@
 Devin McGloin
 Devin McGloin
 Strawberry
+    has
+        color
+        texture
     is
         red
         red

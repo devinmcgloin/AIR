@@ -28,7 +28,7 @@ public class TreeNodeBase implements Comparable<TreeNodeBase>{
         origin = n;
     }
 
-    public void setRank(int rank){
+    protected void setRank(int rank){
         this.rank = rank;
     }
 

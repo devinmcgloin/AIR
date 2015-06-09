@@ -15,35 +15,32 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Nulp smart = new Nulp();
+
+        Terminal terminal = new Terminal();
 
         Scanner console = new Scanner(System.in);
-        String dir = "R/";
         String input;
 
+        System.out.println("WELCOME TO AIR.\n");
+        System.out.println(terminal.getHelp());
 
-        while(true){
+
+        while (true) {
             //Display where we are in the folder hierarchy
-            System.out.print(dir);
+            System.out.print(terminal.current.getAddress());
 
 
             //Wait for next input
             input = console.nextLine();
 
             //Exit terminal & Save DB
-            if(input.equals("q")){
-                smart.save();   //which calls DBInterface.save()
+            if (input.equals("Q") || input.equals("q")) {
+                terminal.save();   //which calls DBInterface.save()
                 break;
             }
 
             //Get DB response (might make it return error and then the dir?)
-           TreeNode hit = smart.parse(input);
-            if(hit != null){
-
-                //dir = hits.get(0).getAddress();
-                dir = hit.getAddress();
-            }
-
+            terminal.parse(input);
 
 
         }
