@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //TODO: navigate by address!
@@ -194,7 +195,7 @@ public class GeneralTree {
             goBack();
         }
 
-        String DBout = current.prettyPrint();//export(current).toString();
+        String DBout = export(current).toString();
 
         //Save file to the DB name
         try{
@@ -225,38 +226,34 @@ public class GeneralTree {
     /**
      * recursive export.
      *
-     * @param node
+     * @param node - .txt node
      * @return StringBuilder --> call toString on it for export.
      */
     public StringBuilder export(TreeNode node) {
-        upLevel(1);
-        if (node.getLevel() == 1) {
-            StringBuilder returnStatement = new StringBuilder("");
-            for (TreeNode child : current.getChildren()) {
-                returnStatement.append(child.toString() + "\n");
-                returnStatement.append(export(child));
+        StringBuilder DBout = new StringBuilder();
+        if(node.getLevel() == 1){
+            String buffer = "";
+            //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
+            Collections.sort(node.getChildren());
+            TreeNode tmp;
+            for(TreeNode child : node.getChildren()){
+                DBout.append(buffer+child.getName()+"\n");
+                DBout.append(exportRec(child, buffer));
             }
-            return returnStatement;
+            return DBout;
         }
+        return DBout;
+    }
 
-        else if (!node.isLeaf()) {
-            StringBuilder returnStatement = new StringBuilder("");
-            for (TreeNode child : node.getChildren()) {
-                if (!child.isLeaf())
-                    returnStatement.append(lvlSpacing(child.getLevel() - 1) + child.toString() + "\n");
-                returnStatement.append(export(child));
-            }
-            return returnStatement;
+    private StringBuilder exportRec(TreeNode node, String buffer){
+        StringBuilder DBout = new StringBuilder();
+        buffer+="    ";
+        Collections.sort(node.getChildren());
+        for(TreeNode child : node.getChildren()){
+            DBout.append(buffer+child.getName()+"\n");
+            DBout.append(exportRec(child, buffer));
         }
-
-        else if (node.isLeaf()) {
-            StringBuilder returnStatement = new StringBuilder("");
-            returnStatement.append(lvlSpacing(node.getLevel() - 1) + node.toString() + "\n");
-            return returnStatement;
-        }
-
-
-        return new StringBuilder("");
+        return DBout;
     }
 
     ///---------------------------------OUT END
