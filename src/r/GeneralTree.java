@@ -386,10 +386,18 @@ public class GeneralTree {
             return current;
         }
 
+
+        //FUCK
+
         //Wrong DB loaded
         if( !current.getAddress().split("/")[1].equals(dbName) ){
             while(!current.isRoot()){
                 goBack();
+            }
+            //Now check if that DB exists
+            if(!current.contains(dbName) && current.isRoot()){
+                System.out.println("No DB by name: " + dbName);
+                return current;
             }
             //Now load db of the address we were given.
             childTraverse(dbName);
