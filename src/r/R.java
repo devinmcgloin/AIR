@@ -79,9 +79,6 @@ public class R {
         return genTree.fullHashSearch(terms);
     }
 
-
-
-
     public void save(){
         genTree.exportDB();
     }
@@ -89,7 +86,5 @@ public class R {
     public TreeNode getCurrent(){
         return genTree.getCurrent();
     }
-
-
 
 }
