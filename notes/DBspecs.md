@@ -9,12 +9,12 @@ DELETE -FROM <BN taken from> -VALUES < key val pairs to delete>
 CREATE -Not needed.
 
 ---------------- R Specific ----------------
-Membership - basically set logic 
+Membership - basically set logic
 Matrix building - Used for items in the same set, can be modified with standard sql commands and saved in R format. (If this can be achieved it also allows for seamless import into R structure, and also makes the system somewhat backwards compatable)
 Wildcards in search
 Search
 Validation -Used to match conditions for search or removing nodes.
-Inheritance
+Inheritance - What to copy over?
 Set Logic - Most operations will be mapped over sets of similar nodes.
 
 How to deal with mutiples additions /edits / etc to the same file?
