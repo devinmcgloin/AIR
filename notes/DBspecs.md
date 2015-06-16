@@ -6,7 +6,7 @@ SELECT <fields> -FROM <set of base nodes> -WHERE <condition that has to be true>
 INSERT -TO <BN added too> -VALUES <I like record syntax here.>
 UPDATE -TO <BN updated too> -VALUES <I like record syntax here.>
 DELETE -FROM <BN taken from> -VALUES < key val pairs to delete>
-CREATE -Not needed.
+CREATE -To this set of base nodes add this attribute. Matches based on the BN name.
 
 ---------------- R Specific ----------------
 Membership - basically set logic
@@ -16,6 +16,7 @@ Search
 Validation -Used to match conditions for search or removing nodes.
 Inheritance - What to copy over?
 Set Logic - Most operations will be mapped over sets of similar nodes.
+Insert - Its like this but without that. etc
 
 How to deal with mutiples additions /edits / etc to the same file?
 
@@ -28,3 +29,14 @@ We also have to have a system for storing relative information, specifically dat
 -------- R Information --------
 What kinds of things would we support storing?
 How do deal with/provide complex data types? EG 3D files, music etc.(If at all)
+
+
+---------Spit Balling ---------
+What if the database pulls in content from your accounts say email, texts, news etc and just pushes those things to you? It always keeps itself updated and is aware of the content that matters to you most. Means everything is already universal and can be rendered in a universal manner on the client side. Meaning that is super minimal and doesn't care what kinds of information you give it really. Information is all rendered in the same manner.
+
+How to integrate into existing systems?
+
+
+--------- LDATA ----------------
+Returns true or false. Needs to know what you're asking of it and what node its from.
+Returns True if it's valid, false if not.
