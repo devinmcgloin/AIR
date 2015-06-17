@@ -1,6 +1,16 @@
 cities
     ^adj
     ^has
+        doctors office
+        fire dept
+        location
+            california
+        mayor
+        police station
+        post office
+        residents
+            200000
+            ldata
     ^is
     ^logicalchild
     ^v1
@@ -15,3 +25,12 @@ robject
     ^logicalchild
     ^v1
     ^v2
+town
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        post office
+        residents

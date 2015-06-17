@@ -29,6 +29,7 @@ public class PA {
     protected File rFolder = new File("./R/");
     protected ArrayList<R> rDB = new ArrayList<R>();
     protected R currentR = null;
+    protected Inheritance inherit;
 
     public PA(String user) {
         if(!user.equals("Terminal")) {
@@ -43,12 +44,12 @@ public class PA {
             }
         }
         currentR = new R();
-
+        inherit = new Inheritance(this);
 
     }
 
     public void devintest() {
-
+        inherit.inherit(get("R/Noun.txt/town"), get("R/Noun.txt/cities"));
     }
 
     public void blazetest() {

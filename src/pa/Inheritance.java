@@ -11,11 +11,11 @@ import java.util.ArrayList;
  * Inheritance is going to be needed to create new nodes that pull in the HAS qualities only.
  */
 public class Inheritance {
-    R currentR;
+    PA pa;
 
 
-    public Inheritance(R r){
-        currentR = r;
+    public Inheritance(PA pa){
+        this.pa = pa;
     }
     /**
      *
@@ -25,10 +25,14 @@ public class Inheritance {
         ArrayList<String> children;
         TreeNode tmp = from.getOrigin().getChild("^has");
 
-        if(tmp != null){
+        if(tmp != null && to.getOrigin().getChild("^has") != null){
             children = tmp.getChildrenString();
             for (String child : children)
-                currentR.add(to.getOrigin().getAddress() + "^has/", child);
+                pa.add(child, to.getOrigin().getAddress() + "^has/");
+        }else{
+            pa.add("^has", to.getOrigin().getAddress());
+            pa.add("^has", from.getOrigin().getAddress());
+            inherit(to, from);
         }
     }
 }
