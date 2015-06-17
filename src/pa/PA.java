@@ -80,6 +80,7 @@ public class PA {
     }
 
 
+    //Moved to set logic
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
     public ArrayList<PABN> hashSearch(String terms) {

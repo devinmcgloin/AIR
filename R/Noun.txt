@@ -1,15 +1,17 @@
-Devin McGloin
-Devin McGloin
-Strawberry
-    has
-        color
-        texture
-    is
-        red
-        red
-        summer vine
-        summer vine
-        sweet
-        sweet
-    is
-Strawberry
+cities
+    ^adj
+    ^has
+    ^is
+    ^logicalchild
+    ^v1
+    ^v2
+measurement
+    ^is
+        ldata
+robject
+    ^adj
+    ^has
+    ^is
+    ^logicalchild
+    ^v1
+    ^v2

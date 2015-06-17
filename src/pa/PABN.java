@@ -15,11 +15,13 @@ public class PABN {
 
     private TreeNode BN;
     private TreeNode tmp;
-    private R currentR;
 
     public PABN( TreeNode n, R r ){
         BN = n;
-        currentR = r;
+    }
+
+    public TreeNode getOrigin(){
+        return BN;
     }
 
     public boolean isFilter(String searchTerm){
@@ -32,10 +34,11 @@ public class PABN {
     }
 
     /**
+     * TODO: Needs to be implemented in LDATA
      * needs to be sent to LDATA
      * @return
      */
-    public boolean hasValue(){
+    public boolean hasValue(String keyVal){
         return false;
     }
 
@@ -57,21 +60,6 @@ public class PABN {
             return tmp.contains(searchTerm);
         }else
             return false;
-    }
-
-    /**
-     * Node that the method is called on is the one that inherits from the parameter.
-     * @param from - Node the current node is getting its has attributes from.
-     */
-    public void inherit(PABN from){
-        ArrayList<String> children;
-        tmp = from.BN.getChild("^has");
-
-        if(tmp != null){
-            children = tmp.getChildrenString();
-            for (String child : children)
-                currentR.add(BN.getAddress() + "^has/", child);
-        }
     }
 
 }
