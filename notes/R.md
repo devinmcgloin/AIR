@@ -31,8 +31,8 @@ BN
   ^is - is
   ^adj - Adj
   ^logicalchild - Children (is Children)
-  ^acts - Verbs it acts with
-  ^acted-upon - Verbs it has done to it
+  ^v1 - Verbs it acts with
+  ^v2 - Verbs it has done to it
 
 
 Set search = "Set of cities in the US with a population > 100,000"

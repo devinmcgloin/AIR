@@ -5,27 +5,25 @@ import r.TreeNode;
 /**
  * Created by devinmcgloin on 6/16/15.
  * BN is never changed after instatiation. NEVER.
+ *
+ * PA should only be dealing with PABN.
  */
 public class PABN {
 
     TreeNode BN;
+    TreeNode tmp;
 
     public PABN( TreeNode n ){
         BN = n;
     }
 
     public boolean isFilter(String searchTerm){
-        if(BN.getChild("^is").contains(searchTerm))
-            return true;
-        else
-            return false;
+        return checkSecondDimension("^is", searchTerm);
+
     }
 
     public boolean hasFilter(String searchTerm){
-        if(BN.getChild("^has").contains(searchTerm))
-            return true;
-        else
-            return false;
+        return checkSecondDimension("^has", searchTerm);
     }
 
     /**
@@ -37,23 +35,22 @@ public class PABN {
     }
 
     public boolean hasAdj(String searchTerm){
-        if(BN.getChild("^adj").contains(searchTerm))
-            return true;
-        else
-            return false;
+        return checkSecondDimension("^adj", searchTerm);
     }
 
     public boolean canVerb(String searchTerm){
-        if(BN.getChild("^v1").contains(searchTerm))
-            return true;
-        else
-            return false;
+        return checkSecondDimension("^v1", searchTerm);
     }
 
     public boolean hasVerb(String searchTerm){
-        if(BN.getChild("^v2").contains(searchTerm))
-            return true;
-        else
+        return checkSecondDimension("^v2", searchTerm);
+    }
+
+    private boolean checkSecondDimension(String dimension, String searchTerm){
+        TreeNode tmp = BN.getChild(dimension);
+        if(tmp != null){
+            return tmp.contains(searchTerm);
+        }else
             return false;
     }
 
