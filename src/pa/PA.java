@@ -53,7 +53,7 @@ public class PA {
 
     public void devintest() {
         //inherit.inherit(get("R/Noun.txt/town"), get("R/Noun.txt/cities"));
-        ArrayList<PABN> nodes = setLogic.genSet("city`population,post office");
+        ArrayList<PABN> nodes = setLogic.genSet("city`population,post_office`population > 6000000");
         if(nodes.size() > 0) {
             for (PABN node : nodes) {
                 System.out.println(node.getOrigin().getAddress());
@@ -92,7 +92,6 @@ public class PA {
     }
 
 
-    //Moved to set logic
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
     public ArrayList<PABN> hashSearch(String terms) {

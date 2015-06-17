@@ -2,6 +2,7 @@ package pa;
 
 import r.R;
 import r.TreeNode;
+import pa.LDATA;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class PABN {
 
     private TreeNode BN;
     private TreeNode tmp;
+    private LDATA ldata = new LDATA();
 
     public PABN( TreeNode n){
         BN = n;
@@ -39,7 +41,7 @@ public class PABN {
      * @return
      */
     public boolean hasValue(String keyVal){
-        return false;
+        return ldata.evaluate(keyVal, this);
     }
 
     public boolean hasAdj(String searchTerm){
@@ -61,5 +63,7 @@ public class PABN {
         }else
             return false;
     }
+
+
 
 }

@@ -43,7 +43,7 @@ public class SetLogic {
         //TODO what happens if there are no additional terms? Need to address.
         String is = terms[0];
         String[] has = terms[1].split(",");
-//        String[] conditions = terms[2].split(",");
+        String[] conditions = terms[2].split(",");
 
         nodes = pa.hashSearch(is);
 
@@ -52,29 +52,37 @@ public class SetLogic {
 
         //The great filter
         while (iterator.hasNext()){
+            Boolean removed = false;
             PABN option = iterator.next();
 
             //Is filter
             if(!option.isFilter(is)) {
                 iterator.remove();
+                removed = true;
                 break;
             }
 
             //Has filter
-            for (String determiner : has){
-                if(!option.hasFilter(determiner)) {
-                    iterator.remove();
-                    break;
+            if(!removed) {
+                for (String determiner : has) {
+                    if (!option.hasFilter(determiner)) {
+                        iterator.remove();
+                        removed = true;
+                        break;
+                    }
                 }
             }
 
             //Conditions filter
-//            for(String determiner : conditions){
-//                if(!option.hasValue(determiner)){
-//                    iterator.remove();
-//                    continue;
-//                }
-//            }
+            if(!removed){
+                for(String determiner : conditions){
+                    if(!option.hasValue(determiner)){
+                        iterator.remove();
+                        removed = true;
+                        break;
+                    }
+                }
+            }
 
         }
 

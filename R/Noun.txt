@@ -4,35 +4,34 @@ boston
 city
     ^adj
     ^has
-        doctors office
-        fire dept
+        doctors_office
+        fire_dept
         location
-            california
         mayor
-        police station
-        post office
+        police_station
+        post_office
         residents
-            200000
-            ldata
     ^is
     ^logicalchild
     ^v1
     ^v2
-los angeles
+los_angeles
     ^has
-        fire dept
+        fire_dept
         population
-        post office
+            5000000
+        post_office
     ^is
         city
 measurement
     ^is
         ldata
-new york
+new_york
     ^has
-        fire dept
+        fire_dept
         population
-        post office
+            9000000
+        post_office
     ^is
         city
 redlands
@@ -45,13 +44,13 @@ robject
     ^v2
 town
     ^has
-        doctors office
-        fire dept
+        doctors_office
+        fire_dept
         location
         mayor
-        police station
-        post office
+        police_station
+        post_office
         residents
-washington dc
+washington_dc
     ^is
         city
