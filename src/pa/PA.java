@@ -119,6 +119,10 @@ public class PA {
         return new PABN(currentR.get(rAddress), currentR);
     }
 
+    public TreeNode getTreeNode(String rAddress) {
+        return currentR.get(rAddress);
+    }
+
     public void save() {
         for(R r : rDB)
             r.save();

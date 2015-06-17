@@ -1,6 +1,7 @@
 package main;
 
 import pa.PA;
+import pa.PABN;
 import r.TreeNode;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Terminal {
 
 
     Terminal() {
-        current = PA.get("R/");
+        current = PA.getTreeNode("R/");
     }
 
     public void parse(String input) {
@@ -68,10 +69,10 @@ public class Terminal {
         else {
 
             if (current.getAddress().equals("R/")) {
-                current = PA.get("R/" + input);
+                current = PA.getTreeNode("R/" + input);
             } else {
                 if (current.contains(input)) {
-                    current = PA.get(current.getAddress() + input);
+                    current = PA.getTreeNode(current.getAddress() + input);
                 }
 
             }

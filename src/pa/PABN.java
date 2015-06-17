@@ -36,7 +36,7 @@ public class PABN {
      * @return
      */
     public boolean hasValue(){
-
+        return false;
     }
 
     public boolean hasAdj(String searchTerm){
