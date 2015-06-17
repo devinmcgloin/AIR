@@ -1,6 +1,9 @@
 package pa;
 
+import r.R;
 import r.TreeNode;
+
+import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/16/15.
@@ -10,11 +13,13 @@ import r.TreeNode;
  */
 public class PABN {
 
-    TreeNode BN;
-    TreeNode tmp;
+    private TreeNode BN;
+    private TreeNode tmp;
+    private R currentR;
 
-    public PABN( TreeNode n ){
+    public PABN( TreeNode n, R r ){
         BN = n;
+        currentR = r;
     }
 
     public boolean isFilter(String searchTerm){
@@ -47,11 +52,26 @@ public class PABN {
     }
 
     private boolean checkSecondDimension(String dimension, String searchTerm){
-        TreeNode tmp = BN.getChild(dimension);
+        tmp = BN.getChild(dimension);
         if(tmp != null){
             return tmp.contains(searchTerm);
         }else
             return false;
+    }
+
+    /**
+     * Node that the method is called on is the one that inherits from the parameter.
+     * @param from - Node the current node is getting its has attributes from.
+     */
+    public void inherit(PABN from){
+        ArrayList<String> children;
+        tmp = from.BN.getChild("^has");
+
+        if(tmp != null){
+            children = tmp.getChildrenString();
+            for (String child : children)
+                currentR.add(BN.getAddress() + "^has/", child);
+        }
     }
 
 }

@@ -82,22 +82,22 @@ public class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<TreeNode> hashSearch(String terms) {
+    public ArrayList<PABN> hashSearch(String terms) {
         ArrayList<TreeNodeBase> baseNodes = currentR.rFullHashSearch(terms);
-        ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
+        ArrayList<PABN> paBaseNodes = new ArrayList<PABN>();
 
         //Check size
         int termSize = terms.split("`").length;
 
         if (baseNodes.size() == 0) {
-            return treeNodes; // no dice
+            return paBaseNodes; // no dice
         }
 
         //Number of terms matches baseNode hits
         if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                treeNodes.add(baseNodes.get(i).getOrigin());
+                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin(), currentR));
             }
         }
         //Use the next highest number of matched terms
@@ -105,18 +105,18 @@ public class PA {
             termSize = baseNodes.get(0).getRank();
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                treeNodes.add(baseNodes.get(i).getOrigin());
+                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin(), currentR));
             }
         }
 
 
-        return treeNodes;
+        return paBaseNodes;
 
     }
 
-    public TreeNode get(String rAddress) {
+    public PABN get(String rAddress) {
 
-        return currentR.get(rAddress);
+        return new PABN(currentR.get(rAddress), currentR);
     }
 
     public void save() {
