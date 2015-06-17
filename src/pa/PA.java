@@ -30,6 +30,7 @@ public class PA {
     protected ArrayList<R> rDB = new ArrayList<R>();
     protected R currentR = null;
     protected Inheritance inherit;
+    protected SetLogic setLogic;
 
     public PA(String user) {
         if(!user.equals("Terminal")) {
@@ -43,13 +44,21 @@ public class PA {
                 }
             }
         }
+
         currentR = new R();
         inherit = new Inheritance(this);
+        setLogic = new SetLogic(this);
 
     }
 
     public void devintest() {
-        inherit.inherit(get("R/Noun.txt/town"), get("R/Noun.txt/cities"));
+        //inherit.inherit(get("R/Noun.txt/town"), get("R/Noun.txt/cities"));
+        ArrayList<PABN> nodes = setLogic.genSet("city");
+        if(nodes.size() > 0) {
+            for (PABN node : nodes) {
+                System.out.println(node.getOrigin().getAddress());
+            }
+        }
     }
 
     public void blazetest() {
@@ -101,7 +110,7 @@ public class PA {
         if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin(), currentR));
+                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin()));
             }
         }
         //Use the next highest number of matched terms
@@ -109,7 +118,7 @@ public class PA {
             termSize = baseNodes.get(0).getRank();
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin(), currentR));
+                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin()));
             }
         }
 
@@ -120,7 +129,7 @@ public class PA {
 
     public PABN get(String rAddress) {
 
-        return new PABN(currentR.get(rAddress), currentR);
+        return new PABN(currentR.get(rAddress));
     }
 
     public TreeNode getTreeNode(String rAddress) {

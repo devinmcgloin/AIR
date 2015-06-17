@@ -16,7 +16,7 @@ public class PABN {
     private TreeNode BN;
     private TreeNode tmp;
 
-    public PABN( TreeNode n, R r ){
+    public PABN( TreeNode n){
         BN = n;
     }
 

@@ -1,4 +1,7 @@
-cities
+boston
+    ^is
+        city
+city
     ^adj
     ^has
         doctors office
@@ -18,6 +21,10 @@ cities
 measurement
     ^is
         ldata
+new york
+    ^is
+        city
+redlands
 robject
     ^adj
     ^has
@@ -34,3 +41,9 @@ town
         police station
         post office
         residents
+washington dc
+    ^is
+        city
+los angeles
+    ^is
+        city
