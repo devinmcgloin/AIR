@@ -23,10 +23,9 @@ public class Inheritance {
      */
     public void inherit(PABN to, PABN from){
         ArrayList<String> children;
-        TreeNode tmp = from.getOrigin().getChild("^has");
 
-        if(tmp != null && to.getOrigin().getChild("^has") != null){
-            children = tmp.getChildrenString();
+        if(from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null){
+            children = from.getOrigin().getChild("^has").getChildrenString();
             for (String child : children)
                 pa.add(child, to.getOrigin().getAddress() + "^has/");
         }else{

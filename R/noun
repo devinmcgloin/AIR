@@ -17,9 +17,11 @@ city
     ^v2
 los_angeles
     ^has
+        area
+            1500000
         fire_dept
         population
-            5000000
+            6000000
         post_office
     ^is
         city
@@ -52,5 +54,11 @@ town
         post_office
         residents
 washington_dc
+    ^has
+        area
+        police_dept
+        population
+            100000000000
+        post_office
     ^is
         city

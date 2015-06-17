@@ -52,13 +52,13 @@ public class PA {
     }
 
     public void devintest() {
-        //inherit.inherit(get("R/Noun.txt/town"), get("R/Noun.txt/cities"));
-        ArrayList<PABN> nodes = setLogic.genSet("city`population,post_office`population > 6000000");
-        if(nodes.size() > 0) {
-            for (PABN node : nodes) {
-                System.out.println(node.getOrigin().getAddress());
-            }
-        }
+        inherit.inherit(get("R/noun/town"), get("R/noun/city"));
+//        ArrayList<PABN> nodes = setLogic.genSet("city`population,post_office`population >= 6000000,area <= 1500000");
+//        if(nodes.size() > 0) {
+//            for (PABN node : nodes) {
+//                System.out.println(node.getOrigin().getAddress());
+//            }
+//        }
     }
 
     public void blazetest() {

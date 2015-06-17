@@ -7,6 +7,14 @@ import java.util.ArrayList;
  */
 public class LDATA {
 
+
+    /**
+     * this needs to go through an index Nouns on startup to make sure it has a copy of all the nouns that have an LDATA flag.
+     * and pull out evaluation metrics, ranges and conversion methods.
+     */
+    public LDATA(){
+
+    }
     /**
      * TODO make this have real logic.
      * Supports <=, >=, <, >, and ==
@@ -24,6 +32,7 @@ public class LDATA {
         if(node.hasFilter(attribute)){
             ArrayList<String> nodeVal = node.getOrigin().getChild("^has").getChild(attribute).getChildrenString();
             for(String value : nodeVal){
+                //TODO good place to asses where the information will be compared and with what logic.
                 if(switchBoard(operator, value, qualifier))
                     return true;
             }

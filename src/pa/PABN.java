@@ -18,7 +18,7 @@ public class PABN {
     private TreeNode tmp;
     private LDATA ldata = new LDATA();
 
-    public PABN( TreeNode n){
+    public PABN( TreeNode n ){
         BN = n;
     }
 

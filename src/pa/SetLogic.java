@@ -22,6 +22,7 @@ public class SetLogic {
 
     /**
      * TODO super crude, but gets the idea across
+     * TODO: Value to deal with minimum search, right now that would cause an array out of bounds error on line 46-47.
      * Need to take into account all filters.
      *
      *

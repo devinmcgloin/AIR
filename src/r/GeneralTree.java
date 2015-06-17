@@ -172,9 +172,9 @@ public class GeneralTree {
         try {
             String name = "";
             name = current.getName(); //gets the .txt file nam
-            if (!name.endsWith(".txt")) {
-                name += ".txt";
-            }
+//            if (!name.endsWith(".txt")) {
+//                name += ".txt";
+//            }
             BufferedWriter out = new BufferedWriter(new FileWriter(FILEEXTENSION + name));
             out.write(DBout);
             out.close();
