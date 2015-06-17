@@ -27,11 +27,40 @@ public class Inheritance {
         if(from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null){
             children = from.getOrigin().getChild("^has").getChildrenString();
             for (String child : children)
-                pa.add(child, to.getOrigin().getAddress() + "^has/");
+                pa.add(child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
         }else{
             pa.add("^has", to.getOrigin().getAddress());
             pa.add("^has", from.getOrigin().getAddress());
-            inherit(to, from);
+            inherit(to, from); //even more brilliant
+            return;
         }
+
+        //ADDED BY BLAZE
+        //Adding is that now the "to" BN "^is" of the type "from" BN
+        if(to.getOrigin().getChild("^is") != null){
+            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+        }else{
+            pa.add("^is", to.getOrigin().getAddress());
+            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+        }
+
+        //pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
     }
+
+    /**
+     *            EX1           EX2
+     * @param x - los_angeles   ferrari
+     * @param y - city          car
+     */
+    public void xISy(String x, String y){
+        PABN BNx = pa.get(("R/noun/" + x));
+        PABN BNy = pa.get(("R/noun/" + y));
+
+        inherit(BNx, BNy); //Devin's method. Just wrapped a bit for ease.
+
+        //System.out.println("BN: "+ BNx.getOrigin().getName());
+
+
+    }
+
 }

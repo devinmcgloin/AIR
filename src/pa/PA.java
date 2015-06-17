@@ -62,14 +62,10 @@ public class PA {
     }
 
     public void blazetest() {
-        TreeNode curr = currentR.getCurrent(); //Wrapper for GenTree.getCurrent()
+        inherit.xISy("ferrari", "car");
 
-
-        System.out.println("GenTree's Current: " + curr.getName() + " -  " + curr.getAddress());
-        //System.out.println(R.rFullHashSearch("1`a").get(0).getOrigin().getName());
-        //curr = R.get("R/0.txt/");
-
-        //System.out.println(curr.prettyPrint());
+        //PABN test = get("R/noun/ferrari");
+        //System.out.println(test.isFilter("car"));
 
     }
 

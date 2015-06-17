@@ -1,6 +1,12 @@
 boston
     ^is
         city
+car
+    ^has
+        engine
+        spoiler
+        wheel
+    ^is
 city
     ^adj
     ^has
@@ -15,6 +21,13 @@ city
     ^logicalchild
     ^v1
     ^v2
+ferrari
+    ^has
+        engine
+        spoiler
+        wheel
+    ^is
+        car
 los_angeles
     ^has
         area

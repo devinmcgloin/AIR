@@ -62,7 +62,7 @@ public class Terminal {
             input = input.trim();
             PA.rename(words[1], words[2]);
         } else if (words[0].equals("bdev")) {
-            System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
+            //System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
             PA.blazetest();
         }else if (words[0].equals("ddev")) {
             System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
