@@ -25,7 +25,7 @@ public class SetLogic {
      *
      *
      * Need to establish search term conventions here.
-     * $SELECT <fields> $FROM <BN> $WHERE <condition>
+     * $FROM <BN> $SELECT <fields> $WHERE <condition>
      * @param searchTerms
      * @return
      */
@@ -39,8 +39,9 @@ public class SetLogic {
             return null;
         }
 
-        String[] has = terms[0].split(",");
-        String is = terms[1];
+        //TODO what happens if there are no additional terms? Need to address.
+        String is = terms[0];
+        String[] has = terms[1].split(",");
         String[] conditions = terms[2].split(",");
 
         nodes = hashSearch(is);
@@ -51,11 +52,14 @@ public class SetLogic {
         //The great filter
         while (iterator.hasNext()){
             PABN option = iterator.next();
+
+            //Is filter
             if(!option.isFilter(is)) {
                 iterator.remove();
                 continue;
             }
 
+            //Has filter
             for (String determiner : has){
                 if(!option.hasFilter(determiner)) {
                     iterator.remove();
@@ -63,6 +67,7 @@ public class SetLogic {
                 }
             }
 
+            //Conditions filter
             for(String determiner : conditions){
                 if(!option.hasValue(determiner)){
                     iterator.remove();

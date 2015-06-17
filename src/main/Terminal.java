@@ -64,6 +64,9 @@ public class Terminal {
         } else if (words[0].equals("bdev")) {
             System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
             PA.blazetest();
+        }else if (words[0].equals("ddev")) {
+            System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
+            PA.devintest();
         }
         //Fun stuff
         else {

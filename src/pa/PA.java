@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Blazej on 6/3/2015.
+ * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into PABN.
+ * TODO: where is header logic info stored? If we use what are current base nodes that qould require a rewriting of lower R functions.
  */
 
 //External Methods of PA
