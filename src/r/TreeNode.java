@@ -154,8 +154,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     /**
-     * TODO: See if this is enough for our searching needs, if not it may be useful for narrowing results.
-     * TODO: Wtf is this doing.
+     * TODO: See if this is enough for our searching needs, if not it may be useful for narrowing results. Wtf is this doing.
      *
      * @param cmp
      * @return
@@ -245,13 +244,13 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param node
      * @return
      */
-    public boolean containsAll(String node) {
+    public boolean containsAll(String term) {
         for (TreeNode child : children) {
-            if (shallowEquals(child, node))
+            if (shallowEquals(child, term))
                 return true;
-            else if (isLeaf())
-                return false;
-            containsAll(child.name);
+            boolean temp = this.getChild(child.getName()).containsAll(term);
+            if(temp)
+                return temp;
         }
         return false;
     }

@@ -18,10 +18,21 @@ city
     ^logicalchild
     ^v1
     ^v2
+los angeles
+    ^has
+        fire dept
+        population
+        post office
+    ^is
+        city
 measurement
     ^is
         ldata
 new york
+    ^has
+        fire dept
+        population
+        post office
     ^is
         city
 redlands
@@ -42,8 +53,5 @@ town
         post office
         residents
 washington dc
-    ^is
-        city
-los angeles
     ^is
         city

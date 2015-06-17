@@ -53,7 +53,7 @@ public class PA {
 
     public void devintest() {
         //inherit.inherit(get("R/Noun.txt/town"), get("R/Noun.txt/cities"));
-        ArrayList<PABN> nodes = setLogic.genSet("city");
+        ArrayList<PABN> nodes = setLogic.genSet("city`population,post office");
         if(nodes.size() > 0) {
             for (PABN node : nodes) {
                 System.out.println(node.getOrigin().getAddress());
@@ -109,8 +109,14 @@ public class PA {
         //Number of terms matches baseNode hits
         if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
-            while (baseNodes.get(i).getRank() == termSize) {
-                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin()));
+            //TODO assumes there will be values that dont match. This isnt always true. Fixed with for each loop.
+
+            for (TreeNodeBase node : baseNodes) {
+                if (node.getRank() == termSize) {
+                    paBaseNodes.add(new PABN(node.getOrigin()));
+                }else{
+                    break;
+                }
             }
         }
         //Use the next highest number of matched terms
