@@ -30,7 +30,6 @@ public class LDATA {
         String attribute = terms[0]; //height
         String operator = terms[1]; // <
         String qualifier = terms[2]; // 1000000
-        String unitTo = terms[3]; //ft
 
         currentLDBN = pa.getLDATA(attribute);
 
@@ -38,20 +37,32 @@ public class LDATA {
             ArrayList<String> nodeVal = node.getOrigin().getChild("^has").getChild(attribute).getChildrenString();
 
             if(currentLDBN.getComp().equals("ordered")) {
+                String unitTo = terms[3]; //ft
                 for (String value : nodeVal) {
 
                     //TODO weird split needed here, else expression will split units too. See line 29.
                     String[] values = value.split(" ");
 
-                    if (!values[1].equals(unitTo)) {
-                        values = conversion(unitTo, values[1], values[0], currentLDBN);
+                    if(values.length == 2) {
+
+                        if (!values[1].equals(unitTo)) {
+                            values = conversion(unitTo, values[1], values[0], currentLDBN);
+                        }
                     }
 
                     //TODO good place to asses where the information will be compared and with what logic.
                     if (switchBoard(operator, values[0], qualifier))
                         return true;
                 }
-            }else{
+            }else if(currentLDBN.getComp().equals("count")){
+                for (String value : nodeVal) {
+                    String[] values = value.split(" ");
+                    if (switchBoard(operator, values[0], qualifier))
+                        return true;
+                }
+            }
+
+            else{
                 //TODO Implement validation for non ordered logic.
             }
         }else

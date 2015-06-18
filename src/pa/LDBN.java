@@ -24,6 +24,8 @@ public class LDBN {
     public String getComp(){
         if(BN.getChild("^comparison").contains("ordered")){
             return "ordered";
+        }else if(BN.getChild("^comparison").contains("count")){
+            return "count";
         }else{
             //TODO more complex logic containers/Time etc. Dont know how to do yet.
             return "Nothing";

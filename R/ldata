@@ -2,8 +2,6 @@ area
     ^comparison
     ^conversions
     ^value_ranges
-cities
-ldata
 length
     ^comparison
         ordered
@@ -15,7 +13,7 @@ length
 length
 population
     ^comparison
-        ordered
+        count
     ^conversions
     ^conversions
     ^value_ranges

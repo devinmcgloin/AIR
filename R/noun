@@ -12,9 +12,13 @@ audi
 bmw
     ^adj
     ^has
+        brakes
+        doors
         engine
         exhaust
         spoiler
+        suspension
+        wheels
     ^is
         car
     ^logicalchild
@@ -23,9 +27,13 @@ bmw
 car
     ^adj
     ^has
+        brakes
+        doors
         engine
         exhaust
         spoiler
+        suspension
+        wheels
     ^is
     ^logicalchild
         audi
@@ -37,20 +45,20 @@ car
     ^v2
 city
     ^has
-        doctors_office
-        fire_dept
+        doctors office
+        fire dept
         location
         mayor
-        police_station
+        police station
         population
-        post_office
+        post office
         residents
     ^logicalchild
-        los_angeles
-        new_york
+        los angeles
+        new york
         redlands
         town
-        washington_dc
+        washington dc
 ferrari
     ^adj
     ^has
@@ -73,21 +81,21 @@ honda
     ^logicalchild
     ^v1
     ^v2
-los_angeles
+los angeles
     ^adj
     ^has
         area
             1500000
-        doctors_office
-        fire_dept
+        doctors office
+        fire dept
         length
             100 ft
         location
         mayor
-        police_station
+        police station
         population
             6000000
-        post_office
+        post office
         residents
     ^is
         city
@@ -97,17 +105,17 @@ los_angeles
 measurement
     ^is
         ldata
-new_york
+new york
     ^adj
     ^has
-        doctors_office
-        fire_dept
+        doctors office
+        fire dept
         location
         mayor
-        police_station
+        police station
         population
             9000000
-        post_office
+        post office
         residents
     ^is
         city
@@ -133,29 +141,29 @@ subaru
 town
     ^adj
     ^has
-        doctors_office
-        fire_dept
+        doctors office
+        fire dept
         location
         mayor
-        police_station
+        police station
         population
-        post_office
+        post office
         residents
     ^is
         city
     ^logicalchild
     ^v1
     ^v2
-washington_dc
+washington dc
     ^adj
     ^has
-        doctors_office
-        fire_dept
+        doctors office
+        fire dept
         location
         mayor
-        police_station
+        police station
         population
-        post_office
+        post office
         residents
     ^is
         city
