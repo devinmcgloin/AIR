@@ -186,7 +186,7 @@ public class Query {
                         "(   x is y?  ): True if x ^is y \n" +
                         "(   x has y  ): Adds y to ^has of x\n" +
                         "(  x has y?  ): lol\n" +
-                        "(   genset   ): generates sets. ex: city`post_office,population`length <= 100 ft\n" +
+                        "(   genset   ): generates sets. ex: city`post office,population`length <= 100 ft\n" +
                         "( PRINT | ls ): There is no print.\n" +
                         "( RENAME| mv ): PATH - newName\n" +
                         "(     q      ): Quits the query mode\n" +
