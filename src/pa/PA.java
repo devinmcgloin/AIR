@@ -50,8 +50,7 @@ public class PA {
 
     }
 
-    public void devintest(String query) {
-//        inherit.inherit(getNoun("R/noun/town"), getNoun("R/noun/city"));
+    public void getset(String query) {
         ArrayList<NBN> nodes = setLogic.genSet(query);
         if(nodes.size() > 0) {
             for (NBN node : nodes) {
@@ -60,11 +59,13 @@ public class PA {
         }
     }
 
+    public void devintest(){
+
+    }
+
     public void blazetest() {
         //inherit.xISy("ferrari", "car");
-        get("R/noun");
-        get("R/ldata");
-        get("R/noun");
+
         //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
 

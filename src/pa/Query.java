@@ -48,9 +48,7 @@ public class Query {
                 pa.save();
                 break;
             }else if(input.startsWith("ddev")) {
-                input = input.replace("ddev", "");
-                input = input.trim();
-                pa.devintest(input);
+                pa.devintest();
             }else if(input.equals("bdev")){
                 pa.blazetest();
             }
@@ -93,6 +91,10 @@ public class Query {
             input = input.replace('-', ' ');
             input = input.trim();
             pa.del("noun", input, "R/noun/");
+        } else if(input.startsWith("getset")){
+            input = input.replace("getset", "");
+            input = input.trim();
+            pa.getset(input);
         } else if (words.length >2){
             //Could be loads of fun stuff.
             //x is y?   (boolean)
@@ -184,6 +186,7 @@ public class Query {
                         "(x is y?     ): True if x ^is y \n" +
                         "(x has y     ): Adds y to ^has of x\n" +
                         "(x has y?    ): lol\n" +
+                        "( genset     ): generates sets. ex: city`post_office,population`length <= 100_meters" +
                         "(PRINT  | ls ): There is no print.\n" +
                         "(RENAME | mv ): PATH - newName\n" +
                         "(q           ): Quits the query mode\n" +
