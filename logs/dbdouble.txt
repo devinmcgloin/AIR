@@ -1,0 +1,71 @@
+GenTree -- root operation triggered!!!
+WELCOME TO AIR.
+
+PATHS must be formatted as follows:
+'nouns/places/nations'
+
+Commands:
+(ADD    | +  ): Add node at current directory
+(DEL    | -  ): PATH
+(PRINT  | ls ): List directory.
+(BACK   | .. ): Back one level.
+(CD     | cd ): Return to root.
+(RENAME | mv ): PATH - newName
+(;PQ         ): Activates the PA Query System
+(Help   | ?  ): For help.
+
+
+R/noun
+R/noun/ddev
+PA's Current:       noun -  R/noun/
+New NBN: los_angeles
+New NBN: new_york
+New NBN: redlands
+New NBN: town
+New NBN: washington_dc
+goBack() -- > Is this why exporting twice?
+export called
+R/noun/los_angeles/
+R/noun/;pq
+R/noun/;PQ
+Welcome to the PA Query System. We'll think of a better name for it shortly!
+goBack() -- > Is this why exporting twice?
+export called
+New NBN: noun
+>>> new_york has fire_dept
+New NBN: new_york
+Dimension: fire_dept already exists.
+>>> new_york has fire_dept?
+New NBN: new_york
+true
+>>> redlands is town?
+New NBN: redlands
+false
+>>> redlands is city
+New NBN: noun
+New NBN: noun
+New NBN: redlands
+New NBN: city
+Dimension: city already exists.
+redlands ^is city now saved.
+>>> redlands has doctors_office
+New NBN: redlands
+Dimension: doctors_office already exists.
+>>> car has suspension
+New NBN: car
+>>> car has wheel
+New NBN: car
+>>> car has seats
+New NBN: car
+>>> bmw is car
+New NBN: noun
+New NBN: noun
+New NBN: bmw
+New NBN: car
+Dimension: car already exists.
+bmw ^is car now saved.
+>>> q
+export called
+Exiting Query.
+R/noun/q
+export called
