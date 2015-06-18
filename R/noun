@@ -1,3 +1,14 @@
+audi
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
 bmw
     ^adj
     ^has
@@ -17,8 +28,11 @@ car
         spoiler
     ^is
     ^logicalchild
+        audi
         bmw
         ferrari
+        honda
+        subaru
     ^v1
     ^v2
 city
@@ -38,6 +52,17 @@ city
         town
         washington_dc
 ferrari
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
+honda
     ^adj
     ^has
         engine
@@ -94,6 +119,17 @@ redlands
         population
     ^is
         city
+subaru
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
 town
     ^adj
     ^has

@@ -28,33 +28,31 @@ public class PA {
 
     protected File rFolder = new File("./R/");
     protected ArrayList<R> rDB = new ArrayList<R>();
-    protected R currentR = null;
     protected Inheritance inherit;
     protected SetLogic setLogic;
     protected LDATA ldata = new LDATA(this);
 
-    public PA(String user) {
-        if(!user.equals("Terminal")) {
-            if (rFolder.length() >= 1) {
-                for (File fileEntry : rFolder.listFiles()) {
-                    if (fileEntry.isDirectory()) {
-                        continue;
-                    } else {
-                        rDB.add(new R(fileEntry.getName()));
-                    }
+    public PA() {
+
+        if (rFolder.length() >= 1) {
+            for (File fileEntry : rFolder.listFiles()) {
+                if (fileEntry.isDirectory()) {
+
+                } else {
+                    rDB.add(new R(fileEntry.getName()));
                 }
             }
         }
 
-        currentR = new R();
+
         inherit = new Inheritance(this);
         setLogic = new SetLogic(this);
 
     }
 
-    public void devintest() {
+    public void devintest(String query) {
 //        inherit.inherit(getNoun("R/noun/town"), getNoun("R/noun/city"));
-        ArrayList<NBN> nodes = setLogic.genSet("city`population,post_office`length >= 5_meters");
+        ArrayList<NBN> nodes = setLogic.genSet(query);
         if(nodes.size() > 0) {
             for (NBN node : nodes) {
                 System.out.println(node.getOrigin().getAddress());
@@ -73,35 +71,50 @@ public class PA {
 
     }
 
-    public void query(){
+    public R getRb(String db){
+        for(R database : rDB){
+            if(database.getName().equals(db))
+                return database;
+        }
+        return null;
+    }
 
-        Query q = new Query(this);
-
+    public boolean rDBexists(String db){
+        for(R database : rDB){
+            if(database.getName().equals(db))
+                return true;
+        }
+        return false;
     }
 
     //---------------------------------R WRAPPERS---------------------------------//
 
-    public void del(String nodeName, String rAddress) {
-        currentR.del(nodeName, rAddress);
+    public void del(String db, String nodeName, String rAddress) {
+        if(rDBexists(db))
+            getRb(db).del(nodeName, rAddress);
     }
 
-    public ArrayList<String> getChildren(String rAddress) {
-        return currentR.getChildren(rAddress);
+    public ArrayList<String> getChildren(String db, String rAddress) {
+        if(rDBexists(db))
+            return getRb(db).getChildren(rAddress);
+        return null;
     }
 
-    public void rename(String nodeName, String rAddress) {
-        currentR.rename(nodeName, rAddress);
+    public void rename(String db, String nodeName, String rAddress) {
+        if(rDBexists(db))
+            getRb(db).rename(nodeName, rAddress);
     }
 
-    public void add(String nodeName, String rAddress) {
-        currentR.add(nodeName, rAddress);
+    public void add(String db, String nodeName, String rAddress) {
+        if(rDBexists(db))
+            getRb(db).add(nodeName, rAddress);
     }
 
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
     public ArrayList<NBN> hashSearch(String terms) {
-        ArrayList<TreeNodeBase> baseNodes = currentR.rFullHashSearch(terms);
+        ArrayList<TreeNodeBase> baseNodes = getRb("noun").rFullHashSearch(terms);
         ArrayList<NBN> paBaseNodes = new ArrayList<NBN>();
 
         //Check size
@@ -138,12 +151,14 @@ public class PA {
 
     }
 
-    public TreeNode get(String rAddress) {
-        return currentR.get(rAddress);
+    public TreeNode get(String DB, String rAddress) {
+        if(rDBexists(DB))
+            return getRb(DB).get(rAddress);
+        return null;
     }
 
     public NBN getNoun(String noun){
-        TreeNode tmp = get("R/noun/" + noun);
+        TreeNode tmp = get("noun", "R/noun/" + noun);
         if(!tmp.getName().equals( noun ))
             return null;
         else
@@ -151,35 +166,34 @@ public class PA {
     }
 
     public LDBN getLDATA(String ldata){
-        TreeNode tmp = get("R/ldata/" + ldata);
+        TreeNode tmp = get("ldata","R/ldata/" + ldata);
         if(!tmp.getName().equals(ldata))
             return null;
         else
             return new LDBN(tmp);
     }
 
-    public TreeNode getTreeNode(String rAddress) {
-        return currentR.get(rAddress);
+    /**
+     * Terminal bullshit
+     * @param rAddress
+     * @return
+     */
+    public TreeNode getTreeNode(String db, String rAddress) {
+        if(rDBexists(db))
+            return getRb(db).get(rAddress);
+        return null;
     }
 
     public void save() {
         for(R r : rDB)
             r.save();
-
-        //Terminal Only
-        currentR.save();
     }
 
-    public void addParent(String nodeName, String rAddress) {
-        currentR.addParent(nodeName, rAddress);
+    public void addParent(String db, String nodeName, String rAddress) {
+        if(rDBexists(db))
+            getRb(db).addParent(nodeName, rAddress);
     }
 
-    public void goToDB(String rAddress){
-        for(R r : rDB){
-            if(r.getName() == rAddress.split("/")[1])
-                currentR = r;
-        }
-    }
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
     public boolean evaluate(String keyVal, NBN node){
@@ -198,13 +212,13 @@ public class PA {
 
         }
         else if(type.equals("noun")){
-            add(name, "R/noun");
-            add("^has", "R/noun" + name);
-            add("^is", "R/noun" + name);
-            add("^v1", "R/noun" + name);
-            add("^v2", "R/noun" + name);
-            add("^adj", "R/noun" + name);
-            add("^logicalchild", "R/noun" + name);
+            add("noun", name, "R/noun/");
+            add("noun", "^has","R/noun/" + name);
+            add("noun", "^is", "R/noun/" + name);
+            add("noun", "^v1", "R/noun/" + name);
+            add("noun", "^v2", "R/noun/" + name);
+            add("noun", "^adj","R/noun/" + name);
+            add("noun", "^logicalchild","R/noun/" + name);
         }
     }
 }

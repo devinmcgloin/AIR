@@ -21,7 +21,7 @@ public class NBN {
     public NBN(TreeNode n, PA pa){
         BN = n;
         this.pa = pa;
-        System.out.println("New NBN: " + BN.getName());
+//        System.out.println("New NBN: " + BN.getName());
     }
 
     public TreeNode getOrigin(){

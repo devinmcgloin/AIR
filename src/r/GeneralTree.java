@@ -481,7 +481,6 @@ public class GeneralTree {
                 return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.
             }
         }
-
         return current;
     }
 

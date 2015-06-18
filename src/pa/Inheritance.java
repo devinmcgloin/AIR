@@ -27,12 +27,12 @@ public class Inheritance {
                 if (to.getChildrenOfDimension("^has").contains(child)) {
                     continue;
                 }
-                pa.add(child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
+                pa.add("noun", child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
 
             }
         } else{
-            pa.add("^has", to.getOrigin().getAddress());
-            pa.add("^has", from.getOrigin().getAddress());
+            pa.add("noun", "^has", to.getOrigin().getAddress());
+            pa.add("noun", "^has", from.getOrigin().getAddress());
             inherit(to, from); //even more brilliant
             return;
         }
@@ -40,20 +40,20 @@ public class Inheritance {
         //ADDED BY BLAZE (^is)
         //Adding is that now the "to" BN "^is" of the type "from" BN
         if (to.checkFirstDimension("^is")) {
-            pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
+            pa.add("noun",from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
         } else {
-            pa.add("^is", to.getOrigin().getAddress());
-            pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
+            pa.add("noun","^is", to.getOrigin().getAddress());
+            pa.add("noun",from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
         }
 
         //First check if it already has the ^is qualification.
         //Check if null pointer.
         if(to.checkFirstDimension("^is")){
-            pa.add("^is", to.getOrigin().getAddress());         //add carrot header
-            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is"); //add info
+            pa.add("noun","^is", to.getOrigin().getAddress());         //add carrot header
+            pa.add("noun", from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is"); //add info
         } else{
             if(  !to.getOrigin().getChild("^is").contains(from.getOrigin().getName())){
-                pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+                pa.add("noun", from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
             }
         }
 
@@ -62,12 +62,12 @@ public class Inheritance {
         //Reverse adding to the "from" node (car; car --> ferrari) that ferrari is its ^logicalchild
         //First check Null pointer
         if(to.checkFirstDimension("^logicalchild")){
-            pa.add("^logicalchild", from.getOrigin().getAddress()); //add carrot header
-            pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild"); //add info
+            pa.add("noun","^logicalchild", from.getOrigin().getAddress()); //add carrot header
+            pa.add("noun",to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild"); //add info
         }else{
             //Check if contains information already..
             if( !from.getChildrenOfDimension("^logicalchild").contains(to.getOrigin().getName())  ){
-                pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
+                pa.add("noun",to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
             }
         }
 
@@ -83,15 +83,15 @@ public class Inheritance {
      */
     public void xISy(String x, String y){
         //Check if those names exist in RNouns
-        if(pa.isNounBase(x) || pa.isNounBase(y) ){
+        if(!pa.isNounBase(x) || !pa.isNounBase(y) ){
             System.out.println("Names supplied do not exist in R Nouns.");
+        }else {
+
+            NBN BNx = pa.getNoun(x);
+            NBN BNy = pa.getNoun(y);
+
+            inherit(BNx, BNy); //Devin's method. Just wrapped a bit for ease.
         }
-
-        NBN BNx = pa.getNoun( x );
-        NBN BNy = pa.getNoun( y );
-
-        inherit(BNx, BNy); //Devin's method. Just wrapped a bit for ease.
-
         //System.out.println("BN: "+ BNx.getOrigin().getName());
 
 

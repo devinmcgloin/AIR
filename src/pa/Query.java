@@ -9,13 +9,12 @@ import java.util.Scanner;
  */
 public class Query {
 
-    PA pa;
+    PA pa = new PA();
     Inheritance inherit;
     Scanner console = new Scanner(System.in);
     String input = "";
 
-    public Query(PA pa){
-        this.pa = pa;
+    public Query(){
         inherit = new Inheritance(pa);
         System.out.println("Welcome to the PA Query System. We'll think of a better name for it shortly!");
         System.out.print(getHelp());
@@ -38,7 +37,7 @@ public class Query {
 
     }
 
-    private void loop(){
+    public void loop(){
 
         while(true){
             System.out.print(">>> ");
@@ -48,6 +47,12 @@ public class Query {
             if(input.equals("q")){
                 pa.save();
                 break;
+            }else if(input.startsWith("ddev")) {
+                input = input.replace("ddev", "");
+                input = input.trim();
+                pa.devintest(input);
+            }else if(input.equals("bdev")){
+                pa.blazetest();
             }
 
             parse(input);
@@ -83,11 +88,11 @@ public class Query {
         } else if (words[0].equals("del") && words.length > 1) {
             input = input.replaceAll("del", "");
             input = input.trim();
-            pa.del(input, "R/noun/");
+            pa.del("noun", input, "R/noun/");
         } else if (input.startsWith("-")) {
             input = input.replace('-', ' ');
             input = input.trim();
-            pa.del(input, "R/noun/");
+            pa.del("noun", input, "R/noun/");
         } else if (words.length >2){
             //Could be loads of fun stuff.
             //x is y?   (boolean)
@@ -158,7 +163,7 @@ public class Query {
                 NBN xNode = pa.getNoun(x);
                 if(xNode != null ){
                     //Get x
-                    pa.add( y, xNode.getOrigin().getAddress()+"^has/");
+                    pa.add("noun", y, xNode.getOrigin().getAddress()+"^has/");
                 }
                 else {
                     System.out.println(x +" does not exist in R Nouns.");
