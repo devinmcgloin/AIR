@@ -1,9 +1,5 @@
 package pa;
 
-import r.R;
-import r.TreeNode;
-import r.TreeNodeBase;
-
 import java.util.ArrayList;
 
 /**
@@ -21,14 +17,14 @@ public class Inheritance {
      *
      * @param from - Node the current node is getting its has attributes from.
      */
-    public void inherit(PABN to, PABN from){
+    public void inherit(NBN to, NBN from) {
         ArrayList<String> children;
 
-        if(from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null){
+        if (from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null) {
             children = from.getOrigin().getChild("^has").getChildrenString();
             for (String child : children)
                 pa.add(child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
-        }else{
+        } else {
             pa.add("^has", to.getOrigin().getAddress());
             pa.add("^has", from.getOrigin().getAddress());
             inherit(to, from); //even more brilliant
@@ -37,14 +33,12 @@ public class Inheritance {
 
         //ADDED BY BLAZE
         //Adding is that now the "to" BN "^is" of the type "from" BN
-        if(to.getOrigin().getChild("^is") != null){
-            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
-        }else{
+        if (to.getOrigin().getChild("^is") != null) {
+            pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
+        } else {
             pa.add("^is", to.getOrigin().getAddress());
-            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+            pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
         }
-
-        //pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
     }
 
     /**
@@ -53,8 +47,9 @@ public class Inheritance {
      * @param y - city          car
      */
     public void xISy(String x, String y){
-        PABN BNx = pa.get(("R/noun/" + x));
-        PABN BNy = pa.get(("R/noun/" + y));
+        //TODO what if the base node does not exist? Does it matter?
+        NBN BNx = pa.getNoun(("R/noun/" + x));
+        NBN BNy = pa.getNoun(("R/noun/" + y));
 
         inherit(BNx, BNy); //Devin's method. Just wrapped a bit for ease.
 

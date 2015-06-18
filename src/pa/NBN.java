@@ -10,16 +10,17 @@ import java.util.ArrayList;
  * Created by devinmcgloin on 6/16/15.
  * BN is never changed after instatiation. NEVER.
  *
- * PA should only be dealing with PABN.
+ * PA should only be dealing with NBN.
  */
-public class PABN {
+public class NBN {
 
     private TreeNode BN;
     private TreeNode tmp;
-    private LDATA ldata = new LDATA();
+    private PA pa;
 
-    public PABN( TreeNode n ){
+    public NBN(TreeNode n, PA pa){
         BN = n;
+        this.pa = pa;
     }
 
     public TreeNode getOrigin(){
@@ -41,7 +42,7 @@ public class PABN {
      * @return
      */
     public boolean hasValue(String keyVal){
-        return ldata.evaluate(keyVal, this);
+        return pa.evaluate(keyVal, this);
     }
 
     public boolean hasAdj(String searchTerm){
@@ -62,6 +63,10 @@ public class PABN {
             return tmp.contains(searchTerm);
         }else
             return false;
+    }
+
+    public String getIs(){
+        return BN.getChild("^is").getChildrenString().get(0);
     }
 
 

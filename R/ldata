@@ -3,4 +3,10 @@ area
     ^conversions
     ^value_ranges
 cities
+length
+    ^comparison
+    ^conversions
+        ft->meters
+            * 0.305
+    ^value_ranges
 population

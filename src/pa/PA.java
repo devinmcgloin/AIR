@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Blazej on 6/3/2015.
- * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into PABN.
+ * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
  * TODO: where is header logic info stored? If we use what are current base nodes that qould require a rewriting of lower R functions.
  */
 
@@ -31,6 +31,7 @@ public class PA {
     protected R currentR = null;
     protected Inheritance inherit;
     protected SetLogic setLogic;
+    protected LDATA ldata = new LDATA(this);
 
     public PA(String user) {
         if(!user.equals("Terminal")) {
@@ -52,19 +53,19 @@ public class PA {
     }
 
     public void devintest() {
-        inherit.inherit(get("R/noun/town"), get("R/noun/city"));
-//        ArrayList<PABN> nodes = setLogic.genSet("city`population,post_office`population >= 6000000,area <= 1500000");
-//        if(nodes.size() > 0) {
-//            for (PABN node : nodes) {
-//                System.out.println(node.getOrigin().getAddress());
-//            }
-//        }
+//        inherit.inherit(getNoun("R/noun/town"), getNoun("R/noun/city"));
+        ArrayList<NBN> nodes = setLogic.genSet("city`population,post_office`length >= 5_meters");
+        if(nodes.size() > 0) {
+            for (NBN node : nodes) {
+                System.out.println(node.getOrigin().getAddress());
+            }
+        }
     }
 
     public void blazetest() {
         inherit.xISy("ferrari", "car");
 
-        //PABN test = get("R/noun/ferrari");
+        //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
 
     }
@@ -90,9 +91,9 @@ public class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<PABN> hashSearch(String terms) {
+    public ArrayList<NBN> hashSearch(String terms) {
         ArrayList<TreeNodeBase> baseNodes = currentR.rFullHashSearch(terms);
-        ArrayList<PABN> paBaseNodes = new ArrayList<PABN>();
+        ArrayList<NBN> paBaseNodes = new ArrayList<NBN>();
 
         //Check size
         int termSize = terms.split("`").length;
@@ -108,7 +109,7 @@ public class PA {
 
             for (TreeNodeBase node : baseNodes) {
                 if (node.getRank() == termSize) {
-                    paBaseNodes.add(new PABN(node.getOrigin()));
+                    paBaseNodes.add(new NBN(node.getOrigin(), this));
                 }else{
                     break;
                 }
@@ -119,7 +120,7 @@ public class PA {
             termSize = baseNodes.get(0).getRank();
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                paBaseNodes.add(new PABN(baseNodes.get(i).getOrigin()));
+                paBaseNodes.add(new NBN(baseNodes.get(i).getOrigin(), this));
             }
         }
 
@@ -128,9 +129,13 @@ public class PA {
 
     }
 
-    public PABN get(String rAddress) {
+    public NBN getNoun(String rAddress) {
 
-        return new PABN(currentR.get(rAddress));
+        return new NBN(currentR.get(rAddress), this);
+    }
+
+    public LDBN getLDATA(String rAddress){
+        return new LDBN(currentR.get(rAddress));
     }
 
     public TreeNode getTreeNode(String rAddress) {
@@ -157,4 +162,7 @@ public class PA {
     }
     // ----------------------------- END R WRAPPERS ----------------------------------//
 
+    public boolean evaluate(String keyVal, NBN node){
+        return ldata.evaluate(keyVal, node);
+    }
 }

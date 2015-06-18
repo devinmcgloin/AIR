@@ -1,8 +1,5 @@
 package pa;
 
-import r.R;
-import r.TreeNodeBase;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -31,8 +28,8 @@ public class SetLogic {
      * @param searchTerms
      * @return
      */
-    public ArrayList<PABN> genSet(String searchTerms){
-        ArrayList<PABN> nodes;
+    public ArrayList<NBN> genSet(String searchTerms){
+        ArrayList<NBN> nodes;
 
         //Parse search terms
         String[] terms = searchTerms.split("`");
@@ -49,12 +46,12 @@ public class SetLogic {
         nodes = pa.hashSearch(is);
 
         //Need to use an iterator as its the only safe way to modify an array while iterating over it.
-        Iterator<PABN> iterator = nodes.iterator();
+        Iterator<NBN> iterator = nodes.iterator();
 
         //The great filter
         while (iterator.hasNext()){
             Boolean removed = false;
-            PABN option = iterator.next();
+            NBN option = iterator.next();
 
             //Is filter
             if(!option.isFilter(is)) {

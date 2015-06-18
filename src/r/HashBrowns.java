@@ -105,13 +105,13 @@ public class HashBrowns {
 
         //Then insert then into the hits arrayList.
 //        for(int i=0; i<allBaseNodes.size(); i++){
-//            TreeNodeBase btmp = allBaseNodes.get(i);
+//            TreeNodeBase btmp = allBaseNodes.getNoun(i);
 //            //System.out.println("Add: "+btmp.getOrigin().getAddress());
 //            hits.add(i, btmp.getOrigin());
 //        }
 
 //		for(int i=0; i<hits.size(); i++){
-//			System.out.println("full: " + hits.get(i).getAddress());
+//			System.out.println("full: " + hits.getNoun(i).getAddress());
 //		}
 
         //---------------------------OPTIMIZATION OVER---------------------------------//

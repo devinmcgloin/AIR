@@ -400,7 +400,7 @@ public class GeneralTree {
         childTraverse(oldName);
         current.setName(newName);
         hash.add(current); //just add new name to hash. old string reference will either still work with header, or just
-        //get deleted if it fails on search. We already know this.
+        //getNoun deleted if it fails on search. We already know this.
 
     }
 
