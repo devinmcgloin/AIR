@@ -63,10 +63,19 @@ public class PA {
     }
 
     public void blazetest() {
-        inherit.xISy("ferrari", "car");
+        //inherit.xISy("ferrari", "car");
 
         //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
+
+        NBN test = getNoun("R/noun/");
+        test.getOrigin().contains("blazej gawlik");
+
+    }
+
+    public void query(){
+
+        Query q = new Query(this);
 
     }
 

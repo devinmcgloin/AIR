@@ -22,16 +22,22 @@ public class Inheritance {
 
         if (from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null) {
             children = from.getOrigin().getChild("^has").getChildrenString();
-            for (String child : children)
+            for (String child : children) {
+                //Check if "to" node (ferrari) already ^has those qualities. (Optimization).
+                if (to.getOrigin().getChild("^has").contains(child)) {
+                    continue;
+                }
                 pa.add(child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
-        } else {
+
+            }
+        } else{
             pa.add("^has", to.getOrigin().getAddress());
             pa.add("^has", from.getOrigin().getAddress());
             inherit(to, from); //even more brilliant
             return;
         }
 
-        //ADDED BY BLAZE
+        //ADDED BY BLAZE (^is)
         //Adding is that now the "to" BN "^is" of the type "from" BN
         if (to.getOrigin().getChild("^is") != null) {
             pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
@@ -39,6 +45,38 @@ public class Inheritance {
             pa.add("^is", to.getOrigin().getAddress());
             pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
         }
+
+        //First check if it already has the ^is qualification.
+        if( to.getOrigin().getChild("^is").contains(from.getOrigin().getName()) ){
+
+        } else{
+            if(to.getOrigin().getChild("^is") != null  ){
+                pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+            }else{
+                pa.add("^is", to.getOrigin().getAddress());
+                pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+            }
+        }
+
+
+        //ADDED BY BLAZE 2.0 (^logicalchild)
+        //Reverse adding to the "from" node (car; car --> ferrari) that ferrari is its ^logicalchild
+        //First check if that information already exists.
+        //TODO Throws null pointer
+        if( from.getOrigin().getChild("^logicalchild").contains(to.getOrigin().getName()) ){
+
+        }else{
+            if(from.getOrigin().getChild("^logicalchild") != null  ){
+                pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
+            }else{
+                pa.add("^logicalchild", from.getOrigin().getAddress());
+                pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
+            }
+        }
+
+
+
+        //pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
     }
 
     /**
@@ -47,7 +85,11 @@ public class Inheritance {
      * @param y - city          car
      */
     public void xISy(String x, String y){
-        //TODO what if the base node does not exist? Does it matter?
+        //Check if those names exist in RNouns
+        if(!pa.getNoun("R/noun").getOrigin().contains(x) || !pa.getNoun("R/noun").getOrigin().contains(y) ){
+            System.out.println("Names supplied do not exist in R Nouns.");
+        }
+
         NBN BNx = pa.getNoun(("R/noun/" + x));
         NBN BNy = pa.getNoun(("R/noun/" + y));
 
