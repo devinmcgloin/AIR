@@ -83,12 +83,12 @@ public class Inheritance {
      */
     public void xISy(String x, String y){
         //Check if those names exist in RNouns
-        if(!pa.getNoun("R/noun").getOrigin().contains(x) || !pa.getNoun("R/noun").getOrigin().contains(y) ){
+        if(!pa.get("R/noun").contains(x) || !pa.get("R/noun").contains(y) ){
             System.out.println("Names supplied do not exist in R Nouns.");
         }
 
-        NBN BNx = pa.getNoun(("R/noun/" + x));
-        NBN BNy = pa.getNoun(("R/noun/" + y));
+        NBN BNx = pa.getNoun( x );
+        NBN BNy = pa.getNoun( y );
 
         inherit(BNx, BNy); //Devin's method. Just wrapped a bit for ease.
 

@@ -31,7 +31,7 @@ public class LDATA {
         String operator = terms[1]; // <
         String qualifier = terms[2]; // 1000000_ft
 
-        currentLDBN = getLDATA(attribute);
+        currentLDBN = pa.getLDATA(attribute);
 
         if(node.hasFilter(attribute)){
             ArrayList<String> nodeVal = node.getOrigin().getChild("^has").getChild(attribute).getChildrenString();
@@ -57,10 +57,6 @@ public class LDATA {
         }else
             return false;
         return false;
-    }
-
-    public LDBN getLDATA(String LDATA){
-        return pa.getLDATA("R/ldata/" + LDATA);
     }
 
     /**

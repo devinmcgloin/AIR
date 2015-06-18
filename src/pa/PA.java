@@ -68,8 +68,8 @@ public class PA {
         //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
 
-        NBN test = getNoun("R/noun/");
-        test.getOrigin().contains("blazej gawlik");
+//        NBN test = getNoun("R/noun/");
+//        test.getOrigin().contains("blazej gawlik");
 
     }
 
@@ -138,13 +138,24 @@ public class PA {
 
     }
 
-    public NBN getNoun(String rAddress) {
-
-        return new NBN(currentR.get(rAddress), this);
+    public TreeNode get(String rAddress) {
+        return currentR.get(rAddress);
     }
 
-    public LDBN getLDATA(String rAddress){
-        return new LDBN(currentR.get(rAddress));
+    public NBN getNoun(String noun){
+        TreeNode tmp = get("R/noun/" + noun);
+        if(tmp == null)
+            return null;
+        else
+            return new NBN(tmp, this);
+    }
+
+    public LDBN getLDATA(String ldata){
+        TreeNode tmp = get("R/ldata/" + ldata);
+        if(tmp == null)
+            return null;
+        else
+            return new LDBN(tmp);
     }
 
     public TreeNode getTreeNode(String rAddress) {
