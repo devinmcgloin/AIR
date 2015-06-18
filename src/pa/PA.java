@@ -144,7 +144,7 @@ public class PA {
 
     public NBN getNoun(String noun){
         TreeNode tmp = get("R/noun/" + noun);
-        if(tmp == null)
+        if(!tmp.getName().equals( noun ))
             return null;
         else
             return new NBN(tmp, this);
@@ -152,7 +152,7 @@ public class PA {
 
     public LDBN getLDATA(String ldata){
         TreeNode tmp = get("R/ldata/" + ldata);
-        if(tmp == null)
+        if(!tmp.getName().equals(ldata))
             return null;
         else
             return new LDBN(tmp);
@@ -184,5 +184,27 @@ public class PA {
 
     public boolean evaluate(String keyVal, NBN node){
         return ldata.evaluate(keyVal, node);
+    }
+
+    public boolean isNounBase(String x){
+        if (getNoun(x) != null)
+            return true;
+        else
+            return false;
+    }
+
+    public void addBaseNode(String type, String name){
+        if(type.equals("ldata")){
+
+        }
+        else if(type.equals("noun")){
+            add(name, "R/noun");
+            add("^has", "R/noun" + name);
+            add("^is", "R/noun" + name);
+            add("^v1", "R/noun" + name);
+            add("^v2", "R/noun" + name);
+            add("^adj", "R/noun" + name);
+            add("^logicalchild", "R/noun" + name);
+        }
     }
 }

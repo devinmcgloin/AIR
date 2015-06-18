@@ -478,7 +478,7 @@ public class GeneralTree {
                     delAddress += "/" + nodeNames[j];
                     hash.del(nodeNames[j], delAddress);
                 }
-                return null; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS. CHANGED TO NULL.
+                return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.
             }
         }
 

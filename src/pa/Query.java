@@ -11,7 +11,6 @@ public class Query {
 
     PA pa;
     Inheritance inherit;
-    NBN rDB;
     Scanner console = new Scanner(System.in);
     String input = "";
 
@@ -19,7 +18,7 @@ public class Query {
         this.pa = pa;
         inherit = new Inheritance(pa);
         System.out.println("Welcome to the PA Query System. We'll think of a better name for it shortly!");
-        getHelp();
+        System.out.print(getHelp());
 
         //NEVER MIND, we;ll make it only work for nouns.
 //        System.out.println("Please pick from the following databases: \n");
@@ -35,7 +34,6 @@ public class Query {
 //            loop();
 //        }
 
-        rDB = pa.getNoun("R/noun/");
         loop();
 
     }
@@ -45,7 +43,7 @@ public class Query {
         while(true){
             System.out.print(">>> ");
 
-            input = console.nextLine();
+            input = console.nextLine().toLowerCase();
 
             if(input.equals("q")){
                 pa.save();
@@ -73,40 +71,29 @@ public class Query {
             input = input.replaceAll("add", "");
             input = input.trim();
             input = input.toLowerCase();
-            pa.add(input, rDB.getOrigin().getAddress());
-            //Also, add the regular headers.
-            pa.add("^has", rDB.getOrigin().getAddress() + input );
-            pa.add("^is", rDB.getOrigin().getAddress() + input);
-            pa.add("^v1", rDB.getOrigin().getAddress() + input);
-            pa.add("^v2", rDB.getOrigin().getAddress() + input);
-            pa.add("^adj", rDB.getOrigin().getAddress() + input);
-            pa.add("^logicalchild", rDB.getOrigin().getAddress() + input);
+            pa.addBaseNode("noun", input);
 
 
         } else if (input.startsWith("+")) {
             input = input.replace('+', ' ');
             input = input.trim();
             input = input.toLowerCase();
-            pa.add(input, rDB.getOrigin().getAddress());
-            //Also, add the regular headers.
-            pa.add("^has", rDB.getOrigin().getAddress() + input );
-            pa.add("^is", rDB.getOrigin().getAddress() + input);
-            pa.add("^v1", rDB.getOrigin().getAddress() + input);
-            pa.add("^v2", rDB.getOrigin().getAddress() + input);
-            pa.add("^adj", rDB.getOrigin().getAddress() + input);
-            pa.add("^logicalchild", rDB.getOrigin().getAddress() + input);
+            pa.addBaseNode("noun", input);
 
         } else if (words[0].equals("del") && words.length > 1) {
             input = input.replaceAll("del", "");
             input = input.trim();
-            pa.del(input, rDB.getOrigin().getAddress());
+            pa.del(input, "R/noun/");
         } else if (input.startsWith("-")) {
             input = input.replace('-', ' ');
             input = input.trim();
-            pa.del(input, rDB.getOrigin().getAddress());
+            pa.del(input, "R/noun/");
         } else if (words.length >2){
             //Could be loads of fun stuff.
             //x is y?   (boolean)
+
+
+
             if( input.contains(" is ") && input.endsWith("?")) {
                 input = input.replace("?","");
                 input.trim();
@@ -114,9 +101,9 @@ public class Query {
                 String y = input.split(" is ")[1].trim();
 
                 //Does x exist?
-                if( rDB.getOrigin().contains(x) ){
+                NBN xNode = pa.getNoun(x);
+                if(xNode != null ){
                     //Get x
-                    NBN xNode = pa.getNoun(rDB.getOrigin().getAddress()+x);
                     System.out.println(xNode.isFilter(y));
                 }
                 else {
@@ -134,7 +121,7 @@ public class Query {
                 String y = input.split(" is ")[1].trim();
 
                 //Do x and y exist?
-                if( rDB.getOrigin().contains(x) && rDB.getOrigin().contains(y)){
+                if( pa.isNounBase(x) && pa.isNounBase(y)){
                     //Inherit y ^has traits to x
                     inherit.xISy(x, y);
                     System.out.println(x +" ^is "+ y +" now saved.");
@@ -152,9 +139,9 @@ public class Query {
                 String y = input.split(" has ")[1].trim();
 
                 //Does x exist?
-                if( rDB.getOrigin().contains(x) ){
+                NBN xNode = pa.getNoun(x);
+                if(xNode != null ){
                     //Get x
-                    NBN xNode = pa.getNoun(rDB.getOrigin().getAddress()+x);
                     System.out.println(xNode.hasFilter(y));
                 }
                 else {
@@ -168,9 +155,9 @@ public class Query {
                 String y = input.split(" has ")[1].trim();
 
                 //Does x exist?
-                if( rDB.getOrigin().contains(x) ){
+                NBN xNode = pa.getNoun(x);
+                if(xNode != null ){
                     //Get x
-                    NBN xNode = pa.getNoun(rDB.getOrigin().getAddress()+x);
                     pa.add( y, xNode.getOrigin().getAddress()+"^has/");
                 }
                 else {
