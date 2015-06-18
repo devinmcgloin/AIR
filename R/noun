@@ -1,3 +1,14 @@
+bmw
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
 car
     ^adj
     ^has
@@ -6,9 +17,26 @@ car
         spoiler
     ^is
     ^logicalchild
+        bmw
         ferrari
     ^v1
     ^v2
+city
+    ^has
+        doctors_office
+        fire_dept
+        location
+        mayor
+        police_station
+        population
+        post_office
+        residents
+    ^logicalchild
+        los_angeles
+        new_york
+        redlands
+        town
+        washington_dc
 ferrari
     ^adj
     ^has
@@ -17,6 +45,84 @@ ferrari
         spoiler
     ^is
         car
+    ^logicalchild
+    ^v1
+    ^v2
+los_angeles
+    ^adj
+    ^has
+        area
+            1500000
+        doctors_office
+        fire_dept
+        length
+            100 ft
+        location
+        mayor
+        police_station
+        population
+            6000000
+        post_office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+measurement
+    ^is
+        ldata
+new_york
+    ^adj
+    ^has
+        doctors_office
+        fire_dept
+        location
+        mayor
+        police_station
+        population
+            9000000
+        post_office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+redlands
+    ^has
+        population
+    ^is
+        city
+town
+    ^adj
+    ^has
+        doctors_office
+        fire_dept
+        location
+        mayor
+        police_station
+        population
+        post_office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+washington_dc
+    ^adj
+    ^has
+        doctors_office
+        fire_dept
+        location
+        mayor
+        police_station
+        population
+        post_office
+        residents
+    ^is
+        city
     ^logicalchild
     ^v1
     ^v2
