@@ -17,12 +17,16 @@ public class LDBN {
         BN = n;
     }
 
+    /**
+     * TODO need to check this before you can just compare the way Im doing it now in LDATA.
+     * @return
+     */
     public String getComp(){
         if(BN.getChild("^comparison").contains("ordered")){
             return "ordered";
         }else{
             //TODO more complex logic containers/Time etc. Dont know how to do yet.
-            return "IDK BRUH";
+            return "Nothing";
         }
     }
 
@@ -34,6 +38,7 @@ public class LDBN {
         for(TreeNode conversion : conversions){
             String [] types = conversion.getName().split("->");
             if(types[0].equals(unitFrom) && types[1].equals(unitTo)){
+                //TODO assumes that there is only one conversion grouping and that it's in the first postion.
                 return conversion.getChildrenString().get(0);
             }
         }
@@ -48,7 +53,7 @@ public class LDBN {
             return "Nothing";
         }
         else if(children.size() == 1)
-            return children.get(0);
+            return children.get(0); //TODO assumes value is always in the first position and that there is only one.
         else{
             System.out.println("LDBN: GetValRanges: To many ranges.");
             return "Too many Ranges";

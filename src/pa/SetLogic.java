@@ -24,7 +24,7 @@ public class SetLogic {
      *
      *
      * Need to establish search term conventions here.
-     * $FROM <BN> $SELECT <fields> $WHERE <condition>
+     * "city`population,post_office`length >= 5_meters"
      * @param searchTerms
      * @return
      */

@@ -37,6 +37,7 @@ public class LDATA {
             ArrayList<String> nodeVal = node.getOrigin().getChild("^has").getChild(attribute).getChildrenString();
             for(String value : nodeVal){
 
+                //TODO weird split needed here, else expression will split units too. See line 29.
                 String [] qualifiers = qualifier.split("_");
                 String [] values = value.split(" ");
 
@@ -57,7 +58,13 @@ public class LDATA {
         return pa.getLDATA("R/ldata/" + LDATA);
     }
 
-
+    /**
+     * Only can be used for ordered numerical data.
+     * @param operator
+     * @param nodeVal
+     * @param qualifier
+     * @return
+     */
     private boolean switchBoard(String operator, String nodeVal, String qualifier){
         if(operator.equals("==")){
             return nodeVal.equals(qualifier);
