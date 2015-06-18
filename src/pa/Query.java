@@ -79,6 +79,8 @@ public class Query {
             pa.add("^v1", rDB.getOrigin().getAddress() + input);
             pa.add("^v2", rDB.getOrigin().getAddress() + input);
             pa.add("^adj", rDB.getOrigin().getAddress() + input);
+            pa.add("^logicalchild", rDB.getOrigin().getAddress() + input);
+
 
         } else if (input.startsWith("+")) {
             input = input.replace('+', ' ');
@@ -91,6 +93,8 @@ public class Query {
             pa.add("^v1", rDB.getOrigin().getAddress() + input);
             pa.add("^v2", rDB.getOrigin().getAddress() + input);
             pa.add("^adj", rDB.getOrigin().getAddress() + input);
+            pa.add("^logicalchild", rDB.getOrigin().getAddress() + input);
+
         } else if (words[0].equals("del") && words.length > 1) {
             input = input.replaceAll("del", "");
             input = input.trim();
