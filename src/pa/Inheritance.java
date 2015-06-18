@@ -47,13 +47,12 @@ public class Inheritance {
         }
 
         //First check if it already has the ^is qualification.
-        if( to.getOrigin().getChild("^is").contains(from.getOrigin().getName()) ){
-
+        //Check if null pointer.
+        if( to.getOrigin().getChild("^is") == null ){
+            pa.add("^is", to.getOrigin().getAddress());         //add carrot header
+            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is"); //add info
         } else{
-            if(to.getOrigin().getChild("^is") != null  ){
-                pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
-            }else{
-                pa.add("^is", to.getOrigin().getAddress());
+            if(  !to.getOrigin().getChild("^is").contains(from.getOrigin().getName())){
                 pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
             }
         }
@@ -61,15 +60,13 @@ public class Inheritance {
 
         //ADDED BY BLAZE 2.0 (^logicalchild)
         //Reverse adding to the "from" node (car; car --> ferrari) that ferrari is its ^logicalchild
-        //First check if that information already exists.
-        //TODO Throws null pointer
-        if( from.getOrigin().getChild("^logicalchild").contains(to.getOrigin().getName()) ){
-
+        //First check Null pointer
+        if( from.getOrigin().getChild("^logicalchild") == null  ){
+            pa.add("^logicalchild", from.getOrigin().getAddress()); //add carrot header
+            pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild"); //add info
         }else{
-            if(from.getOrigin().getChild("^logicalchild") != null  ){
-                pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
-            }else{
-                pa.add("^logicalchild", from.getOrigin().getAddress());
+            //Check if contains information already..
+            if( !from.getOrigin().getChild("^logicalchild").contains(to.getOrigin().getName())  ){
                 pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
             }
         }
