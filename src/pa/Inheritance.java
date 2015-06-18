@@ -20,11 +20,11 @@ public class Inheritance {
     public void inherit(NBN to, NBN from) {
         ArrayList<String> children;
 
-        if (from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null) {
-            children = from.getOrigin().getChild("^has").getChildrenString();
+        if (from.checkFirstDimension("^has") && to.checkFirstDimension("^has")) {
+            children = from.getChildrenOfDimension("^has");
             for (String child : children) {
                 //Check if "to" node (ferrari) already ^has those qualities. (Optimization).
-                if (to.getOrigin().getChild("^has").contains(child)) {
+                if (to.getChildrenOfDimension("^has").contains(child)) {
                     continue;
                 }
                 pa.add(child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
@@ -39,7 +39,7 @@ public class Inheritance {
 
         //ADDED BY BLAZE (^is)
         //Adding is that now the "to" BN "^is" of the type "from" BN
-        if (to.getOrigin().getChild("^is") != null) {
+        if (to.checkFirstDimension("^is")) {
             pa.add(from.getOrigin().getName(), to.getOrigin().getAddress() + "^is");
         } else {
             pa.add("^is", to.getOrigin().getAddress());
@@ -48,7 +48,7 @@ public class Inheritance {
 
         //First check if it already has the ^is qualification.
         //Check if null pointer.
-        if( to.getOrigin().getChild("^is") == null ){
+        if(to.checkFirstDimension("^is")){
             pa.add("^is", to.getOrigin().getAddress());         //add carrot header
             pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is"); //add info
         } else{
@@ -61,12 +61,12 @@ public class Inheritance {
         //ADDED BY BLAZE 2.0 (^logicalchild)
         //Reverse adding to the "from" node (car; car --> ferrari) that ferrari is its ^logicalchild
         //First check Null pointer
-        if( from.getOrigin().getChild("^logicalchild") == null  ){
+        if(to.checkFirstDimension("^logicalchild")){
             pa.add("^logicalchild", from.getOrigin().getAddress()); //add carrot header
             pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild"); //add info
         }else{
             //Check if contains information already..
-            if( !from.getOrigin().getChild("^logicalchild").contains(to.getOrigin().getName())  ){
+            if( !from.getChildrenOfDimension("^logicalchild").contains(to.getOrigin().getName())  ){
                 pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
             }
         }
@@ -83,7 +83,7 @@ public class Inheritance {
      */
     public void xISy(String x, String y){
         //Check if those names exist in RNouns
-        if(!pa.get("R/noun").contains(x) || !pa.get("R/noun").contains(y) ){
+        if(pa.isNounBase(x) || pa.isNounBase(y) ){
             System.out.println("Names supplied do not exist in R Nouns.");
         }
 

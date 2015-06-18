@@ -66,8 +66,20 @@ public class NBN {
             return false;
     }
 
+    public boolean checkFirstDimension(String term){
+        tmp = BN.getChild(term);
+        if(tmp != null){
+            return true;
+        }else
+            return false;
+    }
+
     public String getIs(){
         return BN.getChild("^is").getChildrenString().get(0);
+    }
+
+    public ArrayList<String> getChildrenOfDimension(String dimension){
+        return BN.getChild(dimension).getChildrenString();
     }
 
 
