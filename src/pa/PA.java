@@ -54,9 +54,10 @@ public class PA {
         ArrayList<NBN> nodes = setLogic.genSet(query);
         if(nodes.size() > 0) {
             for (NBN node : nodes) {
-                System.out.println(node.getOrigin().getAddress());
+                System.out.println(node.getOrigin().getName());
             }
-        }
+        }else
+            System.out.println("No nodes found! Try loosening your search parameters.");
     }
 
     public void devintest(){

@@ -30,19 +30,31 @@ public class SetLogic {
      */
     public ArrayList<NBN> genSet(String searchTerms){
         ArrayList<NBN> nodes;
+        String is;
+        String[] has;
+        String[] conditions;
 
         //Parse search terms
         String[] terms = searchTerms.split("`");
         if(terms.length == 0) {
             System.out.println("Invalid Search: genSet called with no arguments");
             return null;
+        }else if(terms.length == 1){
+            is = terms[0];
+            has = null;
+            conditions = null;
+        }else if(terms.length == 2){
+            is = terms[0];
+            has = terms[1].split(",");
+            conditions = null;
+        }else {
+
+            //TODO what happens if there are no additional terms? Need to address.
+
+            is = terms[0];
+            has = terms[1].split(",");
+            conditions = terms[2].split(",");
         }
-
-        //TODO what happens if there are no additional terms? Need to address.
-        String is = terms[0];
-        String[] has = terms[1].split(",");
-        String[] conditions = terms[2].split(",");
-
         nodes = pa.hashSearch(is);
 
         //Need to use an iterator as its the only safe way to modify an array while iterating over it.
@@ -61,7 +73,7 @@ public class SetLogic {
             }
 
             //Has filter
-            if(!removed) {
+            if(!removed && has != null) {
                 for (String determiner : has) {
                     if (!option.hasFilter(determiner)) {
                         iterator.remove();
@@ -72,7 +84,7 @@ public class SetLogic {
             }
 
             //Conditions filter
-            if(!removed){
+            if(!removed && conditions != null){
                 for(String determiner : conditions){
                     if(!option.hasValue(determiner)){
                         iterator.remove();

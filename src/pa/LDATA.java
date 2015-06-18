@@ -29,7 +29,8 @@ public class LDATA {
         String [] terms = expression.split(" ");
         String attribute = terms[0]; //height
         String operator = terms[1]; // <
-        String qualifier = terms[2]; // 1000000_ft
+        String qualifier = terms[2]; // 1000000
+        String unitTo = terms[3]; //ft
 
         currentLDBN = pa.getLDATA(attribute);
 
@@ -40,15 +41,14 @@ public class LDATA {
                 for (String value : nodeVal) {
 
                     //TODO weird split needed here, else expression will split units too. See line 29.
-                    String[] qualifiers = qualifier.split("_");
                     String[] values = value.split(" ");
 
-                    if (!values[1].equals(qualifiers[1])) {
-                        values = conversion(qualifiers[1], values[1], values[0], currentLDBN);
+                    if (!values[1].equals(unitTo)) {
+                        values = conversion(unitTo, values[1], values[0], currentLDBN);
                     }
 
                     //TODO good place to asses where the information will be compared and with what logic.
-                    if (switchBoard(operator, values[0], qualifiers[0]))
+                    if (switchBoard(operator, values[0], qualifier))
                         return true;
                 }
             }else{

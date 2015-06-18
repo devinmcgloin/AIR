@@ -91,8 +91,8 @@ public class Query {
             input = input.replace('-', ' ');
             input = input.trim();
             pa.del("noun", input, "R/noun/");
-        } else if(input.startsWith("getset")){
-            input = input.replace("getset", "");
+        } else if(input.startsWith("genset")){
+            input = input.replace("genset", "");
             input = input.trim();
             pa.getset(input);
         } else if (words.length >2){
@@ -182,14 +182,14 @@ public class Query {
                         "\nCommands:\n" +
                         "(ADD    | +  ): Adds a BN to RN\n" +
                         "(DEL    | -  ): What do you think\n" +
-                        "(x is y      ): Triggers inheritance y -> x \n" +
-                        "(x is y?     ): True if x ^is y \n" +
-                        "(x has y     ): Adds y to ^has of x\n" +
-                        "(x has y?    ): lol\n" +
-                        "( genset     ): generates sets. ex: city`post_office,population`length <= 100_meters" +
-                        "(PRINT  | ls ): There is no print.\n" +
-                        "(RENAME | mv ): PATH - newName\n" +
-                        "(q           ): Quits the query mode\n" +
-                        "(Help   | ?  ): For help.\n\n");
+                        "(   x is y   ): Triggers inheritance y -> x \n" +
+                        "(   x is y?  ): True if x ^is y \n" +
+                        "(   x has y  ): Adds y to ^has of x\n" +
+                        "(  x has y?  ): lol\n" +
+                        "(   genset   ): generates sets. ex: city`post_office,population`length <= 100 ft\n" +
+                        "( PRINT | ls ): There is no print.\n" +
+                        "( RENAME| mv ): PATH - newName\n" +
+                        "(     q      ): Quits the query mode\n" +
+                        "( Help  | ?  ): For help.\n\n");
     }
 }
