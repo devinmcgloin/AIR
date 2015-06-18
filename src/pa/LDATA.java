@@ -35,19 +35,24 @@ public class LDATA {
 
         if(node.hasFilter(attribute)){
             ArrayList<String> nodeVal = node.getOrigin().getChild("^has").getChild(attribute).getChildrenString();
-            for(String value : nodeVal){
 
-                //TODO weird split needed here, else expression will split units too. See line 29.
-                String [] qualifiers = qualifier.split("_");
-                String [] values = value.split(" ");
+            if(currentLDBN.getComp().equals("ordered")) {
+                for (String value : nodeVal) {
 
-                if(!values[1].equals(qualifiers[1])){
-                    values = conversion(qualifiers[1],values[1], values[0], currentLDBN );
+                    //TODO weird split needed here, else expression will split units too. See line 29.
+                    String[] qualifiers = qualifier.split("_");
+                    String[] values = value.split(" ");
+
+                    if (!values[1].equals(qualifiers[1])) {
+                        values = conversion(qualifiers[1], values[1], values[0], currentLDBN);
+                    }
+
+                    //TODO good place to asses where the information will be compared and with what logic.
+                    if (switchBoard(operator, values[0], qualifiers[0]))
+                        return true;
                 }
-
-                //TODO good place to asses where the information will be compared and with what logic.
-                if(switchBoard(operator, values[0], qualifiers[0]))
-                    return true;
+            }else{
+                //TODO Implement validation for non ordered logic.
             }
         }else
             return false;
@@ -102,6 +107,7 @@ public class LDATA {
         //parse the conversion factor for steps to conversion.
         String[] conversionSteps = conversionFactors.split(" ");
         double num = Double.valueOf(value.trim());
+
         for(int i = 0; i < conversionSteps.length; i += 2){
             if(conversionSteps[i].equals("*"))
                 num = num * Double.valueOf(conversionSteps[i+1]);
