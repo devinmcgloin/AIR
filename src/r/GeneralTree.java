@@ -381,8 +381,7 @@ public class GeneralTree {
                 loadDB(dbName); //FUCK this is probably where export doubling.
             }
 
-            System.out.println("hopethis is HWYYYYY: "+export(current));
-            //PRINT CHECK
+
         }
 
 
