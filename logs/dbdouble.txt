@@ -69,3 +69,66 @@ export called
 Exiting Query.
 R/noun/q
 export called
+
+
+
+----------------------------------------
+
+
+GenTree -- root operation triggered!!!
+WELCOME TO AIR.
+
+PATHS must be formatted as follows:
+'nouns/places/nations'
+
+Commands:
+(ADD    | +  ): Add node at current directory
+(DEL    | -  ): PATH
+(PRINT  | ls ): List directory.
+(BACK   | .. ): Back one level.
+(CD     | cd ): Return to root.
+(RENAME | mv ): PATH - newName
+(:PQ         ): Activates the PA Query System
+(Help   | ?  ): For help.
+
+
+R/noun
+R/noun/ddev
+PA's Current:       noun -  R/noun/
+New NBN: los angeles
+New NBN: new york
+New NBN: redlands
+New NBN: town
+New NBN: washington dc
+goBack() -- > Is this why exporting twice?
+export called
+R/noun/los angeles/
+R/noun/:PQ
+Welcome to the PA Query System. We'll think of a better name for it shortly!
+This system considers the BNs of RNouns and offers easy interaction with them
+
+Commands:
+(ADD    | +  ): Adds a BN to RN
+(DEL    | -  ): What do you think
+(x is y      ): Triggers inheritance y -> x
+(x is y?     ): True if x ^is y
+(x has y     ): Adds y to ^has of x
+(x has y?    ): lol
+(PRINT  | ls ): There is no print.
+(RENAME | mv ): PATH - newName
+(q           ): Quits the query mode
+(Help   | ?  ): For help.
+
+>>> new york has fire dept
+goBack() -- > Is this why exporting twice?
+export called
+New NBN: new york
+Dimension: fire dept already exists.
+>>> new york has fire dept?
+New NBN: new york
+true
+>>> q
+export called
+Exiting Query.
+R/noun/q
+export called
