@@ -26,8 +26,13 @@ public class Inheritance {
 
         if(from.getOrigin().getChild("^has") != null && to.getOrigin().getChild("^has") != null){
             children = from.getOrigin().getChild("^has").getChildrenString();
-            for (String child : children)
+            for (String child : children) {
+                //Check if "to" node (ferrari) already ^has those qualities. (Optimization).
+                if(to.getOrigin().getChild("^has").contains(child)){
+                    continue;
+                }
                 pa.add(child, to.getOrigin().getAddress() + "^has/"); //brilliant, Devin
+            }
         }else{
             pa.add("^has", to.getOrigin().getAddress());
             pa.add("^has", from.getOrigin().getAddress());
@@ -35,14 +40,36 @@ public class Inheritance {
             return;
         }
 
-        //ADDED BY BLAZE
+        //ADDED BY BLAZE (^is)
         //Adding is that now the "to" BN "^is" of the type "from" BN
-        if(to.getOrigin().getChild("^is") != null){
-            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
-        }else{
-            pa.add("^is", to.getOrigin().getAddress());
-            pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+        //First check if it already has the ^is qualification.
+        if( to.getOrigin().getChild("^is").contains(from.getOrigin().getName()) ){
+
+        } else{
+            if(to.getOrigin().getChild("^is") != null  ){
+                pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+            }else{
+                pa.add("^is", to.getOrigin().getAddress());
+                pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
+            }
         }
+
+
+        //ADDED BY BLAZE 2.0 (^logicalchild)
+        //Reverse adding to the "from" node (car; car --> ferrari) that ferrari is its ^logicalchild
+        //First check if that information already exists.
+        if( from.getOrigin().getChild("^logicalchild").contains(to.getOrigin().getName()) ){
+
+        }else{
+            if(from.getOrigin().getChild("^logicalchild") != null  ){
+                pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
+            }else{
+                pa.add("^logicalchild", from.getOrigin().getAddress());
+                pa.add(to.getOrigin().getName(), from.getOrigin().getAddress() + "^logicalchild");
+            }
+        }
+
+
 
         //pa.add( from.getOrigin().getName() ,to.getOrigin().getAddress() + "^is");
     }
@@ -53,10 +80,22 @@ public class Inheritance {
      * @param y - city          car
      */
     public void xISy(String x, String y){
+
+        //Check if those names exist in RNouns
+        if(!pa.get("R/noun").getOrigin().contains(x) || !pa.get("R/noun").getOrigin().contains(y) ){
+            System.out.println("Names supplied do not exist in R Nouns.");
+        }
+
+
         PABN BNx = pa.get(("R/noun/" + x));
         PABN BNy = pa.get(("R/noun/" + y));
 
+
+
+
         inherit(BNx, BNy); //Devin's method. Just wrapped a bit for ease.
+
+
 
         //System.out.println("BN: "+ BNx.getOrigin().getName());
 

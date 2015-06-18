@@ -64,8 +64,8 @@ public class PA {
     public void blazetest() {
         //inherit.xISy("ferrari", "car");
 
-        PABN test = get("R/noun/ferrari");
-        System.out.println(test.isFilter("car"));
+        PABN test = get("R/noun/");
+        test.getOrigin().contains("blazej gawlik");
 
     }
 

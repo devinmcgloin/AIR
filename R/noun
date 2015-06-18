@@ -2,6 +2,9 @@ blazej gawlik
     ^adj
     ^has
         arms
+        finger
+        head
+        home
         legs
     ^is
         person
@@ -16,6 +19,8 @@ car
         spoiler
         wheel
     ^is
+    ^logicalchild
+        ferrari
 city
     ^adj
     ^has
@@ -63,8 +68,13 @@ person
     ^adj
     ^has
         arms
+        finger
+        head
+        home
         legs
     ^is
+    ^logicalchild
+        blazej gawlik
     ^v1
     ^v2
 redlands
