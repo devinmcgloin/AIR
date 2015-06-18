@@ -1,20 +1,31 @@
 package pa;
 
+import r.R;
 import r.TreeNode;
+import pa.LDATA;
+
+import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/16/15.
  * BN is never changed after instatiation. NEVER.
  *
- * PA should only be dealing with PABN.
+ * PA should only be dealing with NBN.
  */
-public class PABN {
+public class NBN {
 
-    TreeNode BN;
-    TreeNode tmp;
+    private TreeNode BN;
+    private TreeNode tmp;
+    private PA pa;
 
-    public PABN( TreeNode n ){
+    public NBN(TreeNode n, PA pa){
         BN = n;
+        this.pa = pa;
+//        System.out.println("New NBN: " + BN.getName());
+    }
+
+    public TreeNode getOrigin(){
+        return BN;
     }
 
     public boolean isFilter(String searchTerm){
@@ -27,11 +38,12 @@ public class PABN {
     }
 
     /**
+     * TODO: Needs to be implemented in LDATA
      * needs to be sent to LDATA
      * @return
      */
-    public boolean hasValue(){
-
+    public boolean hasValue(String keyVal){
+        return pa.evaluate(keyVal, this);
     }
 
     public boolean hasAdj(String searchTerm){
@@ -47,11 +59,29 @@ public class PABN {
     }
 
     private boolean checkSecondDimension(String dimension, String searchTerm){
-        TreeNode tmp = BN.getChild(dimension);
+        tmp = BN.getChild(dimension);
         if(tmp != null){
             return tmp.contains(searchTerm);
         }else
             return false;
     }
+
+    public boolean checkFirstDimension(String term){
+        tmp = BN.getChild(term);
+        if(tmp != null){
+            return true;
+        }else
+            return false;
+    }
+
+    public String getIs(){
+        return BN.getChild("^is").getChildrenString().get(0);
+    }
+
+    public ArrayList<String> getChildrenOfDimension(String dimension){
+        return BN.getChild(dimension).getChildrenString();
+    }
+
+
 
 }

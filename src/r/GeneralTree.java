@@ -168,13 +168,15 @@ public class GeneralTree {
 
         String DBout = export(current).toString();
 
+        //System.out.println(DBout); //FUCK
+
         //Save file to the DB name
         try {
             String name = "";
             name = current.getName(); //gets the .txt file nam
-            if (!name.endsWith(".txt")) {
-                name += ".txt";
-            }
+//            if (!name.endsWith(".txt")) {
+//                name += ".txt";
+//            }
             BufferedWriter out = new BufferedWriter(new FileWriter(FILEEXTENSION + name));
             out.write(DBout);
             out.close();
@@ -372,7 +374,14 @@ public class GeneralTree {
             }
             //Now load db of the address we were given.
             childTraverse(dbName);
-            loadDB(dbName);
+            //Check if DB is already in memory. If so, just traverse into it.
+            if(current.getChildren() != null) {
+                //We good.
+            } else{
+                loadDB(dbName); //FUCK this is probably where export doubling.
+            }
+
+
         }
 
 
@@ -400,7 +409,7 @@ public class GeneralTree {
         childTraverse(oldName);
         current.setName(newName);
         hash.add(current); //just add new name to hash. old string reference will either still work with header, or just
-        //get deleted if it fails on search. We already know this.
+        //getNoun deleted if it fails on search. We already know this.
 
     }
 
@@ -478,10 +487,9 @@ public class GeneralTree {
                     delAddress += "/" + nodeNames[j];
                     hash.del(nodeNames[j], delAddress);
                 }
-                return current; //FUCK
+                return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.
             }
         }
-
         return current;
     }
 

@@ -1,0 +1,19 @@
+area
+    ^comparison
+    ^conversions
+    ^value_ranges
+length
+    ^comparison
+        ordered
+    ^conversions
+        ft->meters
+            * 0.305
+    ^conversions
+    ^value_ranges
+length
+population
+    ^comparison
+        count
+    ^conversions
+    ^conversions
+    ^value_ranges

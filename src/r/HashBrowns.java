@@ -66,7 +66,7 @@ public class HashBrowns {
 
         //---------------------------OPTIMIZATION---------------------------------//
         //The nodes we're personally interested in for R-Noun are the ones that 'exist'.
-        //In R's architecture they're the ones at the second dimension level. R/Noun.txt/TERM
+        //In R's architecture they're the ones at the second dimension level. R/noun/TERM
 
         //Create a set of each node reversed to BASE addresses.
         for(int i = 0; i<hits.size(); i++){
@@ -87,6 +87,7 @@ public class HashBrowns {
 
 
             //Count how many it contains.
+            //TODO this doesnt count for base nodes due to the way containsAll is defined.
             for(int j=0; j<terms.length; j++){
                 if(tmp.containsAll(terms[j])){
                     matchedTerms++;
@@ -104,13 +105,13 @@ public class HashBrowns {
 
         //Then insert then into the hits arrayList.
 //        for(int i=0; i<allBaseNodes.size(); i++){
-//            TreeNodeBase btmp = allBaseNodes.get(i);
+//            TreeNodeBase btmp = allBaseNodes.getNoun(i);
 //            //System.out.println("Add: "+btmp.getOrigin().getAddress());
 //            hits.add(i, btmp.getOrigin());
 //        }
 
 //		for(int i=0; i<hits.size(); i++){
-//			System.out.println("full: " + hits.get(i).getAddress());
+//			System.out.println("full: " + hits.getNoun(i).getAddress());
 //		}
 
         //---------------------------OPTIMIZATION OVER---------------------------------//

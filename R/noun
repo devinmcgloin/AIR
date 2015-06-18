@@ -1,0 +1,172 @@
+audi
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
+bmw
+    ^adj
+    ^has
+        brakes
+        doors
+        engine
+        exhaust
+        spoiler
+        suspension
+        wheels
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
+car
+    ^adj
+    ^has
+        brakes
+        doors
+        engine
+        exhaust
+        spoiler
+        suspension
+        wheels
+    ^is
+    ^logicalchild
+        audi
+        bmw
+        ferrari
+        honda
+        subaru
+    ^v1
+    ^v2
+city
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+        post office
+        residents
+    ^logicalchild
+        los angeles
+        new york
+        redlands
+        town
+        washington dc
+ferrari
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
+honda
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
+los angeles
+    ^adj
+    ^has
+        area
+            1500000
+        doctors office
+        fire dept
+        length
+            100 ft
+        location
+        mayor
+        police station
+        population
+            6000000
+        post office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+measurement
+    ^is
+        ldata
+new york
+    ^adj
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+            9000000
+        post office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+redlands
+    ^has
+        population
+    ^is
+        city
+subaru
+    ^adj
+    ^has
+        engine
+        exhaust
+        spoiler
+    ^is
+        car
+    ^logicalchild
+    ^v1
+    ^v2
+town
+    ^adj
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+        post office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+washington dc
+    ^adj
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+        post office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
