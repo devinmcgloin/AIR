@@ -126,3 +126,21 @@ washington_dc
     ^logicalchild
     ^v1
     ^v2
+
+
+area
+    ^comparison
+    ^conversions
+    ^value_ranges
+cities
+ldata
+length
+    ^comparison
+        ordered
+    ^conversions
+        ft->meters
+            * 0.305
+    ^conversions
+    ^value_ranges
+length
+population

@@ -62,7 +62,9 @@ public class PA {
 
     public void blazetest() {
         //inherit.xISy("ferrari", "car");
-
+        get("R/noun");
+        get("R/ldata");
+        get("R/noun");
         //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
 

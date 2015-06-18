@@ -168,6 +168,8 @@ public class GeneralTree {
 
         String DBout = export(current).toString();
 
+        //System.out.println(DBout); //FUCK
+
         //Save file to the DB name
         try {
             String name = "";
@@ -372,7 +374,15 @@ public class GeneralTree {
             }
             //Now load db of the address we were given.
             childTraverse(dbName);
-            loadDB(dbName);
+            //Check if DB is already in memory. If so, just traverse into it.
+            if(current.getChildren() != null) {
+                //We good.
+            } else{
+                loadDB(dbName); //FUCK this is probably where export doubling.
+            }
+
+            System.out.println("hopethis is HWYYYYY: "+export(current));
+            //PRINT CHECK
         }
 
 
