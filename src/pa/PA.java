@@ -62,10 +62,16 @@ public class PA {
     }
 
     public void blazetest() {
-        inherit.xISy("ferrari", "car");
+        //inherit.xISy("ferrari", "car");
 
-        //PABN test = get("R/noun/ferrari");
-        //System.out.println(test.isFilter("car"));
+        PABN test = get("R/noun/ferrari");
+        System.out.println(test.isFilter("car"));
+
+    }
+
+    public void query(){
+
+        Query q = new Query(this);
 
     }
 

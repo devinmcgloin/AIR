@@ -68,6 +68,9 @@ public class Terminal {
             System.out.println("PA's Current:       " + current.getName() + " -  " + current.getAddress());
             PA.devintest();
         }
+        else if (words[0].equals((";PQ"))){
+            PA.query();
+        }
         //Fun stuff
         else {
 
@@ -102,6 +105,7 @@ public class Terminal {
                         "(BACK   | .. ): Back one level.\n" +
                         "(CD     | cd ): Return to root.\n" +
                         "(RENAME | mv ): PATH - newName\n" +
+                        "(;PQ         ): Activates the PA Query System\n" +
                         "(Help   | ?  ): For help.\n\n");
     }
 
