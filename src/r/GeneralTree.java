@@ -268,6 +268,7 @@ public class GeneralTree {
                 //Break line into characters to count number of tabs. (Four spaces per tab).
                 i = 0;
 
+
                 while (line.charAt(i) == ' ') {
                     i++;
                 }

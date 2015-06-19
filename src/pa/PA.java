@@ -70,9 +70,23 @@ public class PA {
         //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
 
+        long start = System.currentTimeMillis();
+
+        for(int i =0; i<16000; i++){
+            add("test", "abca" +i, "R/test");
+            //add("test", "foo" , "R/test/"+"aaaa"+i);
+        }
+//        for(int i =0; i<1000; i++){
+//            add("test", "foo" +i, "R/test/");
+//
+//        }
+
 //        NBN test = getNoun("R/noun/");
 //        test.getOrigin().contains("blazej gawlik");
 
+        long end = System.currentTimeMillis();
+
+        System.out.println("Writing took: " + (end-start)/1000 + "."+ (end-start)%1000);
     }
 
     public R getRb(String db){

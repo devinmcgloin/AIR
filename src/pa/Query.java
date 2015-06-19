@@ -9,12 +9,21 @@ import java.util.Scanner;
  */
 public class Query {
 
-    PA pa = new PA();
+    PA pa;
     Inheritance inherit;
     Scanner console = new Scanner(System.in);
     String input = "";
 
     public Query(){
+
+        long start = System.currentTimeMillis();
+
+        pa = new PA();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("Loading took: " + (end-start)/1000 + "."+ (end-start)%1000);
+
         inherit = new Inheritance(pa);
         System.out.println("Welcome to the PA Query System. We'll think of a better name for it shortly!");
         System.out.print(getHelp());
