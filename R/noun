@@ -130,9 +130,13 @@ redlands
 subaru
     ^adj
     ^has
+        brakes
+        doors
         engine
         exhaust
         spoiler
+        suspension
+        wheels
     ^is
         car
     ^logicalchild

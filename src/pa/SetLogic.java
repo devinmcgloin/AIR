@@ -66,7 +66,7 @@ public class SetLogic {
             NBN option = iterator.next();
 
             //Is filter
-            if(!option.isFilter(is)) {
+            if(!option.isFilter(is.trim())) {
                 iterator.remove();
                 removed = true;
                 break;
@@ -75,7 +75,7 @@ public class SetLogic {
             //Has filter
             if(!removed && has != null) {
                 for (String determiner : has) {
-                    if (!option.hasFilter(determiner)) {
+                    if (!option.hasFilter(determiner.trim())) {
                         iterator.remove();
                         removed = true;
                         break;
@@ -86,7 +86,7 @@ public class SetLogic {
             //Conditions filter
             if(!removed && conditions != null){
                 for(String determiner : conditions){
-                    if(!option.hasValue(determiner)){
+                    if(!option.hasValue(determiner.trim())){
                         iterator.remove();
                         removed = true;
                         break;
