@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * TODO Search for child nodes - not urgent
  * TODO update addresses for each node.
+ * TODO implement binary search
  */
 public class TreeNode implements Comparable<TreeNode> {
 
@@ -14,7 +15,7 @@ public class TreeNode implements Comparable<TreeNode> {
     private String address;
     private TreeNode parent;
     private List<TreeNode> children;
-    private List<TreeNode> elementsIndex;
+//    private List<TreeNode> elementsIndex;
 
     /**
      * @param name
@@ -22,8 +23,8 @@ public class TreeNode implements Comparable<TreeNode> {
     public TreeNode(String name) {
         this.name = name;
         this.children = new LinkedList<TreeNode>();
-        this.elementsIndex = new LinkedList<TreeNode>();
-        this.elementsIndex.add(this);
+//        this.elementsIndex = new LinkedList<TreeNode>();
+//        this.elementsIndex.add(this);
 
     }
 
@@ -49,28 +50,28 @@ public class TreeNode implements Comparable<TreeNode> {
         address = parent.getAddress() + name + "/";
     }
 
-    /**
-     * x
-     *
-     * @return
-     */
-    public ArrayList<String> getAllAddresses() {
-        ArrayList<String> addresses = new ArrayList<String>();
-        addresses.add(getName());
-        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
-        for (TreeNode child : getAllChildren(allChildren)) {
-            addresses.add(child.getAddress());
-        }
-        return addresses;
-    }
+//    /**
+//     * x
+//     *
+//     * @return
+//     */
+//    public ArrayList<String> getAllAddresses() {
+//        ArrayList<String> addresses = new ArrayList<String>();
+//        addresses.add(getName());
+//        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
+//        for (TreeNode child : getAllChildren(allChildren)) {
+//            addresses.add(child.getAddress());
+//        }
+//        return addresses;
+//    }
 
     public List<TreeNode> getChildren() {
         return children;
     }
 
-    protected void setChildren(List<TreeNode> children) {
-        this.children = children;
-    }
+//    protected void setChildren(List<TreeNode> children) {
+//        this.children = children;
+//    }
 
     public ArrayList<String> getChildrenString() {
         ArrayList<String> a = new ArrayList<String>();
@@ -132,11 +133,11 @@ public class TreeNode implements Comparable<TreeNode> {
         return children.size() == 0;
     }
 
-    //TODO: ....does this work?
-    protected boolean addChild(String child) {
-        TreeNode childNode = new TreeNode(child);
-        return addChild(childNode);
-    }
+//    //TODO: ....does this work?
+//    protected boolean addChild(String child) {
+//        TreeNode childNode = new TreeNode(child);
+//        return addChild(childNode);
+//    }
 
     /**
      * @param childNode
@@ -145,29 +146,29 @@ public class TreeNode implements Comparable<TreeNode> {
     protected boolean addChild(TreeNode childNode) {
         childNode.parent = this;
         childNode.updateAddress();
-        childNode.elementsIndex = elementsIndex;
+//        childNode.elementsIndex = elementsIndex;
         if (!children.contains(childNode)) {
             this.children.add(childNode);
-            this.registerChildForSearch(childNode);
+//            this.registerChildForSearch(childNode);
         }
         return true;
     }
 
-    /**
-     * TODO: See if this is enough for our searching needs, if not it may be useful for narrowing results. Wtf is this doing.
-     *
-     * @param cmp
-     * @return
-     */
-    public TreeNode findTreeNode(Comparable<String> cmp) {
-        for (TreeNode element : this.elementsIndex) {
-            String elData = element.name;
-            if (cmp.compareTo(elData) == 0)
-                return element;
-        }
-
-        return null;
-    }
+//    /**
+//     * TODO: Remove if not useful for BST.
+//     *
+//     * @param cmp
+//     * @return
+//     */
+//    public TreeNode findTreeNode(Comparable<String> cmp) {
+//        for (TreeNode element : this.elementsIndex) {
+//            String elData = element.name;
+//            if (cmp.compareTo(elData) == 0)
+//                return element;
+//        }
+//
+//        return null;
+//    }
 
     public int getLevel() {
         if (this.isRoot())
@@ -176,14 +177,14 @@ public class TreeNode implements Comparable<TreeNode> {
             return parent.getLevel() + 1;
     }
 
-    /**
-     * @param node
-     */
-    private void registerChildForSearch(TreeNode node) {
-        elementsIndex.add(node);
-        if (parent != null)
-            parent.registerChildForSearch(node); //TODO: Why do this?
-    }
+//    /**
+//     * @param node
+//     */
+//    private void registerChildForSearch(TreeNode node) {
+//        elementsIndex.add(node);
+//        if (parent != null)
+//            parent.registerChildForSearch(node); //TODO: Why do this?
+//    }
 
     @Override
     public java.lang.String toString() {
@@ -255,14 +256,14 @@ public class TreeNode implements Comparable<TreeNode> {
         return false;
     }
 
-    /**
-     * TODO: remove from hash
-     *
-     * @param node
-     */
-    protected void delChild(String node) {
-        children.remove(contains(node));
-    }
+//    /**
+//     * TODO: remove from hash
+//     *
+//     * @param node
+//     */
+//    protected void delChild(String node) {
+//        children.remove(contains(node));
+//    }
 
     /**
      * TODO: rewrite using hash
@@ -310,9 +311,9 @@ public class TreeNode implements Comparable<TreeNode> {
         return null;
     }
 
-    protected void setParent(TreeNode parent) {
-        this.parent = parent;
-    }
+//    protected void setParent(TreeNode parent) {
+//        this.parent = parent;
+//    }
 
 
 }

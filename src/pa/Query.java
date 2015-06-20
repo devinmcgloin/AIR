@@ -77,6 +77,8 @@ public class Query {
 
         if (words[0].equals("") || words[0].equals(" "))
             return;
+        else if(words[0].equals("save"))
+            pa.save();
         else if (words[0].equals("help") || words[0].equals("?")) {
             System.out.print(getHelp());
         } else if (words[0].equals("add") && words.length > 1) {
@@ -84,8 +86,6 @@ public class Query {
             input = input.trim();
             input = input.toLowerCase();
             pa.addBaseNode("noun", input);
-
-
         } else if (input.startsWith("+")) {
             input = input.replace('+', ' ');
             input = input.trim();

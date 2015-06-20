@@ -54,9 +54,12 @@ city
         post office
         residents
     ^logicalchild
+        london
         los angeles
         new york
         redlands
+        san diego
+        san franscisco
         town
         washington dc
 ferrari
@@ -78,6 +81,22 @@ honda
         spoiler
     ^is
         car
+    ^logicalchild
+    ^v1
+    ^v2
+london
+    ^adj
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+        post office
+        residents
+    ^is
+        city
     ^logicalchild
     ^v1
     ^v2
@@ -123,10 +142,54 @@ new york
     ^v1
     ^v2
 redlands
+    ^adj
     ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
         population
+        post office
+        residents
     ^is
         city
+        town
+    ^logicalchild
+    ^v1
+    ^v2
+san diego
+    ^adj
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+        post office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
+san franscisco
+    ^adj
+    ^has
+        doctors office
+        fire dept
+        location
+        mayor
+        police station
+        population
+        post office
+        residents
+    ^is
+        city
+    ^logicalchild
+    ^v1
+    ^v2
 subaru
     ^adj
     ^has
@@ -156,6 +219,7 @@ town
     ^is
         city
     ^logicalchild
+        redlands
     ^v1
     ^v2
 washington dc

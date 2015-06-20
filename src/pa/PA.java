@@ -133,15 +133,15 @@ public class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<NBN> hashSearch(String terms) {
-        ArrayList<TreeNodeBase> baseNodes = getRb("noun").rFullHashSearch(terms);
-        ArrayList<NBN> paBaseNodes = new ArrayList<NBN>();
+    public ArrayList<TreeNode> hashSearch(String db, String terms) {
+        ArrayList<TreeNodeBase> baseNodes = getRb(db).rFullHashSearch(terms);
+        ArrayList<TreeNode> treeNodeBase = new ArrayList<TreeNode>();
 
         //Check size
         int termSize = terms.split("`").length;
 
         if (baseNodes.size() == 0) {
-            return paBaseNodes; // no dice
+            return treeNodeBase; // no dice
         }
 
         //Number of terms matches baseNode hits
@@ -151,7 +151,7 @@ public class PA {
 
             for (TreeNodeBase node : baseNodes) {
                 if (node.getRank() == termSize) {
-                    paBaseNodes.add(new NBN(node.getOrigin(), this));
+                    treeNodeBase.add(node.getOrigin());
                 }else{
                     break;
                 }
@@ -162,14 +162,20 @@ public class PA {
             termSize = baseNodes.get(0).getRank();
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                paBaseNodes.add(new NBN(baseNodes.get(i).getOrigin(), this));
+                treeNodeBase.add(baseNodes.get(i).getOrigin());
                 i += 1;
             }
         }
+        return treeNodeBase;
+    }
 
-
-        return paBaseNodes;
-
+    public ArrayList<NBN> nounHashSearch(String terms){
+        ArrayList<NBN> nounBaseNodes = new ArrayList<>();
+        ArrayList<TreeNode> nodes = hashSearch("noun", terms);
+        for (TreeNode node : nodes){
+            nounBaseNodes.add(new NBN(node, this));
+        }
+        return nounBaseNodes;
     }
 
     public TreeNode get(String DB, String rAddress) {
@@ -229,6 +235,7 @@ public class PA {
             add("noun", "^v2", "R/noun/" + name);
             add("noun", "^adj","R/noun/" + name);
             add("noun", "^logicalchild","R/noun/" + name);
+            System.out.println(name + " added as basenode in nouns.");
         }
     }
 }

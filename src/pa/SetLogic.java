@@ -6,6 +6,7 @@ import java.util.Iterator;
 /**
  * Created by devinmcgloin on 6/3/15.
  * Set logic needs to create sets of like information
+ * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and get all of its logical children.
  */
 public class SetLogic {
 
@@ -55,7 +56,7 @@ public class SetLogic {
             conditions = terms[2].split(",");
         }
 
-        nodes = pa.hashSearch(terms[0].replace(",", "`"));
+        nodes = pa.nounHashSearch(terms[0].replace(",", "`"));
 
         //Need to use an iterator as its the only safe way to modify an array while iterating over it.
         Iterator<NBN> iterator = nodes.iterator();
