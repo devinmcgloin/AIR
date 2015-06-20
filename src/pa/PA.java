@@ -11,6 +11,8 @@ import java.util.ArrayList;
  * Created by Blazej on 6/3/2015.
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
  * TODO: where is header logic info stored? If we use what are current base nodes that qould require a rewriting of lower R functions.
+ *
+ * TODO wrap get and hash search so the the pa specific ones return that type and use generic methods.!!
  */
 
 //External Methods of PA
@@ -161,6 +163,7 @@ public class PA {
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
                 paBaseNodes.add(new NBN(baseNodes.get(i).getOrigin(), this));
+                i += 1;
             }
         }
 
@@ -189,17 +192,6 @@ public class PA {
             return null;
         else
             return new LDBN(tmp);
-    }
-
-    /**
-     * Terminal bullshit
-     * @param rAddress
-     * @return
-     */
-    public TreeNode getTreeNode(String db, String rAddress) {
-        if(rDBexists(db))
-            return getRb(db).get(rAddress);
-        return null;
     }
 
     public void save() {

@@ -241,7 +241,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * TODO: rewrite using hash
      * QA on containsAll
      *
-     * @param node
+     * @param term
      * @return
      */
     public boolean containsAll(String term) {
