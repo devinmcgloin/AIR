@@ -16,6 +16,7 @@ what types of methods are there?
 * generating output for the user
     taking raw data and generating a card or piece of content.
 * methods the verify accuracy of information
+    is blue a color? or is this a quotation?
 * methods to extent initial capabilities.
     eg a quote of the day feature that wasn't normally included.
 

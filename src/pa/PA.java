@@ -11,8 +11,6 @@ import java.util.ArrayList;
  * Created by Blazej on 6/3/2015.
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
  *
- *
- * TODO wrap get and hash search so the the pa specific ones return that type and use generic methods.!!
  */
 
 //External Methods of PA

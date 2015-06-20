@@ -376,6 +376,7 @@ public class GeneralTree {
             //Now load db of the address we were given.
             childTraverse(dbName);
             //Check if DB is already in memory. If so, just traverse into it.
+            //TODO QA this fix
             if(current.getChildren() != null) {
                 //We good.
             } else{

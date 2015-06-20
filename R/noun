@@ -28,9 +28,11 @@ car
     ^adj
     ^has
         brakes
+        color
         doors
         engine
         exhaust
+        speed
         spoiler
         suspension
         wheels
@@ -65,9 +67,15 @@ city
 ferrari
     ^adj
     ^has
+        brakes
+        color
+        doors
         engine
         exhaust
+        speed
         spoiler
+        suspension
+        wheels
     ^is
         car
     ^logicalchild
