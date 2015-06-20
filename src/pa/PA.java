@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Blazej on 6/3/2015.
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- * TODO: where is header logic info stored? If we use what are current base nodes that qould require a rewriting of lower R functions.
+ *
  *
  * TODO wrap get and hash search so the the pa specific ones return that type and use generic methods.!!
  */
@@ -21,7 +21,7 @@ public class PA {
 
     /**
      * HashSearch (Get set -> set logic???)
-     * <p/>
+     *
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
      * reanalyze headers into their true base nodes and re-rank them.
