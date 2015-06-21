@@ -14,3 +14,23 @@ Date Scheme:
 [1995-1998]
 
 LDATA has to think about locations too
+
+
+----LDATA is -------
+* color - IMPT
+* length
+* temperature
+* count
+* gemetric objects - IMPT
+* weight - IMPT
+* speed - formula
+* materials - IMPT
+* chemicals - IMPT
+* light - IMPT
+* acceleration - formula
+* momentum - formula
+* force - formula
+* loctation - IMPT
+* time - IMPT
+
+Not all of these are super imortant.

@@ -15,13 +15,25 @@ what types of methods are there?
     read in this document, split on new lines, and remove empty lines. then use this file for quotes of the day.
 * generating output for the user
     taking raw data and generating a card or piece of content.
-* methods the verify accuracy of information
+* methods the verify accuracy of information // perhaps this is a PA question.
     is blue a color? or is this a quotation?
 * methods to extent initial capabilities.
     eg a quote of the day feature that wasn't normally included.
 
 
+---------------Thoughts about the Method graph------------------------
+Method graph works well for functions that take one variable and return another. Not so well when it comes to methods that have to take multiple variables and returns mutiple variables.
 
+New rule, methods can only return one type. They can still take multiple types, this is mostly to combine values into something more usefull. if you have the length of a side, but area is more usefull to the problem you want to solve. This can go on infinitely, but seems to be the primary use case.
+
+What would be more clever is to pull out methods that have the proper starting structure. EG: They require the types of data you have or less. We can probably only map the 3 functions away from the current function being selected, so how do we choose the right one, or do we explore all possibilities?
+
+Methods dont have too many possibilities, as they take a finite ammount of types and return a specific type. And by that I dont mean they return an int, or a char. They have to be very specific LDATA ideas, which are in a sense our primitives, while the Nouns that are combined of LDATA are what we're really after.
+
+
+
+---------------- How do methods and verbs interact -------------------
+each verb generally has a set of methods associated to it, and by word I mean more specifically a word concept or bucket. Depending on which noun is triggering it that verb would behave differently.
 
 
 REMEMBER
