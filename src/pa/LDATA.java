@@ -121,18 +121,21 @@ public class LDATA {
 
     /**
      * TODO: QA
+     *
+     *
      * Conversion handled inside this method.
      * @param valueUnit
      * @param node
      * @return
      */
     public boolean verifyRange(String valueUnit, LDBN node){
+        String valueRanges = node.getValRanges();
+        String[] ranges = valueRanges.split(" ");
+        String min = ranges[1];
+        String max = ranges[3];
+        String value = valueUnit.split(" ")[0];
+
         if(node.getComp().equals("count")) {
-            String valueRanges = node.getValRanges();
-            String[] ranges = valueRanges.split(" ");
-            String min = ranges[1];
-            String max = ranges[3];
-            String value = valueUnit.split(" ")[0];
             if(min.equals("inf") && max.equals("inf")){
                 return true;
             } else if(max.equals("inf")) {
@@ -147,33 +150,37 @@ public class LDATA {
                 }
             }
             else if(min.equals("inf")) {
-                if (valueRanges.contains("[")) {
+                if (valueRanges.contains("]")) {
                     if (!switchBoard(">=", max, value)) {
                         return false;
                     }
-                } else if (valueRanges.contains("(")) {
+                } else if (valueRanges.contains(")")) {
                     if (!switchBoard(">", max, value)) {
                         return false;
                     }
                 }
             }
-            else if(!valueRanges.contains("inf")) {
-                if (valueRanges.contains("[")) {
+            else {
+                if (valueRanges.startsWith("[") && valueRanges.endsWith("]")) {
                     if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
                         return false;
                     }
-                } else if (valueRanges.contains("(")) {
+                } else if (valueRanges.startsWith("(") && valueRanges.endsWith(")")) {
                     if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
+                        return false;
+                    }
+                } else if(valueRanges.startsWith("(") && valueRanges.endsWith("]") ){
+                    if (!switchBoard("<", min, value) || !switchBoard(">=", max, value)) {
+                        return false;
+                    }
+                }else if(valueRanges.startsWith("[") && valueRanges.endsWith(")") ){
+                    if (!switchBoard("<=", min, value) || !switchBoard(">", max, value)) {
                         return false;
                     }
                 }
             }
-        }else if(node.getComp().equals("ordered")){
-            String valueRanges = node.getValRanges();
-            String[] ranges = valueRanges.split(" ");
-            String min = ranges[1];
-            String max = ranges[3];
-            String value = valueUnit.split(" ")[0];
+        }
+        else if(node.getComp().equals("ordered")){
             String unit = valueUnit.split(" ")[1];
             String [] values = conversion(ranges[4], unit, value, node);
             if(min.equals("inf") && max.equals("inf")){
@@ -190,27 +197,38 @@ public class LDATA {
                 }
             }
             else if(min.equals("inf")) {
-                if (valueRanges.contains("[")) {
+                if (valueRanges.contains("]")) {
                     if (!switchBoard(">=", max, values[0])) {
                         return false;
                     }
-                } else if (valueRanges.contains("(")) {
+                } else if (valueRanges.contains(")")) {
                     if (!switchBoard(">", max, values[0])) {
                         return false;
                     }
                 }
             }
-            else if(!valueRanges.contains("inf")) {
-                if (valueRanges.contains("[")) {
+            else {
+                if (valueRanges.startsWith("[") && valueRanges.endsWith("]")) {
                     if (!switchBoard("<=", min, values[0]) || !switchBoard(">=", max, values[0])) {
                         return false;
                     }
-                } else if (valueRanges.contains("(")) {
+                } else if (valueRanges.startsWith("(") && valueRanges.endsWith(")")) {
                     if (!switchBoard("<", min, values[0]) || !switchBoard(">", max, values[0])) {
+                        return false;
+                    }
+                } else if(valueRanges.startsWith("(") && valueRanges.endsWith("]") ){
+                    if (!switchBoard("<", min, values[0]) || !switchBoard(">=", max, values[0])) {
+                        return false;
+                    }
+                }else if(valueRanges.startsWith("[") && valueRanges.endsWith(")") ){
+                    if (!switchBoard("<=", min, values[0]) || !switchBoard(">", max, values[0])) {
                         return false;
                     }
                 }
             }
+        }else{
+            System.out.println("LDATA line 216: comparison type not included.");
+            return false;
         }
         return true;
     }
