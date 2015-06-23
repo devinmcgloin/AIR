@@ -39,8 +39,6 @@ public class LDATA {
             if(currentLDBN.getComp().equals("ordered")) {
                 String unitTo = terms[3]; //ft
                 for (String value : nodeVal) {
-
-                    //TODO weird split needed here, else expression will split units too. See line 29.
                     String[] values = value.split(" ");
 
                     if(values.length == 2) {
@@ -49,8 +47,6 @@ public class LDATA {
                             values = conversion(unitTo, values[1], values[0], currentLDBN);
                         }
                     }
-
-                    //TODO good place to asses where the information will be compared and with what logic.
                     if (switchBoard(operator, values[0], qualifier))
                         return true;
                 }
@@ -63,7 +59,7 @@ public class LDATA {
             }
 
             else{
-                //TODO Implement validation for non ordered logic.
+                //TODO Implement variation for non ordered logic. Location, time etc.
             }
         }else
             return false;
@@ -123,21 +119,47 @@ public class LDATA {
         return new String [] {String.valueOf(num),unitTo};
     }
 
-    public boolean verifyRange(String value, LDBN node){
-        String valueRanges = node.getValRanges();
-        String[] ranges = valueRanges.split(" ");
-        String min = ranges[1];
-        String max = ranges[3];
-        if(valueRanges.contains("[")) {
-            if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
-                return false;
+    /**
+     * Conversion handled inside this method.
+     * @param valueUnit
+     * @param node
+     * @return
+     */
+    public boolean verifyRange(String valueUnit, LDBN node){
+        if(node.getComp().equals("count")) {
+            String valueRanges = node.getValRanges();
+            String[] ranges = valueRanges.split(" ");
+            String min = ranges[1];
+            String max = ranges[3];
+            String value = valueUnit.split(" ")[0];
+            String unit = valueUnit.split(" ")[1];
+            if (valueRanges.contains("[")) {
+                if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
+                    return false;
+                }
+            } else if (valueRanges.contains("(")) {
+                if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
+                    return false;
+                }
             }
-        }else if(valueRanges.contains("(")){
-            if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
-                return false;
+        }else if(node.getComp().equals("ordered")){
+            String valueRanges = node.getValRanges();
+            String[] ranges = valueRanges.split(" ");
+            String min = ranges[1];
+            String max = ranges[3];
+            String value = valueUnit.split(" ")[0];
+            String unit = valueUnit.split(" ")[1];
+            String [] values = conversion(ranges[4], unit, value, node);
+            if (valueRanges.contains("[")) {
+                if (!switchBoard("<=", min, values[0]) || !switchBoard(">=", max, values[0])) {
+                    return false;
+                }
+            } else if (valueRanges.contains("(")) {
+                if (!switchBoard("<", min, values[0]) || !switchBoard(">", max, values[0])) {
+                    return false;
+                }
             }
         }
         return true;
-
     }
 }
