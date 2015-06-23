@@ -5,6 +5,7 @@ you should know what type of thing you have, and what type of thing you're going
 perhaps we generate this daily in a separate update utility, and load that in. have it also make function compositions of the options. so you just call one function. how to name?
 
 what types of methods are there?
+
 * methods to calculate values. area of circle. air resistance etc.
     this is more of a decomposition problem.
 * methods to read in data and send it to the right place.
@@ -21,7 +22,7 @@ what types of methods are there?
     eg a quote of the day feature that wasn't normally included.
 
 
----------------Thoughts about the Method graph------------------------
+--------------- Thoughts about the Method graph ------------------------
 Method graph works well for functions that take one variable and return another. Not so well when it comes to methods that have to take multiple variables and returns mutiple variables.
 
 New rule, methods can only return one type. They can still take multiple types, this is mostly to combine values into something more usefull. if you have the length of a side, but area is more usefull to the problem you want to solve. This can go on infinitely, but seems to be the primary use case.
@@ -37,7 +38,7 @@ each verb generally has a set of methods associated to it, and by word I mean mo
 
 
 REMEMBER
-* User doesnt give some vauge thing they want to do, they will probably have to spell it out a little bit more, until we can use those ideas as standard programs.
+* User doesnt give some vague thing they want to do, they will probably have to spell it out a little bit more, until we can use those ideas as standard programs.
     EG = Someone gives a sudo code program to remove duplicate files, when some one else asks to remove duplicate files, we would have to verify that their rogram works then just run the other users program. If we section off specific initial blocks the security overhead isnt huge. and once one solution is found we're good.
     Most problems are not unique, if we can solve them abstractly then we dont have to do it over and over again.
 

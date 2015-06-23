@@ -122,4 +122,22 @@ public class LDATA {
 
         return new String [] {String.valueOf(num),unitTo};
     }
+
+    public boolean verifyRange(String value, LDBN node){
+        String valueRanges = node.getValRanges();
+        String[] ranges = valueRanges.split(" ");
+        String min = ranges[1];
+        String max = ranges[3];
+        if(valueRanges.contains("[")) {
+            if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
+                return false;
+            }
+        }else if(valueRanges.contains("(")){
+            if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
+                return false;
+            }
+        }
+        return true;
+
+    }
 }
