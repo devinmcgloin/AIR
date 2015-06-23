@@ -9,8 +9,10 @@ length
         ft->meters
             * 0.305
     ^value_ranges
+        [ 0 - inf ft ]
 population
     ^comparison
         count
     ^conversions
     ^value_ranges
+        [ 0 - inf ]

@@ -120,6 +120,7 @@ public class LDATA {
     }
 
     /**
+     * TODO: QA
      * Conversion handled inside this method.
      * @param valueUnit
      * @param node
@@ -132,14 +133,39 @@ public class LDATA {
             String min = ranges[1];
             String max = ranges[3];
             String value = valueUnit.split(" ")[0];
-            String unit = valueUnit.split(" ")[1];
-            if (valueRanges.contains("[")) {
-                if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
-                    return false;
+            if(min.equals("inf") && max.equals("inf")){
+                return true;
+            } else if(max.equals("inf")) {
+                if (valueRanges.contains("[")) {
+                    if (!switchBoard("<=", min, value)) {
+                        return false;
+                    }
+                } else if (valueRanges.contains("(")) {
+                    if (!switchBoard("<", min, value)) {
+                        return false;
+                    }
                 }
-            } else if (valueRanges.contains("(")) {
-                if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
-                    return false;
+            }
+            else if(min.equals("inf")) {
+                if (valueRanges.contains("[")) {
+                    if (!switchBoard(">=", max, value)) {
+                        return false;
+                    }
+                } else if (valueRanges.contains("(")) {
+                    if (!switchBoard(">", max, value)) {
+                        return false;
+                    }
+                }
+            }
+            else if(!valueRanges.contains("inf")) {
+                if (valueRanges.contains("[")) {
+                    if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
+                        return false;
+                    }
+                } else if (valueRanges.contains("(")) {
+                    if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
+                        return false;
+                    }
                 }
             }
         }else if(node.getComp().equals("ordered")){
@@ -150,13 +176,39 @@ public class LDATA {
             String value = valueUnit.split(" ")[0];
             String unit = valueUnit.split(" ")[1];
             String [] values = conversion(ranges[4], unit, value, node);
-            if (valueRanges.contains("[")) {
-                if (!switchBoard("<=", min, values[0]) || !switchBoard(">=", max, values[0])) {
-                    return false;
+            if(min.equals("inf") && max.equals("inf")){
+                return true;
+            } else if(max.equals("inf")) {
+                if (valueRanges.contains("[")) {
+                    if (!switchBoard("<=", min, values[0])) {
+                        return false;
+                    }
+                } else if (valueRanges.contains("(")) {
+                    if (!switchBoard("<", min, values[0])) {
+                        return false;
+                    }
                 }
-            } else if (valueRanges.contains("(")) {
-                if (!switchBoard("<", min, values[0]) || !switchBoard(">", max, values[0])) {
-                    return false;
+            }
+            else if(min.equals("inf")) {
+                if (valueRanges.contains("[")) {
+                    if (!switchBoard(">=", max, values[0])) {
+                        return false;
+                    }
+                } else if (valueRanges.contains("(")) {
+                    if (!switchBoard(">", max, values[0])) {
+                        return false;
+                    }
+                }
+            }
+            else if(!valueRanges.contains("inf")) {
+                if (valueRanges.contains("[")) {
+                    if (!switchBoard("<=", min, values[0]) || !switchBoard(">=", max, values[0])) {
+                        return false;
+                    }
+                } else if (valueRanges.contains("(")) {
+                    if (!switchBoard("<", min, values[0]) || !switchBoard(">", max, values[0])) {
+                        return false;
+                    }
                 }
             }
         }

@@ -61,7 +61,7 @@ public class PA {
     }
 
     public void devintest(){
-
+        System.out.println(ldata.verifyRange("1 meter", getLDATA("length")));
     }
 
     public void blazetest() {
