@@ -39,8 +39,6 @@ public class LDATA {
             if(currentLDBN.getComp().equals("ordered")) {
                 String unitTo = terms[3]; //ft
                 for (String value : nodeVal) {
-
-                    //TODO weird split needed here, else expression will split units too. See line 29.
                     String[] values = value.split(" ");
 
                     if(values.length == 2) {
@@ -49,8 +47,6 @@ public class LDATA {
                             values = conversion(unitTo, values[1], values[0], currentLDBN);
                         }
                     }
-
-                    //TODO good place to asses where the information will be compared and with what logic.
                     if (switchBoard(operator, values[0], qualifier))
                         return true;
                 }
@@ -63,7 +59,7 @@ public class LDATA {
             }
 
             else{
-                //TODO Implement validation for non ordered logic.
+                //TODO Implement variation for non ordered logic. Location, time etc.
             }
         }else
             return false;
@@ -121,5 +117,119 @@ public class LDATA {
         }
 
         return new String [] {String.valueOf(num),unitTo};
+    }
+
+    /**
+     * TODO: QA
+     *
+     *
+     * Conversion handled inside this method.
+     * @param valueUnit
+     * @param node
+     * @return
+     */
+    public boolean verifyRange(String valueUnit, LDBN node){
+        String valueRanges = node.getValRanges();
+        String[] ranges = valueRanges.split(" ");
+        String min = ranges[1];
+        String max = ranges[3];
+        String value = valueUnit.split(" ")[0];
+
+        if(node.getComp().equals("count")) {
+            if(min.equals("inf") && max.equals("inf")){
+                return true;
+            } else if(max.equals("inf")) {
+                if (valueRanges.startsWith("[")) {
+                    if (!switchBoard("<=", min, value)) {
+                        return false;
+                    }
+                } else if (valueRanges.startsWith("(")) {
+                    if (!switchBoard("<", min, value)) {
+                        return false;
+                    }
+                }
+            }
+            else if(min.equals("inf")) {
+                if (valueRanges.endsWith("]")) {
+                    if (!switchBoard(">=", max, value)) {
+                        return false;
+                    }
+                } else if (valueRanges.endsWith(")")) {
+                    if (!switchBoard(">", max, value)) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                if (valueRanges.startsWith("[") && valueRanges.endsWith("]")) {
+                    if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
+                        return false;
+                    }
+                } else if (valueRanges.startsWith("(") && valueRanges.endsWith(")")) {
+                    if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
+                        return false;
+                    }
+                } else if(valueRanges.startsWith("(") && valueRanges.endsWith("]") ){
+                    if (!switchBoard("<", min, value) || !switchBoard(">=", max, value)) {
+                        return false;
+                    }
+                }else if(valueRanges.startsWith("[") && valueRanges.endsWith(")") ){
+                    if (!switchBoard("<=", min, value) || !switchBoard(">", max, value)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else if(node.getComp().equals("ordered")){
+            String unit = valueUnit.split(" ")[1];
+            String [] values = conversion(ranges[4], unit, value, node);
+            if(min.equals("inf") && max.equals("inf")){
+                return true;
+            } else if(max.equals("inf")) {
+                if (valueRanges.startsWith("[")) {
+                    if (!switchBoard("<=", min, values[0])) {
+                        return false;
+                    }
+                } else if (valueRanges.startsWith("(")) {
+                    if (!switchBoard("<", min, values[0])) {
+                        return false;
+                    }
+                }
+            }
+            else if(min.equals("inf")) {
+                if (valueRanges.endsWith("]")) {
+                    if (!switchBoard(">=", max, values[0])) {
+                        return false;
+                    }
+                } else if (valueRanges.endsWith(")")) {
+                    if (!switchBoard(">", max, values[0])) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                if (valueRanges.startsWith("[") && valueRanges.endsWith("]")) {
+                    if (!switchBoard("<=", min, values[0]) || !switchBoard(">=", max, values[0])) {
+                        return false;
+                    }
+                } else if (valueRanges.startsWith("(") && valueRanges.endsWith(")")) {
+                    if (!switchBoard("<", min, values[0]) || !switchBoard(">", max, values[0])) {
+                        return false;
+                    }
+                } else if(valueRanges.startsWith("(") && valueRanges.endsWith("]") ){
+                    if (!switchBoard("<", min, values[0]) || !switchBoard(">=", max, values[0])) {
+                        return false;
+                    }
+                }else if(valueRanges.startsWith("[") && valueRanges.endsWith(")") ){
+                    if (!switchBoard("<=", min, values[0]) || !switchBoard(">", max, values[0])) {
+                        return false;
+                    }
+                }
+            }
+        }else{
+            System.out.println("LDATA line 230: comparison type not included.");
+            return false;
+        }
+        return true;
     }
 }

@@ -1,5 +1,28 @@
 area
     ^comparison
+        ordered
+    ^conversions
+    ^value_ranges
+        [ 0 - inf meters^2 ]
+color
+    ^comparison
+    ^conversions
+    ^value_ranges
+count
+    ^comparison
+    ^conversions
+    ^value_ranges
+depth
+    ^comparison
+    ^conversions
+    ^value_ranges
+geographic_location
+    ^comparison
+    ^conversions
+    ^value_ranges
+height
+    ^comparison
+        ordered
     ^conversions
     ^value_ranges
 length
@@ -9,8 +32,38 @@ length
         ft->meters
             * 0.305
     ^value_ranges
+        [ 0 - inf ft ]
 population
     ^comparison
-        count
+        ordered
     ^conversions
     ^value_ranges
+        [ 0 - inf ]
+status_location
+    ^comparison
+    ^conversions
+    ^value_ranges
+temperature
+    ^comparison
+        ordered
+    ^conversions
+    ^value_ranges
+        [ 0 - inf ]
+time
+    ^comparison
+        ordered
+    ^conversions
+    ^value_ranges
+        [ 0 - inf ]
+weight
+    ^comparison
+        ordered
+    ^conversions
+    ^value_ranges
+        [ 0 - inf ]
+width
+    ^comparison
+        ordered
+    ^conversions
+    ^value_ranges
+        [ 0 - inf ]
