@@ -58,6 +58,10 @@ public class NBN {
         return checkSecondDimension("^v2", searchTerm);
     }
 
+    public ArrayList<String> getHasValue(String searchTerm){
+        return getValue("^has", searchTerm);
+    }
+
     private boolean checkSecondDimension(String dimension, String searchTerm){
         tmp = BN.getChild(dimension);
         if(tmp != null){
@@ -73,6 +77,16 @@ public class NBN {
         }else
             return false;
     }
+
+    public ArrayList<String> getValue(String dimension, String value ){
+        if(hasValue(value)){
+            tmp = BN.getChild(dimension);
+            tmp = BN.getChild(value);
+            return tmp.getChildrenString();
+        }
+        return null;
+    }
+
 
     public String getIs(){
         return BN.getChild("^is").getChildrenString().get(0);

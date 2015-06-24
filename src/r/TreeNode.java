@@ -1,29 +1,33 @@
 package r;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collections;
+
 
 /**
  * TODO Search for child nodes - not urgent
  * TODO update addresses for each node.
+ * TODO implement binary search
  */
 public class TreeNode implements Comparable<TreeNode> {
 
     private String name;
     private String address;
     private TreeNode parent;
-    private List<TreeNode> children;
-    private List<TreeNode> elementsIndex;
+    private ArrayList<TreeNode> children;
+
 
     /**
      * @param name
      */
     public TreeNode(String name) {
         this.name = name;
-        this.children = new LinkedList<TreeNode>();
-        this.elementsIndex = new LinkedList<TreeNode>();
-        this.elementsIndex.add(this);
+        this.children = new ArrayList<TreeNode>();
+
+    }
+
+    protected void setChildrenSize(int size){
+        this.children = new ArrayList<TreeNode>(size);
 
     }
 
@@ -49,28 +53,28 @@ public class TreeNode implements Comparable<TreeNode> {
         address = parent.getAddress() + name + "/";
     }
 
-    /**
-     * x
-     *
-     * @return
-     */
-    public ArrayList<String> getAllAddresses() {
-        ArrayList<String> addresses = new ArrayList<String>();
-        addresses.add(getName());
-        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
-        for (TreeNode child : getAllChildren(allChildren)) {
-            addresses.add(child.getAddress());
-        }
-        return addresses;
-    }
+//    /**
+//     * x
+//     *
+//     * @return
+//     */
+//    public ArrayList<String> getAllAddresses() {
+//        ArrayList<String> addresses = new ArrayList<String>();
+//        addresses.add(getName());
+//        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
+//        for (TreeNode child : getAllChildren(allChildren)) {
+//            addresses.add(child.getAddress());
+//        }
+//        return addresses;
+//    }
 
-    public List<TreeNode> getChildren() {
+    public ArrayList<TreeNode> getChildren() {
         return children;
     }
 
-    protected void setChildren(List<TreeNode> children) {
-        this.children = children;
-    }
+//    protected void setChildren(List<TreeNode> children) {
+//        this.children = children;
+//    }
 
     public ArrayList<String> getChildrenString() {
         ArrayList<String> a = new ArrayList<String>();
@@ -117,9 +121,13 @@ public class TreeNode implements Comparable<TreeNode> {
             return false;
         }
 
-        parent.addChild(n);    //make n a child of current's parent.
+
+        parent.addChildWithContainsCheck(n);    //make n a child of current's parent.
+
+
+
         parent.removeChild(this); //n's parent removes the old child.
-        n.addChild(this);    //n gets current as a child
+        n.addChildWithContainsCheck(this);    //n gets current as a child
         this.parent = n;
         return true;
     }
@@ -132,42 +140,41 @@ public class TreeNode implements Comparable<TreeNode> {
         return children.size() == 0;
     }
 
-    //TODO: ....does this work?
-    protected boolean addChild(String child) {
-        TreeNode childNode = new TreeNode(child);
-        return addChild(childNode);
+
+    protected void addChildWithContainsCheck(TreeNode childNode){
+        childNode.parent = this;
+        childNode.updateAddress();
+        if(contains(childNode.getName())) {
+            System.out.printf("Dimension: %s already exists.\n", childNode.getName());
+            return;
+        }
+        this.children.add(childNode);
+
     }
 
+
     /**
+     * DOES NOT CHECK IF CHILD ALREADY EXISTS. FUCK IN CASE WE SEE DOUBLING UP AGAIN.
+     * We need to make sure it adds the child to the correct place in the BS.
+     *
      * @param childNode
      * @return
      */
-    protected boolean addChild(TreeNode childNode) {
+    protected void addChildBlind(TreeNode childNode) {
         childNode.parent = this;
         childNode.updateAddress();
-        childNode.elementsIndex = elementsIndex;
-        if (!children.contains(childNode)) {
-            this.children.add(childNode);
-            this.registerChildForSearch(childNode);
-        }
-        return true;
+
+        this.children.add(childNode);
+
     }
 
-    /**
-     * TODO: See if this is enough for our searching needs, if not it may be useful for narrowing results. Wtf is this doing.
-     *
-     * @param cmp
-     * @return
-     */
-    public TreeNode findTreeNode(Comparable<String> cmp) {
-        for (TreeNode element : this.elementsIndex) {
-            String elData = element.name;
-            if (cmp.compareTo(elData) == 0)
-                return element;
-        }
+    protected void insertChild(TreeNode childNode, int index){
+        childNode.parent = this;
+        childNode.updateAddress();
 
-        return null;
+        this.children.add(index, childNode);
     }
+
 
     public int getLevel() {
         if (this.isRoot())
@@ -176,14 +183,14 @@ public class TreeNode implements Comparable<TreeNode> {
             return parent.getLevel() + 1;
     }
 
-    /**
-     * @param node
-     */
-    private void registerChildForSearch(TreeNode node) {
-        elementsIndex.add(node);
-        if (parent != null)
-            parent.registerChildForSearch(node); //TODO: Why do this?
-    }
+//    /**
+//     * @param node
+//     */
+//    private void registerChildForSearch(TreeNode node) {
+//        elementsIndex.add(node);
+//        if (parent != null)
+//            parent.registerChildForSearch(node); //TODO: Why do this?
+//    }
 
     @Override
     public java.lang.String toString() {
@@ -241,7 +248,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * TODO: rewrite using hash
      * QA on containsAll
      *
-     * @param node
+     * @param term
      * @return
      */
     public boolean containsAll(String term) {
@@ -255,30 +262,50 @@ public class TreeNode implements Comparable<TreeNode> {
         return false;
     }
 
-    /**
-     * TODO: remove from hash
-     *
-     * @param node
-     */
-    protected void delChild(String node) {
-        children.remove(contains(node));
+
+
+    public boolean contains(String nodeName){
+        //NOT SORTING CHILDREN, ASSUMES DATABASE IS SORTED.
+        if(binarySearch(nodeName) >= 0)
+            return true;
+        return false;
+    }
+
+    public void sortChildren(){
+        Collections.sort(this.children);
     }
 
     /**
-     * TODO: rewrite using hash
-     * Checks if current node contains specified node inside children.
-     *
-     * @param node
-     * @return TreeNode<String>
+     * You can use binarySearch if you already know the information is sorted.
+     * @param nodeName
+     * @return
      */
-    public boolean contains(String node) {
-        for (TreeNode child : children) {
-            if (shallowEquals(child, node)) {
-                return true;
+    public int binarySearch(String nodeName) {
+        int low = 0;
+        int high = children.size() - 1;
+        int middle = 0;
+        while(high >= low) {
+            middle = (low + high) / 2;
+            if( children.get(middle).getName().equals(nodeName) ) {
+                return middle;
+            }
+            if( children.get(middle).getName().compareTo(nodeName) < 0 ) {
+                low = middle + 1;
+            }
+            if( children.get(middle).getName().compareTo(nodeName) > 0) {
+                high = middle - 1;
             }
         }
-        return false;
+
+        //We couldn't find the node, however, we CAN return the index it
+        //  SHOULD be placed into. (low) However, we can't return low since
+        //  low might equal 0! So we return (low+1)*-1
+        //  Then, we insert at (index*-1)-1 or (index+1)*-1
+
+
+        return (low+1)*-1;
     }
+
 
     public boolean isBaseNode() {
         return getLevel() == 2;
@@ -310,9 +337,9 @@ public class TreeNode implements Comparable<TreeNode> {
         return null;
     }
 
-    protected void setParent(TreeNode parent) {
-        this.parent = parent;
-    }
+//    protected void setParent(TreeNode parent) {
+//        this.parent = parent;
+//    }
 
 
 }

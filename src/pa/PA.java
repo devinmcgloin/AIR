@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Blazej on 6/3/2015.
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- * TODO: where is header logic info stored? If we use what are current base nodes that qould require a rewriting of lower R functions.
+ *
  */
 
 //External Methods of PA
@@ -19,7 +19,7 @@ public class PA {
 
     /**
      * HashSearch (Get set -> set logic???)
-     * <p/>
+     *
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
      * reanalyze headers into their true base nodes and re-rank them.
@@ -70,9 +70,25 @@ public class PA {
         //NBN test = getNoun("R/noun/ferrari");
         //System.out.println(test.isFilter("car"));
 
+        long start = System.currentTimeMillis();
+
+        for(int i =0; i<16000; i++){
+            add("test", "foo", "R/test/" + "aaaa"+i);
+
+            //add("test", "foo" , "R/test/"+"aaaa"+i);
+        }
+        //add("test", "aaa11", "R/test" );
+//        for(int i =0; i<1000; i++){
+//            add("test", "foo" +i, "R/test/");
+//
+//        }
+
 //        NBN test = getNoun("R/noun/");
 //        test.getOrigin().contains("blazej gawlik");
 
+        long end = System.currentTimeMillis();
+
+        System.out.println("Writing took: " + (end-start)/1000 + "."+ (end-start)%1000);
     }
 
     public R getRb(String db){
@@ -117,15 +133,15 @@ public class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<NBN> hashSearch(String terms) {
-        ArrayList<TreeNodeBase> baseNodes = getRb("noun").rFullHashSearch(terms);
-        ArrayList<NBN> paBaseNodes = new ArrayList<NBN>();
+    public ArrayList<TreeNode> hashSearch(String db, String terms) {
+        ArrayList<TreeNodeBase> baseNodes = getRb(db).rFullHashSearch(terms);
+        ArrayList<TreeNode> treeNodeBase = new ArrayList<TreeNode>();
 
         //Check size
         int termSize = terms.split("`").length;
 
         if (baseNodes.size() == 0) {
-            return paBaseNodes; // no dice
+            return treeNodeBase; // no dice
         }
 
         //Number of terms matches baseNode hits
@@ -135,7 +151,7 @@ public class PA {
 
             for (TreeNodeBase node : baseNodes) {
                 if (node.getRank() == termSize) {
-                    paBaseNodes.add(new NBN(node.getOrigin(), this));
+                    treeNodeBase.add(node.getOrigin());
                 }else{
                     break;
                 }
@@ -146,13 +162,20 @@ public class PA {
             termSize = baseNodes.get(0).getRank();
             int i = 0;
             while (baseNodes.get(i).getRank() == termSize) {
-                paBaseNodes.add(new NBN(baseNodes.get(i).getOrigin(), this));
+                treeNodeBase.add(baseNodes.get(i).getOrigin());
+                i += 1;
             }
         }
+        return treeNodeBase;
+    }
 
-
-        return paBaseNodes;
-
+    public ArrayList<NBN> nounHashSearch(String terms){
+        ArrayList<NBN> nounBaseNodes = new ArrayList<>();
+        ArrayList<TreeNode> nodes = hashSearch("noun", terms);
+        for (TreeNode node : nodes){
+            nounBaseNodes.add(new NBN(node, this));
+        }
+        return nounBaseNodes;
     }
 
     public TreeNode get(String DB, String rAddress) {
@@ -175,17 +198,6 @@ public class PA {
             return null;
         else
             return new LDBN(tmp);
-    }
-
-    /**
-     * Terminal bullshit
-     * @param rAddress
-     * @return
-     */
-    public TreeNode getTreeNode(String db, String rAddress) {
-        if(rDBexists(db))
-            return getRb(db).get(rAddress);
-        return null;
     }
 
     public void save() {
@@ -223,6 +235,7 @@ public class PA {
             add("noun", "^v2", "R/noun/" + name);
             add("noun", "^adj","R/noun/" + name);
             add("noun", "^logicalchild","R/noun/" + name);
+            System.out.println(name + " added as basenode in nouns.");
         }
     }
 }
