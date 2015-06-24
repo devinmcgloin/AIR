@@ -139,22 +139,22 @@ public class LDATA {
             if(min.equals("inf") && max.equals("inf")){
                 return true;
             } else if(max.equals("inf")) {
-                if (valueRanges.contains("[")) {
+                if (valueRanges.startsWith("[")) {
                     if (!switchBoard("<=", min, value)) {
                         return false;
                     }
-                } else if (valueRanges.contains("(")) {
+                } else if (valueRanges.startsWith("(")) {
                     if (!switchBoard("<", min, value)) {
                         return false;
                     }
                 }
             }
             else if(min.equals("inf")) {
-                if (valueRanges.contains("]")) {
+                if (valueRanges.endsWith("]")) {
                     if (!switchBoard(">=", max, value)) {
                         return false;
                     }
-                } else if (valueRanges.contains(")")) {
+                } else if (valueRanges.endsWith(")")) {
                     if (!switchBoard(">", max, value)) {
                         return false;
                     }
@@ -186,22 +186,22 @@ public class LDATA {
             if(min.equals("inf") && max.equals("inf")){
                 return true;
             } else if(max.equals("inf")) {
-                if (valueRanges.contains("[")) {
+                if (valueRanges.startsWith("[")) {
                     if (!switchBoard("<=", min, values[0])) {
                         return false;
                     }
-                } else if (valueRanges.contains("(")) {
+                } else if (valueRanges.startsWith("(")) {
                     if (!switchBoard("<", min, values[0])) {
                         return false;
                     }
                 }
             }
             else if(min.equals("inf")) {
-                if (valueRanges.contains("]")) {
+                if (valueRanges.endsWith("]")) {
                     if (!switchBoard(">=", max, values[0])) {
                         return false;
                     }
-                } else if (valueRanges.contains(")")) {
+                } else if (valueRanges.endsWith(")")) {
                     if (!switchBoard(">", max, values[0])) {
                         return false;
                     }
@@ -227,7 +227,7 @@ public class LDATA {
                 }
             }
         }else{
-            System.out.println("LDATA line 216: comparison type not included.");
+            System.out.println("LDATA line 230: comparison type not included.");
             return false;
         }
         return true;

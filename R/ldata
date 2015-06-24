@@ -1,7 +1,9 @@
 area
     ^comparison
+        ordered
     ^conversions
     ^value_ranges
+        [ 0 - inf meters^2 ]
 length
     ^comparison
         ordered
