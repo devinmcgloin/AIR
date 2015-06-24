@@ -73,9 +73,11 @@ public class PA {
         long start = System.currentTimeMillis();
 
         for(int i =0; i<16000; i++){
-            add("test", "abca" +i, "R/test");
+            add("test", "foo", "R/test/" + "aaaa"+i);
+
             //add("test", "foo" , "R/test/"+"aaaa"+i);
         }
+        //add("test", "aaa11", "R/test" );
 //        for(int i =0; i<1000; i++){
 //            add("test", "foo" +i, "R/test/");
 //

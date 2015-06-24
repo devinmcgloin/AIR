@@ -47,9 +47,11 @@ public class GeneralTree {
                     continue;
                 } else {
                     tmp = new TreeNode(fileEntry.getName());
-                    current.addChild(tmp);
+                    current.addChildBlind(tmp);
                 }
             }
+            //Sort database nodes so they work with BS.
+            current.sortChildren();
         }
 
         //Start a new hashmap.
@@ -65,84 +67,7 @@ public class GeneralTree {
 
     }
 
-    protected boolean isRoot() {
-        return current.isRoot();
-    }
 
-    protected boolean isLeaf() {
-        return current.isLeaf();
-    }
-
-    /**
-     * QA on isKeyVal method.
-     *
-     * @return
-     */
-    protected boolean isKeyVal() {
-        List<TreeNode> children = current.getChildren();
-        if (children.size() == 1) {
-            for (TreeNode child : children) {
-                if (child.isLeaf())
-                    return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
-    /**
-     * Format address utility
-     *
-     * @param path
-     * @return - tring array
-     */
-    private String[] formatRAddress(String path) {
-        return path.split("/");
-    }
-
-    protected int getLevel() {
-        return current.getLevel();
-    }
-
-    /**
-     * gets all children from current's path.
-     *
-     * @return
-     */
-    protected ArrayList<String> getChildren() {
-        ArrayList<String> children = new ArrayList<String>();
-        for (TreeNode child : current.getChildren()) {
-            children.add(child.getName());
-        }
-        return children;
-    }
-
-    /**
-     * checks if current has children with the given term all the way to leaf.
-     *
-     * @param searchTerm
-     * @return
-     */
-    protected boolean containsAll(String searchTerm) {
-        if (current.containsAll(searchTerm))
-            return true;
-        return false;
-    }
-
-    /**
-     * No negative levels, you cant navigate to a higher level here, wouldn't
-     * know what tree to choose.
-     *
-     * @param level
-     */
-    protected void upLevel(int level) {
-        if (level < 0)
-            return;
-        if (level > current.getLevel())
-            return;
-        while (current.getLevel() != level)
-            toParent();
-    }
 
     /**
      * Sets current to its parent.
@@ -168,7 +93,7 @@ public class GeneralTree {
 
         String DBout = export(current).toString();
 
-        //System.out.println(DBout); //FUCK
+        //System.out.println(DBout);
 
         //Save file to the DB name
         try {
@@ -250,6 +175,12 @@ public class GeneralTree {
         String name = "";
         String lastAdded = "";
 
+        //FOR OPTIMIZATION:
+        //Replace the current "children" with a NEW longer initial ArrayList
+        if(current.getName().equals("test")) {
+            //current.setChildrenSize(120000);
+        }
+
 
         //Open File
         try {
@@ -262,7 +193,6 @@ public class GeneralTree {
         //Create a reader
         br = new BufferedReader(in);
         try {
-            //int tst = 0;
             //LOOP: Read line by line. "name" of node starts at first character, ends at "\r\n"
             while ((line = br.readLine()) != null) {
                 //Break line into characters to count number of tabs. (Four spaces per tab).
@@ -272,8 +202,6 @@ public class GeneralTree {
                 while (line.charAt(i) == ' ') {
                     i++;
                 }
-                //tst++;
-                //System.out.println(tst);
 
                 prevTabs = curTabs;
                 curTabs = i / 4;
@@ -283,14 +211,14 @@ public class GeneralTree {
                 //Adding to the same level.
                 if (prevTabs == curTabs) {
                     tmp = new TreeNode(name);
-                    current.addChild(tmp);
+                    current.addChildBlind(tmp);
                     hash.add(tmp);
                 }
                 //Up a level (always increments by 1)
                 else if (prevTabs < curTabs) {
-                    childTraverse(lastAdded);
+                    childTraverse(lastAdded);       //FUCK make into BST
                     tmp = new TreeNode(name);
-                    current.addChild(tmp);
+                    current.addChildBlind(tmp);
                     hash.add(tmp);
                 }
                 //Most complex. Going backwards by some number of levels in the tree.
@@ -299,7 +227,7 @@ public class GeneralTree {
                         goBack();
                     }
                     tmp = new TreeNode(name);
-                    current.addChild(tmp);
+                    current.addChildBlind(tmp);
                     hash.add(tmp);
                 }
             }
@@ -380,7 +308,7 @@ public class GeneralTree {
             if(current.getChildren() != null) {
                 //We good.
             } else{
-                loadDB(dbName); //FUCK this is probably where export doubling.
+                loadDB(dbName); //This was where where export doubling.
             }
 
 
@@ -440,21 +368,103 @@ public class GeneralTree {
     }
 
 
+    protected boolean isRoot() {
+        return current.isRoot();
+    }
+
+    protected boolean isLeaf() {
+        return current.isLeaf();
+    }
+
+    /**
+     * QA on isKeyVal method.
+     *
+     * @return
+     */
+    protected boolean isKeyVal() {
+        List<TreeNode> children = current.getChildren();
+        if (children.size() == 1) {
+            for (TreeNode child : children) {
+                if (child.isLeaf())
+                    return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Format address utility
+     *
+     * @param path
+     * @return - tring array
+     */
+    private String[] formatRAddress(String path) {
+        return path.split("/");
+    }
+
+    protected int getLevel() {
+        return current.getLevel();
+    }
+
+    /**
+     * gets all children from current's path.
+     *
+     * @return
+     */
+    protected ArrayList<String> getChildren() {
+        ArrayList<String> children = new ArrayList<String>();
+        for (TreeNode child : current.getChildren()) {
+            children.add(child.getName());
+        }
+        return children;
+    }
+
+    /**
+     * checks if current has children with the given term all the way to leaf.
+     *
+     * @param searchTerm
+     * @return
+     */
+    protected boolean containsAll(String searchTerm) {
+        if (current.containsAll(searchTerm))
+            return true;
+        return false;
+    }
+
+    /**
+     * No negative levels, you cant navigate to a higher level here, wouldn't
+     * know what tree to choose.
+     *
+     * @param level
+     */
+    protected void upLevel(int level) {
+        if (level < 0)
+            return;
+        if (level > current.getLevel())
+            return;
+        while (current.getLevel() != level)
+            toParent();
+    }
+
     /**
      * TODO: Change search  -AT LEAST BE ALPHABETIC. Implement a BST search.
-     * Check if children have this.
+     * Takes the name of the next node you want to go to within current's children.
      * @param next
      * @return
      */
     protected boolean childTraverse(String next) {
-        for (int i = 0; i < current.getChildren().size(); i++) {
-            String childName = current.getChildren().get(i).getName();
-            if (next.equals(childName)) {
-                current = current.getChildren().get(i);
-                return true;
-            }
+        //Implementing using BS.
+        int index = current.binarySearch(next);
+        if(index >= 0){
+            current = current.getChildren().get(index);
+            return true;
         }
+        //Why is this retuning a boolean. Who uses this?
+        //Hope the binarySearch method is working well.
         return false;
+
+
     }
 
     /**
@@ -469,9 +479,10 @@ public class GeneralTree {
         //childTraverse function returns true, it should childTraverse the next name in the list.
         //e.g. [R, foo.txt, people, George Clooney, Pets, Oscar]
 
-        //Go back till R is two away.
+
         if (current.isRoot())
             return null;
+        //Go back till R is two away.
         while (!current.getParent().isRoot()) {
             goBack();
         }
@@ -480,6 +491,8 @@ public class GeneralTree {
         for (int i = 2; i < nodeNames.length; i++) {
             //System.out.println("smkemltm:  " + nodeNames[i] + tabs);
             boolean foundNextNode = childTraverse(nodeNames[i]);
+
+           // System.out.println("Entereed");
 
             //Deletes from Hashmap if it couldn't find the node name.
             String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
@@ -545,19 +558,27 @@ public class GeneralTree {
 
 
     /**
-     * ADD NODE --HOPEFULLY HASH WORKS FUCK Change to addChild
+     *
      * @param name
      */
     protected void addNode(String name) {
-        if (contains(name)) {
+        //Implementing using BS.
+        int index = current.binarySearch(name);
+
+        if (index >= 0) {
             System.out.printf("Dimension: %s already exists.\n", name);
             return;
         }
         tmp = new TreeNode(name);
-        current.addChild(tmp);
+
+        current.insertChild(tmp, (index*-1)-1);
+        //We now use insertChild as oppose to addChildBlind
+        //current.addChildBlind(tmp);
         hash.add(tmp);
 
     }
+
+
 
     /**
      * checks if current has children with the given term.
