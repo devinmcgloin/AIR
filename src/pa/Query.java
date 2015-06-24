@@ -9,12 +9,21 @@ import java.util.Scanner;
  */
 public class Query {
 
-    PA pa = new PA();
+    PA pa;
     Inheritance inherit;
     Scanner console = new Scanner(System.in);
     String input = "";
 
     public Query(){
+
+        long start = System.currentTimeMillis();
+
+        pa = new PA();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("Loading took: " + (end-start)/1000 + "."+ (end-start)%1000);
+
         inherit = new Inheritance(pa);
         System.out.println("Welcome to the PA Query System. We'll think of a better name for it shortly!");
         System.out.print(getHelp());
@@ -68,6 +77,8 @@ public class Query {
 
         if (words[0].equals("") || words[0].equals(" "))
             return;
+        else if(words[0].equals("save"))
+            pa.save();
         else if (words[0].equals("help") || words[0].equals("?")) {
             System.out.print(getHelp());
         } else if (words[0].equals("add") && words.length > 1) {
@@ -75,8 +86,6 @@ public class Query {
             input = input.trim();
             input = input.toLowerCase();
             pa.addBaseNode("noun", input);
-
-
         } else if (input.startsWith("+")) {
             input = input.replace('+', ' ');
             input = input.trim();
@@ -186,7 +195,7 @@ public class Query {
                         "(   x is y?  ): True if x ^is y \n" +
                         "(   x has y  ): Adds y to ^has of x\n" +
                         "(  x has y?  ): lol\n" +
-                        "(   genset   ): generates sets. ex: city`post_office,population`length <= 100 ft\n" +
+                        "(   genset   ): generates sets. ex: city`post office,population`length <= 100 ft\n" +
                         "( PRINT | ls ): There is no print.\n" +
                         "( RENAME| mv ): PATH - newName\n" +
                         "(     q      ): Quits the query mode\n" +

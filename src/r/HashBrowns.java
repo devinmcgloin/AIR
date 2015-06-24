@@ -87,7 +87,7 @@ public class HashBrowns {
 
 
             //Count how many it contains.
-            //TODO this doesnt count for base nodes due to the way containsAll is defined.
+            //TODO this doesn't count for base nodes due to the way containsAll is defined.
             for(int j=0; j<terms.length; j++){
                 if(tmp.containsAll(terms[j])){
                     matchedTerms++;
