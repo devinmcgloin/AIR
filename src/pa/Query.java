@@ -223,6 +223,9 @@ public class Query {
                 if (input.equals("ldata")) {
                     path = "R/";
                     break;
+                }else if (input.equals("q")) {
+                    path = "R/";
+                    break;
                 } else if (input.startsWith("add ")) {
                     input = input.replace("add ", "");
                     pa.add("noun", input, path);
@@ -246,7 +249,7 @@ public class Query {
 
             System.out.print("Would you like to quit (y/n) >>> ");
             input = console.nextLine().toLowerCase();
-            if (input.equals("y")) {
+            if (input.equals("y") || input.equals("q")) {
                 pa.save();
                 break;
             }
@@ -256,11 +259,14 @@ public class Query {
             while(true) {
 
                 System.out.print(pa.get("ldata", path));
-                System.out.print( " >>> ");
+                System.out.print(" >>> ");
 
                 input = console.nextLine().toLowerCase();
 
                 if (input.equals("noun")) {
+                    path = "R/";
+                    break;
+                }else if (input.equals("q")) {
                     path = "R/";
                     break;
                 } else if (input.startsWith("add ")) {
@@ -286,7 +292,7 @@ public class Query {
 
             System.out.print("Would you like to quit (y/n) >>> ");
             input = console.nextLine().toLowerCase();
-            if (input.equals("y")) {
+            if (input.equals("y") || input.equals("q")) {
                 pa.save();
                 break;
             }
