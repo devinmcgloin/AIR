@@ -26,6 +26,10 @@ public class TreeNode implements Comparable<TreeNode> {
 
     }
 
+    /**
+     * Use in case of priming ArrayList for optimization.
+     * @param size
+     */
     protected void setChildrenSize(int size){
         this.children = new ArrayList<TreeNode>(size);
 
@@ -93,15 +97,19 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param name
      */
     protected void setName(String name) {
-
         this.name = name;
-
     }
 
     protected void removeChild(TreeNode childToRemove) {
         if (childToRemove == null)
             return;
         children.remove(childToRemove);
+    }
+
+    protected void removeChild(int index){
+        if(index>=0){
+            children.remove(index);
+        }
     }
 
     public ArrayList<TreeNode> getAllChildren(ArrayList<TreeNode> a) {
@@ -204,32 +212,40 @@ public class TreeNode implements Comparable<TreeNode> {
      * @return boolean
      */
     public TreeNode getChild(String specifiedChild) {
-        TreeNode tmp = getContains(specifiedChild);
 
-        for (TreeNode child : children) {
-            if (child.equals(tmp)) {
-                return child;
-            }
+        int index = binarySearch(specifiedChild);
 
-        }
-        return null;
+        if(index < 0)
+            return null;
+
+        return children.get(index);
+
+//        TreeNode tmp = getContains(specifiedChild);
+//
+//        for (TreeNode child : children) {
+//            if (child.equals(tmp)) {
+//                return child;
+//            }
+//
+//        }
+//        return null;
     }
 
-    /**
-     * TODO: rewrite using hash
-     * Checks if current node contains specified node inside children.
-     *
-     * @param node
-     * @return TreeNode<String>
-     */
-    private TreeNode getContains(String node) {
-        for (TreeNode child : children) {
-            if (shallowEquals(child, node)) {
-                return child;
-            }
-        }
-        return null;
-    }
+//    /**
+//     *
+//     * Checks if current node contains specified node inside children.
+//     *
+//     * @param node
+//     * @return TreeNode<String>
+//     */
+//    private TreeNode getContains(String node) {
+//        for (TreeNode child : children) {
+//            if (shallowEquals(child, node)) {
+//                return child;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * equals compares name only, and ignores all other attributes.
@@ -252,14 +268,27 @@ public class TreeNode implements Comparable<TreeNode> {
      * @return
      */
     public boolean containsAll(String term) {
-        for (TreeNode child : children) {
-            if (shallowEquals(child, term))
-                return true;
-            boolean temp = this.getChild(child.getName()).containsAll(term);
-            if(temp)
-                return temp;
+
+        //First, check its immediate children for contains.
+        if(contains(term))
+            return true;
+
+        //Then loop over its children.
+        for(TreeNode child : children){
+            boolean tmp = child.containsAll(term);
+            if(tmp)
+                return tmp;
         }
         return false;
+
+//        for (TreeNode child : children) {
+//            if (shallowEquals(child, term))
+//                return true;
+//            boolean temp = this.getChild(child.getName()).containsAll(term);
+//            if(temp)
+//                return temp;
+//        }
+//        return false;
     }
 
 
@@ -319,7 +348,7 @@ public class TreeNode implements Comparable<TreeNode> {
     public TreeNode getBaseNode() {
         TreeNode n = this;
         if(n.isRoot()) {
-            System.out.println("Base node function is called on root.");
+            System.out.println("TreeNode: Base node function is called on root.");
             return null;
         }
         if (n.isBaseNode())

@@ -407,18 +407,18 @@ public class GeneralTree {
         return current.getLevel();
     }
 
-    /**
-     * gets all children from current's path.
-     *
-     * @return
-     */
-    protected ArrayList<String> getChildren() {
-        ArrayList<String> children = new ArrayList<String>();
-        for (TreeNode child : current.getChildren()) {
-            children.add(child.getName());
-        }
-        return children;
-    }
+//    /**
+//     * gets all children from current's path.
+//     *
+//     * @return
+//     */
+//    protected ArrayList<String> getChildren() {
+//        ArrayList<String> children = new ArrayList<String>();
+//        for (TreeNode child : current.getChildren()) {
+//            children.add(child.getName());
+//        }
+//        return children;
+//    }
 
     /**
      * checks if current has children with the given term all the way to leaf.
@@ -597,17 +597,23 @@ public class GeneralTree {
      * @param name
      */
     protected void delNode(String name) {
-        List<TreeNode> children = current.getChildren();
-        //COULD REPLACE WITH A GETNODE() func
-        for (int i = 0; i < children.size(); i++) {
-            String childName = children.get(i).getName();
-            if (name.equals(childName)) {
-                //Go into that node, go into all it's children, delete everything.
-                current.removeChild(children.get(i));
-                //Delete for HashMap happens on a failed search for a specific node address.
-                //in the getNode() function where it searches by address for a node.
-            }
+        int index = current.binarySearch(name);
+
+        if(index>=0){
+            current.removeChild(index);
         }
+
+//        List<TreeNode> children = current.getChildren();
+//        //COULD REPLACE WITH A GETNODE() func
+//        for (int i = 0; i < children.size(); i++) {
+//            String childName = children.get(i).getName();
+//            if (name.equals(childName)) {
+//                //Go into that node, go into all it's children, delete everything.
+//                current.removeChild(children.get(i));
+//                //Delete for HashMap happens on a failed search for a specific node address.
+//                //in the getNode() function where it searches by address for a node.
+//            }
+//        }
     }
 
     /**
