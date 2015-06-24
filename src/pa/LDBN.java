@@ -48,7 +48,7 @@ public class LDBN {
     }
 
     public String getValRanges(){
-        tmp = BN.getChild("^valRange");
+        tmp = BN.getChild("^value_ranges");
         ArrayList<String> children = tmp.getChildrenString();
         if(children.size() ==0) {
             System.out.println("LDBN: GetValRanges: No ranges.");

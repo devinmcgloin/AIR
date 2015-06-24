@@ -1,6 +1,8 @@
 package pa;
 
 import r.TreeNode;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -60,6 +62,8 @@ public class Query {
                 pa.devintest();
             }else if(input.equals("bdev")){
                 pa.blazetest();
+            }else if(input.equals("data")){
+                dataEntry();
             }
 
             parse(input);
@@ -198,7 +202,102 @@ public class Query {
                         "(   genset   ): generates sets. ex: city`post office,population`length <= 100 ft\n" +
                         "( PRINT | ls ): There is no print.\n" +
                         "( RENAME| mv ): PATH - newName\n" +
+                        "(    data    ): Enters data entry mode \n" +
                         "(     q      ): Quits the query mode\n" +
                         "( Help  | ?  ): For help.\n\n");
+    }
+
+    private void dataEntry(){
+        String path = "R/";
+
+        while(true){
+
+            //Noun
+            path = "R/noun/";
+            while(true) {
+                System.out.print(pa.get("noun", path));
+                System.out.print( " >>> ");
+
+                input = console.nextLine().toLowerCase();
+
+                if (input.equals("ldata")) {
+                    path = "R/";
+                    break;
+                }else if (input.equals("q")) {
+                    path = "R/";
+                    break;
+                } else if (input.startsWith("add ")) {
+                    input = input.replace("add ", "");
+                    pa.add("noun", input, path);
+                } else if (input.equals("ls")) {
+                    ArrayList<String> nodes = pa.get(path.split("/")[1], path).getChildrenString();
+                    for (String child : nodes) {
+                        System.out.println(child);
+                    }
+                } else if (input.equals("..")) {
+                    String [] paths = path.split("/");
+                    path = "";
+                    for(int i = 0; i < paths.length - 1; i++){
+                        path = path + paths[i] + "/";
+                    }
+                } else if (input.equals("cd")) {
+                    path = "R/noun/";
+                } else {
+                    path = path + input + "/";
+                }
+            }
+
+            System.out.print("Would you like to quit (y/n) >>> ");
+            input = console.nextLine().toLowerCase();
+            if (input.equals("y") || input.equals("q")) {
+                pa.save();
+                break;
+            }
+
+            //LDATA
+            path = "R/ldata/";
+            while(true) {
+
+                System.out.print(pa.get("ldata", path));
+                System.out.print(" >>> ");
+
+                input = console.nextLine().toLowerCase();
+
+                if (input.equals("noun")) {
+                    path = "R/";
+                    break;
+                }else if (input.equals("q")) {
+                    path = "R/";
+                    break;
+                } else if (input.startsWith("add ")) {
+                    input = input.replace("add ", "");
+                    pa.add("ldata", input, path);
+                } else if (input.equals("ls")) {
+                    ArrayList<String> nodes = pa.get(path.split("/")[1], path).getChildrenString();
+                    for (String child : nodes) {
+                        System.out.println(child);
+                    }
+                } else if (input.equals("..")) {
+                    String [] paths = path.split("/");
+                    path = "";
+                    for(int i = 0; i < paths.length - 1; i++){
+                        path = path + paths[i] + "/";
+                    }
+                } else if (input.equals("cd")) {
+                    path = "R/ldata/";
+                } else {
+                    path = path + input + "/";
+                }
+            }
+
+            System.out.print("Would you like to quit (y/n) >>> ");
+            input = console.nextLine().toLowerCase();
+            if (input.equals("y") || input.equals("q")) {
+                pa.save();
+                break;
+            }
+
+        }
+        System.out.println("Exiting DataEntry.");
     }
 }
