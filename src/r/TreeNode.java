@@ -5,9 +5,9 @@ import java.util.Collections;
 
 
 /**
- * TODO Search for child nodes - not urgent
+ *
  * TODO update addresses for each node.
- * TODO implement binary search
+ *
  */
 public class TreeNode implements Comparable<TreeNode> {
 

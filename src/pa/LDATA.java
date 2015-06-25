@@ -227,6 +227,7 @@ public class LDATA {
                 }
             }
         }else{
+            //TODO Implement variation for non ordered logic. Location, time etc.
             System.out.println("LDATA line 230: comparison type not included.");
             return false;
         }
