@@ -4,7 +4,7 @@ Node everflow.
 
 Once a node has a key value pair with more than one value.
 The it overflows.
-Overflow name is the name of the node it came from + the overflow term.
+Overflow title is the title of the node it came from + the overflow term.
 
 Need unit of measurement scheme
 [98-100 lbs]

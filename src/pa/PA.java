@@ -5,6 +5,7 @@ import r.R;
 import r.TreeNodeBase;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -28,9 +29,6 @@ public class PA {
 
     protected File rFolder = new File("./R/");
     protected ArrayList<R> rDB = new ArrayList<R>();
-    protected Inheritance inherit;
-    protected SetLogic setLogic;
-    protected LDATA ldata = new LDATA(this);
 
     public PA() {
 
@@ -44,51 +42,39 @@ public class PA {
             }
         }
 
-
-        inherit = new Inheritance(this);
-        setLogic = new SetLogic(this);
-
     }
 
-    public void getset(String query) {
-        ArrayList<NBN> nodes = setLogic.genSet(query);
-        if(nodes.size() > 0) {
-            for (NBN node : nodes) {
-                System.out.println(node.getOrigin().getName());
+    public void test(){
+        for( NBN node : getNouns("ferrari", "car")){
+            System.out.println(node.getName());
+            for(String entry : node.getKeys()){
+                System.out.println("   " + entry);
+                System.out.println("       " + node.get(entry));
+
             }
-        }else
-            System.out.println("No nodes found! Try loosening your search parameters.");
-    }
 
-    public void devintest(){
-        System.out.println(ldata.verifyRange("1 meter", getLDATA("length")));
-    }
+            System.out.println();
 
-    public void blazetest() {
-        //inherit.xISy("ferrari", "car");
+            System.out.println(node.getName());
+            node = node.rm("^names");
+            node = node.add("^logicalChild", "Childnode");
+            for(String entry : node.getKeys()){
+                System.out.println("   " + entry);
+                System.out.println("       " + node.get(entry));
 
-        //NBN test = getNoun("R/noun/ferrari");
-        //System.out.println(test.isFilter("car"));
+            }
 
-        long start = System.currentTimeMillis();
+            System.out.println();
 
-        for(int i =0; i<16000; i++){
-            add("test", "foo", "R/test/" + "aaaa"+i);
-
-            //add("test", "foo" , "R/test/"+"aaaa"+i);
+            System.out.println(node.getName());
+            node = node.add("^names", "ferrari Autos");
+            node = node.update("^names", "Automalia Ferrari", "Automalia");
+            for(String entry : node.getKeys()){
+                System.out.println("   " + entry);
+                ArrayList<String> nodes = node.get(entry);
+                System.out.println("       " + nodes);
+            }
         }
-        //add("test", "aaa11", "R/test" );
-//        for(int i =0; i<1000; i++){
-//            add("test", "foo" +i, "R/test/");
-//
-//        }
-
-//        NBN test = getNoun("R/noun/");
-//        test.getOrigin().contains("blazej gawlik");
-
-        long end = System.currentTimeMillis();
-
-        System.out.println("Writing took: " + (end-start)/1000 + "."+ (end-start)%1000);
     }
 
     public R getRb(String db){
@@ -107,28 +93,6 @@ public class PA {
         return false;
     }
 
-    //---------------------------------R WRAPPERS---------------------------------//
-
-    public void del(String db, String nodeName, String rAddress) {
-        if(rDBexists(db))
-            getRb(db).del(nodeName, rAddress);
-    }
-
-    public ArrayList<String> getChildren(String db, String rAddress) {
-        if(rDBexists(db))
-            return getRb(db).getChildren(rAddress);
-        return null;
-    }
-
-    public void rename(String db, String nodeName, String rAddress) {
-        if(rDBexists(db))
-            getRb(db).rename(nodeName, rAddress);
-    }
-
-    public void add(String db, String nodeName, String rAddress) {
-        if(rDBexists(db))
-            getRb(db).add(nodeName, rAddress);
-    }
 
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
@@ -161,7 +125,7 @@ public class PA {
         else {
             termSize = baseNodes.get(0).getRank();
             int i = 0;
-            while (baseNodes.get(i).getRank() == termSize) {
+            while (i < baseNodes.size() && baseNodes.get(i).getRank() == termSize) {
                 treeNodeBase.add(baseNodes.get(i).getOrigin());
                 i += 1;
             }
@@ -173,31 +137,15 @@ public class PA {
         ArrayList<NBN> nounBaseNodes = new ArrayList<>();
         ArrayList<TreeNode> nodes = hashSearch("noun", terms);
         for (TreeNode node : nodes){
-            nounBaseNodes.add(new NBN(node, this));
+            nounBaseNodes.add(new NBN(node));
         }
         return nounBaseNodes;
     }
 
-    public TreeNode get(String DB, String rAddress) {
-        if(rDBexists(DB))
-            return getRb(DB).get(rAddress);
+    public ArrayList<NBN> getNouns(String name, String filter) {
+        if(rDBexists("noun"))
+            return nounHashSearch(name + "`" + filter);
         return null;
-    }
-
-    public NBN getNoun(String noun){
-        TreeNode tmp = get("noun", "R/noun/" + noun);
-        if(!tmp.getName().equals( noun ))
-            return null;
-        else
-            return new NBN(tmp, this);
-    }
-
-    public LDBN getLDATA(String ldata){
-        TreeNode tmp = get("ldata","R/ldata/" + ldata);
-        if(!tmp.getName().equals(ldata))
-            return null;
-        else
-            return new LDBN(tmp);
     }
 
     public void save() {
@@ -205,37 +153,13 @@ public class PA {
             r.save();
     }
 
-    public void addParent(String db, String nodeName, String rAddress) {
-        if(rDBexists(db))
-            getRb(db).addParent(nodeName, rAddress);
+    /**
+     * This needs to be changed to get the address not name.
+     * @param node
+     */
+    public void put(NBN node){
+        TreeNode tn = getRb("noun").get("R/noun/" + node.getName());
+        for ()
     }
 
-    // ----------------------------- END R WRAPPERS ----------------------------------//
-
-    public boolean evaluate(String keyVal, NBN node){
-        return ldata.evaluate(keyVal, node);
-    }
-
-    public boolean isNounBase(String x){
-        if (getNoun(x) != null)
-            return true;
-        else
-            return false;
-    }
-
-    public void addBaseNode(String type, String name){
-        if(type.equals("ldata")){
-
-        }
-        else if(type.equals("noun")){
-            add("noun", name, "R/noun/");
-            add("noun", "^has","R/noun/" + name);
-            add("noun", "^is", "R/noun/" + name);
-            add("noun", "^v1", "R/noun/" + name);
-            add("noun", "^v2", "R/noun/" + name);
-            add("noun", "^adj","R/noun/" + name);
-            add("noun", "^logicalchild","R/noun/" + name);
-            System.out.println(name + " added as basenode in nouns.");
-        }
-    }
 }

@@ -28,7 +28,7 @@ export called
 R/noun/los_angeles/
 R/noun/;pq
 R/noun/;PQ
-Welcome to the PA Query System. We'll think of a better name for it shortly!
+Welcome to the PA Query System. We'll think of a better title for it shortly!
 goBack() -- > Is this why exporting twice?
 export called
 New NBN: noun
@@ -104,7 +104,7 @@ goBack() -- > Is this why exporting twice?
 export called
 R/noun/los angeles/
 R/noun/:PQ
-Welcome to the PA Query System. We'll think of a better name for it shortly!
+Welcome to the PA Query System. We'll think of a better title for it shortly!
 This system considers the BNs of RNouns and offers easy interaction with them
 
 Commands:

@@ -98,7 +98,7 @@ public class GeneralTree {
         //Save file to the DB name
         try {
             String name = "";
-            name = current.getName(); //gets the .txt file nam
+            name = current.getTitle(); //gets the .txt file nam
 //            if (!name.endsWith(".txt")) {
 //                name += ".txt";
 //            }
@@ -135,7 +135,7 @@ public class GeneralTree {
             Collections.sort(node.getChildren());
             TreeNode tmp;
             for (TreeNode child : node.getChildren()) {
-                DBout.append(buffer + child.getName() + "\n");
+                DBout.append(buffer + child.getTitle() + "\n");
                 DBout.append(exportRec(child, buffer));
             }
             return DBout;
@@ -154,7 +154,7 @@ public class GeneralTree {
         buffer += "    ";
         Collections.sort(node.getChildren());
         for (TreeNode child : node.getChildren()) {
-            DBout.append(buffer + child.getName() + "\n");
+            DBout.append(buffer + child.getTitle() + "\n");
             DBout.append(exportRec(child, buffer));
         }
         return DBout;
@@ -177,7 +177,7 @@ public class GeneralTree {
 
         //FOR OPTIMIZATION:
         //Replace the current "children" with a NEW longer initial ArrayList
-        if(current.getName().equals("test")) {
+        if(current.getTitle().equals("test")) {
             //current.setChildrenSize(120000);
         }
 
@@ -330,14 +330,14 @@ public class GeneralTree {
      * @param newName
      */
     protected void rename(String newName) {
-        String oldName = current.getName();
+        String oldName = current.getTitle();
         goBack(); //TODO: null pointer
         if (contains(newName)) {
             System.out.printf("Dimension: %s already exists.\n", newName);
             return;
         }
         childTraverse(oldName);
-        current.setName(newName);
+        current.setTitle(newName);
         hash.add(current); //just add new name to hash. old string reference will either still work with header, or just
         //getNoun deleted if it fails on search. We already know this.
 
@@ -415,7 +415,7 @@ public class GeneralTree {
 //    protected ArrayList<String> getChildren() {
 //        ArrayList<String> children = new ArrayList<String>();
 //        for (TreeNode child : current.getChildren()) {
-//            children.add(child.getName());
+//            children.add(child.getTitle());
 //        }
 //        return children;
 //    }
@@ -606,7 +606,7 @@ public class GeneralTree {
 //        List<TreeNode> children = current.getChildren();
 //        //COULD REPLACE WITH A GETNODE() func
 //        for (int i = 0; i < children.size(); i++) {
-//            String childName = children.get(i).getName();
+//            String childName = children.get(i).getTitle();
 //            if (name.equals(childName)) {
 //                //Go into that node, go into all it's children, delete everything.
 //                current.removeChild(children.get(i));

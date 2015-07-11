@@ -124,7 +124,7 @@ public class HashBrowns {
     //TODO: will eventually need a customized "black list" of words to NOT save the addresses of.
     //i.e. has, is, parent (literally any header).
     protected boolean add(TreeNode n){
-        name = n.getName();
+        name = n.getTitle();
         address = n.getAddress();
 
         //List of current values to the name key

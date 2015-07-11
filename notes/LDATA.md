@@ -19,6 +19,7 @@ CORE:
   status_location
   geo_location
   time
+  change_time
 Once removed:
   Height
     measurement

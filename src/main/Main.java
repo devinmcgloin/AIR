@@ -1,9 +1,7 @@
 package main;
 
 
-import pa.Query;
-import r.R;
-import r.TreeNode;
+import pa.PA;
 
 /**
  * Alright bub,
@@ -12,9 +10,10 @@ import r.TreeNode;
 public class Main {
 
     public static void main(String[] args) {
+        PA pa = new PA();
 
-
-        Query query = new Query();
+        pa.test();
 
     }
+
 }

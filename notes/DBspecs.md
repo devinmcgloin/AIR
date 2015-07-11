@@ -6,7 +6,7 @@ SELECT <fields> -FROM <set of base nodes> -WHERE <condition that has to be true>
 INSERT -TO <BN added too> -VALUES <I like record syntax here.>
 UPDATE -TO <BN updated too> -VALUES <I like record syntax here.>
 DELETE -FROM <BN taken from> -VALUES < key val pairs to delete>
-CREATE -To this set of base nodes add this attribute. Matches based on the BN name.
+CREATE -To this set of base nodes add this attribute. Matches based on the BN title.
 
 ---------------- R Specific ----------------
 Membership - basically set logic

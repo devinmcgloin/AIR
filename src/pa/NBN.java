@@ -1,101 +1,177 @@
 package pa;
 
-import r.R;
 import r.TreeNode;
-import pa.LDATA;
 
 import java.util.ArrayList;
 
-/**
- * Created by devinmcgloin on 6/16/15.
- * BN is never changed after instatiation. NEVER.
- *
- * PA should only be dealing with NBN.
- */
-public class NBN {
+public class NBN{
 
-    private TreeNode BN;
-    private TreeNode tmp;
-    private PA pa;
+    private final TreeNode TN;
 
-    public NBN(TreeNode n, PA pa){
-        BN = n;
-        this.pa = pa;
-//        System.out.println("New NBN: " + BN.getName());
-    }
-
-    public TreeNode getOrigin(){
-        return BN;
-    }
-
-    public boolean isFilter(String searchTerm){
-        return checkSecondDimension("^is", searchTerm);
-
-    }
-
-    public boolean hasFilter(String searchTerm){
-        return checkSecondDimension("^has", searchTerm);
+    public NBN(TreeNode TN){
+        this.TN = TN;
     }
 
     /**
-     * TODO: Needs to be implemented in LDATA
-     * needs to be sent to LDATA
+     * For making a new node to think about.
+     * @param title
+     */
+    public NBN(String title){
+        TN = new TreeNode(title);
+    }
+
+    public String getName(){
+        return TN.getTitle();
+    }
+    public ArrayList<String> getKeys(){
+        return TN.getChildrenString();
+    }
+
+    public ArrayList<String> get(String Key){
+        return TN.getChild(Key).getChildrenString();
+    }
+
+    /**
+     * Tricky adding stuff below.
+     * In order to make a change you have to make a new tree node, and copy content over. Once you turn it into an NBN its final. This means we have to have methods that are singular such as add or rm, and ones that apply these updates in batches.
+     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
+     * TODO Check gentree for formula.
+     * TODO cant just add the node, have to check first.
+     *
+     */
+    public NBN add(String Key, String Val){
+
+        TreeNode newNode = copyNode(TN);
+        TreeNode key = newNode.getChild(Key);
+
+        if(key == null){
+            key = new TreeNode(Key);
+            key.addChildBlind(new TreeNode(Val));
+            int index = newNode.binarySearch(key.getTitle());
+            newNode.insertChild(key, (index * -1) - 1);
+        }else{
+            key = copyNode(key);
+            key.addChildBlind(new TreeNode(Val));
+            newNode.removeChild(newNode.getChild(Key));
+            int index = newNode.binarySearch(key.getTitle());
+            newNode.insertChild(key, (index*-1)-1);
+        }
+
+        return new NBN(newNode);
+    }
+
+    public NBN rm(String Key){
+        TreeNode newNode = copyNode(TN);
+        newNode.removeChild(newNode.getChild(Key));
+        return new NBN(newNode);
+
+    }
+
+    public NBN rm(String Key, String Val){
+        TreeNode newNode = copyNode(TN);
+        newNode.getChild(Key).removeChild(newNode.getChild(Key).getChild(Val));
+        return new NBN(newNode);
+
+    }
+
+    /**
+     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
+     * TODO this is no creating a new child. Modifying the original.
+     * @param key
+     * @param oldVal
+     * @param newVal
      * @return
      */
-    public boolean hasValue(String keyVal){
-        return pa.evaluate(keyVal, this);
-    }
 
-    public boolean hasAdj(String searchTerm){
-        return checkSecondDimension("^adj", searchTerm);
-    }
-
-    public boolean canVerb(String searchTerm){
-        return checkSecondDimension("^v1", searchTerm);
-    }
-
-    public boolean hasVerb(String searchTerm){
-        return checkSecondDimension("^v2", searchTerm);
-    }
-
-    public ArrayList<String> getHasValue(String searchTerm){
-        return getValue("^has", searchTerm);
-    }
-
-    private boolean checkSecondDimension(String dimension, String searchTerm){
-        tmp = BN.getChild(dimension);
-        if(tmp != null){
-            return tmp.contains(searchTerm);
-        }else
-            return false;
-    }
-
-    public boolean checkFirstDimension(String term){
-        tmp = BN.getChild(term);
-        if(tmp != null){
-            return true;
-        }else
-            return false;
-    }
-
-    public ArrayList<String> getValue(String dimension, String value ){
-        if(hasValue(value)){
-            tmp = BN.getChild(dimension);
-            tmp = BN.getChild(value);
-            return tmp.getChildrenString();
+    public NBN update(String key, String oldVal, String newVal){
+        TreeNode newNode = copyNode(TN);
+        TreeNode child = newNode.getChild(key);
+        if(child != null) {
+            TreeNode oldValue = child.getChild(oldVal);
+            if(oldValue != null)
+                oldValue.setTitle(newVal);
         }
-        return null;
+        return new NBN(newNode);
     }
 
+    // Batch updates below
 
-    public String getIs(){
-        return BN.getChild("^is").getChildrenString().get(0);
+    /**
+     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
+     * @param keys
+     * @param vals
+     * @return
+     */
+    public NBN batchAdd(ArrayList<String > keys, ArrayList<String> vals){
+        TreeNode newNode = copyNode(TN);
+        for (int i = 0; i < keys.size(); i++){
+            TreeNode key = newNode.getChild(keys.get(i));
+
+            if(key == null){
+                key = new TreeNode(keys.get(i));
+                key.addChildBlind(new TreeNode(vals.get(i)));
+                int index = newNode.binarySearch(key.getTitle());
+                newNode.insertChild(key, (index * -1) - 1);
+            }else{
+                key = copyNode(key);
+                key.addChildBlind(new TreeNode(vals.get(i)));
+                newNode.removeChild(newNode.getChild(keys.get(i)));
+                int index = newNode.binarySearch(key.getTitle());
+                newNode.insertChild(key, (index*-1)-1);
+            }
+        }
+        return new NBN(newNode);
     }
 
-    public ArrayList<String> getChildrenOfDimension(String dimension){
-        return BN.getChild(dimension).getChildrenString();
+    public NBN batchRM(ArrayList<String> keys){
+        TreeNode newNode = copyNode(TN);
+        for(String key : keys) {
+            newNode.removeChild(newNode.getChild(key));
+        }
+        return new NBN(newNode);
     }
 
+    public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals){
+        TreeNode newNode = copyNode(TN);
+        for (int i = 0; i < keys.size(); i++){
+            newNode.getChild(keys.get(i)).removeChild(newNode.getChild(keys.get(i)).getChild(vals.get(i)));
+        }
+        return new NBN(newNode);
+    }
 
+    /**
+     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
+     * @param keys
+     * @param oldVals
+     * @param newVals
+     * @return
+     */
+    public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals){
+        TreeNode newNode = copyNode(TN);
+        for (int i = 0; i < keys.size(); i++) {
+            TreeNode child = newNode.getChild(keys.get(i));
+            if(child != null) {
+                TreeNode oldValue = child.getChild(oldVals.get(i));
+                if(oldValue != null)
+                    oldValue.setTitle(newVals.get(i));
+            }
+        }
+        return new NBN(newNode);
+
+    }
+
+    /**
+     /* Copying nodes isnt as bad as I was thinking. You basically make a full copy of the root, and copy references to the keys while its in treenode form, you can then remove or add values. Removal works as you're only removing the reference from this new root, not the old one. Changes still have to be copied over into new nodes. The penaltity for small changes is minimal.
+     /* CopyNode only works on one individual node. You first do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to get called on a alot of levels.
+     */
+
+    private TreeNode copyNode(TreeNode oldNode){
+        TreeNode newNode = new TreeNode(oldNode.getTitle());
+        newNode.setAddress(oldNode.getAddress());
+        for(TreeNode child : oldNode.getChildren()){
+            newNode.addChildBlind(child);
+        }
+        return newNode;
+    }
 
 }
