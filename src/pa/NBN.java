@@ -1,6 +1,7 @@
 package pa;
 
 import r.TreeNode;
+import r.TreeNodeBase;
 
 import java.util.ArrayList;
 
@@ -46,20 +47,8 @@ public class NBN{
     public NBN add(String Key, String Val){
 
         TreeNode newNode = copyNode(TN);
-        TreeNode key = newNode.getChild(Key);
 
-        if(key == null){
-            key = new TreeNode(Key);
-            key.addChildBlind(new TreeNode(Val));
-            int index = newNode.binarySearch(key.getTitle());
-            newNode.insertChild(key, (index * -1) - 1);
-        }else{
-            key = copyNode(key);
-            key.addChildBlind(new TreeNode(Val));
-            newNode.removeChild(newNode.getChild(Key));
-            int index = newNode.binarySearch(key.getTitle());
-            newNode.insertChild(key, (index*-1)-1);
-        }
+        add(newNode, Key, Val);
 
         return new NBN(newNode);
     }
@@ -71,7 +60,7 @@ public class NBN{
      */
     public NBN rm(String Key){
         TreeNode newNode = copyNode(TN);
-        newNode.removeChild(newNode.getChild(Key));
+        removeChild(newNode, Key);
         return new NBN(newNode);
 
     }
@@ -84,13 +73,14 @@ public class NBN{
      */
     public NBN rm(String Key, String Val){
         TreeNode newNode = copyNode(TN);
-        newNode.getChild(Key).removeChild(newNode.getChild(Key).getChild(Val));
+        rm(newNode, Key, Val);
+
         return new NBN(newNode);
 
     }
 
     /**
-     * TODO this is not creating a new child. Modifying the original. DO NOT USE.
+     *
      * @param key
      * @param oldVal
      * @param newVal
@@ -99,23 +89,8 @@ public class NBN{
 
     public NBN update(String key, String oldVal, String newVal){
         TreeNode newNode = copyNode(TN);
-        TreeNode child = copyNode(newNode.getChild(key));
-        if(child != null) {
-            TreeNode oldValue = child.getChild(oldVal);
-            if (oldValue != null) {
-                child.removeChild(oldValue);
-                TreeNode newValue = new TreeNode(newVal);
 
-
-                int index = child.binarySearch(newValue.getTitle());
-                child.insertChild(newValue, (index * -1) - 1);
-
-                newNode.removeChild(newNode.getChild(key));
-
-                index = newNode.binarySearch(child.getTitle());
-                newNode.insertChild(child, (index * -1) - 1);
-            }
-        }
+        update(newNode, key, oldVal, newVal);
 
         return new NBN(newNode);
     }
@@ -131,20 +106,7 @@ public class NBN{
     public NBN batchAdd(ArrayList<String > keys, ArrayList<String> vals){
         TreeNode newNode = copyNode(TN);
         for (int i = 0; i < keys.size(); i++){
-            TreeNode key = newNode.getChild(keys.get(i));
-
-            if(key == null){
-                key = new TreeNode(keys.get(i));
-                key.addChildBlind(new TreeNode(vals.get(i)));
-                int index = newNode.binarySearch(key.getTitle());
-                newNode.insertChild(key, (index * -1) - 1);
-            }else{
-                key = copyNode(key);
-                key.addChildBlind(new TreeNode(vals.get(i)));
-                newNode.removeChild(newNode.getChild(keys.get(i)));
-                int index = newNode.binarySearch(key.getTitle());
-                newNode.insertChild(key, (index*-1)-1);
-            }
+            add(newNode, keys.get(i), vals.get(i));
         }
         return new NBN(newNode);
     }
@@ -157,7 +119,7 @@ public class NBN{
     public NBN batchRM(ArrayList<String> keys){
         TreeNode newNode = copyNode(TN);
         for(String key : keys) {
-            newNode.removeChild(newNode.getChild(key));
+            removeChild(newNode, key);
         }
         return new NBN(newNode);
     }
@@ -171,7 +133,7 @@ public class NBN{
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals){
         TreeNode newNode = copyNode(TN);
         for (int i = 0; i < keys.size(); i++){
-            newNode.getChild(keys.get(i)).removeChild(newNode.getChild(keys.get(i)).getChild(vals.get(i)));
+            rm(newNode, keys.get(i), vals.get(i));
         }
         return new NBN(newNode);
     }
@@ -186,23 +148,7 @@ public class NBN{
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals){
         TreeNode newNode = copyNode(TN);
         for (int i = 0; i < keys.size(); i++) {
-            TreeNode child = copyNode(newNode.getChild(keys.get(i)));
-            if(child != null) {
-                TreeNode oldValue = child.getChild(oldVals.get(i));
-                if (oldValue != null) {
-                    child.removeChild(oldValue);
-                    TreeNode newValue = new TreeNode(newVals.get(i));
-
-
-                    int index = child.binarySearch(newValue.getTitle());
-                    child.insertChild(newValue, (index * -1) - 1);
-
-                    newNode.removeChild(newNode.getChild(keys.get(i)));
-
-                    index = newNode.binarySearch(child.getTitle());
-                    newNode.insertChild(child, (index * -1) - 1);
-                }
-            }
+            update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
         }
         return new NBN(newNode);
 
@@ -220,6 +166,54 @@ public class NBN{
             newNode.addChildBlind(child);
         }
         return newNode;
+    }
+
+    private void insertNode(TreeNode node, TreeNode value){
+        int index = node.binarySearch(value.getTitle());
+        if(index < 0) {
+            node.insertChild(value, (index * -1) - 1);
+        }
+    }
+
+    private void removeChild(TreeNode node, String child){
+        node.removeChild(node.getChild(child));
+    }
+
+    private void add(TreeNode newNode, String Key, String Val){
+        TreeNode key = newNode.getChild(Key);
+
+        if(key == null){
+            key = new TreeNode(Key);
+            insertNode(key, new TreeNode(Val));
+            insertNode(newNode, key);
+        }else{
+            removeChild(newNode, Key);
+            insertNode(key, new TreeNode(Val));
+            insertNode(newNode, key);
+        }
+    }
+
+    private void rm (TreeNode newNode, String Key, String Val){
+        TreeNode keyNode = copyNode(newNode.getChild(Key));
+        removeChild(newNode, Key);
+        removeChild(keyNode, Val);
+        insertNode(newNode, keyNode);
+    }
+
+    private void update(TreeNode newNode, String key, String oldVal, String newVal){
+        TreeNode child = copyNode(newNode.getChild(key));
+
+        if(child != null) {
+            removeChild(newNode, key);
+            TreeNode oldValue = child.getChild(oldVal);
+            if (oldValue != null) {
+                removeChild(child, oldVal);
+                insertNode(child, new TreeNode(newVal));
+
+            }
+            insertNode(newNode, child);
+        }
+
     }
 
 }
