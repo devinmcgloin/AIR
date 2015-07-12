@@ -34,9 +34,6 @@ public class NBN{
     /**
      * Tricky adding stuff below.
      * In order to make a change you have to make a new tree node, and copy content over. Once you turn it into an NBN its final. This means we have to have methods that are singular such as add or rm, and ones that apply these updates in batches.
-     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
-     * TODO Check gentree for formula.
-     * TODO cant just add the node, have to check first.
      *
      */
     public NBN add(String Key, String Val){
@@ -75,8 +72,7 @@ public class NBN{
     }
 
     /**
-     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
-     * TODO this is no creating a new child. Modifying the original.
+     * TODO this is not creating a new child. Modifying the original. DO NOT USE.
      * @param key
      * @param oldVal
      * @param newVal
@@ -88,7 +84,7 @@ public class NBN{
         TreeNode child = newNode.getChild(key);
         if(child != null) {
             TreeNode oldValue = child.getChild(oldVal);
-            if(oldValue != null)
+            if (oldValue != null)
                 oldValue.setTitle(newVal);
         }
         return new NBN(newNode);
@@ -97,7 +93,7 @@ public class NBN{
     // Batch updates below
 
     /**
-     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
+     *
      * @param keys
      * @param vals
      * @return
@@ -140,7 +136,7 @@ public class NBN{
     }
 
     /**
-     * TODO Add this in order. bINARY SEARCH THEN INSERT AT THAT INDEX
+     * TODO this is modifying the actual node. DO NOT USE.
      * @param keys
      * @param oldVals
      * @param newVals

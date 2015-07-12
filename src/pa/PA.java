@@ -159,7 +159,6 @@ public class PA {
      */
     public void put(NBN node){
         TreeNode tn = getRb("noun").get("R/noun/" + node.getName());
-        for ()
     }
 
 }
