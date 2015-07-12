@@ -31,7 +31,6 @@ public class PA {
     protected ArrayList<R> rDB = new ArrayList<R>();
 
     public PA() {
-
         if (rFolder.length() >= 1) {
             for (File fileEntry : rFolder.listFiles()) {
                 if (fileEntry.isDirectory()) {
@@ -46,7 +45,7 @@ public class PA {
 
     public void test(){
         for( NBN node : getNouns("ferrari", "car")){
-            System.out.println(node.getName());
+            System.out.println(node.getTitle());
             for(String entry : node.getKeys()){
                 System.out.println("   " + entry);
                 System.out.println("       " + node.get(entry));
@@ -55,7 +54,7 @@ public class PA {
 
             System.out.println();
 
-            System.out.println(node.getName());
+            System.out.println(node.getTitle());
             node = node.rm("^name");
             node = node.add("^logicalChild", "Childnode");
             for(String entry : node.getKeys()){
@@ -66,7 +65,7 @@ public class PA {
 
             System.out.println();
 
-            System.out.println(node.getName());
+            System.out.println(node.getTitle());
             node = node.add("^name", "ferrari Autos");
             node = node.add("^name", "ferrari Autosss");
             node = node.update("^name", "ferrari Autosss", "Automalia");
@@ -159,7 +158,14 @@ public class PA {
      * @param node
      */
     public void put(NBN node){
-        TreeNode rdbNode = getRb("noun").get("R/noun/" + node.getName());
+        TreeNode rdbNode = getRb("noun").get("R/noun/" + node.getTitle());
+
+        if(rdbNode != null){
+            //Have to compare whats changed.
+
+        }else{
+            //Just walk the node without comparisons.
+        }
     }
 
 }

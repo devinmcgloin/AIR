@@ -24,7 +24,7 @@ public class NBN {
         TN = new TreeNode(title);
     }
 
-    public String getName() {
+    public String getTitle() {
         return TN.getTitle();
     }
 
