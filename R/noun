@@ -86,6 +86,8 @@ ferrari
     ^is
         car
     ^logicalchild
+    ^name
+        ferrari
     ^v1
     ^v2
 honda

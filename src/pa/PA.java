@@ -56,7 +56,7 @@ public class PA {
             System.out.println();
 
             System.out.println(node.getName());
-            node = node.rm("^names");
+            node = node.rm("^name");
             node = node.add("^logicalChild", "Childnode");
             for(String entry : node.getKeys()){
                 System.out.println("   " + entry);
@@ -67,8 +67,9 @@ public class PA {
             System.out.println();
 
             System.out.println(node.getName());
-            node = node.add("^names", "ferrari Autos");
-            node = node.update("^names", "Automalia Ferrari", "Automalia");
+            node = node.add("^name", "ferrari Autos");
+            node = node.add("^name", "ferrari Autosss");
+            node = node.update("^name", "ferrari Autosss", "Automalia");
             for(String entry : node.getKeys()){
                 System.out.println("   " + entry);
                 ArrayList<String> nodes = node.get(entry);

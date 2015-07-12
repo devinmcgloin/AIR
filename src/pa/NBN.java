@@ -31,10 +31,17 @@ public class NBN{
         return TN.getChild(Key).getChildrenString();
     }
 
-    /**
+    /*
      * Tricky adding stuff below.
      * In order to make a change you have to make a new tree node, and copy content over. Once you turn it into an NBN its final. This means we have to have methods that are singular such as add or rm, and ones that apply these updates in batches.
      *
+     */
+
+    /**
+     *
+     * @param Key
+     * @param Val
+     * @return
      */
     public NBN add(String Key, String Val){
 
@@ -57,6 +64,11 @@ public class NBN{
         return new NBN(newNode);
     }
 
+    /**
+     *
+     * @param Key
+     * @return
+     */
     public NBN rm(String Key){
         TreeNode newNode = copyNode(TN);
         newNode.removeChild(newNode.getChild(Key));
@@ -64,6 +76,12 @@ public class NBN{
 
     }
 
+    /**
+     *
+     * @param Key
+     * @param Val
+     * @return
+     */
     public NBN rm(String Key, String Val){
         TreeNode newNode = copyNode(TN);
         newNode.getChild(Key).removeChild(newNode.getChild(Key).getChild(Val));
@@ -81,12 +99,24 @@ public class NBN{
 
     public NBN update(String key, String oldVal, String newVal){
         TreeNode newNode = copyNode(TN);
-        TreeNode child = newNode.getChild(key);
+        TreeNode child = copyNode(newNode.getChild(key));
         if(child != null) {
             TreeNode oldValue = child.getChild(oldVal);
-            if (oldValue != null)
-                oldValue.setTitle(newVal);
+            if (oldValue != null) {
+                child.removeChild(oldValue);
+                TreeNode newValue = new TreeNode(newVal);
+
+
+                int index = child.binarySearch(newValue.getTitle());
+                child.insertChild(newValue, (index * -1) - 1);
+
+                newNode.removeChild(newNode.getChild(key));
+
+                index = newNode.binarySearch(child.getTitle());
+                newNode.insertChild(child, (index * -1) - 1);
+            }
         }
+
         return new NBN(newNode);
     }
 
@@ -119,6 +149,11 @@ public class NBN{
         return new NBN(newNode);
     }
 
+    /**
+     *
+     * @param keys
+     * @return
+     */
     public NBN batchRM(ArrayList<String> keys){
         TreeNode newNode = copyNode(TN);
         for(String key : keys) {
@@ -127,6 +162,12 @@ public class NBN{
         return new NBN(newNode);
     }
 
+    /**
+     *
+     * @param keys
+     * @param vals
+     * @return
+     */
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals){
         TreeNode newNode = copyNode(TN);
         for (int i = 0; i < keys.size(); i++){
@@ -145,11 +186,22 @@ public class NBN{
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals){
         TreeNode newNode = copyNode(TN);
         for (int i = 0; i < keys.size(); i++) {
-            TreeNode child = newNode.getChild(keys.get(i));
+            TreeNode child = copyNode(newNode.getChild(keys.get(i)));
             if(child != null) {
                 TreeNode oldValue = child.getChild(oldVals.get(i));
-                if(oldValue != null)
-                    oldValue.setTitle(newVals.get(i));
+                if (oldValue != null) {
+                    child.removeChild(oldValue);
+                    TreeNode newValue = new TreeNode(newVals.get(i));
+
+
+                    int index = child.binarySearch(newValue.getTitle());
+                    child.insertChild(newValue, (index * -1) - 1);
+
+                    newNode.removeChild(newNode.getChild(keys.get(i)));
+
+                    index = newNode.binarySearch(child.getTitle());
+                    newNode.insertChild(child, (index * -1) - 1);
+                }
             }
         }
         return new NBN(newNode);
