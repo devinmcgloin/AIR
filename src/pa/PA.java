@@ -83,7 +83,6 @@ public class PA {
                 toAddKeys.add("cost");
                 toAddVals.add("expensive");
                 node2 = node2.batchAdd(toAddKeys, toAddVals);
-                put(node);
 
                 System.out.println("Node 1:");
                 for(Tuple add : node.getRecord()){
@@ -96,8 +95,9 @@ public class PA {
                 }
 
                 put(node2);
+                save();
             }
-            save();
+
         }
     }
 
