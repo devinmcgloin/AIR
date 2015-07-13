@@ -77,7 +77,7 @@ public final class NBN {
     public NBN rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
-        return new NBN(newNode, copyRecordAddContent(record, new Tuple("rm", Key, "")));
+        return new NBN(newNode, copyRecordAddContent(record, new Tuple("rm", Key)));
 
     }
 
@@ -108,7 +108,7 @@ public final class NBN {
 
         update(newNode, key, oldVal, newVal);
 
-        return new NBN(newNode, copyRecordAddContent(record, new Tuple("add", key, oldVal, newVal)));
+        return new NBN(newNode, copyRecordAddContent(record, new Tuple("update", key, oldVal, newVal)));
     }
 
     // Batch updates below
@@ -178,7 +178,7 @@ public final class NBN {
 
         for (int i = 0; i < keys.size(); i++) {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
-            additions.add(new Tuple("rm", keys.get(i), oldVals.get(i), newVals.get(i)));
+            additions.add(new Tuple("update", keys.get(i), oldVals.get(i), newVals.get(i)));
         }
         return new NBN(newNode);
 

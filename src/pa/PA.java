@@ -76,6 +76,13 @@ public class PA {
                     System.out.println("       " + nodes);
                 }
 
+                ArrayList<String> toAddKeys = new ArrayList<>();
+                ArrayList<String> toAddVals = new ArrayList<>();
+                toAddKeys.add("Speed");
+                toAddVals.add("fast");
+                toAddKeys.add("cost");
+                toAddVals.add("expensive");
+                node2 = node2.batchAdd(toAddKeys, toAddVals);
                 put(node);
 
                 System.out.println("Node 1:");
@@ -173,7 +180,17 @@ public class PA {
      * @param node
      */
     public void put(NBN node){
+        for(Tuple record : node.getRecord()){
+            if(record.fst().equals("add")){
 
+            }else if(record.fst().equals("rm")){
+
+            }else if(record.fst().equals("update")){
+
+            }else{
+                System.out.println("Record: " + record.toString() + "\n Is not a valid record");
+            }
+        }
     }
 
 }
