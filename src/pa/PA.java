@@ -44,16 +44,25 @@ public class PA {
     }
 
     public void test(){
+
+
+
         for( NBN node : getNouns("ferrari", "car")){
             if(node.getTitle().equals("ferrari")) {
                 System.out.println(node.getTitle());
                 for (String entry : node.getKeys()) {
+
+
                     System.out.println("   " + entry);
                     System.out.println("       " + node.get(entry));
 
                 }
 
                 System.out.println();
+
+
+
+
 
                 System.out.println(node.getTitle());
                 node = node.rm("^name");
@@ -61,10 +70,11 @@ public class PA {
                 for (String entry : node.getKeys()) {
                     System.out.println("   " + entry);
                     System.out.println("       " + node.get(entry));
-
                 }
 
                 System.out.println();
+
+
 
                 System.out.println(node.getTitle());
                 node = node.add("^name", "ferrari Autos");
@@ -75,6 +85,8 @@ public class PA {
                     ArrayList<String> nodes = node.get(entry);
                     System.out.println("       " + nodes);
                 }
+
+
 
                 ArrayList<String> toAddKeys = new ArrayList<>();
                 ArrayList<String> toAddVals = new ArrayList<>();
@@ -89,16 +101,93 @@ public class PA {
                     System.out.println(add.toString());
                 }
 
+
+
+
+
                 System.out.println("Node 2:");
                 for(Tuple add : node2.getRecord()){
                     System.out.println(add.toString());
                 }
 
+
+
+
+
+
+
+
+
                 put(node2);
+
+
+
                 save();
+
+
+
             }
 
         }
+    }
+
+    /**
+     * TODO implement log walker.
+     * @param node
+     */
+    public void put(NBN node){
+
+
+
+        for(Tuple record : node.getRecord()){
+
+
+
+            if(record.fst().equals("add")){
+                if(rDBexists("noun")){
+                    getRb("noun").add(record.snd(), "R/noun/" + node.getTitle());
+                    getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
+
+                    System.out.println("trd" + record.thrd());
+                    System.out.println("snd" + record.snd());
+                }
+            }else if(record.fst().equals("rm")) {
+
+
+                if(rDBexists("noun")){
+
+
+
+                    if(record.thrd().equals("[third null]") ){
+
+
+                        getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
+
+
+                    }else{
+
+
+                        getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
+
+                    }
+                }
+            }
+
+            else if(record.fst().equals("update")){
+                if(rDBexists("noun")){
+                    getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
+                    getRb("noun").add(record.frth(), "R/noun/" + node.getTitle() + "/" + record.snd());
+
+                }
+            }else{
+                System.out.println("Record: " + record.toString() + "\n Is not a valid record");
+            }
+
+
+
+        }
+
+
     }
 
     public R getRb(String db){
@@ -177,35 +266,6 @@ public class PA {
             r.save();
     }
 
-    /**
-     * TODO implement log walker.
-     * @param node
-     */
-    public void put(NBN node){
-        for(Tuple record : node.getRecord()){
-            if(record.fst().equals("add")){
-                if(rDBexists("noun")){
-                    getRb("noun").add(record.snd(), "R/noun/" + node.getTitle());
-                    getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
-                }
-            }else if(record.fst().equals("rm")){
-                if(rDBexists("noun")){
-                    if(record.thrd() == null){
-                        getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
-                    }else{
-                        getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
-                    }
-                }
-            }else if(record.fst().equals("update")){
-                if(rDBexists("noun")){
-                    getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
-                    getRb("noun").add(record.frth(), "R/noun/" + node.getTitle() + "/" + record.snd());
 
-                }
-            }else{
-                System.out.println("Record: " + record.toString() + "\n Is not a valid record");
-            }
-        }
-    }
 
 }

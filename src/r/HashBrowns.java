@@ -61,7 +61,10 @@ public class HashBrowns {
         }
 
         //Alphabetize the TreeNodes (honestly don't know if we'll ever need them, but still).
-        Collections.sort(hits);
+        if(hits.size()!=0)
+            Collections.sort(hits);
+        else
+            return allBaseNodes;
 
 
         //---------------------------OPTIMIZATION---------------------------------//

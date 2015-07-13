@@ -1,3 +1,5 @@
+Childnode
+^logicalChild
 audi
     ^adj
     ^has
@@ -69,6 +71,7 @@ city
         town
         washington dc
 ferrari
+    Speed
     ^adj
     ^has
         brakes
@@ -86,172 +89,6 @@ ferrari
     ^is
         car
     ^logicalchild
-    ^name
-        ferrari
     ^v1
     ^v2
-honda
-    ^adj
-    ^has
-        engine
-        exhaust
-        spoiler
-    ^is
-        car
-    ^logicalchild
-    ^v1
-    ^v2
-london
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-    ^v1
-    ^v2
-los angeles
-    ^adj
-    ^has
-        area
-            1500000
-        doctors office
-        fire dept
-        length
-            100 ft
-        location
-        mayor
-        police station
-        population
-            6000000
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-    ^v1
-    ^v2
-measurement
-    ^is
-        ldata
-new york
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-            9000000
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-    ^v1
-    ^v2
-redlands
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^is
-        city
-        town
-    ^logicalchild
-    ^v1
-    ^v2
-san diego
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-    ^v1
-    ^v2
-san franscisco
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-    ^v1
-    ^v2
-subaru
-    ^adj
-    ^has
-        brakes
-        doors
-        engine
-        exhaust
-        spoiler
-        suspension
-        wheels
-    ^is
-        car
-    ^logicalchild
-    ^v1
-    ^v2
-town
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-        redlands
-    ^v1
-    ^v2
-washington dc
-    ^adj
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^is
-        city
-    ^logicalchild
-    ^v1
-    ^v2
+    fast
