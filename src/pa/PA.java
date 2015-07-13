@@ -45,35 +45,50 @@ public class PA {
 
     public void test(){
         for( NBN node : getNouns("ferrari", "car")){
-            System.out.println(node.getTitle());
-            for(String entry : node.getKeys()){
-                System.out.println("   " + entry);
-                System.out.println("       " + node.get(entry));
+            if(node.getTitle().equals("ferrari")) {
+                System.out.println(node.getTitle());
+                for (String entry : node.getKeys()) {
+                    System.out.println("   " + entry);
+                    System.out.println("       " + node.get(entry));
 
+                }
+
+                System.out.println();
+
+                System.out.println(node.getTitle());
+                node = node.rm("^name");
+                node = node.add("^logicalChild", "Childnode");
+                for (String entry : node.getKeys()) {
+                    System.out.println("   " + entry);
+                    System.out.println("       " + node.get(entry));
+
+                }
+
+                System.out.println();
+
+                System.out.println(node.getTitle());
+                node = node.add("^name", "ferrari Autos");
+                node = node.add("^name", "ferrari Autosss");
+                NBN node2 = node.update("^name", "ferrari Autosss", "Automalia");
+                for (String entry : node.getKeys()) {
+                    System.out.println("   " + entry);
+                    ArrayList<String> nodes = node.get(entry);
+                    System.out.println("       " + nodes);
+                }
+
+                put(node);
+
+                System.out.println("Node 1:");
+                for(Tuple add : node.getRecord()){
+                    System.out.println(add.toString());
+                }
+
+                System.out.println("Node 2:");
+                for(Tuple add : node2.getRecord()){
+                    System.out.println(add.toString());
+                }
             }
-
-            System.out.println();
-
-            System.out.println(node.getTitle());
-            node = node.rm("^name");
-            node = node.add("^logicalChild", "Childnode");
-            for(String entry : node.getKeys()){
-                System.out.println("   " + entry);
-                System.out.println("       " + node.get(entry));
-
-            }
-
-            System.out.println();
-
-            System.out.println(node.getTitle());
-            node = node.add("^name", "ferrari Autos");
-            node = node.add("^name", "ferrari Autosss");
-            node = node.update("^name", "ferrari Autosss", "Automalia");
-            for(String entry : node.getKeys()){
-                System.out.println("   " + entry);
-                ArrayList<String> nodes = node.get(entry);
-                System.out.println("       " + nodes);
-            }
+//            save();
         }
     }
 
@@ -154,18 +169,11 @@ public class PA {
     }
 
     /**
-     * This needs to be changed to get the address not name.
+     * TODO implement log walker.
      * @param node
      */
     public void put(NBN node){
-        TreeNode rdbNode = getRb("noun").get("R/noun/" + node.getTitle());
 
-        if(rdbNode != null){
-            //Have to compare whats changed.
-
-        }else{
-            //Just walk the node without comparisons.
-        }
     }
 
 }
