@@ -94,8 +94,10 @@ public class PA {
                 for(Tuple add : node2.getRecord()){
                     System.out.println(add.toString());
                 }
+
+                put(node2);
             }
-//            save();
+            save();
         }
     }
 
@@ -182,11 +184,24 @@ public class PA {
     public void put(NBN node){
         for(Tuple record : node.getRecord()){
             if(record.fst().equals("add")){
-
+                if(rDBexists("noun")){
+                    getRb("noun").add(record.snd(), "R/noun/" + node.getTitle());
+                    getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
+                }
             }else if(record.fst().equals("rm")){
-
+                if(rDBexists("noun")){
+                    if(record.thrd() == null){
+                        getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
+                    }else{
+                        getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
+                    }
+                }
             }else if(record.fst().equals("update")){
+                if(rDBexists("noun")){
+                    getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
+                    getRb("noun").add(record.frth(), "R/noun/" + node.getTitle() + "/" + record.snd());
 
+                }
             }else{
                 System.out.println("Record: " + record.toString() + "\n Is not a valid record");
             }
