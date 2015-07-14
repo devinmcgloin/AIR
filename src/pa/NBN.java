@@ -199,7 +199,13 @@ public final class NBN {
 //        TreeNode newNode = new TreeNode(oldNode.getTitle());
 //        newNode.setAddress(oldNode.getAddress());
 //        for (TreeNode child : oldNode.getChildren()) {
-//            newNode.addChildBlind(child);   //Hm. THis was never intended for adding entire branches.
+//            newNode.addChildBlindWithNoAddressUpdate(child);   //Hm. THis was never intended for adding entire branches. Yeah, so the address here is what's actually getting fucked.
+//            //There are two possible solutions. One is to add a method in Tree node: addChildBlindWithNoAddressUpdate(child)
+//            //But since I REEAAAAAALLLLLLLLLYYYYYYY don't want to go all the way down and fuck around with having LITERAL references to the DB in here and thinking thru all that logic,
+//            //I would MUCH much MUCH rather do a full copy of the node as soon as you get it.
+//            //Actually i just tried that too, still no dice. Seriously. Devin, you're right, we shouldn't mess with the actual DB, cause then you get these logical errors that no one wants
+//            //to fucking trace from A-Z. And it's not any line you can point to so it makes debugging harder since it's usually a few functions working together. I'm going to do a deep copy.
+//            //Then, there should be no reason to copy again and again and again in here, it also allows us to think in a term of a cache system later.
 //        }
 //        return newNode;
 

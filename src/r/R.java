@@ -51,7 +51,7 @@ public class R {
 
 
         current = get(rAddress);
-        System.out.println("did that work: "+current.getAddress());
+        //System.out.println("did that work: "+current.getAddress());
         genTree.addNode(nodeName);
 
     }

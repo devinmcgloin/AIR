@@ -1,4 +1,6 @@
 ferrari
+    Speed
+        fast
     ^adj
     ^has
         brakes
@@ -16,5 +18,11 @@ ferrari
     ^is
         car
     ^logicalChild
+        Childnode
+    ^name
+        Automalia
+        ferrari Autos
     ^v1
     ^v2
+    cost
+        expensive
