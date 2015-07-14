@@ -5,7 +5,6 @@ import r.R;
 import r.TreeNodeBase;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -120,14 +119,14 @@ public class PA {
                 node2 = node2.batchAdd(toAddKeys, toAddVals);
 
                 System.out.println("Node 1:");
-                for(Tuple add : node.getRecord()){
+                for(NBN.Tuple add : node.getRecord()){
                     System.out.println(add.toString());
                 }
 
 
 
                 System.out.println("Node 2:");
-                for(Tuple add : node2.getRecord()){
+                for(NBN.Tuple add : node2.getRecord()){
                     System.out.println(add.toString());
                 }
 
@@ -160,7 +159,7 @@ public class PA {
 
 
 
-        for(Tuple record : node.getRecord()){
+        for(NBN.Tuple record : node.getRecord()){
 
 //            TreeNode k = getRb("noun").get("R/");
 //            for(String name: k.getChildrenString()){

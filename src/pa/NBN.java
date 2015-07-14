@@ -10,14 +10,14 @@ import java.util.ArrayList;
 public final class NBN {
 
     private final TreeNode TN;
-    private final ArrayList<pa.Tuple> record;
+    private final ArrayList<Tuple> record;
 
     public NBN(TreeNode TN) {
         this.TN = TN;
         this.record = new ArrayList<>();
     }
 
-    public NBN(TreeNode TN, ArrayList<pa.Tuple> record){
+    public NBN(TreeNode TN, ArrayList<Tuple> record){
         this.TN = TN;
         this.record = record;
     }
@@ -44,7 +44,7 @@ public final class NBN {
         return TN.getChild(Key).getChildrenString();
     }
 
-    public ArrayList<pa.Tuple> getRecord(){
+    public ArrayList<Tuple> getRecord(){
         return record;
     }
 
@@ -66,7 +66,7 @@ public final class NBN {
 
         add(newNode, Key, Val);
 
-        return new NBN(newNode, copyRecordAddContent(this.record, new pa.Tuple("add", Key, Val)));
+        return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("add", Key, Val)));
     }
 
     /**
@@ -77,7 +77,7 @@ public final class NBN {
     public NBN rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
-        return new NBN(newNode, copyRecordAddContent(this.record, new pa.Tuple("rm", Key)));
+        return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("rm", Key)));
 
     }
 
@@ -91,7 +91,7 @@ public final class NBN {
         TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
 
-        return new NBN(newNode, copyRecordAddContent(record, new pa.Tuple("rm", Key, Val)));
+        return new NBN(newNode, copyRecordAddContent(record, new Tuple("rm", Key, Val)));
 
     }
 
@@ -108,7 +108,7 @@ public final class NBN {
 
         update(newNode, key, oldVal, newVal);
 
-        return new NBN(newNode, copyRecordAddContent(record, new pa.Tuple("update", key, oldVal, newVal)));
+        return new NBN(newNode, copyRecordAddContent(record, new Tuple("update", key, oldVal, newVal)));
     }
 
     // Batch updates below
@@ -121,10 +121,10 @@ public final class NBN {
      */
     public NBN batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<pa.Tuple> additions = new ArrayList<pa.Tuple>();
+        ArrayList<Tuple> additions = new ArrayList<Tuple>();
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
-            additions.add(new pa.Tuple("add", keys.get(i), vals.get(i)));
+            additions.add(new Tuple("add", keys.get(i), vals.get(i)));
         }
 
         return new NBN(newNode, copyRecordAddContent(record, additions));
@@ -137,11 +137,11 @@ public final class NBN {
      */
     public NBN batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<pa.Tuple> additions = new ArrayList<pa.Tuple>();
+        ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (String key : keys) {
             removeChild(newNode, key);
-            additions.add(new pa.Tuple("rm", key));
+            additions.add(new Tuple("rm", key));
         }
         return new NBN(newNode, copyRecordAddContent(record, additions));
     }
@@ -154,11 +154,11 @@ public final class NBN {
      */
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<pa.Tuple> additions = new ArrayList<pa.Tuple>();
+        ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (int i = 0; i < keys.size(); i++) {
             rm(newNode, keys.get(i), vals.get(i));
-            additions.add(new pa.Tuple("rm", keys.get(i), vals.get(i)));
+            additions.add(new Tuple("rm", keys.get(i), vals.get(i)));
 
         }
         return new NBN(newNode, copyRecordAddContent(record, additions));
@@ -174,11 +174,11 @@ public final class NBN {
      */
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<pa.Tuple> additions = new ArrayList<pa.Tuple>();
+        ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (int i = 0; i < keys.size(); i++) {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
-            additions.add(new pa.Tuple("update", keys.get(i), oldVals.get(i), newVals.get(i)));
+            additions.add(new Tuple("update", keys.get(i), oldVals.get(i), newVals.get(i)));
         }
         return new NBN(newNode);
 
@@ -269,9 +269,9 @@ public final class NBN {
             insertNode(key, new TreeNode(Val));
 
         } else {
-            removeChild(newNode, Key);
-            insertNode(key, new TreeNode(Val));
+            removeChild(newNode, Key); //....why are you removing it before adding it? Oh. Was it cause you were only copying the root? That must be it. It's overkill but i'll keep it.
             insertNode(newNode, key);
+            insertNode(key, new TreeNode(Val));
         }
     }
 
@@ -311,25 +311,74 @@ public final class NBN {
 
     }
 
-    private ArrayList<pa.Tuple> copyRecordAddContent(ArrayList<pa.Tuple> record, pa.Tuple addition){
-        ArrayList<pa.Tuple> newRecord = new ArrayList<pa.Tuple>();
-        for(pa.Tuple entry : record){
+    private ArrayList<Tuple> copyRecordAddContent(ArrayList<Tuple> record, Tuple addition){
+        ArrayList<Tuple> newRecord = new ArrayList<Tuple>();
+        for(Tuple entry : record){
             newRecord.add(entry);
         }
         newRecord.add(addition);
         return newRecord;
     }
 
-    private ArrayList<pa.Tuple> copyRecordAddContent(ArrayList<pa.Tuple> record, ArrayList<pa.Tuple> addition){
-        ArrayList<pa.Tuple> newRecord = new ArrayList<pa.Tuple>();
-        for(pa.Tuple entry : record){
+    private ArrayList<Tuple> copyRecordAddContent(ArrayList<Tuple> record, ArrayList<Tuple> addition){
+        ArrayList<Tuple> newRecord = new ArrayList<Tuple>();
+        for(Tuple entry : record){
             newRecord.add(entry);
         }
-        for(pa.Tuple entry : addition){
+        for(Tuple entry : addition){
             newRecord.add(entry);
         }
         return newRecord;
     }
 
+    static class Tuple {
+        final String first;
+        final String second;
+        final String third;
+        final String forth;
+
+
+        public Tuple(String first, String second, String third) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+            this.forth = null;
+        }
+        public Tuple(String first, String second) {
+            this.first = first;
+            this.second = second;
+            this.third = null;
+            this.forth = null;
+        }
+        public Tuple(String first, String second, String third, String forth) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+            this.forth = forth;
+        }
+
+        public String fst(){
+            return first != null ? first : "[first null]";
+        }
+        public String snd(){
+            return second != null ? second : "[second null]";
+        }
+        public String thrd(){
+            return third != null ? third : "[third null]";
+        }
+        public String frth(){
+            return forth != null ? forth : "[forth null]";
+        }
+
+        @Override
+        public String toString() {
+            return "Tuple{" +
+                    "first='" + first + '\'' +
+                    ", second='" + second + '\'' +
+                    ", third='" + third + '\'' +
+                    ", forth='" + forth + '\'' +
+                    '}';
+        }
+    }
 }
 
