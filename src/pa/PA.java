@@ -43,6 +43,30 @@ public class PA {
 
     }
 
+    public void blaze(){
+        TreeNode k = getRb("noun").get("R/noun/ferrari/^logicalChild");
+
+
+        for( NBN node : getNouns("ferrari", "car")) {
+            if (node.getTitle().equals("ferrari")) {
+
+                //Earlier, adding the Key Value pair of logical child, child node was causing changes in the actual DB
+                //This was fixed by cloning the first level of children as well as the root.
+                node = node.add("^logicalChild", "Childnode");
+                for (String entry : node.getKeys()) {
+                    System.out.println("   " + entry);
+                    System.out.println("       " + node.get(entry));
+                }
+
+
+            }
+        }
+        k = getRb("noun").get("R/noun/ferrari/");
+        System.out.println("Boop:  " + k.getChildrenString() );
+
+
+    }
+
     public void test(){
 
 
@@ -72,7 +96,7 @@ public class PA {
                     System.out.println("       " + node.get(entry));
                 }
 
-                System.out.println();
+//                System.out.println();
 
 
 
@@ -87,7 +111,6 @@ public class PA {
                 }
 
 
-
                 ArrayList<String> toAddKeys = new ArrayList<>();
                 ArrayList<String> toAddVals = new ArrayList<>();
                 toAddKeys.add("Speed");
@@ -100,8 +123,6 @@ public class PA {
                 for(Tuple add : node.getRecord()){
                     System.out.println(add.toString());
                 }
-
-
 
 
 
@@ -141,15 +162,30 @@ public class PA {
 
         for(Tuple record : node.getRecord()){
 
+//            TreeNode k = getRb("noun").get("R/");
+//            for(String name: k.getChildrenString()){
+//                System.out.println("ROOT: "+name);
+//            }
 
+
+
+//            System.out.println(record);
 
             if(record.fst().equals("add")){
                 if(rDBexists("noun")){
-                    getRb("noun").add(record.snd(), "R/noun/" + node.getTitle());
-                    getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
 
-                    System.out.println("trd" + record.thrd());
-                    System.out.println("snd" + record.snd());
+                    System.out.println("\n\n\n\n");
+
+                    getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
+                    getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd() );
+
+
+                    //HOW R'S ADD WORKS:
+                    //add("nodeName", "R/noun")
+                    //add, this node name, to this address.
+
+//                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() + "/" + record.snd());
+//                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() );
                 }
             }else if(record.fst().equals("rm")) {
 
@@ -160,13 +196,16 @@ public class PA {
 
                     if(record.thrd().equals("[third null]") ){
 
-
                         getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
 
 
                     }else{
 
+                        System.out.println("hm2");
 
+
+                        //FUCK this is where we were getting the original ^name and now Speed db issue.
+                        System.out.println("R/noun/" + node.getTitle() + "/" + record.snd());
                         getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
 
                     }
@@ -250,14 +289,14 @@ public class PA {
         ArrayList<NBN> nounBaseNodes = new ArrayList<>();
         ArrayList<TreeNode> nodes = hashSearch("noun", terms);
         for (TreeNode node : nodes){
-            nounBaseNodes.add(new NBN(node));
+            nounBaseNodes.add(new NBN(node)); //let's see how we're instantiating these NBNs
         }
         return nounBaseNodes;
     }
 
     public ArrayList<NBN> getNouns(String name, String filter) {
         if(rDBexists("noun"))
-            return nounHashSearch(name + "`" + filter);
+            return nounHashSearch(name + "`" + filter); //Hopefully this filter has ` in them.
         return null;
     }
 

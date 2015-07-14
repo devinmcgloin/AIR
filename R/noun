@@ -1,77 +1,4 @@
-Childnode
-^logicalChild
-audi
-    ^adj
-    ^has
-        engine
-        exhaust
-        spoiler
-    ^is
-        car
-    ^logicalchild
-    ^v1
-    ^v2
-bmw
-    ^adj
-        fast
-    ^has
-        brakes
-        doors
-        engine
-        exhaust
-        spoiler
-        suspension
-        wheels
-    ^is
-        car
-    ^logicalchild
-    ^v1
-    ^v2
-car
-    ^adj
-    ^has
-        brakes
-        color
-        doors
-        engine
-        exhaust
-        hood
-        seats
-        speakers
-        speed
-        spoiler
-        suspension
-        wheels
-    ^is
-    ^logicalchild
-        audi
-        bmw
-        ferrari
-        honda
-        subaru
-    ^v1
-    ^v2
-city
-    ^has
-        doctors office
-        fire dept
-        location
-        mayor
-        police station
-        population
-        post office
-        residents
-    ^logicalchild
-        london
-        los angeles
-        new york
-        redlands
-        san diego
-        san franscisco
-        town
-        washington dc
 ferrari
-    Speed
     ^adj
     ^has
         brakes
@@ -88,7 +15,6 @@ ferrari
         wheels
     ^is
         car
-    ^logicalchild
+    ^logicalChild
     ^v1
     ^v2
-    fast

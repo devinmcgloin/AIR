@@ -253,6 +253,8 @@ public class GeneralTree {
     protected TreeNode getNodeByAddress(String address) {
 
 
+
+
         //TODO: Make sure you have the right directory and GenTree has files right.
         address = address.trim();
         String[] tmpS = address.split("/");
@@ -474,6 +476,7 @@ public class GeneralTree {
      */
     protected TreeNode getNode(String address) {
 
+
         String[] nodeNames = address.split("/");
         //(genTree will need to split up the address on "/", go to root, and then as long as the
         //childTraverse function returns true, it should childTraverse the next name in the list.
@@ -493,6 +496,7 @@ public class GeneralTree {
             boolean foundNextNode = childTraverse(nodeNames[i]);
 
            // System.out.println("Entereed");
+            //System.out.println(foundNextNode + ":  "  +nodeNames[i]);
 
             //Deletes from Hashmap if it couldn't find the node name.
             String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
@@ -505,6 +509,8 @@ public class GeneralTree {
                 return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.
             }
         }
+
+
         return current;
     }
 

@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
         PA pa = new PA();
-
-        pa.test();
+        pa.blaze();
+        //pa.test();
 
     }
 

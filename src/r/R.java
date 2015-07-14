@@ -46,8 +46,12 @@ public class R {
     }
 
     public void add(String nodeName, String rAddress){
+        //System.out.println( "oh shit  " + rAddress);
+
+
+
         current = get(rAddress);
-        //System.out.println("did that work: "+current.getAddress());
+        System.out.println("did that work: "+current.getAddress());
         genTree.addNode(nodeName);
 
     }

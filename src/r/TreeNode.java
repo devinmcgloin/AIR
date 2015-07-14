@@ -172,6 +172,8 @@ public class TreeNode implements Comparable<TreeNode> {
         childNode.parent = this;
         childNode.updateAddress();
 
+
+
         this.children.add(childNode);
 
     }
@@ -191,14 +193,7 @@ public class TreeNode implements Comparable<TreeNode> {
             return parent.getLevel() + 1;
     }
 
-//    /**
-//     * @param node
-//     */
-//    private void registerChildForSearch(TreeNode node) {
-//        elementsIndex.add(node);
-//        if (parent != null)
-//            parent.registerChildForSearch(node); //TODO: Why do this?
-//    }
+
 
     @Override
     public java.lang.String toString() {
@@ -215,50 +210,14 @@ public class TreeNode implements Comparable<TreeNode> {
 
         int index = binarySearch(specifiedChild);
 
-        if(index < 0)
+        if (index < 0)
             return null;
 
         return children.get(index);
-
-//        TreeNode tmp = getContains(specifiedChild);
-//
-//        for (TreeNode child : children) {
-//            if (child.equals(tmp)) {
-//                return child;
-//            }
-//
-//        }
-//        return null;
     }
 
-//    /**
-//     *
-//     * Checks if current node contains specified node inside children.
-//     *
-//     * @param node
-//     * @return TreeNode<String>
-//     */
-//    private TreeNode getContains(String node) {
-//        for (TreeNode child : children) {
-//            if (shallowEquals(child, node)) {
-//                return child;
-//            }
-//        }
-//        return null;
-//    }
 
-    /**
-     * equals compares title only, and ignores all other attributes.
-     *
-     * @param nodeA
-     * @param nodeB
-     * @return
-     */
-    public boolean shallowEquals(TreeNode nodeA, String nodeB) {
-        Boolean result = nodeA.title.equals(nodeB);
-//		System.out.println("shallowEquals Result: " + result);
-        return result;
-    }
+
 
     /**
      * TODO: rewrite using hash
@@ -366,6 +325,7 @@ public class TreeNode implements Comparable<TreeNode> {
 //    protected void setParent(TreeNode parent) {
 //        this.parent = parent;
 //    }
+
 
 
 }
