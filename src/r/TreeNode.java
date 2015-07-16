@@ -179,10 +179,10 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     //This didn't help. It's definitely an addressing issue though. And it has to do with cloning. A deep clone would be so much safer. And even faster depending on how it's being used.
-//    public void addChildBlindWithNoAddressUpdate(TreeNode childNode){
-//        childNode.parent = this;
-//        this.children.add(childNode);
-//    }
+    public void addChildBlindWithNoAddressUpdate(TreeNode childNode){
+        childNode.parent = this;
+        this.children.add(childNode);
+    }
 
 
     public void insertChild(TreeNode childNode, int index){
@@ -191,8 +191,11 @@ public class TreeNode implements Comparable<TreeNode> {
 
         this.children.add(index, childNode);
     }
+    public void insertChildNoAddressUpdate(TreeNode childNode, int index){
+        childNode.parent = this;
 
-
+        this.children.add(index, childNode);
+    }
     public int getLevel() {
         if (this.isRoot())
             return 0;

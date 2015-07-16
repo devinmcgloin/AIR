@@ -12,11 +12,14 @@ public final class NBN {
     private final TreeNode TN;
     private final ArrayList<Tuple> record;
 
+
     public NBN(TreeNode TN) {
-        this.TN = TN;
+        //Do a full copy on instantiation.
+        this.TN = fullCopyNode(TN);
         this.record = new ArrayList<>();
     }
 
+    //Used in adding more shit it needs to change.
     public NBN(TreeNode TN, ArrayList<Tuple> record){
         this.TN = TN;
         this.record = record;
@@ -62,7 +65,8 @@ public final class NBN {
      */
     public NBN add(String Key, String Val) {
 
-        TreeNode newNode = copyNode(TN);
+        //First and foremost, we need a new root:
+        TreeNode newNode = copyRoot(TN);
 
         add(newNode, Key, Val);
 
@@ -75,7 +79,7 @@ public final class NBN {
      * @return
      */
     public NBN rm(String Key) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = copyRoot(TN);
         removeChild(newNode, Key);
         return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("rm", Key)));
 
@@ -88,7 +92,7 @@ public final class NBN {
      * @return
      */
     public NBN rm(String Key, String Val) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = copyRoot(TN);
         rm(newNode, Key, Val);
 
         return new NBN(newNode, copyRecordAddContent(record, new Tuple("rm", Key, Val)));
@@ -104,7 +108,7 @@ public final class NBN {
      */
 
     public NBN update(String key, String oldVal, String newVal) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = fullCopyNode(TN);
 
         update(newNode, key, oldVal, newVal);
 
@@ -120,7 +124,7 @@ public final class NBN {
      * @return
      */
     public NBN batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = fullCopyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
@@ -136,7 +140,7 @@ public final class NBN {
      * @return
      */
     public NBN batchRM(ArrayList<String> keys) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = fullCopyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (String key : keys) {
@@ -153,7 +157,7 @@ public final class NBN {
      * @return
      */
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = fullCopyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (int i = 0; i < keys.size(); i++) {
@@ -173,7 +177,7 @@ public final class NBN {
      * @return
      */
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
-        TreeNode newNode = copyNode(TN);
+        TreeNode newNode = fullCopyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (int i = 0; i < keys.size(); i++) {
@@ -184,48 +188,91 @@ public final class NBN {
 
     }
 
-    /*
-     * Copying nodes isnt as bad as I was thinking. You basically make a full copy of the root, and copy references to the keys while its in treenode form, you can then remove or add values. Removal works as you're only removing the reference from this new root, not the old one. Changes still have to be copied over into new nodes. The penaltity for small changes is minimal.
-     * CopyNode only works on one individual node. You first do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to get called on a alot of levels.
-     */
-
-    /**
-     * NOTE: Does not copy parent references. Any copies have to be reattached to the baseNode.
-     * @param oldNode - node to be copied.
-     * @return a copy of the node passed in with the same child references
-     */
-    private TreeNode copyNode(TreeNode oldNode) {
-        //old code:
+//    /*
+//     * Copying nodes isnt as bad as I was thinking. You basically make a full copy of the root, and copy references to the keys while its in treenode form, you can then remove or add values. Removal works as you're only removing the reference from this new root, not the old one. Changes still have to be copied over into new nodes. The penaltity for small changes is minimal.
+//     * CopyNode only works on one individual node. You first do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to get called on a alot of levels.
+//     */
+//
+//    /**
+//     * NOTE: Does not copy parent references. Any copies have to be reattached to the baseNode.
+//     * @param oldNode - node to be copied.
+//     * @return a copy of the node passed in with the same child references
+//     */
+//    private TreeNode copyNode(TreeNode oldNode) {
+//        //old code:
+////        TreeNode newNode = new TreeNode(oldNode.getTitle());
+////        newNode.setAddress(oldNode.getAddress());
+////        for (TreeNode child : oldNode.getChildren()) {
+////            newNode.addChildBlindWithNoAddressUpdate(child);   //Hm. THis was never intended for adding entire branches. Yeah, so the address here is what's actually getting fucked.
+////            //There are two possible solutions. One is to add a method in Tree node: addChildBlindWithNoAddressUpdate(child)
+////            //But since I REEAAAAAALLLLLLLLLYYYYYYY don't want to go all the way down and fuck around with having LITERAL references to the DB in here and thinking thru all that logic,
+////            //I would MUCH much MUCH rather do a full copy of the node as soon as you get it.
+////            //Actually i just tried that too, still no dice. Seriously. Devin, you're right, we shouldn't mess with the actual DB, cause then you get these logical errors that no one wants
+////            //to fucking trace from A-Z. And it's not any line you can point to so it makes debugging harder since it's usually a few functions working together. I'm going to do a deep copy.
+////            //Then, there should be no reason to copy again and again and again in here, it also allows us to think in a term of a cache system later.
+////        }
+////        return newNode;
+//
 //        TreeNode newNode = new TreeNode(oldNode.getTitle());
+//
+//        //Recursively copy the whole branch
 //        newNode.setAddress(oldNode.getAddress());
 //        for (TreeNode child : oldNode.getChildren()) {
-//            newNode.addChildBlindWithNoAddressUpdate(child);   //Hm. THis was never intended for adding entire branches. Yeah, so the address here is what's actually getting fucked.
-//            //There are two possible solutions. One is to add a method in Tree node: addChildBlindWithNoAddressUpdate(child)
-//            //But since I REEAAAAAALLLLLLLLLYYYYYYY don't want to go all the way down and fuck around with having LITERAL references to the DB in here and thinking thru all that logic,
-//            //I would MUCH much MUCH rather do a full copy of the node as soon as you get it.
-//            //Actually i just tried that too, still no dice. Seriously. Devin, you're right, we shouldn't mess with the actual DB, cause then you get these logical errors that no one wants
-//            //to fucking trace from A-Z. And it's not any line you can point to so it makes debugging harder since it's usually a few functions working together. I'm going to do a deep copy.
-//            //Then, there should be no reason to copy again and again and again in here, it also allows us to think in a term of a cache system later.
+//            TreeNode tmp = new TreeNode(child.getTitle());
+////            tmp.setAddress(child.getAddress()); //No need to set this address. Check out how add child blind works
+//            newNode.addChildBlind(tmp);
 //        }
 //        return newNode;
+//
+//    }
 
+    private TreeNode copyRoot(TreeNode oldNode){
         TreeNode newNode = new TreeNode(oldNode.getTitle());
+        newNode.setAddress(oldNode.getAddress());
+        //Add copy to children.
+        for (TreeNode child : oldNode.getChildren()) {
+
+            //No need to set this address. Look into addChildBlind.
+            newNode.addChildBlindWithNoAddressUpdate(child);
+        }
+        return newNode;
+    }
+
+
+    private TreeNode fullCopyNode(TreeNode oldNode){
+        //First, copy the root of the BN
+        TreeNode newNode = new TreeNode(oldNode.getTitle());
+        newNode.setAddress(oldNode.getAddress());
 
         //Recursively copy the whole branch
-        newNode.setAddress(oldNode.getAddress());
         for (TreeNode child : oldNode.getChildren()) {
-            TreeNode tmp = new TreeNode(child.getTitle());
-//            tmp.setAddress(child.getAddress()); //No need to set this address. Check out how add child blind works
-            newNode.addChildBlind(tmp);
+
+            //Copy that child recursively so we can reach the bottom of the tree.
+            TreeNode tmp = fullRecCopy(child);
+
+            //No need to set this address. Look into addChildBlind.
+            newNode.addChildBlindWithNoAddressUpdate(tmp);
         }
         return newNode;
 
     }
 
-//    private TreeNode copyTheRestToo(TreeNode old){
-//
-//        return
-//    }
+    private TreeNode fullRecCopy(TreeNode oldNode){
+        TreeNode newNode = new TreeNode(oldNode.getTitle());
+        newNode.setAddress(oldNode.getAddress());
+
+        //Recursively copy the whole branch
+        for (TreeNode child : oldNode.getChildren()) {
+
+            //Copy that child recursively so we can reach the bottom of the tree.
+            TreeNode tmp = fullRecCopy(child);
+
+            //No need to set this address. Look into addChildBlind.
+            newNode.addChildBlindWithNoAddressUpdate(tmp);
+        }
+
+        return newNode;
+    }
 
 
     /**
@@ -251,7 +298,7 @@ public final class NBN {
      * @param node - node to remove the child from
      * @param child - string to indicate which child.
      */
-    private void removeChild(TreeNode node, String child) { //Fine since it operates on the BN. Should check that.
+    private void removeChild(TreeNode node, String child) { //Removes the child from the copied node.
         node.removeChild(node.getChild(child));
     }
 
@@ -262,20 +309,17 @@ public final class NBN {
      * @param Val - value to add to the key. Added to key before key joins new Node
      */
     private void add(TreeNode newNode, String Key, String Val) {
+        //Root (newNode) is a copy. The any other changes must be copied up to the root.
         TreeNode key = newNode.getChild(Key);
         if (key == null) {
             //Create a new treeNode for the key, which obviously doesn't exist.
             key = new TreeNode(Key);
-//              //Earlier code added the value first to the key. This would fuck up naming convention since we look at the parent's address.
-            //So old code means that first we add a value to the key (making the value's address: "Key/Value" aka "^logicalChild/childNode" which GenTree would automatically change to "R/^logicalChild/childNode"
-            //since it was built to prevent something like, oh i don't know, trying to create a new root. Which is what this code below is doing.
-//            insertNode(key, new TreeNode(Val)); //Let me think this thru...no yeah, this doesn't work, might be behind Speed and ^logicalChild and ^name showing up as databases. Yup. I was right.
-//            insertNode(newNode, key);
-            insertNode(newNode, key);
-            insertNode(key, new TreeNode(Val));
+            insertNode(newNode, key); //UPDATES THE NAME.
+            insertNode(key, new TreeNode(Val)); //UPDATES THE NAME. (which is okay since both didn't exist).
 
         } else {
-            removeChild(newNode, Key); //....why are you removing it before adding it? Oh. Was it cause you were only copying the root? That must be it. It's overkill but i'll keep it.
+            //Remove the old Key Node (child) since it exists.
+            removeChild(newNode, Key); //Removes "key" from newNode, eliminating that whole branch.
             insertNode(newNode, key);
             insertNode(key, new TreeNode(Val));
         }
@@ -288,7 +332,7 @@ public final class NBN {
      * @param Val - values to remove from the key node.
      */
     private void rm(TreeNode newNode, String Key, String Val) {
-        TreeNode keyNode = copyNode(newNode.getChild(Key));     //this whole copying (withblindchild) might be what's fucking up the db
+        TreeNode keyNode = fullCopyNode(newNode.getChild(Key));
         removeChild(newNode, Key);  //what?
         removeChild(keyNode, Val);  //??
         insertNode(newNode, keyNode);   //???
@@ -302,7 +346,7 @@ public final class NBN {
      * @param newVal -  values to replace old values.
      */
     private void update(TreeNode newNode, String key, String oldVal, String newVal) {
-        TreeNode child = copyNode(newNode.getChild(key));
+        TreeNode child = fullCopyNode(newNode.getChild(key));
 
         if (child != null) {
             removeChild(newNode, key);
