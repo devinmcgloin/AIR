@@ -118,6 +118,16 @@ public class PA {
                 toAddVals.add("expensive");
                 node2 = node2.batchAdd(toAddKeys, toAddVals);
 
+
+                ArrayList<String> toRMKeys = new ArrayList<>();
+                ArrayList<String> toRMValues = new ArrayList<>();
+                toRMValues.add("expensive");
+                toRMKeys.add("cost");
+                toRMKeys.add("^logicalChild");
+                toRMValues.add("Childnode");
+                node2 = node2.batchRM(toRMKeys, toRMValues);
+
+
                 System.out.println("Node 1:");
                 for(NBN.Tuple add : node.getRecord()){
                     System.out.println(add.toString());
@@ -173,7 +183,6 @@ public class PA {
             if(record.fst().equals("add")){
                 if(rDBexists("noun")){
 
-                    System.out.println("\n\n\n\n");
 
                     getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
                     getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd() );
@@ -200,11 +209,9 @@ public class PA {
 
                     }else{
 
-                        System.out.println("hm2");
 
 
-                        //FUCK this is where we were getting the original ^name and now Speed db issue.
-                        System.out.println("R/noun/" + node.getTitle() + "/" + record.snd());
+                        //System.out.println("R/noun/" + node.getTitle() + "/" + record.snd());
                         getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
 
                     }

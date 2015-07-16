@@ -66,7 +66,7 @@ public final class NBN {
     public NBN add(String Key, String Val) {
 
         //First and foremost, we need a new root:
-        TreeNode newNode = copyRoot(TN);
+        TreeNode newNode = copyNode(TN);
 
         add(newNode, Key, Val);
 
@@ -79,7 +79,7 @@ public final class NBN {
      * @return
      */
     public NBN rm(String Key) {
-        TreeNode newNode = copyRoot(TN);
+        TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
         return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("rm", Key)));
 
@@ -92,7 +92,7 @@ public final class NBN {
      * @return
      */
     public NBN rm(String Key, String Val) {
-        TreeNode newNode = copyRoot(TN);
+        TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
 
         return new NBN(newNode, copyRecordAddContent(record, new Tuple("rm", Key, Val)));
@@ -108,7 +108,7 @@ public final class NBN {
      */
 
     public NBN update(String key, String oldVal, String newVal) {
-        TreeNode newNode = fullCopyNode(TN);
+        TreeNode newNode = copyNode(TN);
 
         update(newNode, key, oldVal, newVal);
 
@@ -124,7 +124,7 @@ public final class NBN {
      * @return
      */
     public NBN batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
-        TreeNode newNode = fullCopyNode(TN);
+        TreeNode newNode = copyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
@@ -140,7 +140,7 @@ public final class NBN {
      * @return
      */
     public NBN batchRM(ArrayList<String> keys) {
-        TreeNode newNode = fullCopyNode(TN);
+        TreeNode newNode = copyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (String key : keys) {
@@ -157,7 +157,7 @@ public final class NBN {
      * @return
      */
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals) {
-        TreeNode newNode = fullCopyNode(TN);
+        TreeNode newNode = copyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (int i = 0; i < keys.size(); i++) {
@@ -177,7 +177,7 @@ public final class NBN {
      * @return
      */
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
-        TreeNode newNode = fullCopyNode(TN);
+        TreeNode newNode = copyNode(TN);
         ArrayList<Tuple> additions = new ArrayList<Tuple>();
 
         for (int i = 0; i < keys.size(); i++) {
@@ -226,7 +226,7 @@ public final class NBN {
 //
 //    }
 
-    private TreeNode copyRoot(TreeNode oldNode){
+    private TreeNode copyNode(TreeNode oldNode){
         TreeNode newNode = new TreeNode(oldNode.getTitle());
         newNode.setAddress(oldNode.getAddress());
         //Add copy to children.
@@ -326,16 +326,17 @@ public final class NBN {
     }
 
     /**
+     * Removes VALUE
      * Sinful state function.
      * @param newNode - Node to remove from
      * @param Key - Does not remove the key, but only the value that the key takes on. Keys can be removed using the public method rm.
      * @param Val - values to remove from the key node.
      */
     private void rm(TreeNode newNode, String Key, String Val) {
-        TreeNode keyNode = fullCopyNode(newNode.getChild(Key));
-        removeChild(newNode, Key);  //what?
-        removeChild(keyNode, Val);  //??
-        insertNode(newNode, keyNode);   //???
+        TreeNode keyNode = copyNode(newNode.getChild(Key)); //Make a copy of the new keynode (whose value will be removed)
+        removeChild(newNode, Key);  //remove the old keyNode from the new Node
+        removeChild(keyNode, Val);  //remove the old value from the new keynode
+        insertNode(newNode, keyNode);   //give the new node root the new keynode
     }
 
     /**
@@ -346,7 +347,7 @@ public final class NBN {
      * @param newVal -  values to replace old values.
      */
     private void update(TreeNode newNode, String key, String oldVal, String newVal) {
-        TreeNode child = fullCopyNode(newNode.getChild(key));
+        TreeNode child = copyNode(newNode.getChild(key));   //copy of the key child
 
         if (child != null) {
             removeChild(newNode, key);
@@ -362,7 +363,7 @@ public final class NBN {
     }
 
     private ArrayList<Tuple> copyRecordAddContent(ArrayList<Tuple> record, Tuple addition){
-        ArrayList<Tuple> newRecord = new ArrayList<Tuple>();
+        ArrayList<Tuple> newRecord = new ArrayList<Tuple>(); //I don't think you actually have to do this. I'll think it through later.
         for(Tuple entry : record){
             newRecord.add(entry);
         }
@@ -370,6 +371,7 @@ public final class NBN {
         return newRecord;
     }
 
+    //Used in batch add?
     private ArrayList<Tuple> copyRecordAddContent(ArrayList<Tuple> record, ArrayList<Tuple> addition){
         ArrayList<Tuple> newRecord = new ArrayList<Tuple>();
         for(Tuple entry : record){

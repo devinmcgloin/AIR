@@ -88,15 +88,12 @@ ferrari
     ^is
         car
     ^logicalChild
-        Childnode
-    ^logicalchild
     ^name
         Automalia
         ferrari Autos
     ^v1
     ^v2
     cost
-        expensive
 honda
     ^adj
     ^has
