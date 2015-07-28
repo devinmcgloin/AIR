@@ -1,14 +1,19 @@
 #LDATA
-- evalidate(LDBN, Val) - Bool
+- validate(LDBN, Value) - Bool
 - evaluate(NBN, expression) - Bool
-- convert(Val, unitTo) - converted Val
+- convert(Value, unitTo) - converted Val
+###Expressions
+- Expressions are 4-tuples in which the type is first, operator second, number third and unit forth.
+###Values
+- Values are 2-tuples in which the value is first, and unit second.
 #Set Logic
 - filter(Arraylist<NBN> nodes, ArrayList<expression> expressions)
--
-#Nouns
+- getSetMembers(NBN)
+#Noun
 - add()
 - rm()
 - update()
+- get()
 #Reader
 - parse(String)
 #Inheritance
@@ -18,8 +23,9 @@
 #Comparison
 - getDiff(NBN, NBN) - Difference between two nodes
 - compareBy(metric, NBN-A, NBN-B) - int ordering
-- equals(NBN, NBN) - Bool
-- compare(NBN, NBN) - Proximity Metric
+- equals(NBN, NBN) - Bool [Not sure if needed]
+- compare(NBN, NBN) - Proximity Metric [Not sure if we're still doing this]
+- getDistribution(NBN, key)
 #PA
 - hashSearch()
 - put(NBN)
