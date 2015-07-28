@@ -18,7 +18,7 @@
 ###Values
 - Values are 2-tuples in which the value is first, and unit second.
 #Set Logic
-- filter(Arraylist<NBN> nodes, ArrayList<expression> expressions) -#EXPLAIN
+- filter(Arraylist<NBN> nodes, ArrayList<expression> expressions), this takes an arraylist of nodes as returned from a hashsearch and filters them based on the given expressions.
 - getSetMembers(NBN)
 - xISyP(NBN-A, NBN-B) - Bool true if A is a member of the B set
 - xINHERITy(NBN-A, NBN-B) - New NBN in which A has inherited from B.
