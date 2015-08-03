@@ -21,8 +21,8 @@
 #Set Logic
 
 - filter(Arraylist<NBN> nodes, ArrayList<expression> expressions), this takes an arraylist of nodes as returned from a hashsearch and filters them based on the given expressions.
-- getSetMembers(NBN), returns the nodes that are members of the NBN set.
-- getSets(NBN), returns the sets by name, that the NBN is a member of. In turn those set names can be used to generate the set of objects that are members of that set using getSetMembers.
+- getSetMembers(NBN), returns the nodes that are members of the NBN set. REQUIRES: access to PA to return the NBNs that the passed in node is a member of.
+- getSets(NBN), returns the sets by name, that the NBN is a member of. In turn those set names can be used to generate the set of objects that are members of that set using getSetMembers. REQUIRES: Access to PA in order to pull out nodes that are part of the set the NBN represents.
 - xISyP(NBN-A, NBN-B) - Bool true if A is a member of the B set
 - xINHERITy(NBN-A, NBN-B) - New NBN in which A has inherited from B.
 
@@ -46,7 +46,7 @@ Set logic methods can be called with two or more NBN (In which case the function
 - getName(NBN) - returns the most common name of the node (Ferrari)
 - getKeys(NBN)
 - get(NBN, Key)
-- search(NBN, key) - looks thru the given node, and the overflown nodes for the specified key. 
+- search(NBN, key) - looks thru the given node, and the overflown nodes for the specified key. REQUIRES: pa, in order to search thru overflown nodes and access their contents. Could structure it so that there is a PA function that sends takes a NBN, and returns that NBN, plus all the NBN's that are overflown from it. 
 
 #Reader
 
@@ -63,7 +63,7 @@ Set logic methods can be called with two or more NBN (In which case the function
 - stableSort(metric, ArrayList<NBN>) - sort that preserves order for objects with equal values.
 - sort(metric, ArrayList<NBN>) - sort that does not preserve the order
 - compare(NBN, NBN) - Proximity Metric [Not sure if we're still doing this]
-- getDistribution(NBN, key) - min, Q1, Mean, Q3, Max for quantitative info, spread for qualitative info.
+- getDistribution(ArrayList<NBN>, key) - min, Q1, Mean, Q3, Max for quantitative info, spread for qualitative info.
 
 #PA
 
