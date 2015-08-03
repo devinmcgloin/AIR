@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class Terminal {
 
-    pa.PA PA = new PA();
+    //pa.PA PA = new PA();
     TreeNode current;
 
 

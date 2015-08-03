@@ -10,9 +10,9 @@ import pa.PA;
 public class Main {
 
     public static void main(String[] args) {
-        PA pa = new PA();
+        //PA pa = new PA();
         //pa.blaze();
-        pa.test();
+        PA.blaze();
 
     }
 

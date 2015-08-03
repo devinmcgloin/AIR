@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 
 //External Methods of PA
-public class PA {
+public final class PA {
 
 
     /**
@@ -26,10 +26,13 @@ public class PA {
      * merging nodes --> tricky, idk how that function would look like
      */
 
-    protected File rFolder = new File("./R/");
-    protected ArrayList<R> rDB = new ArrayList<R>();
+    protected static File rFolder = new File("./R/");
+    protected static ArrayList<R> rDB = new ArrayList<R>();
+    private static boolean started = false;
 
-    public PA() {
+    private PA(){}
+
+    private static void startLibraries(){
         if (rFolder.length() >= 1) {
             for (File fileEntry : rFolder.listFiles()) {
                 if (fileEntry.isDirectory()) {
@@ -40,9 +43,29 @@ public class PA {
             }
         }
 
+        started = true;
     }
 
-    public void blaze(){
+//    public PA() {
+//        if (rFolder.length() >= 1) {
+//            for (File fileEntry : rFolder.listFiles()) {
+//                if (fileEntry.isDirectory()) {
+//
+//                } else {
+//                    rDB.add(new R(fileEntry.getName()));
+//                }
+//            }
+//        }
+//    }
+
+
+
+    public static void blaze(){
+
+        if(!started){
+            startLibraries();
+        }
+
         TreeNode k = getRb("noun").get("R/noun/ferrari/^logicalChild");
 
 
@@ -64,9 +87,17 @@ public class PA {
         System.out.println("Boop:  " + k.getChildrenString() );
 
 
+
+
     }
 
-    public void test(){
+
+
+    public static void test(){
+
+        if(!started){
+            startLibraries();
+        }
 
 
 
@@ -165,16 +196,20 @@ public class PA {
      * TODO implement log walker.
      * @param node
      */
-    public void put(NBN node){
+    public static void put(NBN node){
+
+        if(!started){
+            startLibraries();
+        }
 
 
 
         for(NBN.Tuple record : node.getRecord()){
 
-//            TreeNode k = getRb("noun").get("R/");
-//            for(String name: k.getChildrenString()){
-//                System.out.println("ROOT: "+name);
-//            }
+            TreeNode k = getRb("noun").get("R/");
+            for(String name: k.getChildrenString()){
+                System.out.println("ROOT: "+name);
+            }
 
 
 
@@ -235,7 +270,12 @@ public class PA {
 
     }
 
-    public R getRb(String db){
+    public static R getRb(String db){
+
+        if(!started){
+            startLibraries();
+        }
+
         for(R database : rDB){
             if(database.getName().equals(db))
                 return database;
@@ -243,7 +283,12 @@ public class PA {
         return null;
     }
 
-    public boolean rDBexists(String db){
+    public static boolean rDBexists(String db){
+
+        if(!started){
+            startLibraries();
+        }
+
         for(R database : rDB){
             if(database.getName().equals(db))
                 return true;
@@ -255,7 +300,12 @@ public class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public ArrayList<TreeNode> hashSearch(String db, String terms) {
+    public static ArrayList<TreeNode> hashSearch(String db, String terms) {
+
+        if(!started){
+            startLibraries();
+        }
+
         ArrayList<TreeNodeBase> baseNodes = getRb(db).rFullHashSearch(terms);
         ArrayList<TreeNode> treeNodeBase = new ArrayList<TreeNode>();
 
@@ -291,7 +341,12 @@ public class PA {
         return treeNodeBase;
     }
 
-    public ArrayList<NBN> nounHashSearch(String terms){
+    public static ArrayList<NBN> nounHashSearch(String terms){
+
+        if(!started){
+            startLibraries();
+        }
+
         ArrayList<NBN> nounBaseNodes = new ArrayList<>();
         ArrayList<TreeNode> nodes = hashSearch("noun", terms);
         for (TreeNode node : nodes){
@@ -300,13 +355,23 @@ public class PA {
         return nounBaseNodes;
     }
 
-    public ArrayList<NBN> getNouns(String name, String filter) {
+    public static ArrayList<NBN>  getNouns(String name, String filter) {
+
+        if(!started){
+            startLibraries();
+        }
+
         if(rDBexists("noun"))
             return nounHashSearch(name + "`" + filter); //Hopefully this filter has ` in them.
         return null;
     }
 
-    public void save() {
+    public static void save() {
+
+        if(!started){
+            startLibraries();
+        }
+
         for(R r : rDB)
             r.save();
     }
