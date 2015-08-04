@@ -66,30 +66,38 @@ public final class PA {
             startLibraries();
         }
 
-        TreeNode k = getRb("noun").get("R/noun/ferrari/^logicalChild");
+//        TreeNode k = getRb("noun").get("R/noun/ferrari/^logicalChild");
+//
+//
+//        for( NBN node : getNouns("ferrari", "car")) {
+//            if (node.getTitle().equals("ferrari")) {
+//
+//                //Earlier, adding the Key Value pair of logical child, child node was causing changes in the actual DB
+//                //This was fixed by cloning the first level of children as well as the root.
+//                node = node.add("^logicalChild", "Childnode");
+//                for (String entry : node.getKeys()) {
+//                    System.out.println("   " + entry);
+//                    System.out.println("       " + node.get(entry));
+//                }
+//
+//
+//            }
+//        }
+//        k = getRb("noun").get("R/noun/ferrari/");
+//        System.out.println("Boop:  " + k.getChildrenString() );
+
+        NBN x = getNoun("bmw");
+        NBN y = getNoun("car");
+        x = SetLogic.xINHERITy(x, y);
 
 
-        for( NBN node : getNouns("ferrari", "car")) {
-            if (node.getTitle().equals("ferrari")) {
+        System.out.println( x.get("^logicalParents") );
 
-                //Earlier, adding the Key Value pair of logical child, child node was causing changes in the actual DB
-                //This was fixed by cloning the first level of children as well as the root.
-                node = node.add("^logicalChild", "Childnode");
-                for (String entry : node.getKeys()) {
-                    System.out.println("   " + entry);
-                    System.out.println("       " + node.get(entry));
-                }
-
-
-            }
-        }
-        k = getRb("noun").get("R/noun/ferrari/");
-        System.out.println("Boop:  " + k.getChildrenString() );
-
-
-
+        put(x);
+        put(y);
 
     }
+
 
 
 
@@ -363,6 +371,20 @@ public final class PA {
 
         if(rDBexists("noun"))
             return nounHashSearch(name + "`" + filter); //Hopefully this filter has ` in them.
+        return null;
+    }
+
+    public static NBN getNoun(String title){
+        if(!started){
+            startLibraries();
+        }
+
+        //I mirrored the logic you used in your nounHashSearch method.
+        if(rDBexists("noun")){
+            TreeNode node = getRb("noun").get("R/noun/" + title);
+            NBN nounBase = new NBN(node);
+            return nounBase;
+        }
         return null;
     }
 

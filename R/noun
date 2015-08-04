@@ -41,9 +41,8 @@ car
         suspension
         wheels
     ^is
-    ^logicalchild
+    ^logicalChildren
         audi
-        bmw
         ferrari
         honda
         subaru

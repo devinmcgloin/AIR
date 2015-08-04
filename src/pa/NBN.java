@@ -57,6 +57,15 @@ public final class NBN {
      *
      */
 
+    public NBN add(String key){
+        //First and foremost, we need a new root:
+        TreeNode newNode = copyNode(TN);
+
+        add(newNode, key);
+
+        return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("add", key)));
+    }
+
     /**
      * See private add method for implementation.
      * @param Key
@@ -300,6 +309,23 @@ public final class NBN {
      */
     private void removeChild(TreeNode node, String child) { //Removes the child from the copied node.
         node.removeChild(node.getChild(child));
+    }
+
+    /**
+     * Sinful state function.
+     * @param newNode - node to be added to
+     * @param Key - key to add. Will work if key already exists or not.
+     */
+    private void add(TreeNode newNode, String Key){
+        //Root (newNode) is a copy. The any other changes must be copied up to the root.
+        TreeNode key = newNode.getChild(Key);
+        if (key == null) {
+            //Create a new treeNode for the key, which obviously doesn't exist.
+            key = new TreeNode(Key);
+            insertNode(newNode, key); //UPDATES THE NAME.
+        } else {
+            //We already have the key...so don't do anything.
+        }
     }
 
     /**
