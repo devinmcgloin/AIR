@@ -22,6 +22,9 @@ bmw
         wheels
     ^is
         car
+    ^logicalChildren
+    ^logicalParents
+        car
     ^logicalchild
     ^v1
     ^v2
@@ -43,6 +46,7 @@ car
     ^is
     ^logicalChildren
         audi
+        bmw
         ferrari
         honda
         subaru

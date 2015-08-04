@@ -27,7 +27,7 @@ public final class PA {
      */
 
     protected static File rFolder = new File("./R/");
-    protected static ArrayList<R> rDB = new ArrayList<R>();
+    protected static ArrayList<R>  rDB = new ArrayList<R>();
     private static boolean started = false;
 
     private PA(){}
@@ -215,20 +215,27 @@ public final class PA {
         for(NBN.Tuple record : node.getRecord()){
 
             TreeNode k = getRb("noun").get("R/");
-            for(String name: k.getChildrenString()){
-                System.out.println("ROOT: "+name);
-            }
-
-
-
+//            for(String name: k.getChildrenString()){
+//                System.out.println("ROOT: "+name);
+//            }
 //            System.out.println(record);
 
             if(record.fst().equals("add")){
                 if(rDBexists("noun")){
 
+                    if(record.thrd().equals("[third null]") ){
 
-                    getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
-                    getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd() );
+                        //getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
+                        System.out.println("\n\nyup\n\n");
+                        getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
+
+
+                    }else{
+                        getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
+                        getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd() );
+
+                    }
+
 
 
                     //HOW R'S ADD WORKS:

@@ -13,6 +13,7 @@ public class Main {
         //PA pa = new PA();
         //pa.blaze();
         PA.blaze();
+        PA.save();
 
     }
 

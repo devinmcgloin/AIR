@@ -10,12 +10,12 @@ import java.util.ArrayList;
  * This gives us flexibility later down the line, and allows us to change this class to redirect to a different system for processing NBN. If we called functions on NBN then we would never be able to switch from an object based system, as there would be loads of legacy calls to NBN.
  * Here we can direct to any implementation of NBN ideas just be refactoring the types of whats being sent in rather than the calls and code syntax.
  */
-public final class Noun {
+public final class NOUN {
 
     /**
      * Don't let anyone instantiate this class.
      */
-    private Noun() {}
+    private NOUN() {}
 
     public static String getTitle(NBN node){
         return node.getTitle();
@@ -32,6 +32,8 @@ public final class Noun {
     public static ArrayList<String> get(NBN node, String key){
         return node.get(key);
     }
+
+    public static NBN add(NBN node, String key){ return node.add(key); }
 
     public static NBN add(NBN node, String key, String val ){
         return node.add(key, val);

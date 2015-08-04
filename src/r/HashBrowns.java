@@ -68,7 +68,7 @@ public class HashBrowns {
 
 
         //---------------------------OPTIMIZATION---------------------------------//
-        //The nodes we're personally interested in for R-Noun are the ones that 'exist'.
+        //The nodes we're personally interested in for R-NOUN are the ones that 'exist'.
         //In R's architecture they're the ones at the second dimension level. R/noun/TERM
 
         //Create a set of each node reversed to BASE addresses.

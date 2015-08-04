@@ -109,7 +109,7 @@ public final class SetLogic {
             return false;
 
         //Get the logical children of the "parent" node
-        ArrayList<String> logicalChildren = Noun.get(y, "^logicalChildren");
+        ArrayList<String> logicalChildren = NOUN.get(y, "^logicalChildren");
 
         //If there are no logical children, clearly this is false.
         if(logicalChildren == null || logicalChildren.isEmpty()){
@@ -117,7 +117,7 @@ public final class SetLogic {
         }
 
         //If the title of the logical child is contained in the logicalChildren of the logical parent, everything is fine.
-        if( logicalChildren.contains( Noun.getTitle(x) ) ){
+        if( logicalChildren.contains( NOUN.getTitle(x) ) ){
             return true;
         }
 
@@ -135,17 +135,19 @@ public final class SetLogic {
     public static NBN xINHERITy(NBN x, NBN y){
 
         //SR-71 Blackbird   INHERITS        supersonic jet
-        x = Noun.add(x, "^logicalParents", Noun.getTitle(y));
+        x = NOUN.add(x, "^logicalParents", NOUN.getTitle(y));
 
         //supersonice jet   gets        SR-71 Blackbird     as a child
-        y = Noun.add(y, "^logicalChildren", Noun.getTitle(x));
+        y = NOUN.add(y, "^logicalChildren", NOUN.getTitle(x));
 
         //Additional logic:
         //Now the child gets all the keys from the parent, with the exception of the carrot headers. (Even though those should be fine...)
-        ArrayList<String> keys = Noun.getKeys(y);
+        ArrayList<String> keys = NOUN.getKeys(y);
         for(String key: keys){
-            x = Noun.add(x, key);
+            x = NOUN.add(x, key);
         }
+
+        PA.put(y);
 
         return x;
     }
