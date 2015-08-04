@@ -5,7 +5,7 @@ import r.TreeNode;
 import java.util.ArrayList;
 
 /**
- * This class is never to be used outside of the static NOUN class.
+ * This class is never to be used outside of the static Noun class.
  */
 public final class NBN {
 
