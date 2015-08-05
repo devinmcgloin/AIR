@@ -105,7 +105,7 @@ public final class SetLogic {
 
     public static boolean xISyP(NBN x, NBN y){
 
-        if(y == null || x ==null)
+        if(y == null || x == null)
             return false;
 
         //Get the logical children of the "parent" node

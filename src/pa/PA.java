@@ -315,7 +315,7 @@ public final class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public static ArrayList<TreeNode> hashSearch(String db, String terms) {
+    private static ArrayList<TreeNode> hashSearch(String db, String terms) {
 
         if(!started){
             startLibraries();
@@ -370,6 +370,20 @@ public final class PA {
         return nounBaseNodes;
     }
 
+    public static ArrayList<LDBN> ldataHashSearch(String terms){
+
+        if(!started){
+            startLibraries();
+        }
+
+        ArrayList<LDBN> ldataBaseNodes = new ArrayList<>();
+        ArrayList<TreeNode> nodes = hashSearch("ldata", terms);
+        for (TreeNode node : nodes){
+            ldataBaseNodes.add(new LDBN(node)); //let's see how we're instantiating these NBNs
+        }
+        return ldataBaseNodes;
+    }
+
     public static ArrayList<NBN>  getNouns(String name, String filter) {
 
         if(!started){
@@ -391,6 +405,20 @@ public final class PA {
             TreeNode node = getRb("noun").get("R/noun/" + title);
             NBN nounBase = new NBN(node);
             return nounBase;
+        }
+        return null;
+    }
+
+    public static LDBN getLDATA(String title){
+        if(!started){
+            startLibraries();
+        }
+
+        //I mirrored the logic you used in your nounHashSearch method.
+        if(rDBexists("ldata")){
+            TreeNode node = getRb("ldata").get("R/ldata/" + title);
+            LDBN ldataBase = new LDBN(node);
+            return ldataBase;
         }
         return null;
     }
