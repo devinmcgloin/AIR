@@ -93,7 +93,6 @@ public class LDBN {
                         expressions.add(new LDATA.Expression(terms[0],terms[1],terms[2], terms[3] ));
                     else
                         expressions.add(new LDATA.Expression(terms[0],terms[1],terms[2], "^n/a" ));
-
                 }
             }
             return expressions;

@@ -65,7 +65,7 @@ public final class LDATA {
      * @return
      */
     public static Value convert(Value initialValue, String unitTo){
-        LDBN type = PA.getLDATA(initialValue.getType());
+        LDBN type = PA.getLDATA(initialValue.getKey());
 
         String conversionFactors = getConversion(type, initialValue.getUnit(), unitTo);
         String[] conversionSteps = conversionFactors.split(" ");
@@ -77,11 +77,11 @@ public final class LDATA {
                 num = num * Double.valueOf(conversionSteps[i+1]);
         }
 
-        return new Value(initialValue.getType(), String.valueOf(num), unitTo);
+        return new Value(initialValue.getKey(), String.valueOf(num) + " " + unitTo);
     }
 
     public static LDBN getType(Value value){
-        return PA.getLDATA(value.getType());
+        return PA.getLDATA(value.getKey());
     }
 
     public static ArrayList<String> getUnits(LDBN type){
@@ -176,40 +176,5 @@ public final class LDATA {
         public String getUnit() {
             return unit;
         }
-    }
-
-    static class Value {
-        final String type;
-        final String value;
-        final String unit;
-
-        public Value(String type, String value, String unit) {
-
-            this.type = type;
-            this.value = value;
-            this.unit = unit;
-        }
-
-        @Override
-        public String toString() {
-            return "Value{" +
-                    "type='" + type + '\'' +
-                    ", value='" + value + '\'' +
-                    ", unit='" + unit + '\'' +
-                    '}';
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getUnit() {
-            return unit;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
     }
 }
