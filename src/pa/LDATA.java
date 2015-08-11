@@ -29,8 +29,9 @@ public final class LDATA {
                 if (!numValidate(expression, val))
                     return false;
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -40,7 +41,7 @@ public final class LDATA {
      *      Ans to Set (NBN)
      *      # of KEY
      *      Overflown Node (not an ans, at all) - search takes care of this case.
-     * Blank
+     *      Blank - Search should also never return a blank value.
      *
      * TODO: QA with #of parameters.
      * @param expression
@@ -49,15 +50,23 @@ public final class LDATA {
      */
     public static boolean validateP(Expression expression, NBN node){
         String value = Noun.search(node, expression.getType());
-        if(ldataP(value)){
-
-        }else()
-
+        if(value == null){
+            return false;
+        }else if(ldataP(value)){
+            return numValidate(expression, value);
+        }else if(Noun.nounP(value)){
+            return false;
+        }else if(isNumeric(value)){
+            return numValidate(expression, value);
+        }else{
+            return false;
+        }
     }
 
     /**
      *
      * TODO: Need to deal with infinity here
+     * TODO: Need to deal with no units here. EG counts
      * Deals with conversion for ordered types: Counts and measurements
      * Verifies that the val is acceptable given the expression.
      * @param expression
@@ -112,7 +121,7 @@ public final class LDATA {
 
     /**
      * Takes a type of ldata, but also a string of ldata values.
-     * TODO: Rewrite given the above.
+     * TODO: Rewrite to handle mutiple forms of ldata.
      * @param type
      * @return
      */
@@ -161,6 +170,13 @@ public final class LDATA {
 
     public static ArrayList<String> getUnits(LDBN type){
         return type.getUnits();
+    }
+
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
     }
 
     static class Expression {

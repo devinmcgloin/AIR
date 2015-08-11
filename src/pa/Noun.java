@@ -66,5 +66,15 @@ public final class Noun {
     public static NBN update(NBN node, ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals){
         return node.batchUpdate(keys, oldVals, newVals);
     }
+    public static boolean nounP(String value){
+        if(PA.getNoun(value) != null)
+            return true;
+        else
+            return false;
+    }
+
+    public static String search(NBN node, String key){
+
+    }
 
 }
