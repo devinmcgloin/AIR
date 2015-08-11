@@ -18,6 +18,7 @@ public class LDBN {
     }
 
     /**
+     * TODO Not sure if needed.
      * need to check this before you can just compare the way Im doing it now in LDATA.
      * @return
      */
@@ -32,6 +33,12 @@ public class LDBN {
         }
     }
 
+    /**
+     *
+     * @param unitFrom
+     * @param unitTo
+     * @return
+     */
     public String getConversion(String unitFrom, String unitTo){
         tmp = BN.getChild("^conversions");
 
@@ -47,6 +54,10 @@ public class LDBN {
         return "Nothing";
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<LDATA.Expression> getValRanges(){
         tmp = BN.getChild("^value_ranges");
         ArrayList<String> children = tmp.getChildrenString();
@@ -101,6 +112,10 @@ public class LDBN {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<String> getUnits(){
         return BN.getChild("^unit").getChildrenString();
     }

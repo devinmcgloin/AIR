@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/17/15.
+ * GENERAL NOTES
+ * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions.
+ * TODO not sure about how they would integrate into the expression system, and may just bypass it altogether.
  */
 public final class LDATA {
 
@@ -19,41 +22,57 @@ public final class LDATA {
      * @param val
      * @return
      */
-    public static boolean validateP(LDBN node, Value val){
+    public static boolean validateP(LDBN node, String val){
         ArrayList<Expression> ranges = getValRanges(node);
-        for(Expression expression : ranges){
-            if(!validateP(expression, val))
-                return false;
+        if(getComp(node).equals("count") || getComp(node).equals("measurement")) {
+            for (Expression expression : ranges) {
+                if (!numValidate(expression, val))
+                    return false;
+            }
         }
         return true;
     }
 
     /**
      * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the NBN.
-     * TODO:implement after NBN can return a value expression
+     * K:V pair values can be either a:
+     *      LData Value
+     *      Ans to Set (NBN)
+     *      # of KEY
+     *      Overflown Node (not an ans, at all) - search takes care of this case.
+     * Blank
+     *
+     * TODO: QA with #of parameters.
      * @param expression
      * @param node
      * @return
      */
     public static boolean validateP(Expression expression, NBN node){
+        String value = Noun.search(node, expression.getType());
+        if(ldataP(value)){
+
+        }else()
 
     }
 
     /**
      *
      * TODO: Need to deal with infinity here
+     * Deals with conversion for ordered types: Counts and measurements
+     * Verifies that the val is acceptable given the expression.
      * @param expression
      * @param val
      * @return
      */
-    public static boolean validateP(Expression expression, Value val){
-        if(expression.getUnit().equals(val.getUnit())){
+    private static boolean numValidate(Expression expression, String val){
+        String [] terms = val.trim().split(" ");
+        if(expression.getUnit().equals(terms[1])){
             //no conversion needed
-            return comp(val.getValue(), expression.getOperator(), expression.getValue());
+            return comp(terms[1], expression.getOperator(), expression.getValue());
         }else {
             //conversion has to happen
-            Value convertedVal = convert(val, expression.getUnit());
-            return comp(convertedVal.getValue(), expression.getOperator(), expression.getValue());
+            String convertedVal = convert(val, expression.getUnit());
+            return comp(convertedVal.split(" ")[1], expression.getOperator(), expression.getValue());
         }
     }
 
@@ -64,40 +83,41 @@ public final class LDATA {
      * @param unitTo
      * @return
      */
-    public static Value convert(Value initialValue, String unitTo){
-        LDBN type = PA.getLDATA(initialValue.getKey());
+    public static String convert(String initialValue, String unitTo){
+        String [] terms = initialValue.trim().split(" ");
+        LDBN type = getType(terms[1]);
 
-        String conversionFactors = getConversion(type, initialValue.getUnit(), unitTo);
+        String conversionFactors = getConversion(type, terms[1], unitTo);
         String[] conversionSteps = conversionFactors.split(" ");
 
-        double num = Double.valueOf(initialValue.getValue().trim());
+        double num = Double.valueOf(terms[0].trim());
 
         for(int i = 0; i < conversionSteps.length; i += 2){
             if(conversionSteps[i].equals("*"))
                 num = num * Double.valueOf(conversionSteps[i+1]);
         }
 
-        return new Value(initialValue.getKey(), String.valueOf(num) + " " + unitTo);
-    }
-
-    public static LDBN getType(Value value){
-        return PA.getLDATA(value.getKey());
-    }
-
-    public static ArrayList<String> getUnits(LDBN type){
-        return type.getUnits();
+        return String.valueOf(num) + " " + unitTo;
     }
 
     /**
-     *
+     * Takes the unit and returns the ldata node associated with it
+     * TODO QA calling get on the returned values without checking. Alternative is using get units on returned ldbns
+     * @param value
+     * @return
+     */
+    public static LDBN getType(String value) {
+        return PA.ldataHashSearch(value.split(" ")[1]).get(0);
+    }
+
+    /**
+     * Takes a type of ldata, but also a string of ldata values.
+     * TODO: Rewrite given the above.
      * @param type
      * @return
      */
     public static boolean ldataP(String type){
-        if(PA.getLDATA(type) != null)
-            return true;
-        else
-            return false;
+        return PA.getLDATA(type) != null;
     }
 
     /**
@@ -134,8 +154,13 @@ public final class LDATA {
     public static ArrayList<LDATA.Expression> getValRanges(LDBN type){
         return type.getValRanges();
     }
+
     public static String getComp(LDBN type){
         return type.getComp();
+    }
+
+    public static ArrayList<String> getUnits(LDBN type){
+        return type.getUnits();
     }
 
     static class Expression {
