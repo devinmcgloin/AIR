@@ -54,7 +54,7 @@ public final class LDATA {
         }else if(ldataP(value)){
             return numValidateP(expression, value);
         }else if(Noun.nounP(value)){
-            return false;
+            return numValidateP(expression, value);
         }else if(isNumeric(value)){
             return numValidateP(expression, value);
         }else{
@@ -64,17 +64,27 @@ public final class LDATA {
 
     /**
      *
-     * TODO: Need to deal with infinity here
-     * TODO: Need to deal with no units here. EG counts
+     *
+     *
      * Deals with conversion for ordered types: Counts and measurements
      * Verifies that the val is acceptable given the expression.
      * @param expression
-     * @param val
+     * @param val - value is in this case a key. [value units]
      * @return
      */
     private static boolean numValidateP(Expression expression, String val){
         String [] terms = val.trim().split(" ");
-        if(expression.getUnit().equals(terms[1])){
+        if(expression.getUnit().equals("count") && terms.length == 1){
+            return comp(terms[1], expression.getOperator(), expression.getValue());
+        }else if(expression.getValue().equals("inf")){
+            if(expression.getOperator().equals(">")){
+                return false;
+            }else if(expression.getOperator().contains("=") && terms[0].equals("inf")) {
+                return true;
+            }else{
+                return false;
+            }
+        }else if(expression.getUnit().equals(terms[1])){
             //no conversion needed
             return comp(terms[1], expression.getOperator(), expression.getValue());
         }else {
@@ -125,7 +135,13 @@ public final class LDATA {
      * @return
      */
     public static boolean ldataP(String type){
-        return PA.getLDATA(type) != null;
+        if(PA.getLDATA(type) != null){
+            return true;
+        }else if(getType(type.split(" ")[1]) != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -187,6 +203,9 @@ public final class LDATA {
         return true;
     }
 
+    /**
+     * When comparing by count make sure to specify that the unit is count.
+     */
     static class Expression {
         final String type;
         final String operator;

@@ -72,7 +72,7 @@ public class LDBN {
                 String[] terms = range.trim().split(" ");
                 // [ 12 - 324 ft ]
                 if(range.startsWith("[") || range.startsWith("(")) {
-                    if(terms.length == 5) {
+                    if(terms.length == 6) {
                         //Opening paren
                         if (terms[0].equals("(")) {
                             expressions.add(new LDATA.Expression(BN.getTitle(), ">", terms[1], terms[4]));
@@ -82,28 +82,28 @@ public class LDBN {
                         //closing paren
                         if (terms[5].equals(")")) {
                             expressions.add(new LDATA.Expression(BN.getTitle(), "<", terms[3], terms[4]));
-                        } else if (terms[4].equals("]")) {
+                        } else if (terms[5].equals("]")) {
                             expressions.add(new LDATA.Expression(BN.getTitle(), "<=", terms[3], terms[4]));
                         }
                     }else{
                         //Opening paren
                         if (terms[0].equals("(")) {
-                            expressions.add(new LDATA.Expression(BN.getTitle(), ">", terms[1], "^n/a"));
+                            expressions.add(new LDATA.Expression(BN.getTitle(), ">", terms[1], "count"));
                         } else if (terms[0].equals("[")) {
-                            expressions.add(new LDATA.Expression(BN.getTitle(), ">=", terms[1], "^n/a"));
+                            expressions.add(new LDATA.Expression(BN.getTitle(), ">=", terms[1], "count"));
                         }
                         //closing paren
                         if (terms[5].equals(")")) {
-                            expressions.add(new LDATA.Expression(BN.getTitle(), "<", terms[3], "^n/a"));
-                        } else if (terms[4].equals("]")) {
-                            expressions.add(new LDATA.Expression(BN.getTitle(), "<=", terms[3], "^n/a"));
+                            expressions.add(new LDATA.Expression(BN.getTitle(), "<", terms[3], "count"));
+                        } else if (terms[5].equals("]")) {
+                            expressions.add(new LDATA.Expression(BN.getTitle(), "<=", terms[3], "count"));
                         }
                     }
                 }else{
-                    if(terms.length == 4)
+                    if(terms.length == 5)
                         expressions.add(new LDATA.Expression(terms[0],terms[1],terms[2], terms[3] ));
                     else
-                        expressions.add(new LDATA.Expression(terms[0],terms[1],terms[2], "^n/a" ));
+                        expressions.add(new LDATA.Expression(terms[0],terms[1],terms[2], "count" ));
                 }
             }
             return expressions;

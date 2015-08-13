@@ -107,97 +107,11 @@ public final class PA {
             startLibraries();
         }
 
-
-
-        for( NBN node : getNouns("ferrari", "car")){
-            if(node.getTitle().equals("ferrari")) {
-                System.out.println(node.getTitle());
-                for (String entry : node.getKeys()) {
-
-
-                    System.out.println("   " + entry);
-                    System.out.println("       " + node.get(entry));
-
-                }
-
-                System.out.println();
-
-
-
-
-
-                System.out.println(node.getTitle());
-                node = node.rm("^name");
-                node = node.add("^logicalChild", "Childnode");
-                for (String entry : node.getKeys()) {
-                    System.out.println("   " + entry);
-                    System.out.println("       " + node.get(entry));
-                }
-
-//                System.out.println();
-
-
-
-                System.out.println(node.getTitle());
-                node = node.add("^name", "ferrari Autos");
-                node = node.add("^name", "ferrari Autosss");
-                NBN node2 = node.update("^name", "ferrari Autosss", "Automalia");
-                for (String entry : node.getKeys()) {
-                    System.out.println("   " + entry);
-                    ArrayList<String> nodes = node.get(entry);
-                    System.out.println("       " + nodes);
-                }
-
-
-                ArrayList<String> toAddKeys = new ArrayList<>();
-                ArrayList<String> toAddVals = new ArrayList<>();
-                toAddKeys.add("Speed");
-                toAddVals.add("fast");
-                toAddKeys.add("cost");
-                toAddVals.add("expensive");
-                node2 = node2.batchAdd(toAddKeys, toAddVals);
-
-
-                ArrayList<String> toRMKeys = new ArrayList<>();
-                ArrayList<String> toRMValues = new ArrayList<>();
-                toRMValues.add("expensive");
-                toRMKeys.add("cost");
-                toRMKeys.add("^logicalChild");
-                toRMValues.add("Childnode");
-                node2 = node2.batchRM(toRMKeys, toRMValues);
-
-
-                System.out.println("Node 1:");
-                for(NBN.Tuple add : node.getRecord()){
-                    System.out.println(add.toString());
-                }
-
-
-
-                System.out.println("Node 2:");
-                for(NBN.Tuple add : node2.getRecord()){
-                    System.out.println(add.toString());
-                }
-
-
-
-
-
-
-
-
-
-                put(node2);
-
-
-
-                save();
-
-
-
-            }
-
+        for(NBN node : nounHashSearch("population`city")){
+            System.out.print(node.toString());
         }
+
+
     }
 
     /**
