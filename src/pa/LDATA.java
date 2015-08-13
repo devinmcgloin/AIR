@@ -5,8 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by devinmcgloin on 6/17/15.
  * GENERAL NOTES
- * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions.
- * TODO not sure about how they would integrate into the expression system, and may just bypass it altogether.
+ * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  */
 public final class LDATA {
 
@@ -26,7 +25,7 @@ public final class LDATA {
         ArrayList<Expression> ranges = getValRanges(node);
         if(getComp(node).equals("count") || getComp(node).equals("measurement")) {
             for (Expression expression : ranges) {
-                if (!numValidate(expression, val))
+                if (!numValidateP(expression, val))
                     return false;
             }
             return true;
@@ -53,11 +52,11 @@ public final class LDATA {
         if(value == null){
             return false;
         }else if(ldataP(value)){
-            return numValidate(expression, value);
+            return numValidateP(expression, value);
         }else if(Noun.nounP(value)){
             return false;
         }else if(isNumeric(value)){
-            return numValidate(expression, value);
+            return numValidateP(expression, value);
         }else{
             return false;
         }
@@ -73,7 +72,7 @@ public final class LDATA {
      * @param val
      * @return
      */
-    private static boolean numValidate(Expression expression, String val){
+    private static boolean numValidateP(Expression expression, String val){
         String [] terms = val.trim().split(" ");
         if(expression.getUnit().equals(terms[1])){
             //no conversion needed
@@ -121,7 +120,7 @@ public final class LDATA {
 
     /**
      * Takes a type of ldata, but also a string of ldata values.
-     * TODO: Rewrite to handle mutiple forms of ldata.
+     * TODO: Rewrite to handle multiple forms of ldata.
      * @param type
      * @return
      */
@@ -172,9 +171,18 @@ public final class LDATA {
         return type.getUnits();
     }
 
+    /**
+     * accounts for periods
+     * @param str
+     * @return
+     */
     public static boolean isNumeric(String str) {
         for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)) return false;
+            if (!Character.isDigit(c)){
+                if(c != '.'){
+                    return false;
+                }
+            }
         }
         return true;
     }
