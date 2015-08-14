@@ -33,6 +33,23 @@ public final class Noun {
         return node.get(key);
     }
 
+    public static boolean hasP(NBN node, String key){
+        if(node.get(key) != null )
+            return true;
+        else
+            return false;
+    }
+
+    public static boolean isP(NBN node, String key){
+        for(String entry : node.get("^is")){
+            if(entry.equals(key))
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
+
     public static NBN add(NBN node, String key){ return node.add(key); }
 
     public static NBN add(NBN node, String key, String val ){
@@ -74,7 +91,7 @@ public final class Noun {
     }
 
     public static String search(NBN node, String key){
-
+        return Noun.get(node, key).get(0);
     }
 
 }

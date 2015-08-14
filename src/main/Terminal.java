@@ -9,23 +9,8 @@ import java.util.ArrayList;
  * Created by devinmcgloin on 6/3/15.
  * Terminal is a command parser for the time being.
  */
-public class Terminal {
+public final class Terminal {
 
-    //pa.PA PA = new PA();
-    TreeNode current;
-
-
-    Terminal() {
-//        current = PA.getTreeNode("R/");
-    }
-
-    public String printChildren() {
-        ArrayList<String> children = current.getChildrenString();
-        String returnString = "";
-        for (String child : children)
-            returnString += child + "    ";
-        return returnString;
-    }
 
     public String getHelp() {
         return String.format(

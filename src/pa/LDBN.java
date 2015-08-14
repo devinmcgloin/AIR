@@ -8,10 +8,9 @@ import java.util.List;
 /**
  * Created by devinmcgloin on 6/17/15.
  */
-public class LDBN {
+public final class LDBN {
 
-    private TreeNode BN;
-    private TreeNode tmp;
+    private final TreeNode BN;
 
     public LDBN(TreeNode n){
         BN = n;
@@ -40,7 +39,7 @@ public class LDBN {
      * @return
      */
     public String getConversion(String unitFrom, String unitTo){
-        tmp = BN.getChild("^conversions");
+        TreeNode tmp = BN.getChild("^conversions");
 
         List<TreeNode> conversions = tmp.getChildren();
 
@@ -59,7 +58,7 @@ public class LDBN {
      * @return
      */
     public ArrayList<LDATA.Expression> getValRanges(){
-        tmp = BN.getChild("^value_ranges");
+        TreeNode tmp = BN.getChild("^value_ranges");
         ArrayList<String> children = tmp.getChildrenString();
         if(children.size() == 0) {
             System.out.println("LDBN: GetValRanges: No ranges.");

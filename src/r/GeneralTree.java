@@ -503,7 +503,7 @@ public class GeneralTree {
             if (!foundNextNode) {
                 //Iterate over all the words that contain that address.
                 for (int j = 2; j < nodeNames.length; j++) {
-                    delAddress += "/" + nodeNames[j];
+                    delAddress += nodeNames[j] + "/";
                     hash.del(nodeNames[j], delAddress);
                 }
                 return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.

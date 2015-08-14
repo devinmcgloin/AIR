@@ -75,7 +75,7 @@ public final class LDATA {
     private static boolean numValidateP(Expression expression, String val){
         String [] terms = val.trim().split(" ");
         if(expression.getUnit().equals("count") && terms.length == 1){
-            return comp(terms[1], expression.getOperator(), expression.getValue());
+            return comp(terms[0], expression.getOperator(), expression.getValue());
         }else if(expression.getValue().equals("inf")){
             if(expression.getOperator().equals(">")){
                 return false;

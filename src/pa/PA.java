@@ -42,22 +42,8 @@ public final class PA {
                 }
             }
         }
-
         started = true;
     }
-
-//    public PA() {
-//        if (rFolder.length() >= 1) {
-//            for (File fileEntry : rFolder.listFiles()) {
-//                if (fileEntry.isDirectory()) {
-//
-//                } else {
-//                    rDB.add(new R(fileEntry.getName()));
-//                }
-//            }
-//        }
-//    }
-
 
 
     public static void blaze(){
@@ -106,9 +92,9 @@ public final class PA {
         if(!started){
             startLibraries();
         }
-
-        for(NBN node : nounHashSearch("population`city")){
-            System.out.print(node.toString());
+        ArrayList<NBN> nodes = SetLogic.genSet("city`post office, population`length <= 100 ft");
+        for(NBN node : nodes){
+            System.out.println(node.getTitle());
         }
 
 
