@@ -1,6 +1,8 @@
 package pa;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -8,14 +10,64 @@ import java.util.ArrayList;
  */
 public final class ExecutionFlow {
     private final Method method;
-    private ArrayList<Object> arguments;
-    private boolean doneP = false;
+    private final Type[] argTypes;
+    private boolean[] appliedP;
+    private Object[] arguments;
+    private boolean completedP = false;
+    private Object result;
 
     public ExecutionFlow(Method method){
         this.method = method;
+        argTypes = method.getTypeParameters();
+        appliedP = new boolean[argTypes.length];
+        arguments = new Object[argTypes.length];
     }
 
     public void invoke(){
+        try {
+            if (argTypes.length == 1) {
+                result = method.invoke(null, arguments[0]);
+                completedP = true;
+            }
+            else if(argTypes.length == 2) {
+                result = method.invoke(null, arguments[0], arguments[1]);
+                completedP = true;
+            }
+            else if(argTypes.length == 3) {
+                result = method.invoke(null, arguments[0], arguments[1], arguments[2]);
+                completedP = true;
+            }
+            else if(argTypes.length == 4) {
+                result = method.invoke(null, arguments[0], arguments[1], arguments[2], arguments[3]);
+                completedP = true;
+            }
+        }catch(IllegalAccessException e){
+            System.out.println("EF: Illegal Access Exception");
+        }catch(InvocationTargetException e){
+            System.out.println("EF: Invocation Target Exception");
+        }
+    }
 
+    public void applyArgument(Object argument){
+        for(int i = 0; i < argTypes.length; i++){
+            if(argTypes[i].equals(argument)){
+                arguments[i] = argument;
+                appliedP[i] = true;
+                break;
+            }
+        }
+    }
+
+    public Object getResult(){
+        if(completedP)
+            return result;
+        else {
+            System.out.println("Computation not completed.");
+            return null;
+        }
+    }
+
+    public boolean completedP(){
+        return completedP;
     }
 }
