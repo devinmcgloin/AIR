@@ -88,13 +88,17 @@ public final class PA {
 
         NBN x = getNoun("bmw");
         NBN y = getNoun("car");
-        x = SetLogic.xINHERITy(x, y);
+//        x = SetLogic.xINHERITy(x, y);
+//        System.out.println( x.get("^logicalParents") );
 
+        Noun.nonCarrotSearch(x, "^logicalParents");
 
-        System.out.println( x.get("^logicalParents") );
 
         put(x);
         put(y);
+        //put(nueva);
+
+
 
     }
 
@@ -209,12 +213,22 @@ public final class PA {
         if(!started){
             startLibraries();
         }
+        //Contextualy creating new Nodes:
+        //-node you wanted doesn't exist, New TreeNode, New NBN
+        //-put it back when done
+        //-PA checks if doesn't exist, create a new node R level from here.
+        //-then continue the regular adding methods PA has.
 
+        //Check if node already exists in DB, if not, add it. Then continue regular put.
+        TreeNode x = getRb("noun").get("R/noun/" + node.getTitle());
+        if( !x.getTitle().equals(node.getTitle()) ){
+            getRb("noun").add(node.getTitle(), "R/noun/" + node.getTitle());
+        }
 
 
         for(NBN.Tuple record : node.getRecord()){
 
-            TreeNode k = getRb("noun").get("R/");
+           //TreeNode k = getRb("noun").get("R/");
 //            for(String name: k.getChildrenString()){
 //                System.out.println("ROOT: "+name);
 //            }
@@ -226,7 +240,7 @@ public final class PA {
                     if(record.thrd().equals("[third null]") ){
 
                         //getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
-                        System.out.println("\n\nyup\n\n");
+                        //System.out.println("\n\nyup\n\n");
                         getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
 
 

@@ -267,7 +267,7 @@ public class GeneralTree {
         }
         //We are sending a command to "R/" directory.
         if (tmpS.length == 1 && address.equals("R/")) {
-            System.out.println("GenTree -- root operation triggered!!!");
+            //System.out.println("GenTree -- root operation triggered!!!");
             return getRoot();
         }
         String dbName = address.split("/")[1];
@@ -335,7 +335,7 @@ public class GeneralTree {
         String oldName = current.getTitle();
         goBack(); //TODO: null pointer
         if (contains(newName)) {
-            System.out.printf("Dimension: %s already exists.\n", newName);
+            //System.out.printf("Dimension: %s already exists.\n", newName);
             return;
         }
         childTraverse(oldName);

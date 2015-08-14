@@ -44,7 +44,12 @@ public final class NBN {
     }
 
     public ArrayList<String> get(String Key) {
-        return TN.getChild(Key).getChildrenString();
+        TreeNode kid = TN.getChild(Key);
+        if (kid==null)
+            return null;
+
+        //return TN.getChild(Key).getChildrenString();
+        return kid.getChildrenString();
     }
 
     public ArrayList<Tuple> getRecord(){
