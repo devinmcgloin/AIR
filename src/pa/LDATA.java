@@ -47,20 +47,20 @@ public final class LDATA {
      * @param node
      * @return
      */
-    public static boolean validateP(Expression expression, NBN node){
-        String value = Noun.search(node, expression.getType());
-        if(value == null){
-            return false;
-        }else if(ldataP(value)){
-            return numValidateP(expression, value);
-        }else if(Noun.nounP(value)){
-            return false;
-        }else if(isNumeric(value)){
-            return numValidateP(expression, value);
-        }else{
-            return false;
-        }
-    }
+//    public static boolean validateP(Expression expression, NBN node){
+//        String value = Noun.search(node, expression.getType());
+//        if(value == null){
+//            return false;
+//        }else if(ldataP(value)){
+//            return numValidateP(expression, value);
+//        }else if(Noun.nounP(value)){
+//            return false;
+//        }else if(isNumeric(value)){
+//            return numValidateP(expression, value);
+//        }else{
+//            return false;
+//        }
+//    }
 
     /**
      *

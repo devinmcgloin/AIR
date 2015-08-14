@@ -86,17 +86,26 @@ public final class PA {
 //        k = getRb("noun").get("R/noun/ferrari/");
 //        System.out.println("Boop:  " + k.getChildrenString() );
 
+        TreeNode ba = new TreeNode("bmw+wheel");
+        NBN ta = new NBN(ba);
+
         NBN x = getNoun("bmw");
         NBN y = getNoun("car");
 //        x = SetLogic.xINHERITy(x, y);
 //        System.out.println( x.get("^logicalParents") );
 
-        Noun.nonCarrotSearch(x, "^logicalParents");
+        y = Noun.add(y, "wheel" );
+        x = Noun.add(x, "wheel", "bmw+wheel");
+
+        ta = Noun.add(ta, "NumberOf", "4");
+
+//        System.out.println( Noun.nonCarrotSearch(x, "^logicalParents") );
 
 
         put(x);
         put(y);
-        //put(nueva);
+        put(ta);
+
 
 
 
