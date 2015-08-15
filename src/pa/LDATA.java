@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by devinmcgloin on 6/17/15.
  * GENERAL NOTES
  * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
+ * TODO Need to QA everything
  */
 public final class LDATA {
 

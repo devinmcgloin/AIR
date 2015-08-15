@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * This class is never to be used outside of the static Noun class.
+ * TODO update all the record additions to include titles
  */
 public final class NBN {
 
@@ -67,6 +68,7 @@ public final class NBN {
 
         add(newNode, key);
 
+        //TODO Here incorp search
         return new NBN(newNode, copyRecordAddContent(this.record, new Record("add", key)));
     }
 
@@ -82,7 +84,7 @@ public final class NBN {
         TreeNode newNode = copyNode(TN);
 
         add(newNode, Key, Val);
-
+        //TODO Here incorp search
         return new NBN(newNode, copyRecordAddContent(this.record, new Record("add", Key, Val)));
     }
 
@@ -94,6 +96,7 @@ public final class NBN {
     public NBN rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
+        //TODO Here incorp search
         return new NBN(newNode, copyRecordAddContent(this.record, new Record("rm", Key)));
     }
 
@@ -106,6 +109,7 @@ public final class NBN {
     public NBN rm(String Key, String Val) {
         TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
+        //TODO Here incorp search
         return new NBN(newNode, copyRecordAddContent(record, new Record("rm", Key, Val)));
     }
 
@@ -121,7 +125,7 @@ public final class NBN {
         TreeNode newNode = copyNode(TN);
 
         update(newNode, key, oldVal, newVal);
-
+        //TODO Here incorp search
         return new NBN(newNode, copyRecordAddContent(record, new Record("update", key, oldVal, newVal)));
     }
 
@@ -136,6 +140,8 @@ public final class NBN {
     public NBN batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
+        //TODO Here incorp search
+
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
             additions.add(new Record("add", keys.get(i), vals.get(i)));
@@ -152,6 +158,7 @@ public final class NBN {
     public NBN batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
+        //TODO Here incorp search
 
         for (String key : keys) {
             removeChild(newNode, key);
@@ -169,6 +176,8 @@ public final class NBN {
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
+        //TODO Here incorp search
+
 
         for (int i = 0; i < keys.size(); i++) {
             rm(newNode, keys.get(i), vals.get(i));
@@ -189,6 +198,8 @@ public final class NBN {
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
+        //TODO Here incorp search
+
 
         for (int i = 0; i < keys.size(); i++) {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
@@ -411,37 +422,33 @@ public final class NBN {
     }
 
     static class Record {
-        final String nodeTitle;
         final String operation;
         final String key;
         final String valOne;
         final String valTwo;
 
 
-        public Record(String nodeTitle, String operation, String second, String valOne) {
-            this.nodeTitle = nodeTitle;
+        public Record(String operation, String second, String valOne) {
             this.operation = operation;
             this.key = second;
             this.valOne = valOne;
             this.valTwo = null;
         }
-        public Record(String nodeTitle, String key, String second) {
-            this.nodeTitle = nodeTitle;
+        public Record( String key, String second) {
             this.operation = key;
             this.key = second;
             this.valOne = null;
             this.valTwo = null;
         }
-        public Record(String nodeTitle, String operation, String key, String valOne, String key) {
-            this.nodeTitle = nodeTitle;
+        public Record(String operation, String key, String valOne, String valTwo) {
             this.operation = operation;
             this.key = key;
             this.valOne = valOne;
-            this.valTwo = key;
+            this.valTwo = valTwo;
         }
 
         public String getOperation(){
-            return operation != null ? operation : "[operation null]";
+            return operation;
         }
         public String getKey(){
             return key;
@@ -455,7 +462,6 @@ public final class NBN {
         public String getNewVal(){
             return valTwo;
         }
-        public String getTitle(){return nodeTitle; }
 
 
         @Override
