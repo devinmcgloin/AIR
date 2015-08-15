@@ -90,8 +90,71 @@ public final class Noun {
             return false;
     }
 
-    public static String search(NBN node, String key){
-        return Noun.get(node, key).get(0);
+    public static ArrayList<String> search(NBN node, String key){
+        return null;
+    }
+
+    public static String nonCarrotSearch(NBN node, String key){
+        //Have to make sure it accounts for overflow.
+
+        if(node == null)
+            return "^Null Node";
+
+        if(key == null || key.equals("^N/A"))
+            return "^No Key";   //if no key, try triggering overflowSearch and filtering on context.
+
+
+        ArrayList<String> x = Noun.get(node, key);
+        if(x == null){
+            return "^No Value"; //if no value, try tracing up to logical parents to get a spread of likelihood.
+            //(best guess search)
+        }
+        else{
+            return x.get(0);
+        }
+
+    }
+
+    //Returns an arraylist of OFlowed NBNs that contain the key.
+    public static ArrayList<NBN> overflowSearch(NBN node, String key){
+        //Couldn't find Value, must account for overflow.
+        ArrayList<String> keys = Noun.getKeys(node);
+        ArrayList<String> tmpOF = new ArrayList<String>();
+        ArrayList<NBN> OFlows = new ArrayList<NBN>();
+
+        //Look into all current keys for overflow nodes
+        for( String k: keys ){
+            if(k.startsWith("^"))
+                continue;
+            String value =  nonCarrotSearch(node, k);
+            if(value.contains("+")){
+                tmpOF.add(value);
+            }
+        }
+
+        //Search the overflown nodes for the key.
+        for( String OFTitle :tmpOF ){
+            NBN tmp  = PA.getNoun(OFTitle);
+            String val = nonCarrotSearch(tmp, key);
+            if( !val.startsWith("^") ){
+                //Found a valid value for the key!
+                OFlows.add(tmp);
+            }
+            if ( val.equals("^No Value")){
+                //Key was still found and a success
+                OFlows.add(tmp);
+            }
+
+            //Otherwise, try finding deeper levels!
+            ArrayList<NBN> otherSuccesses = overflowSearch(tmp, key);
+            for(NBN success : otherSuccesses ){
+                OFlows.add(success);
+            }
+
+        }
+
+
+        return OFlows;
     }
 
 }

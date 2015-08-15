@@ -72,15 +72,28 @@ public final class PA {
 //        k = getRb("noun").get("R/noun/ferrari/");
 //        System.out.println("Boop:  " + k.getChildrenString() );
 
+        TreeNode ba = new TreeNode("bmw+wheel");
+        NBN ta = new NBN(ba);
+
         NBN x = getNoun("bmw");
         NBN y = getNoun("car");
-        x = SetLogic.xINHERITy(x, y);
+//        x = SetLogic.xINHERITy(x, y);
+//        System.out.println( x.get("^logicalParents") );
 
+        y = Noun.add(y, "wheel" );
+        x = Noun.add(x, "wheel", "bmw+wheel");
 
-        System.out.println( x.get("^logicalParents") );
+        ta = Noun.add(ta, "NumberOf", "4");
+
+//        System.out.println( Noun.nonCarrotSearch(x, "^logicalParents") );
+
 
         put(x);
         put(y);
+        put(ta);
+
+
+
 
     }
 
@@ -109,12 +122,22 @@ public final class PA {
         if(!started){
             startLibraries();
         }
+        //Contextualy creating new Nodes:
+        //-node you wanted doesn't exist, New TreeNode, New NBN
+        //-put it back when done
+        //-PA checks if doesn't exist, create a new node R level from here.
+        //-then continue the regular adding methods PA has.
 
+        //Check if node already exists in DB, if not, add it. Then continue regular put.
+        TreeNode x = getRb("noun").get("R/noun/" + node.getTitle());
+        if( !x.getTitle().equals(node.getTitle()) ){
+            getRb("noun").add(node.getTitle(), "R/noun/" + node.getTitle());
+        }
 
 
         for(NBN.Tuple record : node.getRecord()){
 
-            TreeNode k = getRb("noun").get("R/");
+           //TreeNode k = getRb("noun").get("R/");
 //            for(String name: k.getChildrenString()){
 //                System.out.println("ROOT: "+name);
 //            }
@@ -126,7 +149,7 @@ public final class PA {
                     if(record.thrd().equals("[third null]") ){
 
                         //getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
-                        System.out.println("\n\nyup\n\n");
+                        //System.out.println("\n\nyup\n\n");
                         getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
 
 

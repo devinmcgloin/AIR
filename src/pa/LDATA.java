@@ -64,8 +64,8 @@ public final class LDATA {
 
     /**
      *
-     *
-     *
+     * TODO: Need to deal with infinity here
+     * TODO: Need to deal with no units here. EG counts
      * Deals with conversion for ordered types: Counts and measurements
      * Verifies that the val is acceptable given the expression.
      * @param expression
