@@ -117,6 +117,48 @@ public final class Noun {
 
     }
 
+    public static ArrayList<NBN> getLogicalParents(NBN node){
+        if(node == null){
+            return null;
+        }
+
+        ArrayList<NBN> parents = new ArrayList<NBN>();
+        ArrayList<String> tmp = node.get("^logicalParents");
+        if(tmp ==null)
+            return null;
+        for(String title: tmp){
+            NBN foo = PA.getNoun(title);
+            if(foo == null) {
+                System.out.println("NOUN: Couldn't find node: " + title);
+                continue;
+            }
+            parents.add( foo );
+        }
+        return parents;
+    }
+
+    public static ArrayList<NBN> getLogicalChildren(NBN node){
+        if(node == null){
+            return null;
+        }
+
+        ArrayList<NBN> children = new ArrayList<NBN>();
+        ArrayList<String> tmp = node.get("^logicalChildren");
+        if(tmp ==null)
+            return null;
+        for(String title: tmp){
+            NBN foo = PA.getNoun(title);
+            if(foo == null) {
+                System.out.println("NOUN: Couldn't find node: " + title);
+                continue;
+            }
+            children.add(foo);
+        }
+        return children;
+    }
+
+
+
     //Returns an arraylist of OFlowed NBNs that contain the key.
     public static ArrayList<NBN> overflowSearch(NBN node, String key){
         //Couldn't find Value, must account for overflow.
@@ -133,6 +175,9 @@ public final class Noun {
                 tmpOF.add(value);
             }
         }
+
+
+
 
         //Search the overflown nodes for the key.
         for( String OFTitle :tmpOF ){
