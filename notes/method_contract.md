@@ -18,8 +18,8 @@
 
 - filter(Arraylist<NBN> nodes, ArrayList<expression> expressions), this takes an arraylist of nodes as returned from a hashsearch and filters them based on the given expressions.
 - genSet()
-- hasFilter(NBN, ArrayList<String> attributes)
-- isFilter(NBN, ArrayList<String> attributes)
+- hasFilter(NBN, String[] attributes)
+- isFilter(NBN, String[] attributes)
 - conditionFilter(NBN, ArrayList<expressions> expressions)
 - getSetMembers(NBN), returns the nodes that are members of the NBN set. REQUIRES: access to PA to return the NBNs that the passed in node is a member of.
 - getSets(NBN), returns the sets by name, that the NBN is a member of. In turn those set names can be used to generate the set of objects that are members of that set using getSetMembers. REQUIRES: Access to PA in order to pull out nodes that are part of the set the NBN represents.
