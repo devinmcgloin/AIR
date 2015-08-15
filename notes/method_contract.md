@@ -47,16 +47,15 @@ Set logic methods can be called with two or more NBN (In which case the function
 - getName(NBN) - returns the most common name of the node (Ferrari), right now is identical to get title.
 - getKeys(NBN)
 - get(NBN, Key)
+- genSearch(key) - uses contextual search and other search methods.
+- overflowSearch(NBN, key - Checks checks simple search first for the given node, then checks the overflown nodes. Returns all values that match
+- simpleSearch(NBN, key) - searching only the immediate NBN passed in
+- bestGuess(NBN, key) - uses stats to guess how good something is
+- contextSearch(NBN, key, filters) - searches the whole database for nodes that have this key and match these filters.
 
 ###Record
 (add, )
 
-#Search
-- genSearch(key) - uses contextual search and other search methods.
-- overflowSearch(NBN, key - Checks checks simple search first for the given node, then checks the overlfown nodes. Returns all values that match
-- simpleSearch(NBN, key) - searching only the immediate NBN passed in
-- bestGuess(NBN, key) - uses stats to guess how good something is
-- contextSearch(key, filters) - searches the whole database for nodes that have this key and match these filters.
 
 #Reader
 - expressionParse(String Expression) - returns a arraylist of expressions.

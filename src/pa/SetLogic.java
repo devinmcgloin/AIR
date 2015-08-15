@@ -31,8 +31,8 @@ public final class SetLogic {
     public static ArrayList<NBN> genSet(String searchTerms){
         ArrayList<NBN> nodes;
         String[] isConditions;
-        String[] has;
-        ArrayList<LDATA.Expression> conditions;
+        String[] hasConditions;
+        ArrayList<LDATA.Expression> LDATAConditions;
 
         //Parse search terms
         String[] terms = searchTerms.split("`");
@@ -42,64 +42,81 @@ public final class SetLogic {
             return null;
         }else if(terms.length == 1){
             isConditions = terms[0].split(",");
-            has = null;
-            conditions = null;
+            hasConditions = null;
+            LDATAConditions = null;
         }else if(terms.length == 2){
             isConditions = terms[0].split(",");
-            has = terms[1].split(",");
-            conditions = null;
+            hasConditions = terms[1].split(",");
+            LDATAConditions = null;
         }else {
             isConditions = terms[0].split(",");
-            has = terms[1].split(",");
-            conditions = new ArrayList<LDATA.Expression>();
+            hasConditions = terms[1].split(",");
+            LDATAConditions = new ArrayList<LDATA.Expression>();
             for (String condition : terms[2].split(",")){
-                conditions.add(Reader.parseExpression(condition));
+                LDATAConditions.add(Reader.parseExpression(condition));
             }
         }
 
         nodes = PA.nounHashSearch(terms[0].replace(",", "`"));
 
-        //Need to use an iterator as its the only safe way to modify an array while iterating over it.
+
+        return filter(nodes, isConditions, hasConditions, LDATAConditions);
+    }
+
+    public static ArrayList<NBN> filter(ArrayList<NBN> nodes, String[] isConditions, String[] hasConditions, ArrayList<LDATA.Expression> LDATAConditions){
+        nodes = isFilter(nodes, isConditions);
+        nodes = hasFilter(nodes, hasConditions);
+        nodes = LDATAFilter(nodes, LDATAConditions);
+
+        return nodes;
+    }
+
+
+    public static ArrayList<NBN> isFilter(ArrayList<NBN> nodes, String[] isConditions){
         Iterator<NBN> iterator = nodes.iterator();
 
-        //The great filter
         while (iterator.hasNext()){
-            Boolean removed = false;
             NBN option = iterator.next();
-
             //Is filter
             for(String term : isConditions) {
                 if (!Noun.isP(option, term.trim())) {
                     iterator.remove();
-                    removed = true;
                     break;
                 }
             }
-
-            //Has filter
-            if(!removed && has != null) {
-                for (String determiner : has) {
-                    if (!Noun.hasP(option, determiner.trim())) {
-                        iterator.remove();
-                        removed = true;
-                        break;
-                    }
-                }
-            }
-
-            //Conditions filter
-            if(!removed && conditions != null){
-                for(LDATA.Expression determiner : conditions){
-                    if(!LDATA.validateP(option, determiner)){
-                        iterator.remove();
-                        removed = true;
-                        break;
-                    }
-                }
-            }
-
         }
+        return nodes;
+    }
 
+    public static ArrayList<NBN> hasFilter(ArrayList<NBN> nodes, String[] hasConditions){
+        Iterator<NBN> iterator = nodes.iterator();
+
+        while (iterator.hasNext()){
+            NBN option = iterator.next();
+            //Is filter
+            for(String term : hasConditions) {
+                if (!Noun.hasP(option, term.trim())) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+        return nodes;
+    }
+
+    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, ArrayList<LDATA.Expression> LDATAConditions){
+        Iterator<NBN> iterator = nodes.iterator();
+
+        while (iterator.hasNext()){
+            NBN option = iterator.next();
+            //Is filter
+            for(LDATA.Expression determiner : LDATAConditions){
+                if(!LDATA.validateP(option, determiner)){
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
         return nodes;
     }
 
