@@ -90,7 +90,7 @@ public final class SetLogic {
             //Conditions filter
             if(!removed && conditions != null){
                 for(LDATA.Expression determiner : conditions){
-                    if(!LDATA.validateP(determiner, option)){
+                    if(!LDATA.validateP(option, determiner)){
                         iterator.remove();
                         removed = true;
                         break;

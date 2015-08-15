@@ -59,7 +59,7 @@ public final class PA {
 //            if (node.getTitle().equals("ferrari")) {
 //
 //                //Earlier, adding the Key Value pair of logical child, child node was causing changes in the actual DB
-//                //This was fixed by cloning the first level of children as well as the root.
+//                //This was fixed by cloning the operation level of children as well as the root.
 //                node = node.add("^logicalChild", "Childnode");
 //                for (String entry : node.getKeys()) {
 //                    System.out.println("   " + entry);
@@ -129,13 +129,15 @@ public final class PA {
         //-then continue the regular adding methods PA has.
 
         //Check if node already exists in DB, if not, add it. Then continue regular put.
-        TreeNode x = getRb("noun").get("R/noun/" + node.getTitle());
-        if( !x.getTitle().equals(node.getTitle()) ){
-            getRb("noun").add(node.getTitle(), "R/noun/" + node.getTitle());
-        }
 
 
-        for(NBN.Tuple record : node.getRecord()){
+
+        for(NBN.Record record : node.getRecord()){
+            //Check if node already exists in DB, if not, add it. Then continue regular put.
+            TreeNode x = getRb("noun").get("R/noun/" + record.getTitle());
+            if( !x.getTitle().equals(record.getTitle()) ){
+                getRb("noun").add(record.getTitle(), "R/noun/" + record.getTitle());
+            }
 
            //TreeNode k = getRb("noun").get("R/");
 //            for(String name: k.getChildrenString()){
@@ -143,66 +145,42 @@ public final class PA {
 //            }
 //            System.out.println(record);
 
-            if(record.fst().equals("add")){
+            if(record.getOperation().equals("add")){
                 if(rDBexists("noun")){
-
-                    if(record.thrd().equals("[third null]") ){
-
-                        //getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
+                    if(record.getVal().equals("[valOne null]") ){
+                        //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
                         //System.out.println("\n\nyup\n\n");
-                        getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
-
-
+                        getRb("noun").add(record.getKey(), "R/noun/" + record.getTitle() );
                     }else{
-                        getRb("noun").add(record.snd(), "R/noun/" + node.getTitle() );
-                        getRb("noun").add(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd() );
+                        getRb("noun").add(record.getKey(), "R/noun/" + record.getTitle() );
+                        getRb("noun").add(record.getVal(), "R/noun/" + record.getTitle() + "/" + record.getKey() );
 
                     }
-
-
-
                     //HOW R'S ADD WORKS:
                     //add("nodeName", "R/noun")
                     //add, this node name, to this address.
 
-//                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() + "/" + record.snd());
+//                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() + "/" + record.getKey());
 //                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() );
                 }
-            }else if(record.fst().equals("rm")) {
-
-
+            }else if(record.getOperation().equals("rm")) {
                 if(rDBexists("noun")){
-
-
-
-                    if(record.thrd().equals("[third null]") ){
-
-                        getRb("noun").del(record.snd(), "R/noun/" + node.getTitle());
-
-
+                    if(record.getVal().equals("[valOne null]") ){
+                        getRb("noun").del(record.getKey(), "R/noun/" + record.getTitle());
                     }else{
-
-
-
-                        //System.out.println("R/noun/" + node.getTitle() + "/" + record.snd());
-                        getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
-
+                        //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
+                        getRb("noun").del(record.getVal(), "R/noun/" + record.getTitle() + "/" + record.getKey());
                     }
                 }
             }
-
-            else if(record.fst().equals("update")){
+            else if(record.getOperation().equals("update")){
                 if(rDBexists("noun")){
-                    getRb("noun").del(record.thrd(), "R/noun/" + node.getTitle() + "/" + record.snd());
-                    getRb("noun").add(record.frth(), "R/noun/" + node.getTitle() + "/" + record.snd());
-
+                    getRb("noun").del(record.getVal(), "R/noun/" + record.getTitle() + "/" + record.getKey());
+                    getRb("noun").add(record.getNewVal(), "R/noun/" + record.getTitle() + "/" + record.getKey());
                 }
             }else{
                 System.out.println("Record: " + record.toString() + "\n Is not a valid record");
             }
-
-
-
         }
 
 

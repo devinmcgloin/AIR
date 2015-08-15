@@ -4,7 +4,7 @@
 
 #LDATA
 - validateP(LDBN, Value) - Bool
-- evaluateP(NBN, expression) - Bool
+- validateP(NBN, expression) - Bool
 - convert(Value, unitTo) - converted Val
 - getType(Unit) - returns the type of that specific unit
 - getUnits(Type) - returns the units of the specified type or the default unit
@@ -14,17 +14,18 @@
 
 - Expressions are 4-tuples in which the type is first, operator second, number third and unit forth.
 
-###Values
-
-- Values are 3-tuples in which the type is first, value second and unit third.
-
 #Set Logic
 
 - filter(Arraylist<NBN> nodes, ArrayList<expression> expressions), this takes an arraylist of nodes as returned from a hashsearch and filters them based on the given expressions.
+- genSet()
+- hasFilter(NBN, ArrayList<String> attributes)
+- isFilter(NBN, ArrayList<String> attributes)
+- conditionFilter(NBN, ArrayList<expressions> expressions)
 - getSetMembers(NBN), returns the nodes that are members of the NBN set. REQUIRES: access to PA to return the NBNs that the passed in node is a member of.
 - getSets(NBN), returns the sets by name, that the NBN is a member of. In turn those set names can be used to generate the set of objects that are members of that set using getSetMembers. REQUIRES: Access to PA in order to pull out nodes that are part of the set the NBN represents.
 - xISyP(NBN-A, NBN-B) - Bool true if A is a member of the B set
-- xINHERITy(NBN-A, NBN-B) - New NBN in which A has inherited from B.
+- xINHERITy(NBN-A, NBN-B) - New NBN in which A has inherited from B. Needs to be changed to allow for overflow reorganization.
+- xLikeY(NBN-A, NBN-B) - Inheritance without the set, you get the keys but no values and are not logical children.
 
 ###Set Logic Methods
 Set logic methods can be called with two or more NBN (In which case the function will operate on the set members of that NBN), or they can be called with sets (In which case the functions will operate on the sets themselves.)
@@ -38,19 +39,26 @@ Set logic methods can be called with two or more NBN (In which case the function
 
 #Noun
 
-- add(NBN, Key, Val)
-- rm(NBN, Key, val)
-- rm(NBN, Key)
+- add(NBN, Key, Val) - EFFECTED BY OVERFLOW, CHECK WITH LDATA TO CONFIRM ITS A VALID VALUE.
+- rm(NBN, Key, val) - EFFECTED BY OVERFLOW
+- rm(NBN, Key)- EFFECTED BY OVERFLOW
 - update(NBN, Key, OldVal, NewVal)
 - getTitle(NBN) - returns the internal R title of the node, which has to be unique. (ferrari1)
-- getName(NBN) - returns the most common name of the node (Ferrari)
+- getName(NBN) - returns the most common name of the node (Ferrari), right now is identical to get title.
 - getKeys(NBN)
 - get(NBN, Key)
-- search(NBN, key) - looks thru the given node, and the overflown nodes for the specified key. REQUIRES: pa, in order to search thru overflown nodes and access their contents. Could structure it so that there is a PA function that sends takes a NBN, and returns that NBN, plus all the NBN's that are overflown from it.
+
+###Record
+(add, )
+
+#Search
+- genSearch(key) - uses contextual search and other search methods.
+- overflowSearch(NBN, key - Checks checks simple search first for the given node, then checks the overlfown nodes. Returns all values that match
+- simpleSearch(NBN, key) - searching only the immediate NBN passed in
+- bestGuess(NBN, key) - uses stats to guess how good something is
+- contextSearch(key, filters) - searches the whole database for nodes that have this key and match these filters.
 
 #Reader
-
-- parse(String) -parse is responsible for taking inputs, from the terminal and returning the pattern name that needs to be called (these must be user specified, and accurate), and the arguments for that pattern. This class also has various helper functions.
 - expressionParse(String Expression) - returns a arraylist of expressions.
 
 #Matrix Gen

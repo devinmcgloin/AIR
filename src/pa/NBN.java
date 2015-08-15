@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public final class NBN {
 
     private final TreeNode TN;
-    private final ArrayList<Tuple> record;
+    private final ArrayList<Record> record;
 
 
     public NBN(TreeNode TN) {
@@ -20,7 +20,7 @@ public final class NBN {
     }
 
     //Used in adding more shit it needs to change.
-    public NBN(TreeNode TN, ArrayList<Tuple> record){
+    public NBN(TreeNode TN, ArrayList<Record> record){
         this.TN = TN;
         this.record = record;
     }
@@ -51,7 +51,7 @@ public final class NBN {
             return kid.getChildrenString();
     }
 
-    public ArrayList<Tuple> getRecord(){
+    public ArrayList<Record> getRecord(){
         return record;
     }
 
@@ -67,7 +67,7 @@ public final class NBN {
 
         add(newNode, key);
 
-        return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("add", key)));
+        return new NBN(newNode, copyRecordAddContent(this.record, new Record("add", key)));
     }
 
     /**
@@ -83,7 +83,7 @@ public final class NBN {
 
         add(newNode, Key, Val);
 
-        return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("add", Key, Val)));
+        return new NBN(newNode, copyRecordAddContent(this.record, new Record("add", Key, Val)));
     }
 
     /**
@@ -94,8 +94,7 @@ public final class NBN {
     public NBN rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
-        return new NBN(newNode, copyRecordAddContent(this.record, new Tuple("rm", Key)));
-
+        return new NBN(newNode, copyRecordAddContent(this.record, new Record("rm", Key)));
     }
 
     /**
@@ -107,9 +106,7 @@ public final class NBN {
     public NBN rm(String Key, String Val) {
         TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
-
-        return new NBN(newNode, copyRecordAddContent(record, new Tuple("rm", Key, Val)));
-
+        return new NBN(newNode, copyRecordAddContent(record, new Record("rm", Key, Val)));
     }
 
     /**
@@ -125,7 +122,7 @@ public final class NBN {
 
         update(newNode, key, oldVal, newVal);
 
-        return new NBN(newNode, copyRecordAddContent(record, new Tuple("update", key, oldVal, newVal)));
+        return new NBN(newNode, copyRecordAddContent(record, new Record("update", key, oldVal, newVal)));
     }
 
     // Batch updates below
@@ -138,10 +135,10 @@ public final class NBN {
      */
     public NBN batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Tuple> additions = new ArrayList<Tuple>();
+        ArrayList<Record> additions = new ArrayList<Record>();
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
-            additions.add(new Tuple("add", keys.get(i), vals.get(i)));
+            additions.add(new Record("add", keys.get(i), vals.get(i)));
         }
 
         return new NBN(newNode, copyRecordAddContent(record, additions));
@@ -154,11 +151,11 @@ public final class NBN {
      */
     public NBN batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Tuple> additions = new ArrayList<Tuple>();
+        ArrayList<Record> additions = new ArrayList<Record>();
 
         for (String key : keys) {
             removeChild(newNode, key);
-            additions.add(new Tuple("rm", key));
+            additions.add(new Record("rm", key));
         }
         return new NBN(newNode, copyRecordAddContent(record, additions));
     }
@@ -171,11 +168,11 @@ public final class NBN {
      */
     public NBN batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Tuple> additions = new ArrayList<Tuple>();
+        ArrayList<Record> additions = new ArrayList<Record>();
 
         for (int i = 0; i < keys.size(); i++) {
             rm(newNode, keys.get(i), vals.get(i));
-            additions.add(new Tuple("rm", keys.get(i), vals.get(i)));
+            additions.add(new Record("rm", keys.get(i), vals.get(i)));
 
         }
         return new NBN(newNode, copyRecordAddContent(record, additions));
@@ -191,11 +188,11 @@ public final class NBN {
      */
     public NBN batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Tuple> additions = new ArrayList<Tuple>();
+        ArrayList<Record> additions = new ArrayList<Record>();
 
         for (int i = 0; i < keys.size(); i++) {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
-            additions.add(new Tuple("update", keys.get(i), oldVals.get(i), newVals.get(i)));
+            additions.add(new Record("update", keys.get(i), oldVals.get(i), newVals.get(i)));
         }
         return new NBN(newNode);
 
@@ -203,7 +200,7 @@ public final class NBN {
 
 //    /*
 //     * Copying nodes isnt as bad as I was thinking. You basically make a full copy of the root, and copy references to the keys while its in treenode form, you can then remove or add values. Removal works as you're only removing the reference from this new root, not the old one. Changes still have to be copied over into new nodes. The penaltity for small changes is minimal.
-//     * CopyNode only works on one individual node. You first do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to get called on a alot of levels.
+//     * CopyNode only works on one individual node. You operation do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to get called on a alot of levels.
 //     */
 //
 //    /**
@@ -392,9 +389,9 @@ public final class NBN {
 
     }
 
-    private ArrayList<Tuple> copyRecordAddContent(ArrayList<Tuple> record, Tuple addition){
-        ArrayList<Tuple> newRecord = new ArrayList<Tuple>(); //I don't think you actually have to do this. I'll think it through later.
-        for(Tuple entry : record){
+    private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, Record addition){
+        ArrayList<Record> newRecord = new ArrayList<Record>(); //I don't think you actually have to do this. I'll think it through later.
+        for(Record entry : record){
             newRecord.add(entry);
         }
         newRecord.add(addition);
@@ -402,63 +399,72 @@ public final class NBN {
     }
 
     //Used in batch add?
-    private ArrayList<Tuple> copyRecordAddContent(ArrayList<Tuple> record, ArrayList<Tuple> addition){
-        ArrayList<Tuple> newRecord = new ArrayList<Tuple>();
-        for(Tuple entry : record){
+    private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, ArrayList<Record> addition){
+        ArrayList<Record> newRecord = new ArrayList<Record>();
+        for(Record entry : record){
             newRecord.add(entry);
         }
-        for(Tuple entry : addition){
+        for(Record entry : addition){
             newRecord.add(entry);
         }
         return newRecord;
     }
 
-    static class Tuple {
-        final String first;
-        final String second;
-        final String third;
-        final String forth;
+    static class Record {
+        final String nodeTitle;
+        final String operation;
+        final String key;
+        final String valOne;
+        final String valTwo;
 
 
-        public Tuple(String first, String second, String third) {
-            this.first = first;
-            this.second = second;
-            this.third = third;
-            this.forth = null;
+        public Record(String nodeTitle, String operation, String second, String valOne) {
+            this.nodeTitle = nodeTitle;
+            this.operation = operation;
+            this.key = second;
+            this.valOne = valOne;
+            this.valTwo = null;
         }
-        public Tuple(String first, String second) {
-            this.first = first;
-            this.second = second;
-            this.third = null;
-            this.forth = null;
+        public Record(String nodeTitle, String key, String second) {
+            this.nodeTitle = nodeTitle;
+            this.operation = key;
+            this.key = second;
+            this.valOne = null;
+            this.valTwo = null;
         }
-        public Tuple(String first, String second, String third, String forth) {
-            this.first = first;
-            this.second = second;
-            this.third = third;
-            this.forth = forth;
+        public Record(String nodeTitle, String operation, String key, String valOne, String key) {
+            this.nodeTitle = nodeTitle;
+            this.operation = operation;
+            this.key = key;
+            this.valOne = valOne;
+            this.valTwo = key;
         }
 
-        public String fst(){
-            return first != null ? first : "[first null]";
+        public String getOperation(){
+            return operation != null ? operation : "[operation null]";
         }
-        public String snd(){
-            return second != null ? second : "[second null]";
+        public String getKey(){
+            return key;
         }
-        public String thrd(){
-            return third != null ? third : "[third null]";
+        public String getVal(){
+            return valOne;
         }
-        public String frth(){
-            return forth != null ? forth : "[forth null]";
+        public String getOldVal(){
+            return valOne;
         }
+        public String getNewVal(){
+            return valTwo;
+        }
+        public String getTitle(){return nodeTitle; }
+
 
         @Override
         public String toString() {
-            return "Tuple{" +
-                    "first='" + first + '\'' +
-                    ", second='" + second + '\'' +
-                    ", third='" + third + '\'' +
-                    ", forth='" + forth + '\'' +
+            return "Record{" +
+                    "operation='" + operation + '\'' +
+                    ", key='" + key + '\'' +
+                    ", valOne='" + valOne + '\'' +
+                    ", valTwo='" + valTwo + '\'' +
                     '}';
         }
     }

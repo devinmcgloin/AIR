@@ -46,7 +46,7 @@ public final class LDBN {
         for(TreeNode conversion : conversions){
             String [] types = conversion.getTitle().split("->");
             if(types[0].equals(unitFrom) && types[1].equals(unitTo)){
-                //assumes that there is only one conversion grouping and that it's in the first postion.
+                //assumes that there is only one conversion grouping and that it's in the operation postion.
                 return conversion.getChildrenString().get(0);
             }
         }
@@ -66,7 +66,7 @@ public final class LDBN {
         }
         else{
             ArrayList<LDATA.Expression> expressions = new ArrayList<>();
-            //assumes value is always in the first position and that there is only one.
+            //assumes value is always in the operation position and that there is only one.
             for(String range : children) {
                 String[] terms = range.trim().split(" ");
                 // [ 12 - 324 ft ]

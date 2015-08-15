@@ -22,7 +22,9 @@ public final class Noun {
     }
 
     public static ArrayList<String> getName(NBN node){
-        return node.get("^name");
+        ArrayList<String> returnItem = new ArrayList<String>();
+        returnItem.add(node.getTitle());
+        return returnItem;
     }
 
     public static ArrayList<String> getKeys(NBN node){
@@ -152,8 +154,6 @@ public final class Noun {
             }
 
         }
-
-
         return OFlows;
     }
 

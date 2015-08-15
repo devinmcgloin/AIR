@@ -9,7 +9,7 @@ RETURNS: all nodes that have has cars
 
 R returns list of terms that contain cities or population.
 turn these into PABN and iterate over asking questions
-Ask the most nuanced questions first as they'd remove the most things.
+Ask the most nuanced questions key as they'd remove the most things.
 hasValues -> hasKeys -> isX
 
 
