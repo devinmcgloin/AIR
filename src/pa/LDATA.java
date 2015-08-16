@@ -4,66 +4,148 @@ import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/17/15.
+ * GENERAL NOTES
+ * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
+ * TODO Need to QA everything
  */
-public class LDATA {
+public final class LDATA {
 
-    LDBN currentLDBN;
-    PA pa;
 
     /**
-     * this needs to go through an index Nouns on startup to make sure it has a copy of all the nouns that have an LDATA flag.
-     * and pull out evaluation metrics, ranges and conversion methods.
+     *
      */
-    public LDATA(PA pa){
-        this.pa = pa;
-    }
+    private LDATA(){}
+
     /**
-     * TODO make this have real logic.
-     * Supports <=, >=, <, >, and ==
-     * Currently only works on numbers. No true logical state types.
-     * @param expression - take the following form: post_office == small.
+     *
+     * @param node
+     * @param val
+     * @return
+     */
+    public static boolean validateP(LDBN node, String val){
+        ArrayList<Expression> ranges = getValRanges(node);
+        if(getComp(node).equals("count") || getComp(node).equals("measurement")) {
+            for (Expression expression : ranges) {
+                if (!numValidateP(expression, val))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the NBN.
+     * K:V pair values can be either a:
+     *      LData Value
+     *      Ans to Set (NBN)
+     *      # of KEY
+     *      Overflown Node (not an ans, at all) - search takes care of this case.
+     *      Blank - Search should also never return a blank value.
+     *
+     * TODO: QA with #of parameters.
+     * @param expression
      * @param node
      * @return
      */
-    public boolean evaluate(String expression, NBN node){
-        String [] terms = expression.split(" ");
-        String attribute = terms[0]; //height
-        String operator = terms[1]; // <
-        String qualifier = terms[2]; // 1000000
-
-        currentLDBN = pa.getLDATA(attribute);
-
-        if(node.hasFilter(attribute)){
-            ArrayList<String> nodeVal = node.getOrigin().getChild("^has").getChild(attribute).getChildrenString();
-
-            if(currentLDBN.getComp().equals("ordered")) {
-                String unitTo = terms[3]; //ft
-                for (String value : nodeVal) {
-                    String[] values = value.split(" ");
-
-                    if(values.length == 2) {
-
-                        if (!values[1].equals(unitTo)) {
-                            values = conversion(unitTo, values[1], values[0], currentLDBN);
-                        }
-                    }
-                    if (switchBoard(operator, values[0], qualifier))
-                        return true;
-                }
-            }else if(currentLDBN.getComp().equals("count")){
-                for (String value : nodeVal) {
-                    String[] values = value.split(" ");
-                    if (switchBoard(operator, values[0], qualifier))
-                        return true;
-                }
-            }
-
-            else{
-                //TODO Implement variation for non ordered logic. Location, time etc.
-            }
-        }else
+    public static boolean validateP(NBN node, Expression expression){
+        //TODO change this to do simple search first, then try overflow search if needed.
+        String value = Noun.simpleSearch(node, expression.getType());
+        if(value.startsWith("^")){
             return false;
-        return false;
+        }else if(ldataP(value)){
+            return numValidateP(expression, value);
+        }else if(Noun.nounP(value)){
+            return numValidateP(expression, value);
+        }else if(isNumeric(value)){
+            return numValidateP(expression, value);
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     *
+     *
+     * Deals with conversion for ordered types: Counts and measurements
+     * Verifies that the val is acceptable given the expression.
+     * @param expression
+     * @param val - value is in this case a key. [value units]
+     * @return
+     */
+    private static boolean numValidateP(Expression expression, String val){
+        String [] terms = val.trim().split(" ");
+        if(expression.getUnit().equals("count") && terms.length == 1){
+            return comp(terms[0], expression.getOperator(), expression.getValue());
+        }else if(expression.getValue().equals("inf")){
+            if(expression.getOperator().equals(">")){
+                return false;
+            }else if(expression.getOperator().contains("=") && terms[0].equals("inf")) {
+                return true;
+            }else{
+                return false;
+            }
+        }else if(expression.getUnit().equals(terms[1])){
+            //no conversion needed
+            return comp(terms[1], expression.getOperator(), expression.getValue());
+        }else {
+            //conversion has to happen
+            String convertedVal = convert(val, expression.getUnit());
+            return comp(convertedVal.split(" ")[1], expression.getOperator(), expression.getValue());
+        }
+    }
+
+
+    /**
+     *
+     * @param initialValue
+     * @param unitTo
+     * @return
+     */
+    public static String convert(String initialValue, String unitTo){
+        String [] terms = initialValue.trim().split(" ");
+        LDBN type = getType(terms[1]);
+
+        String conversionFactors = getConversion(type, terms[1], unitTo);
+        String[] conversionSteps = conversionFactors.split(" ");
+
+        double num = Double.valueOf(terms[0].trim());
+
+        for(int i = 0; i < conversionSteps.length; i += 2){
+            if(conversionSteps[i].equals("*"))
+                num = num * Double.valueOf(conversionSteps[i+1]);
+        }
+
+        return String.valueOf(num) + " " + unitTo;
+    }
+
+    /**
+     * Takes the unit and returns the ldata node associated with it
+     * @param value
+     * @return
+     */
+    public static LDBN getType(String value) {
+        ArrayList<LDBN> nodes = PA.ldataHashSearch(value.split(" ")[1]);
+        if( nodes != null)
+            return nodes.get(0);
+        else
+            return null;
+    }
+
+    /**
+     * Takes a type of ldata, but also a string of ldata values.
+     * TODO: Rewrite to handle multiple forms of ldata.
+     * @param type
+     * @return
+     */
+    public static boolean ldataP(String type){
+        if(PA.getLDATA(type) != null){
+            return true;
+        }else if(getType(type.split(" ")[1]) != null){
+            return true;
+        }else if(isNumeric(type)){
+            return true;
+        }else return false;
     }
 
     /**
@@ -73,7 +155,7 @@ public class LDATA {
      * @param qualifier
      * @return
      */
-    private boolean switchBoard(String operator, String nodeVal, String qualifier){
+    private static boolean comp(String nodeVal, String operator, String qualifier){
         if(operator.equals("==")){
             return nodeVal.equals(qualifier);
         }
@@ -93,143 +175,78 @@ public class LDATA {
         return false;
     }
 
-    /**
-     * Conversions are stores in LDATA as conversion factors. In which the first number is a orperator, and the second the factor.
-     * It can do more than one of these.
-     * @param unitTo - unit converting to
-     * @param value - ammount and unit coming from sperated by spaces
-     * @param ldataInfo - thing the value is about
-     * @return  new values with units.
-     */
-    private String [] conversion(String unitTo, String unitFrom, String value, LDBN ldataInfo){
+    public static String getConversion(LDBN type, String unitTo, String unitFrom){
+        return type.getConversion(unitFrom, unitTo);
+    }
 
-        //select proper conversion option
+    public static ArrayList<LDATA.Expression> getValRanges(LDBN type){
+        return type.getValRanges();
+    }
 
-        String conversionFactors = ldataInfo.getConversion(unitFrom, unitTo);
+    public static String getComp(LDBN type){
+        return type.getComp();
+    }
 
-        //parse the conversion factor for steps to conversion.
-        String[] conversionSteps = conversionFactors.split(" ");
-        double num = Double.valueOf(value.trim());
-
-        for(int i = 0; i < conversionSteps.length; i += 2){
-            if(conversionSteps[i].equals("*"))
-                num = num * Double.valueOf(conversionSteps[i+1]);
-        }
-
-        return new String [] {String.valueOf(num),unitTo};
+    public static ArrayList<String> getUnits(LDBN type){
+        return type.getUnits();
     }
 
     /**
-     * TODO: QA
-     *
-     *
-     * Conversion handled inside this method.
-     * @param valueUnit
-     * @param node
+     * accounts for periods
+     * @param str
      * @return
      */
-    public boolean verifyRange(String valueUnit, LDBN node){
-        String valueRanges = node.getValRanges();
-        String[] ranges = valueRanges.split(" ");
-        String min = ranges[1];
-        String max = ranges[3];
-        String value = valueUnit.split(" ")[0];
-
-        if(node.getComp().equals("count")) {
-            if(min.equals("inf") && max.equals("inf")){
-                return true;
-            } else if(max.equals("inf")) {
-                if (valueRanges.startsWith("[")) {
-                    if (!switchBoard("<=", min, value)) {
-                        return false;
-                    }
-                } else if (valueRanges.startsWith("(")) {
-                    if (!switchBoard("<", min, value)) {
-                        return false;
-                    }
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)){
+                if(c != '.'){
+                    return false;
                 }
             }
-            else if(min.equals("inf")) {
-                if (valueRanges.endsWith("]")) {
-                    if (!switchBoard(">=", max, value)) {
-                        return false;
-                    }
-                } else if (valueRanges.endsWith(")")) {
-                    if (!switchBoard(">", max, value)) {
-                        return false;
-                    }
-                }
-            }
-            else {
-                if (valueRanges.startsWith("[") && valueRanges.endsWith("]")) {
-                    if (!switchBoard("<=", min, value) || !switchBoard(">=", max, value)) {
-                        return false;
-                    }
-                } else if (valueRanges.startsWith("(") && valueRanges.endsWith(")")) {
-                    if (!switchBoard("<", min, value) || !switchBoard(">", max, value)) {
-                        return false;
-                    }
-                } else if(valueRanges.startsWith("(") && valueRanges.endsWith("]") ){
-                    if (!switchBoard("<", min, value) || !switchBoard(">=", max, value)) {
-                        return false;
-                    }
-                }else if(valueRanges.startsWith("[") && valueRanges.endsWith(")") ){
-                    if (!switchBoard("<=", min, value) || !switchBoard(">", max, value)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        else if(node.getComp().equals("ordered")){
-            String unit = valueUnit.split(" ")[1];
-            String [] values = conversion(ranges[4], unit, value, node);
-            if(min.equals("inf") && max.equals("inf")){
-                return true;
-            } else if(max.equals("inf")) {
-                if (valueRanges.startsWith("[")) {
-                    if (!switchBoard("<=", min, values[0])) {
-                        return false;
-                    }
-                } else if (valueRanges.startsWith("(")) {
-                    if (!switchBoard("<", min, values[0])) {
-                        return false;
-                    }
-                }
-            }
-            else if(min.equals("inf")) {
-                if (valueRanges.endsWith("]")) {
-                    if (!switchBoard(">=", max, values[0])) {
-                        return false;
-                    }
-                } else if (valueRanges.endsWith(")")) {
-                    if (!switchBoard(">", max, values[0])) {
-                        return false;
-                    }
-                }
-            }
-            else {
-                if (valueRanges.startsWith("[") && valueRanges.endsWith("]")) {
-                    if (!switchBoard("<=", min, values[0]) || !switchBoard(">=", max, values[0])) {
-                        return false;
-                    }
-                } else if (valueRanges.startsWith("(") && valueRanges.endsWith(")")) {
-                    if (!switchBoard("<", min, values[0]) || !switchBoard(">", max, values[0])) {
-                        return false;
-                    }
-                } else if(valueRanges.startsWith("(") && valueRanges.endsWith("]") ){
-                    if (!switchBoard("<", min, values[0]) || !switchBoard(">=", max, values[0])) {
-                        return false;
-                    }
-                }else if(valueRanges.startsWith("[") && valueRanges.endsWith(")") ){
-                    if (!switchBoard("<=", min, values[0]) || !switchBoard(">", max, values[0])) {
-                        return false;
-                    }
-                }
-            }
-        }else{
-            System.out.println("LDATA line 230: comparison type not included.");
-            return false;
         }
         return true;
+    }
+
+    /**
+     * When comparing by count make sure to specify that the unit is count.
+     */
+    static class Expression {
+        final String type;
+        final String operator;
+        final String value;
+        final String unit;
+
+        public Expression(String type, String operator, String value, String unit) {
+            this.type = type;
+            this.operator = operator;
+            this.value = value;
+            this.unit = unit;
+        }
+
+        @Override
+        public String toString() {
+            return "Expression{" +
+                    "type='" + type + '\'' +
+                    ", operator='" + operator + '\'' +
+                    ", value='" + value + '\'' +
+                    ", unit='" + unit + '\'' +
+                    '}';
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getOperator() {
+            return operator;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
     }
 }

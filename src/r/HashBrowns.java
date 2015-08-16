@@ -61,11 +61,14 @@ public class HashBrowns {
         }
 
         //Alphabetize the TreeNodes (honestly don't know if we'll ever need them, but still).
-        Collections.sort(hits);
+        if(hits.size()!=0)
+            Collections.sort(hits);
+        else
+            return allBaseNodes;
 
 
         //---------------------------OPTIMIZATION---------------------------------//
-        //The nodes we're personally interested in for R-Noun are the ones that 'exist'.
+        //The nodes we're personally interested in for R-NOUN are the ones that 'exist'.
         //In R's architecture they're the ones at the second dimension level. R/noun/TERM
 
         //Create a set of each node reversed to BASE addresses.
@@ -124,7 +127,7 @@ public class HashBrowns {
     //TODO: will eventually need a customized "black list" of words to NOT save the addresses of.
     //i.e. has, is, parent (literally any header).
     protected boolean add(TreeNode n){
-        name = n.getName();
+        name = n.getTitle();
         address = n.getAddress();
 
         //List of current values to the name key

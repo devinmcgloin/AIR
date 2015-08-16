@@ -2,7 +2,7 @@ need to create type method web for method linking.
 
 you should know what type of thing you have, and what type of thing you're going to. methods have to match those parameters. do this via hash for the ones that we end the right way and for ones that start the right way. that ought to narrow the options alot, then you can filter on semantic tags. hash would have to contain all of the paths. not just the ending method and starting method. bummer here is that you have to walk the whole web. is there any way to get around that?
 
-perhaps we generate this daily in a separate update utility, and load that in. have it also make function compositions of the options. so you just call one function. how to name?
+perhaps we generate this daily in a separate update utility, and load that in. have it also make function compositions of the options. so you just call one function. how to title?
 
 -------------- What types of methods are there? ---------------------
 * methods to calculate values. area of circle. air resistance etc.

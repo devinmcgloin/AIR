@@ -9,12 +9,12 @@ package pa;
  * ------- BASIC SEARCH ----------
  * SEARCH FORM: "tree`leaves`green"
  * First word is the primary term.
- * Other words are secondary, with the 2nd having more weight than the third.
+ * Other words are secondary, with the 2nd having more weight than the valOne.
  *
  * Steps:
- * locate first node. in this case "tree"
+ * locate operation node. in this case "tree"
  * Find distance of the 2nd term from "tree", remove nodes that are further than say 3 steps away.
- * Do the same for the third search and so on.
+ * Do the same for the valOne search and so on.
  * Always keep nodes that do not meet the all search terms, but push them to the end of the list.
  *
  * ------- FUZZY SEARCH ----------
@@ -35,6 +35,6 @@ package pa;
  * Goto Empire State Building node, hash search for tall or synonyms.
  * Pull out key value pair related to query.
  */
-public class Search {
+public final class Search {
 
 }

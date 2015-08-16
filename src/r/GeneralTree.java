@@ -98,7 +98,7 @@ public class GeneralTree {
         //Save file to the DB name
         try {
             String name = "";
-            name = current.getName(); //gets the .txt file nam
+            name = current.getTitle(); //gets the .txt file nam
 //            if (!name.endsWith(".txt")) {
 //                name += ".txt";
 //            }
@@ -135,7 +135,7 @@ public class GeneralTree {
             Collections.sort(node.getChildren());
             TreeNode tmp;
             for (TreeNode child : node.getChildren()) {
-                DBout.append(buffer + child.getName() + "\n");
+                DBout.append(buffer + child.getTitle() + "\n");
                 DBout.append(exportRec(child, buffer));
             }
             return DBout;
@@ -154,7 +154,7 @@ public class GeneralTree {
         buffer += "    ";
         Collections.sort(node.getChildren());
         for (TreeNode child : node.getChildren()) {
-            DBout.append(buffer + child.getName() + "\n");
+            DBout.append(buffer + child.getTitle() + "\n");
             DBout.append(exportRec(child, buffer));
         }
         return DBout;
@@ -177,7 +177,7 @@ public class GeneralTree {
 
         //FOR OPTIMIZATION:
         //Replace the current "children" with a NEW longer initial ArrayList
-        if(current.getName().equals("test")) {
+        if(current.getTitle().equals("test")) {
             //current.setChildrenSize(120000);
         }
 
@@ -253,6 +253,8 @@ public class GeneralTree {
     protected TreeNode getNodeByAddress(String address) {
 
 
+
+
         //TODO: Make sure you have the right directory and GenTree has files right.
         address = address.trim();
         String[] tmpS = address.split("/");
@@ -265,7 +267,7 @@ public class GeneralTree {
         }
         //We are sending a command to "R/" directory.
         if (tmpS.length == 1 && address.equals("R/")) {
-            System.out.println("GenTree -- root operation triggered!!!");
+            //System.out.println("GenTree -- root operation triggered!!!");
             return getRoot();
         }
         String dbName = address.split("/")[1];
@@ -330,14 +332,14 @@ public class GeneralTree {
      * @param newName
      */
     protected void rename(String newName) {
-        String oldName = current.getName();
+        String oldName = current.getTitle();
         goBack(); //TODO: null pointer
         if (contains(newName)) {
-            System.out.printf("Dimension: %s already exists.\n", newName);
+            //System.out.printf("Dimension: %s already exists.\n", newName);
             return;
         }
         childTraverse(oldName);
-        current.setName(newName);
+        current.setTitle(newName);
         hash.add(current); //just add new name to hash. old string reference will either still work with header, or just
         //getNoun deleted if it fails on search. We already know this.
 
@@ -415,7 +417,7 @@ public class GeneralTree {
 //    protected ArrayList<String> getChildren() {
 //        ArrayList<String> children = new ArrayList<String>();
 //        for (TreeNode child : current.getChildren()) {
-//            children.add(child.getName());
+//            children.add(child.getTitle());
 //        }
 //        return children;
 //    }
@@ -474,6 +476,7 @@ public class GeneralTree {
      */
     protected TreeNode getNode(String address) {
 
+
         String[] nodeNames = address.split("/");
         //(genTree will need to split up the address on "/", go to root, and then as long as the
         //childTraverse function returns true, it should childTraverse the next name in the list.
@@ -493,18 +496,21 @@ public class GeneralTree {
             boolean foundNextNode = childTraverse(nodeNames[i]);
 
            // System.out.println("Entereed");
+            //System.out.println(foundNextNode + ":  "  +nodeNames[i]);
 
             //Deletes from Hashmap if it couldn't find the node name.
             String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
             if (!foundNextNode) {
                 //Iterate over all the words that contain that address.
                 for (int j = 2; j < nodeNames.length; j++) {
-                    delAddress += "/" + nodeNames[j];
+                    delAddress += nodeNames[j] + "/";
                     hash.del(nodeNames[j], delAddress);
                 }
                 return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.
             }
         }
+
+
         return current;
     }
 
@@ -606,7 +612,7 @@ public class GeneralTree {
 //        List<TreeNode> children = current.getChildren();
 //        //COULD REPLACE WITH A GETNODE() func
 //        for (int i = 0; i < children.size(); i++) {
-//            String childName = children.get(i).getName();
+//            String childName = children.get(i).getTitle();
 //            if (name.equals(childName)) {
 //                //Go into that node, go into all it's children, delete everything.
 //                current.removeChild(children.get(i));

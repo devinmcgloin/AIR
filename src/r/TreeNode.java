@@ -5,23 +5,23 @@ import java.util.Collections;
 
 
 /**
- * TODO Search for child nodes - not urgent
+ *
  * TODO update addresses for each node.
- * TODO implement binary search
+ *
  */
 public class TreeNode implements Comparable<TreeNode> {
 
-    private String name;
+    private String title;
     private String address;
     private TreeNode parent;
     private ArrayList<TreeNode> children;
 
 
     /**
-     * @param name
+     * @param title
      */
-    public TreeNode(String name) {
-        this.name = name;
+    public TreeNode(String title) {
+        this.title = title;
         this.children = new ArrayList<TreeNode>();
 
     }
@@ -37,10 +37,10 @@ public class TreeNode implements Comparable<TreeNode> {
 
     public ArrayList<String> getAllNames() {
         ArrayList<String> names = new ArrayList<String>();
-        names.add(getName());
+        names.add(getTitle());
         ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
         for (TreeNode child : getAllChildren(allChildren)) {
-            names.add(child.getName());
+            names.add(child.getTitle());
         }
         return names;
     }
@@ -49,12 +49,12 @@ public class TreeNode implements Comparable<TreeNode> {
         return address;
     }
 
-    protected void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address + "/";
     }
 
     protected void updateAddress() {
-        address = parent.getAddress() + name + "/";
+        address = parent.getAddress() + title + "/";
     }
 
 //    /**
@@ -64,7 +64,7 @@ public class TreeNode implements Comparable<TreeNode> {
 //     */
 //    public ArrayList<String> getAllAddresses() {
 //        ArrayList<String> addresses = new ArrayList<String>();
-//        addresses.add(getName());
+//        addresses.add(getTitle());
 //        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
 //        for (TreeNode child : getAllChildren(allChildren)) {
 //            addresses.add(child.getAddress());
@@ -83,24 +83,24 @@ public class TreeNode implements Comparable<TreeNode> {
     public ArrayList<String> getChildrenString() {
         ArrayList<String> a = new ArrayList<String>();
         for (TreeNode child : children) {
-            a.add(child.getName());
+            a.add(child.getTitle());
         }
         return a;
 
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     /**
-     * @param name
+     * @param title
      */
-    protected void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    protected void removeChild(TreeNode childToRemove) {
+    public void removeChild(TreeNode childToRemove) {
         if (childToRemove == null)
             return;
         children.remove(childToRemove);
@@ -149,11 +149,11 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
 
-    protected void addChildWithContainsCheck(TreeNode childNode){
+    public void addChildWithContainsCheck(TreeNode childNode){
         childNode.parent = this;
         childNode.updateAddress();
-        if(contains(childNode.getName())) {
-            System.out.printf("Dimension: %s already exists.\n", childNode.getName());
+        if(contains(childNode.getTitle())) {
+            System.out.printf("Dimension: %s already exists.\n", childNode.getTitle());
             return;
         }
         this.children.add(childNode);
@@ -168,22 +168,34 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param childNode
      * @return
      */
-    protected void addChildBlind(TreeNode childNode) {
+    public void addChildBlind(TreeNode childNode) {
         childNode.parent = this;
         childNode.updateAddress();
+
+
 
         this.children.add(childNode);
 
     }
 
-    protected void insertChild(TreeNode childNode, int index){
+    //This didn't help. It's definitely an addressing issue though. And it has to do with cloning. A deep clone would be so much safer. And even faster depending on how it's being used.
+    public void addChildBlindWithNoAddressUpdate(TreeNode childNode){
+        childNode.parent = this;
+        this.children.add(childNode);
+    }
+
+
+    public void insertChild(TreeNode childNode, int index){
         childNode.parent = this;
         childNode.updateAddress();
 
         this.children.add(index, childNode);
     }
+    public void insertChildNoAddressUpdate(TreeNode childNode, int index){
+        childNode.parent = this;
 
-
+        this.children.add(index, childNode);
+    }
     public int getLevel() {
         if (this.isRoot())
             return 0;
@@ -191,18 +203,11 @@ public class TreeNode implements Comparable<TreeNode> {
             return parent.getLevel() + 1;
     }
 
-//    /**
-//     * @param node
-//     */
-//    private void registerChildForSearch(TreeNode node) {
-//        elementsIndex.add(node);
-//        if (parent != null)
-//            parent.registerChildForSearch(node); //TODO: Why do this?
-//    }
+
 
     @Override
     public java.lang.String toString() {
-        return name != null ? name.toString() : "[name null]";
+        return title != null ? title.toString() : "[title null]";
     }
 
     /**
@@ -215,50 +220,14 @@ public class TreeNode implements Comparable<TreeNode> {
 
         int index = binarySearch(specifiedChild);
 
-        if(index < 0)
+        if (index < 0)
             return null;
 
         return children.get(index);
-
-//        TreeNode tmp = getContains(specifiedChild);
-//
-//        for (TreeNode child : children) {
-//            if (child.equals(tmp)) {
-//                return child;
-//            }
-//
-//        }
-//        return null;
     }
 
-//    /**
-//     *
-//     * Checks if current node contains specified node inside children.
-//     *
-//     * @param node
-//     * @return TreeNode<String>
-//     */
-//    private TreeNode getContains(String node) {
-//        for (TreeNode child : children) {
-//            if (shallowEquals(child, node)) {
-//                return child;
-//            }
-//        }
-//        return null;
-//    }
 
-    /**
-     * equals compares name only, and ignores all other attributes.
-     *
-     * @param nodeA
-     * @param nodeB
-     * @return
-     */
-    public boolean shallowEquals(TreeNode nodeA, String nodeB) {
-        Boolean result = nodeA.name.equals(nodeB);
-//		System.out.println("shallowEquals Result: " + result);
-        return result;
-    }
+
 
     /**
      * TODO: rewrite using hash
@@ -268,6 +237,12 @@ public class TreeNode implements Comparable<TreeNode> {
      * @return
      */
     public boolean containsAll(String term) {
+
+        //TODO REMOVE THIS:
+//        if(getTitle().equals(term)){
+//            return true;
+//        }
+
 
         //First, check its immediate children for contains.
         if(contains(term))
@@ -280,15 +255,6 @@ public class TreeNode implements Comparable<TreeNode> {
                 return tmp;
         }
         return false;
-
-//        for (TreeNode child : children) {
-//            if (shallowEquals(child, term))
-//                return true;
-//            boolean temp = this.getChild(child.getName()).containsAll(term);
-//            if(temp)
-//                return temp;
-//        }
-//        return false;
     }
 
 
@@ -315,13 +281,13 @@ public class TreeNode implements Comparable<TreeNode> {
         int middle = 0;
         while(high >= low) {
             middle = (low + high) / 2;
-            if( children.get(middle).getName().equals(nodeName) ) {
+            if( children.get(middle).getTitle().equals(nodeName) ) {
                 return middle;
             }
-            if( children.get(middle).getName().compareTo(nodeName) < 0 ) {
+            if( children.get(middle).getTitle().compareTo(nodeName) < 0 ) {
                 low = middle + 1;
             }
-            if( children.get(middle).getName().compareTo(nodeName) > 0) {
+            if( children.get(middle).getTitle().compareTo(nodeName) > 0) {
                 high = middle - 1;
             }
         }
@@ -369,6 +335,7 @@ public class TreeNode implements Comparable<TreeNode> {
 //    protected void setParent(TreeNode parent) {
 //        this.parent = parent;
 //    }
+
 
 
 }
