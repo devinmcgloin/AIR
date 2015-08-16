@@ -49,9 +49,8 @@ public final class LDATA {
      * @return
      */
     public static boolean validateP(NBN node, Expression expression){
-        //TODO change this to do simple search first, then try overflow search if needed.
         String value = Noun.simpleSearch(node, expression.getType());
-        if(value.startsWith("^")){
+        if(value == null){
             return false;
         }else if(ldataP(value)){
             return numValidateP(expression, value);

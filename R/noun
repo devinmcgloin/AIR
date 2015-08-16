@@ -1,2 +1,19 @@
 bmw
-    ^has
+    ^logicalChildren
+    ^logicalParents
+        car
+    roof
+    spoiler
+    wheel
+        bmw^wheel
+bmw^wheel
+    NumOf
+        4
+    NumberOf
+        4
+car
+    ^logicalChildren
+        bmw
+    roof
+    spoiler
+    wheel
