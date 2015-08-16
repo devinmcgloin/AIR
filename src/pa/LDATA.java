@@ -49,7 +49,7 @@ public final class LDATA {
      * @return
      */
     public static boolean validateP(NBN node, Expression expression){
-        String value = Noun.nonCarrotSearch(node, expression.getType());
+        String value = Noun.simpleSearch(node, expression.getType());
         if(value == null){
             return false;
         }else if(ldataP(value)){

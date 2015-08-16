@@ -96,7 +96,7 @@ public final class Noun {
         return null;
     }
 
-    public static String nonCarrotSearch(NBN node, String key){
+    public static String simpleSearch(NBN node, String key){
         //Have to make sure it accounts for overflow.
 
         if(node == null)
@@ -170,7 +170,7 @@ public final class Noun {
         for( String k: keys ){
             if(k.startsWith("^"))
                 continue;
-            String value =  nonCarrotSearch(node, k);
+            String value =  simpleSearch(node, k);
             if(value.contains("+")){
                 tmpOF.add(value);
             }
@@ -182,7 +182,7 @@ public final class Noun {
         //Search the overflown nodes for the key.
         for( String OFTitle :tmpOF ){
             NBN tmp  = PA.getNoun(OFTitle);
-            String val = nonCarrotSearch(tmp, key);
+            String val = simpleSearch(tmp, key);
             if( !val.startsWith("^") ){
                 //Found a valid value for the key!
                 OFlows.add(tmp);
