@@ -307,6 +307,19 @@ public final class PA {
         return null;
     }
 
+    public static NBN createNBN(String title){
+        if(!started){
+            startLibraries();
+        }
+
+        //I mirrored the logic you used in your nounHashSearch method.
+        if(rDBexists("noun")){
+            getRb("noun").add(title, "R/noun/");
+            return getNoun(title);
+        }
+        return null;
+    }
+
     public static LDBN getLDATA(String title){
         if(!started){
             startLibraries();
