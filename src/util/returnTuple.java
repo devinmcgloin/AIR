@@ -6,7 +6,7 @@ package util;
 public final class returnTuple {
     public final Object first;
     public final Object second;
-    public final Object third;
+    public Object third;
 
     public Object getFirst() {
         return first;
