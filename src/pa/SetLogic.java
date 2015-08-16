@@ -145,7 +145,7 @@ public final class SetLogic {
         for(String key: keys){
             x = Noun.add(x, key);
         }
-
+//TODO: eval this to see if it would be better to return both.
         PA.put(y);
 
         return x;

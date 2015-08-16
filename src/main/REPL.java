@@ -85,14 +85,14 @@ public class REPL {
     }
 
     private NBN parseNBN(String N1){
-        System.out.println(N1);
-        System.out.println(Integer.parseInt(N1.replace("@", ""))- 1);
+//        System.out.println(N1);
+//        System.out.println(Integer.parseInt(N1.replace("@", ""))- 1);
         return NBNnodes.get(Integer.parseInt(N1.replace("@", "")) - 1);
     }
 
     private LDBN parseLDBN(String L1){
-        System.out.println("" + L1.charAt(1));
-        return LDBNnodes.get(Integer.getInteger("" + L1.charAt(1)) - 1);
+//        System.out.println("" + L1.charAt(1));
+        return LDBNnodes.get(Integer.parseInt(L1.replace("#", "")) - 1);
     }
 
     private ArrayList<NBN> parseArrayNBN(String array){

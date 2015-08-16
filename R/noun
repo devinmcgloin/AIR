@@ -2,6 +2,7 @@ bmw
     ^logicalChildren
     ^logicalParents
         car
+    engine
     roof
     spoiler
     wheel
@@ -14,6 +15,10 @@ bmw^wheel
 car
     ^logicalChildren
         bmw
+    door
+        4
+    engine
     roof
     spoiler
     wheel
+        4
