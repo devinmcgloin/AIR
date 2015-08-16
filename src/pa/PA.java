@@ -105,10 +105,6 @@ public final class PA {
         if(!started){
             startLibraries();
         }
-        ArrayList<NBN> nodes = SetLogic.genSet("city`post office, population`length <= 100 ft");
-        for(NBN node : nodes){
-            System.out.println(node.getTitle());
-        }
 
 
     }
@@ -303,7 +299,10 @@ public final class PA {
         if(rDBexists("noun")){
             TreeNode node = getRb("noun").get("R/noun/" + title);
             NBN nounBase = new NBN(node);
-            return nounBase;
+            if(nounBase.getTitle().equals(title))
+                return nounBase;
+            else
+                return null;
         }
         return null;
     }
@@ -317,7 +316,10 @@ public final class PA {
         if(rDBexists("ldata")){
             TreeNode node = getRb("ldata").get("R/ldata/" + title);
             LDBN ldataBase = new LDBN(node);
-            return ldataBase;
+            if(ldataBase.getTitle().equals(title))
+                return ldataBase;
+            else
+                return null;
         }
         return null;
     }

@@ -49,8 +49,9 @@ public final class LDATA {
      * @return
      */
     public static boolean validateP(NBN node, Expression expression){
-        String value = Noun.nonCarrotSearch(node, expression.getType());
-        if(value == null){
+        //TODO change this to do simple search first, then try overflow search if needed.
+        String value = Noun.simpleSearch(node, expression.getType());
+        if(value.startsWith("^")){
             return false;
         }else if(ldataP(value)){
             return numValidateP(expression, value);
@@ -65,8 +66,7 @@ public final class LDATA {
 
     /**
      *
-     * TODO: Need to deal with infinity here
-     * TODO: Need to deal with no units here. EG counts
+     *
      * Deals with conversion for ordered types: Counts and measurements
      * Verifies that the val is acceptable given the expression.
      * @param expression
@@ -121,12 +121,15 @@ public final class LDATA {
 
     /**
      * Takes the unit and returns the ldata node associated with it
-     * TODO QA calling get on the returned values without checking. Alternative is using get units on returned ldbns
      * @param value
      * @return
      */
     public static LDBN getType(String value) {
-        return PA.ldataHashSearch(value.split(" ")[1]).get(0);
+        ArrayList<LDBN> nodes = PA.ldataHashSearch(value.split(" ")[1]);
+        if( nodes != null)
+            return nodes.get(0);
+        else
+            return null;
     }
 
     /**
@@ -140,9 +143,9 @@ public final class LDATA {
             return true;
         }else if(getType(type.split(" ")[1]) != null){
             return true;
-        }else{
-            return false;
-        }
+        }else if(isNumeric(type)){
+            return true;
+        }else return false;
     }
 
     /**

@@ -40,6 +40,10 @@ public final class NBN {
         return TN.getTitle();
     }
 
+    public String toString() {
+        return TN.getTitle();
+    }
+
     public ArrayList<String> getKeys() {
         return TN.getChildrenString();
     }

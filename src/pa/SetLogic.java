@@ -13,9 +13,7 @@ import java.util.Iterator;
  * Created by devinmcgloin on 6/3/15.
  * Set logic needs to create sets of like information
  * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and get all of its logical children. (Ideally)
- * TODO: Value to deal with minimum search, right now that would cause an array out of bounds error on line 46-47.
- * TODO: Implement range filtering.
- * TODO: Implement filtering.
+ * TODO: Implement or filtering.
  */
 public final class SetLogic {
 

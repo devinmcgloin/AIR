@@ -18,12 +18,12 @@ public final class ExecutionFlow {
 
     public ExecutionFlow(Method method){
         this.method = method;
-        argTypes = method.getTypeParameters();
+        argTypes = method.getParameterTypes();
         appliedP = new boolean[argTypes.length];
         arguments = new Object[argTypes.length];
     }
 
-    public void invoke(){
+    public ExecutionFlow invoke(){
         try {
             if (argTypes.length == 1) {
                 result = method.invoke(null, arguments[0]);
@@ -46,11 +46,14 @@ public final class ExecutionFlow {
         }catch(InvocationTargetException e){
             System.out.println("EF: Invocation Target Exception");
         }
+        return this;
     }
 
     public void applyArgument(Object argument){
         for(int i = 0; i < argTypes.length; i++){
-            if(argTypes[i].equals(argument)){
+            System.out.println(argument.getClass().getTypeName());
+            System.out.println(argTypes[i].getTypeName());
+            if(argTypes[i].getTypeName().equals(argument.getClass().getTypeName())){
                 arguments[i] = argument;
                 appliedP[i] = true;
                 break;
@@ -69,5 +72,13 @@ public final class ExecutionFlow {
 
     public boolean completedP(){
         return completedP;
+    }
+
+    public boolean appliedP(){
+        for (boolean apply : appliedP){
+            if(!apply)
+                return false;
+        }
+        return true;
     }
 }

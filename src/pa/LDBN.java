@@ -32,6 +32,13 @@ public final class LDBN {
         }
     }
 
+    public String toString(){
+        return BN.getTitle();
+    }
+
+    public String getTitle(){
+        return BN.getTitle();
+    }
     /**
      *
      * @param unitFrom
