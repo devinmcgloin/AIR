@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * comment to push
  * Created by Blazej on 8/15/2015.
  */
 public final class Comparison {
