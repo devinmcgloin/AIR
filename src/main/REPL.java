@@ -26,7 +26,7 @@ public class REPL {
             Class execution = Class.forName(className);
             Method[] methods = execution.getMethods();
             for(Method method : methods){
-                if(method.getName().equals(methodName)){
+                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
                     for(String id : argumentID){
                         if(id.startsWith("@")){
