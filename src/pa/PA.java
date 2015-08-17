@@ -3,6 +3,7 @@ package pa;
 import r.TreeNode;
 import r.R;
 import r.TreeNodeBase;
+import util.Record;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -109,11 +110,18 @@ public final class PA {
 
     }
 
+    public static void put(NBN node){
+        put(node.getBaseNode(), "noun");
+    }
+
+    public static void put(LDBN node){
+        put(node.getBaseNode(), "ldata");
+    }
     /**
      * TODO implement log walker.
      * @param node
      */
-    public static void put(NBN node){
+    public static void put(BaseNode node, String db){
 
         if(!started){
             startLibraries();
@@ -125,13 +133,13 @@ public final class PA {
         //-then continue the regular adding methods PA has.
 
         //Check if node already exists in DB, if not, add it. Then continue regular put.
-        TreeNode x = getRb("noun").get("R/noun/" + node.getTitle());
+        TreeNode x = getRb(db).get("R/" + db + "/" + node.getTitle());
         if( !x.getTitle().equals(node.getTitle()) ){
-            getRb("noun").add(node.getTitle(), "R/noun/" + node.getTitle());
+            getRb(db).add(node.getTitle(), "R/" + db + "/" + node.getTitle());
         }
 
 
-        for(NBN.Record record : node.getRecord()){
+        for(Record record : node.getRecord()){
 
            //TreeNode k = getRb("noun").get("R/");
 //            for(String name: k.getChildrenString()){
@@ -140,14 +148,14 @@ public final class PA {
 //            System.out.println(record);
 
             if(record.getOperation().equals("add")){
-                if(rDBexists("noun")){
+                if(rDBexists(db)){
                     if(record.getVal() == null ){
                         //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
                         //System.out.println("\n\nyup\n\n");
-                        getRb("noun").add(record.getKey(), "R/noun/" + node.getTitle() );
+                        getRb(db).add(record.getKey(), "R/" + db + "/" + node.getTitle() );
                     }else{
-                        getRb("noun").add(record.getKey(), "R/noun/" + node.getTitle() );
-                        getRb("noun").add(record.getVal(), "R/noun/" + node.getTitle() + "/" + record.getKey() );
+                        getRb(db).add(record.getKey(),"R/" + db + "/" + node.getTitle() );
+                        getRb(db).add(record.getVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey() );
 
                     }
                     //HOW R'S ADD WORKS:
@@ -158,19 +166,19 @@ public final class PA {
 //                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() );
                 }
             }else if(record.getOperation().equals("rm")) {
-                if(rDBexists("noun")){
+                if(rDBexists(db)){
                     if(record.getVal() == null ){
-                        getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
+                        getRb(db).del(record.getKey(), "R/" + db + "/" + node.getTitle());
                     }else{
                         //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
-                        getRb("noun").del(record.getVal(), "R/noun/" + node.getTitle() + "/" + record.getKey());
+                        getRb(db).del(record.getVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
                     }
                 }
             }
             else if(record.getOperation().equals("update")){
-                if(rDBexists("noun")){
-                    getRb("noun").del(record.getVal(), "R/noun/" + node.getTitle() + "/" + record.getKey());
-                    getRb("noun").add(record.getNewVal(), "R/noun/" + node.getTitle() + "/" + record.getKey());
+                if(rDBexists(db)){
+                    getRb(db).del(record.getVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
+                    getRb(db).add(record.getNewVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
                 }
             }else{
                 System.out.println("Record: " + record.toString() + "\n Is not a valid record");
@@ -307,6 +315,11 @@ public final class PA {
         return null;
     }
 
+    /**
+     * TODO may be good to automatically add all the ^ headers that NBN's normally have
+     * @param title
+     * @return
+     */
     public static NBN createNBN(String title){
         if(!started){
             startLibraries();
@@ -333,6 +346,19 @@ public final class PA {
                 return ldataBase;
             else
                 return null;
+        }
+        return null;
+    }
+
+    public static LDBN createLDBN(String title){
+        if(!started){
+            startLibraries();
+        }
+
+        //I mirrored the logic you used in your nounHashSearch method.
+        if(rDBexists("ldata")){
+            getRb("ldata").add(title, "R/ldata/");
+            return getLDATA(title);
         }
         return null;
     }

@@ -1,6 +1,8 @@
 package pa;
 
 
+import util.Expression;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public final class SetLogic {
     private SetLogic(){}
 
 
-    public static ArrayList<NBN> filter(ArrayList<NBN> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<LDATA.Expression> LDATAConditions){
+    public static ArrayList<NBN> filter(ArrayList<NBN> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Expression> LDATAConditions){
         nodes = isFilter(nodes, isConditions);
         nodes = hasFilter(nodes, hasConditions);
         nodes = LDATAFilter(nodes, LDATAConditions);
@@ -78,16 +80,16 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, ArrayList<LDATA.Expression> LDATAConditions){
+    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, ArrayList<Expression> LDATAConditions){
         //Is filter
-        for(LDATA.Expression term : LDATAConditions) {
+        for(Expression term : LDATAConditions) {
             nodes = LDATAFilter(nodes, term);
         }
 
         return nodes;
     }
 
-    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, LDATA.Expression LDATACondition){
+    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, Expression LDATACondition){
         Iterator<NBN> iterator = nodes.iterator();
 
         while (iterator.hasNext()){

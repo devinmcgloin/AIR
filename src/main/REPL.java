@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Blazej on 6/17/2015.
+ * Created by devinmcgloin on 8/17/2015.
+ * TODO currently repl only works for static library methods in which the parameters are explecit. You cannot call class methods on the objects of their class.
  */
 public class REPL {
     ArrayList<NBN> NBNnodes = new ArrayList<>();
@@ -157,7 +158,6 @@ public class REPL {
         if(flow != null && flow.getResult() != null) {
             Type resultType = flow.getResult().getClass();
             System.out.println(resultType.getTypeName());
-            System.out.println("NBN");
             if (resultType.getTypeName().equals("pa.NBN")) {
                 replace((NBN)flow.getResult());
             } else if (resultType.getTypeName().equals("pa.LDBN")) {

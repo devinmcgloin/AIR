@@ -71,21 +71,6 @@ public final class Noun {
         return node.update(key, oldVal, newVal);
     }
 
-    public static NBN add(NBN node,ArrayList<String> keys, ArrayList<String> vals){
-        return node.batchAdd(keys, vals);
-    }
-
-    public static NBN rm(NBN node, ArrayList<String> keys){
-        return node.batchRM(keys);
-    }
-
-    public static NBN rm(NBN node, ArrayList<String> keys, ArrayList<String> vals ){
-        return node.batchRM(keys, vals);
-    }
-
-    public static NBN update(NBN node, ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals){
-        return node.batchUpdate(keys, oldVals, newVals);
-    }
     public static boolean nounP(String value){
         if(PA.getNoun(value) != null)
             return true;
@@ -176,9 +161,6 @@ public final class Noun {
                 tmpOF.add(value);
             }
         }
-
-
-
 
         //Search the overflown nodes for the key.
         for( String OFTitle :tmpOF ){
