@@ -86,7 +86,6 @@ public class BaseNode {
 
         add(newNode, key);
 
-        //TODO Here incorp search
         return new BaseNode(newNode, copyRecordAddContent(this.record, new Record("add", key)));
     }
 
@@ -102,7 +101,6 @@ public class BaseNode {
         TreeNode newNode = copyNode(TN);
 
         add(newNode, Key, Val);
-        //TODO Here incorp search
         return new BaseNode(newNode, copyRecordAddContent(this.record, new Record("add", Key, Val)));
     }
 
@@ -114,7 +112,6 @@ public class BaseNode {
     public BaseNode rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
-        //TODO Here incorp search
         return new BaseNode(newNode, copyRecordAddContent(this.record, new Record("rm", Key)));
     }
 
@@ -127,7 +124,6 @@ public class BaseNode {
     public BaseNode rm(String Key, String Val) {
         TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
-        //TODO Here incorp search
         return new BaseNode(newNode, copyRecordAddContent(record, new Record("rm", Key, Val)));
     }
 
@@ -143,7 +139,6 @@ public class BaseNode {
         TreeNode newNode = copyNode(TN);
 
         update(newNode, key, oldVal, newVal);
-        //TODO Here incorp search
         return new BaseNode(newNode, copyRecordAddContent(record, new Record("update", key, oldVal, newVal)));
     }
 
@@ -158,7 +153,6 @@ public class BaseNode {
     public BaseNode batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
-        //TODO Here incorp search
 
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
@@ -176,7 +170,6 @@ public class BaseNode {
     public BaseNode batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
-        //TODO Here incorp search
 
         for (String key : keys) {
             removeChild(newNode, key);
@@ -194,7 +187,6 @@ public class BaseNode {
     public BaseNode batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
-        //TODO Here incorp search
 
 
         for (int i = 0; i < keys.size(); i++) {
@@ -216,7 +208,6 @@ public class BaseNode {
     public BaseNode batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
-        //TODO Here incorp search
 
 
         for (int i = 0; i < keys.size(); i++) {

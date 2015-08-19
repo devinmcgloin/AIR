@@ -95,7 +95,7 @@ public final class Noun {
         ArrayList<String> x = Noun.get(node, key);
         if(x == null){
             return "^No Value"; //if no value, try tracing up to logical parents to get a spread of likelihood.
-            //(best guess search)
+            //TODO (best guess search)
         }
         else{
             return x.get(0);
@@ -149,8 +149,8 @@ public final class Noun {
     public static ArrayList<NBN> overflowSearch(NBN node, String key){
         //Couldn't find Value, must account for overflow.
         ArrayList<String> keys = Noun.getKeys(node);
-        ArrayList<String> tmpOF = new ArrayList<String>();
-        ArrayList<NBN> OFlows = new ArrayList<NBN>();
+        ArrayList<String> tmpOF = new ArrayList<>();
+        ArrayList<NBN> OFlows = new ArrayList<>();
 
         //Look into all current keys for overflow nodes
         for( String k: keys ){

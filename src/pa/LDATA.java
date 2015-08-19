@@ -64,6 +64,10 @@ public final class LDATA {
         }
     }
 
+    public static boolean validateP(NBN node, String expression){
+        return validateP(node, Reader.parseExpression(expression));
+    }
+
     /**
      *
      *
