@@ -3,6 +3,7 @@ bmw
     ^logicalParents
         car
     engine
+    hatch
     roof
     spoiler
     wheel

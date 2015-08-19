@@ -36,7 +36,9 @@ public class REPL {
             Class execution = Class.forName(className);
             Method[] methods = execution.getMethods();
             for(Method method : methods){
-                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
+                System.out.println(method.getName() + " == " + methodName );
+                System.out.println(method.getGenericParameterTypes().length + " == " + argumentID.size() );
+                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size() && matchTypes(method, argumentID)){
                     ExecutionFlow flow = new ExecutionFlow(method);
                     for(String id : argumentID){
                         if(id.startsWith(nounID)){
@@ -145,7 +147,7 @@ public class REPL {
 
 
     private NBN parseNBN(String N1){
-        if(N1.length() == 2) {
+        if(N1.length() == 2 && N1.replace(nounID, "").matches("\\d+")) {
             return NBNnodes.get(Integer.parseInt(N1.replace(nounID, "")) - 1);
         }else{
             for(NBN node : NBNnodes){
@@ -160,7 +162,7 @@ public class REPL {
     }
 
     private LDBN parseLDBN(String L1){
-        if(L1.length() == 2) {
+        if(L1.length() == 2 && L1.replace(ldataID, "").matches("\\d+")) {
             return LDBNnodes.get(Integer.parseInt(L1.replace(ldataID, "")) - 1);
         }else{
             for(LDBN node : LDBNnodes){
@@ -230,8 +232,8 @@ public class REPL {
 
     public void cycle(){
         System.out.print("\n\n\n\n");
-        System.out.println("NBN::  " + formatNodes(NBNnodes));
-        System.out.println("LDBN:: " + formatNodes(LDBNnodes));
+        System.out.println("NBN::       " + formatNodes(NBNnodes));
+        System.out.println("LDBN::      " + formatNodes(LDBNnodes));
         System.out.print(">>>");
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
@@ -277,5 +279,30 @@ public class REPL {
             }
         }
         LDBNnodes.add(node);
+    }
+
+    private boolean matchTypes(Method m, ArrayList<String> arguments){
+        Type [] genType = m.getGenericParameterTypes();
+        if(genType.length != arguments.size())
+            return false;
+        boolean [] appliedP = new boolean[genType.length];
+        for(int i = 0; i < genType.length; i++){
+            for(String argument : arguments){
+                if(argument.startsWith("@")){
+                    if(genType[i].getTypeName().equals("pa.NBN"))
+                        appliedP[i] = true;
+                }else if(argument.startsWith("#")){
+                    if(genType[i].getTypeName().equals("pa.LDBN"))
+                        appliedP[i] = true;
+                }else if(genType[i].getTypeName().equals("java.lang.String"))
+                    appliedP[i] = true;
+            }
+        }
+
+        for (boolean item : appliedP){
+            if(!item)
+                return false;
+        }
+        return true;
     }
 }
