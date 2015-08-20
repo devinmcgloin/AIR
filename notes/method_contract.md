@@ -4,6 +4,7 @@
 
 #LDATA
 Default return value is true, as to not filter out nodes on accout of improper expressions.
+
 - validateP(LDBN, Value) - Bool
 - validateP(NBN, expression) - Bool
 - convert(Value, unitTo) - converted Val
@@ -29,7 +30,9 @@ Default return value is true, as to not filter out nodes on accout of improper e
 - xLikeY(NBN-A, NBN-B) - Inheritance without the set, you get the keys but no values and are not logical children.
 
 ###Set Logic Methods
+
 Set logic methods can be called with two or more NBN (In which case the function will operate on the set members of that NBN), or they can be called with sets (In which case the functions will operate on the sets themselves.)
+
 - intersection(2 or more NBN)
 - difference(2 or more NBN)
 - union(2 or more NBN)

@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
  *
  *
  * TODO support sets for NBNs
+ * TODO work in parsing for objects with spaces, Non critical.
  *
  * EXAMPLE SYNTAX: add @esb height
  * ARRAYLIST OF LDBN: {#1,#2 , #3} Spaces do not matter
