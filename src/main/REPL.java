@@ -111,9 +111,7 @@ public class REPL {
             for(String term : everythingElse.split(" ")){
                 arguments.add(term);
             }
-
-            returnTuple tuple = new returnTuple(className, methodName, arguments);
-            return tuple;
+            return new returnTuple(className, methodName, arguments);
         }else{
             if(terms[0].equals("add")){
                 if(command.contains(nounID)){
