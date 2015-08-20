@@ -577,7 +577,7 @@ public class GeneralTree {
         int index = current.binarySearch(name);
 
         if (index >= 0) {
-            logger.error(String.format("Dimension: %s already exists.\n", name));
+            logger.warn(String.format("Dimension: %s already exists.\n", name));
             return;
         }
         tmp = new TreeNode(name);
