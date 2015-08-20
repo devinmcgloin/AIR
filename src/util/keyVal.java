@@ -30,11 +30,5 @@ public final class keyVal {
         this.val = val;
     }
 
-    public static Object getVal(ArrayList<keyVal> pairs, String key){
-        for(keyVal pair : pairs){
-            if(pair.getKey().equals(key))
-                return pair.getVal();
-        }
-        return null;
-    }
+
 }

@@ -1,6 +1,7 @@
 package funct;
 
 import org.apache.log4j.Logger;
+import util.keyVal;
 
 import java.util.ArrayList;
 
@@ -35,5 +36,14 @@ public class Core {
                 return false;
         }
         return true;
+    }
+
+
+    public static Object getVal(ArrayList<keyVal> pairs, String key){
+        for(keyVal pair : pairs){
+            if(pair.getKey().equals(key))
+                return pair.getVal();
+        }
+        return null;
     }
 }
