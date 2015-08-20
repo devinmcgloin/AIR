@@ -110,6 +110,8 @@ public final class SetLogic {
 
     public static ArrayList<NBN> getSetMembers (NBN node){
 
+        return Noun.getLogicalChildren(node);
+
     }
 
     /**
@@ -118,7 +120,7 @@ public final class SetLogic {
      * @return
      */
     public static ArrayList<NBN> getSets (NBN node){
-
+        return Noun.getLogicalParents(node);
     }
 
     public static boolean xISyP(NBN x, NBN y){
