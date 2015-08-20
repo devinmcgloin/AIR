@@ -108,6 +108,19 @@ public final class SetLogic {
         return nodes;
     }
 
+    public static ArrayList<NBN> getSetMembers (NBN node){
+
+    }
+
+    /**
+     * Returns an arraylist of nodes that can be sent to getsetmembers in order to generate teh full set of those nodes.
+     * @param node
+     * @return
+     */
+    public static ArrayList<NBN> getSets (NBN node){
+
+    }
+
     public static boolean xISyP(NBN x, NBN y){
 
         if(y == null || x == null)
@@ -157,5 +170,105 @@ public final class SetLogic {
         return x;
     }
 
+    public static NBN xLikey(NBN x, NBN y){
+        ArrayList<String> keys = Noun.getKeys(y);
+        for(String key: keys){
+            x = Noun.add(x, key);
+        }
+        //TODO: eval this to see if it would be better to return both.
+        return x;
+    }
+
+    /*
+    TODO How to do comparison of nodes to determine which ones are the same?
+    TODO How to decide which ones get placed in the resulting set?
+     */
+
+    public ArrayList<NBN> intersection(ArrayList<NBN> setA, ArrayList<NBN> setB){
+        ArrayList<NBN> finalSet = new ArrayList<>();
+        for(NBN node : setA){
+            if(memberP(setB, node)){
+                //TODO should merge nodes here.
+                finalSet.add(node);
+            }
+        }
+        return finalSet;
+    }
+
+    public ArrayList<NBN> difference(ArrayList<NBN> setA, ArrayList<NBN> setB){
+        ArrayList<NBN> finalSet = new ArrayList<>();
+
+        //Node from setA is not present in setB
+        for(NBN node : setA){
+            if(!memberP(setB, node)){
+                finalSet.add(node);
+            }
+        }
+        //Node from setB is not present in setA
+        for(NBN node : setB){
+            if(!memberP(setA, node)){
+                finalSet.add(node);
+            }
+        }
+        return finalSet;
+    }
+
+    public ArrayList<NBN> union(ArrayList<NBN> setA, ArrayList<NBN> setB){
+        ArrayList<NBN> finalSet = new ArrayList<>();
+        for(NBN node : setA){
+            if(memberP(setB, node)){
+                //TODO merge
+            }else{
+                finalSet.add(node);
+            }
+        }
+        for(NBN node : setB){
+            if(memberP(setA, node)){
+                //TODO merge
+            }else{
+                finalSet.add(node);
+            }
+        }
+        return finalSet;
+    }
+
+    /**
+     * setA is superset of setB
+     * @param setA
+     * @param setB
+     * @return
+     */
+    public boolean supersetP(ArrayList<NBN> setA, ArrayList<NBN> setB){
+        for(NBN node : setB){
+            if(!memberP(setA, node)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * setA is subset of setB
+     * @param setA
+     * @param setB
+     * @return
+     */
+    public boolean subsetP(ArrayList<NBN> setA, ArrayList<NBN> setB){
+        for(NBN node : setA){
+            if(!memberP(setB, node)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean memberP(ArrayList<NBN> set, NBN node){
+        for(NBN member : set){
+            if(member.getTitle().equals(node.getTitle())){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

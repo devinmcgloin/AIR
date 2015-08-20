@@ -11,7 +11,7 @@ import util.Expression;
  * GENERAL NOTES
  * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * TODO Need to QA everything
- * TODO QA to see if false is the right default return value.
+ * Default return value is true.
  */
 public final class LDATA {
 
@@ -38,7 +38,7 @@ public final class LDATA {
             }
             return true;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -50,7 +50,7 @@ public final class LDATA {
      *      Overflown Node (not an ans, at all) - search takes care of this case.
      *      Blank - Search should also never return a blank value.
      *
-     * TODO: QA with #of parameters.
+     * TODO: QA
      * @param expression
      * @param node
      * @return
@@ -58,7 +58,7 @@ public final class LDATA {
     public static boolean validateP(NBN node, Expression expression){
         String value = Noun.simpleSearch(node, expression.getType());
         if(value == null){
-            return false;
+            return true;
         }else if(ldataP(value)){
             return numValidateP(expression, value);
         }else if(Noun.nounP(value)){
@@ -66,7 +66,7 @@ public final class LDATA {
         }else if(isNumeric(value)){
             return numValidateP(expression, value);
         }else{
-            return false;
+            return true;
         }
     }
 
@@ -76,7 +76,7 @@ public final class LDATA {
             return validateP(node, exp );
         else {
             logger.warn("Invalid Expression");
-            return false;
+            return true;
         }
     }
 
