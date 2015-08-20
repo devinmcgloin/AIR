@@ -15,6 +15,8 @@ import funct.Core.*;
 /**
  * comment to push
  * you push your comment. what are you trying to say ambiguous comment?
+ *
+ * okay now i know
  * Created by Blazej on 8/15/2015.
  */
 public final class Comparison {
