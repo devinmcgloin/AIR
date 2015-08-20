@@ -1,10 +1,9 @@
 package main;
 
-import funct.Useful;
+import funct.Core;
 import pa.*;
 import util.returnTuple;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -60,13 +59,13 @@ public class REPL {
                                 return null;
                         }else if(id.startsWith(setIDopen) && id.contains(nounID)) {
                             ArrayList<NBN> array = parseArrayNBN(id);
-                            if(Useful.checkArray(array))
+                            if(Core.checkArray(array))
                                 flow.applyArgument(array);
                             else
                                 return null;
                         }else if(id.startsWith(setIDopen) && id.contains(ldataID)) {
                             ArrayList<LDBN> array = parseArrayLDBN(id);
-                            if(Useful.checkArray(array))
+                            if(Core.checkArray(array))
                                 flow.applyArgument(array);
                             else
                                 return null;
@@ -85,15 +84,12 @@ public class REPL {
                         logger.error("Method not executed");
                     }
                     break;
-                }else {
-                    logger.error("Method not found...");
-                    logger.error("Desired: " + methodName);
-                    logger.error("  Found: " + method.getName() + "\n");
-
-
                 }
 
             }
+
+            logger.error("Method not found...");
+            logger.error("Desired: " + methodName);
         }catch(ClassNotFoundException e){
             logger.error("Class not found...");
         }
@@ -221,15 +217,8 @@ public class REPL {
         return output;
     }
 
-
-    private void clearTerminal(){
-        for(int i = 0; i < 14; i++){
-            System.out.println();
-        }
-    }
-
     public void cycle(){
-        System.out.print("\n\n\n\n");
+        System.out.println("\n");
         System.out.println("NBN::       " + formatNodes(NBNnodes));
         System.out.println("LDBN::      " + formatNodes(LDBNnodes));
         System.out.print(">>>");

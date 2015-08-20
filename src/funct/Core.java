@@ -1,12 +1,17 @@
 package funct;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 8/20/15.
  * For small utility methods
  */
-public class Useful {
+public class Core {
+
+    static Logger logger = Logger.getLogger(Core.class);
+
 
     public static void println(String s){
         System.out.println(s);

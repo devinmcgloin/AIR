@@ -15,8 +15,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        BasicConfigurator.configure();
-
         logger.info("Entering application.");
 
         REPL repl = new REPL();
@@ -24,8 +22,6 @@ public class Main {
         PA.save();
 
         logger.info("Exiting application.");
-
-
     }
 
 }
