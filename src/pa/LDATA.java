@@ -23,6 +23,29 @@ public final class LDATA {
      */
     private LDATA(){}
 
+    public static int compare(String valA, String valB){
+        String [] valueA = valA.split(" ");
+        String [] valueB = valB.split(" ");
+        if(valueA.length == 2 && valueB.length == 2 && valueA[0].matches("\\d+") && valueB[0].matches("\\d+")){
+            if(valueA[1].equals(valueB[1])){
+                if(Double.valueOf(valueA[0]) == Double.valueOf(valueB[0]))
+                    return 0;
+                else if(Double.valueOf(valueA[0]) < Double.valueOf(valueB[0]))
+                    return -1;
+                else
+                    return 1;
+            }else{
+                String newValB = convert(valB, valueA[1]);
+                if(newValB != null){
+                    return compare(valA, newValB);
+                }
+            }
+        }
+        //TODO returning 0 okay here?
+        return 0;
+
+    }
+
     /**
      *
      * @param node
