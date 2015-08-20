@@ -139,6 +139,8 @@ public class REPL {
                 return parseCommand(command.replace("inherit", "SetLogic.xINHERITy"));
             }else if(terms[0].equals("put")){
                 return parseCommand(command.replace("put", "PA.put"));
+            }else if(terms[0].equals("createnoun")) {
+                return parseCommand(command.replace("createnoun", "PA.createNBN"));
             } else return null;
 
         }
