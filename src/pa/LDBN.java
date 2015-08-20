@@ -1,5 +1,6 @@
 package pa;
 
+import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Expression;
 import util.Record;
@@ -13,6 +14,9 @@ import java.util.List;
 public final class LDBN {
 
     private final BaseNode TN;
+
+    static Logger logger = Logger.getLogger(LDBN.class);
+
 
     public LDBN(BaseNode TN){
         this.TN = TN;
@@ -73,7 +77,7 @@ public final class LDBN {
     public ArrayList<Expression> getValRanges(){
         ArrayList<String> children = TN.get("^value_ranges");
         if(children.size() == 0) {
-            System.out.println("LDBN: GetValRanges: No ranges.");
+            logger.error("LDBN: GetValRanges: No ranges.");
             return null;
         }
         else{

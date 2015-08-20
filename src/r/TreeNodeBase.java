@@ -1,5 +1,7 @@
 package r;
 
+import org.apache.log4j.Logger;
+
 /**
  * This is only a wrapper for a TreeNode so we can use a different "compare" algorithim.
  * These are the firstest nodes that are returned by R. They are from the "BASE" dimension (2).
@@ -23,6 +25,9 @@ public class TreeNodeBase implements Comparable<TreeNodeBase>{
 
     private int rank = 0;
     private TreeNode origin;    //the TreeNode we're wrapping
+
+    static Logger logger = Logger.getLogger(TreeNodeBase.class);
+
 
     TreeNodeBase(TreeNode n){
         origin = n;

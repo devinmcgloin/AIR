@@ -1,5 +1,7 @@
 package pa;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 
 /**
@@ -12,6 +14,8 @@ import java.util.ArrayList;
  * comment to push
  */
 public final class Noun {
+
+    static Logger logger = Logger.getLogger(Noun.class);
 
     /**
      * Don't let anyone instantiate this class.
@@ -115,7 +119,7 @@ public final class Noun {
         for(String title: tmp){
             NBN foo = PA.getNoun(title);
             if(foo == null) {
-                System.out.println("NOUN: Couldn't find node: " + title);
+                logger.error("NOUN: Couldn't find node: " + title);
                 continue;
             }
             parents.add( foo );
@@ -135,7 +139,7 @@ public final class Noun {
         for(String title: tmp){
             NBN foo = PA.getNoun(title);
             if(foo == null) {
-                System.out.println("NOUN: Couldn't find node: " + title);
+                logger.error("NOUN: Couldn't find node: " + title);
                 continue;
             }
             children.add(foo);

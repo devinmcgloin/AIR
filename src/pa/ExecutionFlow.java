@@ -1,5 +1,7 @@
 package pa;
 
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -15,6 +17,9 @@ public final class ExecutionFlow {
     private Object[] arguments;
     private boolean completedP = false;
     private Object result;
+
+
+    static Logger logger = Logger.getLogger(ExecutionFlow.class);
 
     public ExecutionFlow(Method method){
         this.method = method;
@@ -42,17 +47,17 @@ public final class ExecutionFlow {
                 completedP = true;
             }
         }catch(IllegalAccessException e){
-            System.out.println("EF: Illegal Access Exception");
+            logger.error("EF: Illegal Access Exception");
         }catch(InvocationTargetException e){
-            System.out.println("EF: Invocation Target Exception");
+            logger.error("EF: Invocation Target Exception");
         }
         return this;
     }
 
     public void applyArgument(Object argument){
         for(int i = 0; i < argTypes.length; i++){
-//            System.out.println(argument.getClass().getTypeName());
-//            System.out.println(argTypes[i].getTypeName());
+            logger.debug(argument.getClass().getTypeName());
+            logger.debug(argTypes[i].getTypeName());
             if(argTypes[i].getTypeName().equals(argument.getClass().getTypeName()) && !appliedP[i]){
                 arguments[i] = argument;
                 appliedP[i] = true;
@@ -65,7 +70,7 @@ public final class ExecutionFlow {
         if(completedP)
             return result;
         else {
-            System.out.println("Computation not completed.");
+            logger.error("Computation not completed.");
             return null;
         }
     }

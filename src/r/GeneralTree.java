@@ -1,5 +1,7 @@
 package r;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,6 +33,9 @@ public class GeneralTree {
     protected TreeNode tmp;
     protected File rFolder = new File(FILEEXTENSION);
     protected HashBrowns hash;
+
+    static Logger logger = Logger.getLogger(GeneralTree.class);
+
 
 
     protected GeneralTree() {
@@ -83,7 +88,7 @@ public class GeneralTree {
      * SAVE
      */
     protected void exportDB() {
-        System.out.println("export called");
+        logger.info("export called");
         //Go back until we're at Foo.txt
         if (current.isRoot())
             return;
@@ -106,7 +111,7 @@ public class GeneralTree {
             out.write(DBout);
             out.close();
         } catch (Exception e) {
-            System.out.println("You suck at writing to files");
+            logger.fatal("You suck at writing to files");
         }
     }
 
@@ -186,7 +191,7 @@ public class GeneralTree {
         try {
             in = new FileReader(FILEEXTENSION + dbName);
         } catch (FileNotFoundException e) {
-            System.out.println("Invalid database name.");
+            logger.fatal("Invalid database name.");
             return;
         }
 
@@ -262,7 +267,7 @@ public class GeneralTree {
         // System.out.println("address: "+address);
 
         if (!address.contains("/")) {
-            System.out.println("GenTree -- Incorrect format for address: " + address);
+            logger.error("GenTree -- Incorrect format for address: " + address);
             return current;
         }
         //We are sending a command to "R/" directory.
@@ -272,7 +277,7 @@ public class GeneralTree {
         }
         String dbName = address.split("/")[1];
         if (dbName.equals("") || dbName.equals("\n")) {
-            System.out.println("No DB Name provided.");
+            logger.error("No DB Name provided.");
             return current;
         }
 
@@ -286,7 +291,7 @@ public class GeneralTree {
         }
         //NO DB loaded and asking for incorrect DB
         if (!current.contains(dbName) && current.isRoot()) {
-            System.out.println("No DB by name: " + dbName);
+            logger.error("No DB by name: " + dbName);
             return current;
         }
 
@@ -300,7 +305,7 @@ public class GeneralTree {
             }
             //Now check if that DB exists
             if (!current.contains(dbName) && current.isRoot()) {
-                System.out.println("No DB by name: " + dbName);
+                logger.error("No DB by name: " + dbName);
                 return current;
             }
             //Now load db of the address we were given.
@@ -357,14 +362,14 @@ public class GeneralTree {
         }
         //Check if that name is already being used. (Implies you must rename the node you want to add first)...
         if (current.getParent().contains(name)) {
-            System.out.printf("Add Parent Dimension: %s already exists.\n", name);
+            logger.debug("Add Parent Dimension: " + name + " already exists.\n");
             return;
         }
-        System.out.println("Hey this is where we are: " + current.getAddress());
+        logger.debug("Hey this is where we are: " + current.getAddress());
         //Create the new node
         tmp = new TreeNode(name);
         current.insertParent(tmp);
-        System.out.println("Hey this is where we are: " + current.getAddress());
+        logger.debug("Hey this is where we are: " + current.getAddress());
 
         hash.add(tmp);
     }
@@ -554,7 +559,7 @@ public class GeneralTree {
         if (current.getParent() != null) {
             //Check if backing out of DB (triggers save)
             if (current.getParent().isRoot()) {
-                System.out.println("goBack() -- > Is this why exporting twice? ");
+                logger.debug("goBack() -- > Is this why exporting twice? ");
                 exportDB();
             }
             current = current.getParent();
@@ -572,7 +577,7 @@ public class GeneralTree {
         int index = current.binarySearch(name);
 
         if (index >= 0) {
-            System.out.printf("Dimension: %s already exists.\n", name);
+            logger.error(String.format("Dimension: %s already exists.\n", name));
             return;
         }
         tmp = new TreeNode(name);

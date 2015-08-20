@@ -1,5 +1,6 @@
 package main;
 
+import funct.Useful;
 import pa.*;
 import util.returnTuple;
 
@@ -8,6 +9,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import org.apache.log4j.Logger;
 
 /**
  * Created by @devinmcgloin on 8/17/2015.
@@ -28,6 +31,8 @@ public class REPL {
     private final String setIDopen = "{";
     private final String setIDclose = "}";
 
+    static Logger logger = Logger.getLogger(REPL.class);
+
 
     public REPL(){}
 
@@ -36,8 +41,8 @@ public class REPL {
             Class execution = Class.forName(className);
             Method[] methods = execution.getMethods();
             for(Method method : methods){
-                System.out.println(method.getName() + " == " + methodName );
-                System.out.println(method.getGenericParameterTypes().length + " == " + argumentID.size() );
+                logger.debug(method.getName() + " == " + methodName);
+                logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
                 if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size() && matchTypes(method, argumentID)){
                     ExecutionFlow flow = new ExecutionFlow(method);
                     for(String id : argumentID){
@@ -55,13 +60,13 @@ public class REPL {
                                 return null;
                         }else if(id.startsWith(setIDopen) && id.contains(nounID)) {
                             ArrayList<NBN> array = parseArrayNBN(id);
-                            if(checkArray(array))
+                            if(Useful.checkArray(array))
                                 flow.applyArgument(array);
                             else
                                 return null;
                         }else if(id.startsWith(setIDopen) && id.contains(ldataID)) {
                             ArrayList<LDBN> array = parseArrayLDBN(id);
-                            if(checkArray(array))
+                            if(Useful.checkArray(array))
                                 flow.applyArgument(array);
                             else
                                 return null;
@@ -74,23 +79,23 @@ public class REPL {
                     if(flow.appliedP())
                         flow.invoke();
                     if(flow.completedP()){
-                        System.out.println("Method executed");
+                        logger.info("Method executed");
                         return flow;
                     }else{
-                        System.out.println("Method not executed");
+                        logger.error("Method not executed");
                     }
                     break;
                 }else {
-//                    System.out.println("Method not found...");
-//                    System.out.println("Desired: " + methodName);
-//                    System.out.println("  Found: " + method.getName() + "\n");
+                    logger.error("Method not found...");
+                    logger.error("Desired: " + methodName);
+                    logger.error("  Found: " + method.getName() + "\n");
 
 
                 }
 
             }
         }catch(ClassNotFoundException e){
-            System.out.println("Class not found...");
+            logger.error("Class not found...");
         }
         return null;
     }
@@ -196,13 +201,6 @@ public class REPL {
         return ldbns;
     }
 
-    private <T> boolean checkArray(ArrayList<T> terms){
-        for(Object item : terms ){
-            if(item == null)
-                return false;
-        }
-        return true;
-    }
 
     private ArrayList<String> parseArrayString(String array){
         array = array.replace(setIDopen, "");

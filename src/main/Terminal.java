@@ -1,5 +1,6 @@
 package main;
 
+import org.apache.log4j.Logger;
 import pa.PA;
 import r.TreeNode;
 
@@ -10,6 +11,8 @@ import java.util.ArrayList;
  * Terminal is a command parser for the time being.
  */
 public final class Terminal {
+
+    static Logger logger = Logger.getLogger(Terminal.class);
 
 
     public String getHelp() {

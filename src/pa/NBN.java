@@ -1,5 +1,6 @@
 package pa;
 
+import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Record;
 
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 public final class NBN{
 
     private final BaseNode TN;
+
+    static Logger logger = Logger.getLogger(NBN.class);
+
 
     public NBN(TreeNode TN) {
         //Do a full copy on instantiation.

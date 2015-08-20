@@ -1,5 +1,7 @@
 package pa;
 
+import org.apache.log4j.Logger;
+
 /**
  * Created by devinmcgloin on 6/6/15.
  * Controls TreeNodeHash and is present in R.
@@ -36,5 +38,8 @@ package pa;
  * Pull out key value pair related to query.
  */
 public final class Search {
+
+    static Logger logger = Logger.getLogger(Search.class);
+
 
 }

@@ -1,5 +1,7 @@
 package r;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +14,9 @@ public class HashBrowns {
     protected HashMap<String, ArrayList<String> > map;
     protected String name = "";
     protected String address = "";
+
+    static Logger logger = Logger.getLogger(HashBrowns.class);
+
 
     HashBrowns(){
         map = new HashMap<String, ArrayList<String> >();
@@ -140,7 +145,7 @@ public class HashBrowns {
 
         //Then it'll have to check if that add entry already exits. Although it never should.
         if(addresses.contains(name) ){
-            System.out.println("HashBrowns: addresses already contained: "+ name);
+            logger.debug("HashBrowns: addresses already contained: "+ name);
             //TODO: See like ^ should that be an error. There should be one larger error log for AIR.
             return false;
         }
@@ -162,7 +167,7 @@ public class HashBrowns {
         if( map.get(name) != null){
             addresses = map.get(name);
         }
-        System.out.println("Trying hash del for first time! Only on failed search.");
+        logger.debug("Trying hash del for first time! Only on failed search.");
         addresses.remove(address);
 
         //Replace the old hash key (name) with the update list of addresses

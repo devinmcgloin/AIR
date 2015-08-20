@@ -1,6 +1,8 @@
 package pa;
 
 import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
 import util.Expression;
 
 /**
@@ -10,6 +12,8 @@ import util.Expression;
  * TODO Need to QA everything
  */
 public final class LDATA {
+
+    static Logger logger = Logger.getLogger(LDATA.class);
 
 
     /**
@@ -175,7 +179,7 @@ public final class LDATA {
         else if(operator.equals(">=")){
             return Double.valueOf(nodeVal) >= Double.valueOf(qualifier);
         }
-        System.out.println("LDATA: SwitchBoard. Invalid operator.");
+        logger.error("LDATA: SwitchBoard. Invalid operator.");
         return false;
     }
 

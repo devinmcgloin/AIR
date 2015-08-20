@@ -1,5 +1,7 @@
 package pa;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,9 @@ import java.util.List;
  * Created by Blazej on 8/15/2015.
  */
 public final class Comparison {
+
+    static Logger logger = Logger.getLogger(Comparison.class);
+
 
 //    public static void getDiff(NBN a, NBN b){
 //        //Might be able to pass in "fidelity" level for OF?
@@ -34,7 +39,7 @@ public final class Comparison {
 
         LDBN ldbn = PA.getLDATA(key);
         if(ldbn.equals(null)){
-            System.out.println("Comparison: You shit outta luck");
+            logger.error("Comparison: You shit outta luck");
             return;
         }
 

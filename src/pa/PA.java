@@ -1,5 +1,6 @@
 package pa;
 
+import org.apache.log4j.Logger;
 import r.TreeNode;
 import r.R;
 import r.TreeNodeBase;
@@ -30,6 +31,9 @@ public final class PA {
     protected static File rFolder = new File("./R/");
     protected static ArrayList<R>  rDB = new ArrayList<R>();
     private static boolean started = false;
+
+    static Logger logger = Logger.getLogger(PA.class);
+
 
     private PA(){}
 
@@ -181,7 +185,7 @@ public final class PA {
                     getRb(db).add(record.getNewVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
                 }
             }else{
-                System.out.println("Record: " + record.toString() + "\n Is not a valid record");
+                logger.error("Record: " + record.toString() + "\n Is not a valid record");
             }
         }
 

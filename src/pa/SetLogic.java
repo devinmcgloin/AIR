@@ -1,6 +1,7 @@
 package pa;
 
 
+import org.apache.log4j.Logger;
 import util.Expression;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,6 +20,8 @@ import java.util.Iterator;
  * To implement filter on multiple functions or expressions and take the union of all resulting sets.
  */
 public final class SetLogic {
+
+    static Logger logger = Logger.getLogger(SetLogic.class);
 
     private SetLogic(){}
 

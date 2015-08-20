@@ -1,5 +1,6 @@
 package pa;
 
+import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Record;
 
@@ -12,6 +13,8 @@ public class BaseNode {
 
     private final TreeNode TN;
     private final ArrayList<Record> record;
+
+    static Logger logger = Logger.getLogger(BaseNode.class);
 
 
     public BaseNode(TreeNode TN) {
@@ -314,7 +317,7 @@ public class BaseNode {
         int index = node.binarySearch(value.getTitle());
 
         if (index >= 0) {
-            System.out.printf("Dimension: %s already exists.\n", value.getTitle());
+            logger.error("Dimension: " + value.getTitle() + "already exists.\n");
             return;
         }
 
