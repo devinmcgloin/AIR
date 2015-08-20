@@ -28,7 +28,6 @@ import org.apache.log4j.spi.LoggingEvent;
  * log4j.appender.A1.reset=\u001B[1;37m
  * log4j.appender.A1.stacktrace=\u001B[0;31m
  * log4j.appender.A1.defaultcolor=\u001B[1;37m
-
  *
  * @author peter
  *         Date: Nov 30, 2005
@@ -171,4 +170,3 @@ public class ANSIColorLayout extends PatternLayout {
     }
 
 }
-
