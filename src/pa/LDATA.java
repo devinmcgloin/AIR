@@ -2,6 +2,7 @@ package pa;
 
 import java.util.ArrayList;
 
+import funct.Reader;
 import org.apache.log4j.Logger;
 import util.Expression;
 
@@ -10,6 +11,7 @@ import util.Expression;
  * GENERAL NOTES
  * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * TODO Need to QA everything
+ * TODO QA to see if false is the right default return value.
  */
 public final class LDATA {
 
@@ -69,7 +71,13 @@ public final class LDATA {
     }
 
     public static boolean validateP(NBN node, String expression){
-        return validateP(node, Reader.parseExpression(expression));
+        Expression exp = Reader.parseExpression(expression);
+        if(exp != null)
+            return validateP(node, exp );
+        else {
+            logger.warn("Invalid Expression");
+            return false;
+        }
     }
 
     /**
