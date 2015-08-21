@@ -1,0 +1,1 @@
+We can use the statistics methods to determine what values are unique and display them when asked what a specific node is about.

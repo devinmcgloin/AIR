@@ -36,6 +36,7 @@ hillary clinton
         politician
     ^names
     ^notKey
+        car
     height
         169 cm
     hobbies
@@ -70,6 +71,7 @@ person
     ^names
         person
     ^notKey
+    car
     height
     hobbies
     income

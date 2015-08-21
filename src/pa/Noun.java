@@ -63,10 +63,14 @@ public final class Noun {
     public static NBN add(NBN node, String key){ return node.add(key); }
 
     public static NBN add(NBN node, String key, String val ){
-        return node.add(key, val);
+        if(!validateP(key, val) || !LDATA.validateP(key, val))
+            return node.add(key, val);
+        logger.warn("Value not verified, original node returned.");
+        return node;
     }
 
     public static NBN rm(NBN node, String key){
+        node = Noun.add(node,"^notKey", key);
         return node.rm(key);
     }
 
@@ -83,6 +87,21 @@ public final class Noun {
             return true;
         else
             return false;
+    }
+
+    public static boolean validateP(String key, String val){
+        NBN NBNnode = PA.getNoun(key);
+        if(NBNnode != null){
+            for(NBN node : getLogicalChildren(NBNnode)){
+                for(String name : Noun.getName(node)){
+                    if(name.equals(val)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     public static ArrayList<String> search(NBN node, String key){

@@ -46,6 +46,13 @@ public final class LDATA {
 
     }
 
+    public static boolean validateP(String key, String val){
+        LDBN node = PA.getLDATA(key);
+        if(node != null){
+            return validateP(node, val);
+        }else
+            return false;
+    }
     /**
      *
      * @param node

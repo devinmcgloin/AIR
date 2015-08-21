@@ -164,7 +164,9 @@ public final class SetLogic {
         //Now the child gets all the keys from the parent, with the exception of the carrot headers. (Even though those should be fine...)
         ArrayList<String> keys = Noun.getKeys(y);
         for(String key: keys){
-            x = Noun.add(x, key);
+            if(!x.get("^notKey").contains(key)) {
+                x = Noun.add(x, key);
+            }
         }
 //TODO: eval this to see if it would be better to return both.
         PA.put(y);
