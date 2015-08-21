@@ -35,7 +35,6 @@ public final class LDBN {
     }
 
     /**
-     * TODO Not sure if needed.
      * need to check this before you can just compare the way Im doing it now in LDATA.
      *
      * @return

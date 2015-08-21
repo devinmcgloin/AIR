@@ -9,6 +9,12 @@ import java.util.ArrayList;
  */
 public class MatrixBuilder {
 
+    /**
+     * TODO Naive attempt, need to rewrite
+     * @param nodes
+     * @param attributes
+     * @return
+     */
     public static String [][] genMatrix(ArrayList<NBN> nodes, ArrayList<String> attributes){
         //[rows][Col]
         String [][] matrix = new String [nodes.size()][attributes.size()];

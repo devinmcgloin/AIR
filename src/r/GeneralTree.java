@@ -44,19 +44,21 @@ public class GeneralTree {
         current.setAddress("R");
 
         //Add the possible files it could have. (DBs)
-        //TODO: Could be a null pointer...do i throw an error? jeez. it's such a big program.
-        //maybe we could have an error log for the program as a whole!
-        if (rFolder.length() >= 1) {
-            for (File fileEntry : rFolder.listFiles()) {
-                if (fileEntry.isDirectory()) {
-                    continue;
-                } else {
-                    tmp = new TreeNode(fileEntry.getName());
-                    current.addChildBlind(tmp);
+        if(rFolder.exists()) {
+            if (rFolder.length() >= 1) {
+                for (File fileEntry : rFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        continue;
+                    } else {
+                        tmp = new TreeNode(fileEntry.getName());
+                        current.addChildBlind(tmp);
+                    }
                 }
+                //Sort database nodes so they work with BS.
+                current.sortChildren();
             }
-            //Sort database nodes so they work with BS.
-            current.sortChildren();
+        }else{
+            logger.fatal("R file folder does not exist.");
         }
 
         //Start a new hashmap.
@@ -312,10 +314,9 @@ public class GeneralTree {
             childTraverse(dbName);
             //Check if DB is already in memory. If so, just traverse into it.
             //TODO QA this fix
-            if(current.getChildren() != null) {
-                //We good.
-            } else{
-                loadDB(dbName); //This was where where export doubling.
+            if(current.getChildren() == null) {
+                //This was where where export doubling.
+                loadDB(dbName);
             }
 
 

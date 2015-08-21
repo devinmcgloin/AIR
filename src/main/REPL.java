@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Created by @devinmcgloin on 8/17/2015.
- * TODO currently repl only works for static library methods in which the parameters are explecit. You cannot call class methods on the objects of their class.
+ * TODO currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
  *
  *
  * TODO support sets for NBNs

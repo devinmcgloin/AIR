@@ -47,6 +47,8 @@ public final class LDATA {
     }
 
     public static boolean validateP(String key, String val){
+        if(val.matches("\\d+"))
+            return true;
         LDBN node = PA.getLDATA(key);
         if(node != null){
             return validateP(node, val);
@@ -158,8 +160,20 @@ public final class LDATA {
         double num = Double.valueOf(terms[0].trim());
 
         for(int i = 0; i < conversionSteps.length; i += 2){
-            if(conversionSteps[i].equals("*"))
-                num = num * Double.valueOf(conversionSteps[i+1]);
+            switch (conversionSteps[i]){
+                case "*":
+                    num = num * Double.valueOf(conversionSteps[i+1]);
+                    break;
+                case "/":
+                    num = num / Double.valueOf(conversionSteps[i+1]);
+                    break;
+                case "+":
+                    num = num + Double.valueOf(conversionSteps[i+1]);
+                    break;
+                case "-":
+                    num = num - Double.valueOf(conversionSteps[i+1]);
+                    break;
+            }
         }
 
         return String.valueOf(num) + " " + unitTo;

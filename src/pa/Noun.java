@@ -89,6 +89,12 @@ public final class Noun {
             return false;
     }
 
+    /**
+     * TODO Have to validate from overflown node.
+     * @param key
+     * @param val
+     * @return
+     */
     public static boolean validateP(String key, String val){
         NBN NBNnode = PA.getNoun(key);
         if(NBNnode != null){
@@ -99,7 +105,6 @@ public final class Noun {
                     }
                 }
             }
-            return false;
         }
         return false;
     }

@@ -146,7 +146,6 @@ public class HashBrowns {
         //Then it'll have to check if that add entry already exits. Although it never should.
         if(addresses.contains(name) ){
             logger.debug("HashBrowns: addresses already contained: "+ name);
-            //TODO: See like ^ should that be an error. There should be one larger error log for AIR.
             return false;
         }
 
