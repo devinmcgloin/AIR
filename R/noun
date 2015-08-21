@@ -2,9 +2,12 @@ bmw
     ^logicalChildren
     ^logicalParents
         car
+    brakes
+    door
     engine
     hatch
     roof
+    seat
     spoiler
     wheel
         bmw^wheel
@@ -16,10 +19,75 @@ bmw^wheel
 car
     ^logicalChildren
         bmw
+    brakes
     door
         4
     engine
+    hatch
     roof
+    seat
     spoiler
     wheel
         4
+hillary clinton
+    ^logicalChildren
+    ^logicalParents
+        person
+        politician
+    ^names
+    ^notKey
+    height
+        169 cm
+    hobbies
+    income
+    mass
+    occupation
+        first lady
+        presidential hopeful
+        secretary of state
+    weight
+jeb bush
+    ^logicalChildren
+    ^logicalParents
+        person
+        politician
+    ^names
+        Governor Jeb Bush
+        jeb bush
+    ^notKey
+    height
+    hobbies
+    income
+    mass
+    occupation
+    weight
+person
+    ^logicalChildren
+        hillary clinton
+        jeb bush
+        politician
+    ^logicalParents
+    ^names
+        person
+    ^notKey
+    height
+    hobbies
+    income
+    mass
+    occupation
+    weight
+politician
+    ^logicalChildren
+        hillary clinton
+        jeb bush
+    ^logicalParents
+        person
+    ^names
+        politician
+    ^notKey
+    height
+    hobbies
+    income
+    mass
+    occupation
+    weight

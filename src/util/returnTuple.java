@@ -8,6 +8,13 @@ public final class returnTuple {
     public final Object second;
     public Object third;
 
+    public returnTuple(Object first, Object second, Object third) {
+
+        this.first = first;
+        this.second = second;
+        this.third = third;
+    }
+
     public Object getFirst() {
         return first;
     }
@@ -18,12 +25,5 @@ public final class returnTuple {
 
     public Object getThird() {
         return third;
-    }
-
-    public returnTuple(Object first, Object second, Object third) {
-
-        this.first = first;
-        this.second = second;
-        this.third = third;
     }
 }

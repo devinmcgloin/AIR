@@ -26,10 +26,13 @@ public final class Noun {
         return node.getTitle();
     }
 
+    /**
+     * TODO start adding things by their name, not their title.
+     * @param node
+     * @return
+     */
     public static ArrayList<String> getName(NBN node){
-        ArrayList<String> returnItem = new ArrayList<String>();
-        returnItem.add(node.getTitle());
-        return returnItem;
+        return node.get("^name");
     }
 
     public static ArrayList<String> getKeys(NBN node){

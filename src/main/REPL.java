@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
  *
  *
  * TODO support sets for NBNs
- * TODO work in parsing for objects with spaces, Non critical.
  *
  * EXAMPLE SYNTAX: add @esb height
  * ARRAYLIST OF LDBN: {#1,#2 , #3} Spaces do not matter
@@ -32,7 +31,6 @@ public class REPL {
     private final String setIDclose = "}";
 
     static Logger logger = Logger.getLogger(REPL.class);
-
 
     public REPL(){}
 
@@ -109,40 +107,55 @@ public class REPL {
             String everythingElse = command.substring(command.indexOf(" ") + 1, command.length());
 
             ArrayList<String> arguments = new ArrayList<>();
-            for(String term : everythingElse.split(" ")){
+            for(String term : everythingElse.split(",")){
                 arguments.add(term);
             }
             return new returnTuple(className, methodName, arguments);
         }else{
-            if(terms[0].equals("add")){
-                if(command.contains(nounID)){
-                    return parseCommand(command.replace("add", "Noun.add"));
-                }else if(command.contains(ldataID)){
-                    return parseCommand(command.replace("add", "LDATA.add"));
-                }else return null;
-            }else if(terms[0].equals("remove")){
-                if(command.contains(nounID)){
-                    return parseCommand(command.replace("remove", "Noun.rm"));
-                }else if(command.contains(ldataID)){
-                    return parseCommand(command.replace("remove", "LDATA.rm"));
-                }else return null;
-            }else if(terms[0].equals("update")){
-                if(command.contains(nounID)){
-                    return parseCommand(command.replace("update", "Noun.rm"));
-                }else if(command.contains(ldataID)){
-                    return parseCommand(command.replace("update", "LDATA.rm"));
-                }else return null;
-            }else if(terms[0].equals("getldata")){
-                return parseCommand(command.replace("getldata", "PA.getLDATA"));
-            }else if(terms[0].equals("getnoun")){
-                return parseCommand(command.replace("getnoun", "PA.getNoun"));
-            }else if(terms[0].equals("inherit")){
-                return parseCommand(command.replace("inherit", "SetLogic.xINHERITy"));
-            }else if(terms[0].equals("put")){
-                return parseCommand(command.replace("put", "PA.put"));
-            }else if(terms[0].equals("createnoun")) {
-                return parseCommand(command.replace("createnoun", "PA.createNBN"));
-            } else return null;
+            switch (terms[0]) {
+                case "add":
+                    if (command.contains(nounID)) {
+                        return parseCommand(command.replace("add", "Noun.add"));
+                    } else if (command.contains(ldataID)) {
+                        return parseCommand(command.replace("add", "LDATA.add"));
+                    } else return null;
+                case "remove":
+                    if (command.contains(nounID)) {
+                        return parseCommand(command.replace("remove", "Noun.rm"));
+                    } else if (command.contains(ldataID)) {
+                        return parseCommand(command.replace("remove", "LDATA.rm"));
+                    } else return null;
+                case "update":
+                    if (command.contains(nounID)) {
+                        return parseCommand(command.replace("update", "Noun.rm"));
+                    } else if (command.contains(ldataID)) {
+                        return parseCommand(command.replace("update", "LDATA.rm"));
+                    } else return null;
+                case "getldata":
+                    return parseCommand(command.replace("getldata", "PA.getLDATA"));
+                case "getnoun":
+                    return parseCommand(command.replace("getnoun", "PA.getNoun"));
+                case "inherit":
+                    return parseCommand(command.replace("inherit", "SetLogic.xINHERITy"));
+                case "put":
+                    return parseCommand(command.replace("put", "PA.put"));
+                case "createnoun":
+                    return parseCommand(command.replace("createnoun", "PA.createNBN"));
+                case "get":
+                    if (command.contains(nounID)) {
+                        return parseCommand(command.replace("get", "Noun.get"));
+                    } else if (command.contains(ldataID)) {
+                        return parseCommand(command.replace("get", "LDATA.get"));
+                    } else return null;
+                case "keys":
+                    if (command.contains(nounID)) {
+                        return parseCommand(command.replace("keys", "Noun.getKeys"));
+                    } else if (command.contains(ldataID)) {
+                        return parseCommand(command.replace("keys", "LDATA.getKeys"));
+                    } else return null;
+                default:
+                    return null;
+            }
 
         }
     }

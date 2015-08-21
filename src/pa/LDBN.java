@@ -13,38 +13,39 @@ import java.util.List;
  */
 public final class LDBN {
 
+    static Logger logger = Logger.getLogger(LDBN.class);
     private final BaseNode TN;
 
-    static Logger logger = Logger.getLogger(LDBN.class);
 
-
-    public LDBN(BaseNode TN){
+    public LDBN(BaseNode TN) {
         this.TN = TN;
     }
-    public LDBN(TreeNode TN){
+
+    public LDBN(TreeNode TN) {
         this.TN = new BaseNode(TN);
     }
     //Used in adding more shit it needs to change.
 
-    public LDBN(TreeNode TN, ArrayList<Record> record){
+    public LDBN(TreeNode TN, ArrayList<Record> record) {
         this.TN = new BaseNode(TN, record);
     }
 
-    public BaseNode getBaseNode(){
+    public BaseNode getBaseNode() {
         return TN;
     }
 
     /**
      * TODO Not sure if needed.
      * need to check this before you can just compare the way Im doing it now in LDATA.
+     *
      * @return
      */
-    public String getComp(){
-        if(TN.get("^comparison").contains("ordered")){
+    public String getComp() {
+        if (TN.get("^comparison").contains("ordered")) {
             return "ordered";
-        }else if(TN.get("^comparison").contains("count")){
+        } else if (TN.get("^comparison").contains("count")) {
             return "count";
-        }else{
+        } else {
             //TODO more complex logic containers/Time etc. Dont know how to do yet.
             return "Nothing";
         }
@@ -52,17 +53,16 @@ public final class LDBN {
 
 
     /**
-     *
      * @param unitFrom
      * @param unitTo
      * @return
      */
-    public String getConversion(String unitFrom, String unitTo){
+    public String getConversion(String unitFrom, String unitTo) {
         List<String> conversions = TN.get("^conversions");
 
-        for(String conversion : conversions){
-            String [] types = conversion.split("->");
-            if(types[0].equals(unitFrom) && types[1].equals(unitTo)){
+        for (String conversion : conversions) {
+            String[] types = conversion.split("->");
+            if (types[0].equals(unitFrom) && types[1].equals(unitTo)) {
                 //assumes that there is only one conversion grouping and that it's in the operation postion.
                 return TN.get("^conversions", conversion).get(0);
             }
@@ -71,23 +71,21 @@ public final class LDBN {
     }
 
     /**
-     *
      * @return
      */
-    public ArrayList<Expression> getValRanges(){
+    public ArrayList<Expression> getValRanges() {
         ArrayList<String> children = TN.get("^value_ranges");
-        if(children.size() == 0) {
+        if (children.size() == 0) {
             logger.error("LDBN: GetValRanges: No ranges.");
             return null;
-        }
-        else{
+        } else {
             ArrayList<Expression> expressions = new ArrayList<>();
             //assumes value is always in the operation position and that there is only one.
-            for(String range : children) {
+            for (String range : children) {
                 String[] terms = range.trim().split(" ");
                 // [ 12 - 324 ft ]
-                if(range.startsWith("[") || range.startsWith("(")) {
-                    if(terms.length == 6) {
+                if (range.startsWith("[") || range.startsWith("(")) {
+                    if (terms.length == 6) {
                         //Opening paren
                         if (terms[0].equals("(")) {
                             expressions.add(new Expression(TN.getTitle(), ">", terms[1], terms[4]));
@@ -100,7 +98,7 @@ public final class LDBN {
                         } else if (terms[5].equals("]")) {
                             expressions.add(new Expression(TN.getTitle(), "<=", terms[3], terms[4]));
                         }
-                    }else{
+                    } else {
                         //Opening paren
                         if (terms[0].equals("(")) {
                             expressions.add(new Expression(TN.getTitle(), ">", terms[1], "count"));
@@ -114,11 +112,11 @@ public final class LDBN {
                             expressions.add(new Expression(TN.getTitle(), "<=", terms[3], "count"));
                         }
                     }
-                }else{
-                    if(terms.length == 5)
-                        expressions.add(new Expression(terms[0],terms[1],terms[2], terms[3] ));
+                } else {
+                    if (terms.length == 5)
+                        expressions.add(new Expression(terms[0], terms[1], terms[2], terms[3]));
                     else
-                        expressions.add(new Expression(terms[0],terms[1],terms[2], "count" ));
+                        expressions.add(new Expression(terms[0], terms[1], terms[2], "count"));
                 }
             }
             return expressions;
@@ -128,45 +126,45 @@ public final class LDBN {
     }
 
     /**
-     *
      * @return
      */
-    public ArrayList<String> getUnits(){
+    public ArrayList<String> getUnits() {
         return TN.get("^unit");
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return TN.getTitle();
     }
 
-    public String toString(){
+    public String toString() {
         return TN.toString();
     }
 
-    public ArrayList<String> getKeys(){
+    public ArrayList<String> getKeys() {
         return TN.getKeys();
     }
-    public ArrayList<String> get(String key){
+
+    public ArrayList<String> get(String key) {
         return TN.get(key);
     }
 
-    public ArrayList<String> get(String firstKey, String secondKey){
+    public ArrayList<String> get(String firstKey, String secondKey) {
         return TN.get(firstKey, secondKey);
     }
 
-    public ArrayList<Record> getRecord(){
+    public ArrayList<Record> getRecord() {
         return TN.getRecord();
     }
 
-    public LDBN add(String key){
+    public LDBN add(String key) {
         return new LDBN(TN.add(key));
     }
 
-    public LDBN add(String key, String val){
+    public LDBN add(String key, String val) {
         return new LDBN(TN.add(key, val));
     }
 
-    public LDBN rm(String key){
+    public LDBN rm(String key) {
         return new LDBN(TN.rm(key));
     }
 
@@ -174,10 +172,9 @@ public final class LDBN {
         return new LDBN(TN.rm(key, val));
     }
 
-    public LDBN update(String key, String oldVal, String newVal){
+    public LDBN update(String key, String oldVal, String newVal) {
         return new LDBN(TN.update(key, oldVal, newVal));
     }
-
 
 
 }

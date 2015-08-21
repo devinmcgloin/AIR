@@ -291,6 +291,12 @@ public final class PA {
         return ldataBaseNodes;
     }
 
+    /**
+     * TODO dont know why this is here
+     * @param name
+     * @param filter
+     * @return
+     */
     public static ArrayList<NBN>  getNouns(String name, String filter) {
 
         if(!started){
@@ -332,7 +338,14 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
             getRb("noun").add(title, "R/noun/");
-            return getNoun(title);
+            NBN node = getNoun(title);
+            node = Noun.add(node,"^logicalChildren");
+            node = Noun.add(node,"^logicalParents");
+            node = Noun.add(node,"^names");
+            node = Noun.add(node,"^names",title);
+            node = Noun.add(node,"^notKey");
+            put(node);
+            return node;
         }
         return null;
     }
@@ -362,6 +375,7 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("ldata")){
             getRb("ldata").add(title, "R/ldata/");
+            //TODO add default ldata ^carrotHeaders
             return getLDATA(title);
         }
         return null;
