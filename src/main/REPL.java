@@ -109,7 +109,7 @@ public class REPL {
             String everythingElse = command.substring(command.indexOf(" ") + 1, command.length());
 
             ArrayList<String> arguments = new ArrayList<>();
-            for(String term : everythingElse.split(" ")){
+            for(String term : everythingElse.split(",")){
                 arguments.add(term);
             }
             return new returnTuple(className, methodName, arguments);

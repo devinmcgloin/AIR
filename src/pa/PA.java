@@ -7,6 +7,7 @@ import r.TreeNodeBase;
 import util.Record;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -97,8 +98,12 @@ public final class PA {
 //        put(y);
 //        put(ta);
 
+        NBN peep = getNoun("person");
+        ArrayList<NBN> peeps = SetLogic.getSetMembers(peep);
+        double p = Comparison.getProbability(peeps, "height", "110");
 
 
+        System.out.println("Prob: "+p);
 
     }
 

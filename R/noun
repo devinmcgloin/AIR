@@ -23,3 +23,20 @@ car
     spoiler
     wheel
         4
+hillary clinton
+    ^logicalChildren
+    ^logicalParents
+        person
+    height
+        169 cm
+jeb bush
+    ^logicalChildren
+    ^logicalParents
+        person
+    height
+        191 cm
+person
+    ^logicalChildren
+        hillary clinton
+        jeb bush
+    height

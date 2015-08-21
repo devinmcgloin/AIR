@@ -97,7 +97,7 @@ public final class Noun {
 
 
         ArrayList<String> x = Noun.get(node, key);
-        if(x == null){
+        if(x == null || x.size() == 0){
             return "^No Value"; //if no value, try tracing up to logical parents to get a spread of likelihood.
             //TODO (best guess search)
         }

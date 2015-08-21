@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import util.keyVal;
 import funct.Core.*;
 
@@ -20,6 +21,8 @@ import funct.Core.*;
  * Created by Blazej on 8/15/2015.
  */
 public final class Comparison {
+
+    static Logger logger = Logger.getLogger(Comparison.class);
 
 //    public static void getDiff(NBN a, NBN b){
 //        //Might be able to pass in "fidelity" level for OF?
@@ -61,12 +64,37 @@ public final class Comparison {
      */
     public static double getProbability(ArrayList<NBN> set, String key, String val){
 
+        double nullHyp = Double.parseDouble(val);
+
         ArrayList<keyVal> dist = getDistribution(set, key);
 
-        double sigma = (Double)Core.getVal(dist, "s");
-        int df = (Integer)Core.getVal(dist, "df");
+        if(dist == null){
 
-        return Stats.tcdf(sigma, df);
+            return 0.0;
+        }
+
+
+
+
+        double s = (Double)Core.getVal(dist, "s");
+        double mean = (Double)Core.getVal(dist, "mean");
+        int n = (Integer)Core.getVal(dist, "n");
+        int df = n-1;
+
+        //System.out.println(s);
+
+        if(df == 0) {
+            logger.warn("Cannot do proper distribution with only one value.");
+
+            return 0;
+        }
+
+        //The purpose of the t is to reject the null hypothesis that the value is the true mean.
+        double t = (mean - nullHyp) / (s/Math.sqrt(n));
+
+        //System.out.println(t);
+
+        return Stats.tcdf(t, df);
 
 
     }
@@ -96,54 +124,76 @@ public final class Comparison {
         ArrayList<String> units = LDATA.getUnits(ldbn);
 
         String value = "";
+        String unit = "";
+        String stdUnit = new String("nada");
         //Check to see if they have the value, get the total
         for(NBN node: set){
+
             value = Noun.simpleSearch(node, key);
             if(value.startsWith("^")){
-                System.out.println("Comparison: Yo i didn't even have that key or value, homes");
+                logger.warn("Node: "+node.getTitle()+ " did not contain the value or key for the key: "+key);
                 continue;
             }
             if(value.contains("^")){
-                System.out.println("Comparison: Yo I ain't gonna look into OF nodes                           ...bitch");
+                logger.warn("Distribution function will not look into OF nodes for a key.");
                 //All these things probably belong to a similar set so should have a similar OF structure anyway.
                 //Whatever you send me should have the right values in the right place already.
                 continue;
             }
 
-            value = value.split(" ")[0];
+            String[] temp = value.split(" ");
+            value = temp[0];
+            unit = temp[1];
+
             if(LDATA.isNumeric(value)){
+                //Set standard by first value.
+                if(stdUnit.equals("nada")){
+                    logger.debug("Standard Unit Picked for Distribution: " + unit);
+                    stdUnit = new String(unit);
+                }
                 double tmp = Double.parseDouble(value);
-                values.add(tmp);
+                if(unit.equals(stdUnit)){
+                    values.add(tmp);
+                }else{
+                    logger.error("We should be converting values here. (At writing time, method for doing so not yet decided.)");
+                }
+                 //FUCK make sure it's first the same unit as the standard unit. If not, convert.
                 total += tmp;
+
+
             }
             count++;
 
 
-            //Check if correct unit
 
-
-            //Kep track of the most frequent unit, use that.
 
         }
+
+        if(values.size() == 0)
+            return null;
+
         //Get the mean
         mean = total/count;
 
-        double diffSumSq = 0;
+        sd = Stats.stdDev(values);
 
-        for(double val : values){
-            diffSumSq += (val - mean)*(val-mean);
-        }
-
-        //Standard deviation
-        sd = diffSumSq/count;
 
         Collections.sort(values);
 
 
-        if(values.size()%2 != 0){
+
+        if(values.size() == 1){
+            q1 = values.get(0);
+            q2 = q1;
+            q3 = q1;
+        }else if(values.size() == 2){
+            q1 = values.get(0);
+            q3 = values.get(1);
+            q2 = (q1+q3)/2;
+        }else if(values.size()%2 != 0){
             int middle = (count+1)/2;
             q1 = getMedian( values.subList(0, middle ) );
-            q2 = values.get( middle );
+            q2 = getMedian(values);
             q3 = getMedian( values.subList(middle , values.size()) );
         }else{
             int mid = count/2;
@@ -192,7 +242,15 @@ public final class Comparison {
 
     private static double getMedian(List<Double> values){
 
+        if(values.size() == 1)
+            return values.get(0);
+        if(values.size()==0) {
+            logger.error("Cannot get median of no values");
+            return 0.0;
+        }
+
         Collections.sort(values);
+
 
         if(values.size()%2 != 0){
             int middle = (values.size()+1)/2;
