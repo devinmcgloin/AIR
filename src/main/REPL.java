@@ -108,7 +108,7 @@ public class REPL {
 
             ArrayList<String> arguments = new ArrayList<>();
             for(String term : everythingElse.split(",")){
-                arguments.add(term);
+                arguments.add(term.trim());
             }
             return new returnTuple(className, methodName, arguments);
         }else{
@@ -141,6 +141,8 @@ public class REPL {
                     return parseCommand(command.replace("put", "PA.put"));
                 case "createnoun":
                     return parseCommand(command.replace("createnoun", "PA.createNBN"));
+                case "createldata":
+                    return parseCommand(command.replace("createldata", "PA.createLDBN"));
                 case "get":
                     if (command.contains(nounID)) {
                         return parseCommand(command.replace("get", "Noun.get"));
