@@ -1,8 +1,8 @@
 bmw
     ^logicalChildren
     ^logicalParents
-        car
         NBN
+        car
     brakes
     door
     engine
@@ -33,9 +33,9 @@ car
 hillary clinton
     ^logicalChildren
     ^logicalParents
+        NBN
         person
         politician
-        NBN
     ^names
     ^notKey
         car
@@ -64,6 +64,17 @@ jeb bush
     mass
     occupation
     weight
+ldata
+    ^logicalChildren
+    ^logicalParents
+        ldata
+noun
+    ^logicalChildren
+    ^logicalParents
+        noun
+    ^names
+        noun
+    ^notKey
 person
     ^logicalChildren
         hillary clinton

@@ -149,7 +149,7 @@ public class Node {
     }
 
     public boolean isP(String term){
-        for(String is : get("^logicalParents")){
+        for(String is : Node.get(this,"^logicalParents")){
             if(term.equals(is)){
                 return true;
             }

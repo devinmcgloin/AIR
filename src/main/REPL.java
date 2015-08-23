@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 public class REPL {
     ArrayList<Node> NBNnodes = new ArrayList<>();
     ArrayList<Node> LDBNnodes = new ArrayList<>();
+    Node mostRecent;
     Scanner input = new Scanner(System.in);
     private final String ldataID = "#";
     private final String nounID = "@";
@@ -44,7 +45,10 @@ public class REPL {
                 if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
                     for(String id : argumentID){
-                        if(id.startsWith(nounID)){
+                        if(id.equals("!")){
+                            flow.applyArgument(mostRecent);
+                        }
+                        else if(id.startsWith(nounID)){
                             Node node = parse(id);
                             if(node != null)
                                 flow.applyArgument(node);
@@ -127,10 +131,8 @@ public class REPL {
                     return parseCommand(command.replace("inherit", "SetLogic.xINHERITy"));
                 case "put":
                     return parseCommand(command.replace("put", "PA.put"));
-                case "createnoun":
-                    return parseCommand(command.replace("createnoun", "PA.createNBN"));
-                case "createldata":
-                    return parseCommand(command.replace("createldata", "PA.createLDBN"));
+                case "create":
+                    return parseCommand(command.replace("create", "PA.createNode"));
                 case "get":
                     return parseCommand(command.replace("get", "Node.get"));
                 case "keys":
@@ -144,6 +146,9 @@ public class REPL {
 
 
     private Node parse(String N1){
+        if(N1.startsWith("!")){
+            return mostRecent;
+        }
         if(N1.startsWith("@")) {
             if (N1.length() == 2 && N1.replace(nounID, "").matches("\\d+")) {
                 return NBNnodes.get(Integer.parseInt(N1.replace(nounID, "")) - 1);
@@ -215,6 +220,7 @@ public class REPL {
 
     public void cycle(){
         System.out.println("\n");
+        System.out.println("recent::    " + mostRecent);
         System.out.println("NBN::       " + formatNodes(NBNnodes));
         System.out.println("LDBN::      " + formatNodes(LDBNnodes));
         System.out.print(">>>");
@@ -239,7 +245,10 @@ public class REPL {
 
 
     private void replace(Node node){
-        if(node.isP("NBN")) {
+        if(Node.getKeys(node).size() == 0 || Node.getTitle(node).equals(Node.getTitle(mostRecent))){
+           mostRecent = node;
+        }
+        else if(node.isP("noun")) {
             for (Node term : NBNnodes) {
                 if (Node.getTitle(term).equals(Node.getTitle(node))) {
                     int index = NBNnodes.indexOf(term);

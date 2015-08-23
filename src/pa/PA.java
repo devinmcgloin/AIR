@@ -307,6 +307,24 @@ public final class PA {
             r.save();
     }
 
+    /**
+     * TODO need to automatically add all the ^ headers that NBN's normally have
+     * @param title
+     * @return
+     */
+    public static Node createNode(String title){
+        if(!started){
+            startLibraries();
+        }
+
+        //I mirrored the logic you used in your nounHashSearch method.
+        if(rDBexists("noun")){
+            getRb("noun").add(title, "R/noun/");
+            Node node = get(title);
+            return node;
+        }
+        return null;
+    }
 
 
 }

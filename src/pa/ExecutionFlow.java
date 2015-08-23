@@ -56,8 +56,8 @@ public final class ExecutionFlow {
 
     public void applyArgument(Object argument){
         for(int i = 0; i < argTypes.length; i++){
-            logger.debug(argument.getClass().getTypeName());
-            logger.debug(argTypes[i].getTypeName());
+            logger.debug("Argument: " + argument.getClass().getTypeName());
+            logger.debug("Method Type: " + argTypes[i].getTypeName());
             if(argTypes[i].getTypeName().equals(argument.getClass().getTypeName()) && !appliedP[i]){
                 arguments[i] = argument;
                 appliedP[i] = true;
