@@ -9,22 +9,22 @@ import java.util.ArrayList;
 /**
  * Created by devinmcgloin on 8/17/15.
  */
-public class BaseNode {
+public class Node {
 
     private final TreeNode TN;
     private final ArrayList<Record> record;
 
-    static Logger logger = Logger.getLogger(BaseNode.class);
+    static Logger logger = Logger.getLogger(Node.class);
 
 
-    public BaseNode(TreeNode TN) {
+    public Node(TreeNode TN) {
         //Do a full copy on instantiation.
         this.TN = fullCopyNode(TN);
         this.record = new ArrayList<>();
     }
 
     //Used in adding more shit it needs to change.
-    public BaseNode(TreeNode TN, ArrayList<Record> record){
+    public Node(TreeNode TN, ArrayList<Record> record){
         this.TN = TN;
         this.record = record;
     }
@@ -34,7 +34,7 @@ public class BaseNode {
      *
      * @param title
      */
-    public BaseNode(String title) {
+    public Node(String title) {
         TN = new TreeNode(title);
         this.record = new ArrayList<>();
     }
@@ -51,6 +51,18 @@ public class BaseNode {
         return TN.getChildrenString();
     }
 
+    public boolean isP(String term){
+        for(String is : get("^logicalParents")){
+            if(term.equals(is)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public ArrayList<String> getName(){
+        return get("^name");
+    }
+
     public ArrayList<String> get(String Key) {
         TreeNode kid = TN.getChild(Key);
         if(kid==null)
@@ -59,19 +71,28 @@ public class BaseNode {
             return kid.getChildrenString();
     }
 
-    public ArrayList<String> get(String firstKey, String secondKey) {
-        TreeNode kid = TN.getChild(firstKey);
-        if(kid==null)
-            return null;
-        else{
-            TreeNode grandKid = kid.getChild(secondKey);
-            if (grandKid == null)
-                return null;
-            else
-                return grandKid.getChildrenString();
-        }
+//    public ArrayList<String> get(String firstKey, String secondKey) {
+//        TreeNode kid = TN.getChild(firstKey);
+//        if(kid==null)
+//            return null;
+//        else{
+//            TreeNode grandKid = kid.getChild(secondKey);
+//            if (grandKid == null)
+//                return null;
+//            else
+//                return grandKid.getChildrenString();
+//        }
+//
+//    }
 
-    }
+//    public ArrayList<String> add(String firstKey, String secondKey, String thirdKey) {
+//        TreeNode newNode = copyNode(TN);
+//
+//
+//        add(newNode, firstKey, secondKey);
+//
+//        return new Node(newNode, copyRecordAddContent(this.record, new Record("add", firstKey, secondKey)));
+//    }
 
     public ArrayList<Record> getRecord(){
         return record;
@@ -79,17 +100,17 @@ public class BaseNode {
 
     /*
      * Tricky adding stuff below.
-     * In order to make a change you have to make a new tree node, and copy content over. Once you turn it into an BaseNode it's final. This means we have to have methods that are singular such as add or rm, and ones that apply these updates in batches.
+     * In order to make a change you have to make a new tree node, and copy content over. Once you turn it into an Node it's final. This means we have to have methods that are singular such as add or rm, and ones that apply these updates in batches.
      *
      */
 
-    public BaseNode add(String key){
+    public Node add(String key){
         //First and foremost, we need a new root:
         TreeNode newNode = copyNode(TN);
 
         add(newNode, key);
 
-        return new BaseNode(newNode, copyRecordAddContent(this.record, new Record("add", key)));
+        return new Node(newNode, copyRecordAddContent(this.record, new Record("add", key)));
     }
 
     /**
@@ -98,13 +119,13 @@ public class BaseNode {
      * @param Val
      * @return
      */
-    public BaseNode add(String Key, String Val) {
+    public Node add(String Key, String Val) {
 
         //First and foremost, we need a new root:
         TreeNode newNode = copyNode(TN);
 
         add(newNode, Key, Val);
-        return new BaseNode(newNode, copyRecordAddContent(this.record, new Record("add", Key, Val)));
+        return new Node(newNode, copyRecordAddContent(this.record, new Record("add", Key, Val)));
     }
 
     /**
@@ -112,10 +133,10 @@ public class BaseNode {
      * @param Key
      * @return
      */
-    public BaseNode rm(String Key) {
+    public Node rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
-        return new BaseNode(newNode, copyRecordAddContent(this.record, new Record("rm", Key)));
+        return new Node(newNode, copyRecordAddContent(this.record, new Record("rm", Key)));
     }
 
     /**
@@ -124,10 +145,10 @@ public class BaseNode {
      * @param Val
      * @return
      */
-    public BaseNode rm(String Key, String Val) {
+    public Node rm(String Key, String Val) {
         TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
-        return new BaseNode(newNode, copyRecordAddContent(record, new Record("rm", Key, Val)));
+        return new Node(newNode, copyRecordAddContent(record, new Record("rm", Key, Val)));
     }
 
     /**
@@ -138,11 +159,11 @@ public class BaseNode {
      * @return
      */
 
-    public BaseNode update(String key, String oldVal, String newVal) {
+    public Node update(String key, String oldVal, String newVal) {
         TreeNode newNode = copyNode(TN);
 
         update(newNode, key, oldVal, newVal);
-        return new BaseNode(newNode, copyRecordAddContent(record, new Record("update", key, oldVal, newVal)));
+        return new Node(newNode, copyRecordAddContent(record, new Record("update", key, oldVal, newVal)));
     }
 
     // Batch updates below
@@ -153,7 +174,7 @@ public class BaseNode {
      * @param vals
      * @return
      */
-    public BaseNode batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
+    public Node batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -162,7 +183,7 @@ public class BaseNode {
             additions.add(new Record("add", keys.get(i), vals.get(i)));
         }
 
-        return new BaseNode(newNode, copyRecordAddContent(record, additions));
+        return new Node(newNode, copyRecordAddContent(record, additions));
     }
 
     /**
@@ -170,7 +191,7 @@ public class BaseNode {
      * @param keys
      * @return
      */
-    public BaseNode batchRM(ArrayList<String> keys) {
+    public Node batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -178,7 +199,7 @@ public class BaseNode {
             removeChild(newNode, key);
             additions.add(new Record("rm", key));
         }
-        return new BaseNode(newNode, copyRecordAddContent(record, additions));
+        return new Node(newNode, copyRecordAddContent(record, additions));
     }
 
     /**
@@ -187,7 +208,7 @@ public class BaseNode {
      * @param vals
      * @return
      */
-    public BaseNode batchRM(ArrayList<String> keys, ArrayList<String> vals) {
+    public Node batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -197,7 +218,7 @@ public class BaseNode {
             additions.add(new Record("rm", keys.get(i), vals.get(i)));
 
         }
-        return new BaseNode(newNode, copyRecordAddContent(record, additions));
+        return new Node(newNode, copyRecordAddContent(record, additions));
     }
 
     /**
@@ -208,7 +229,7 @@ public class BaseNode {
      * @param newVals
      * @return
      */
-    public BaseNode batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
+    public Node batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -217,7 +238,7 @@ public class BaseNode {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
             additions.add(new Record("update", keys.get(i), oldVals.get(i), newVals.get(i)));
         }
-        return new BaseNode(newNode);
+        return new Node(newNode);
 
     }
 

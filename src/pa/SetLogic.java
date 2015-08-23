@@ -26,7 +26,7 @@ public final class SetLogic {
     private SetLogic(){}
 
 
-    public static ArrayList<NBN> filter(ArrayList<NBN> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Expression> LDATAConditions){
+    public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Expression> LDATAConditions){
         nodes = isFilter(nodes, isConditions);
         nodes = hasFilter(nodes, hasConditions);
         nodes = LDATAFilter(nodes, LDATAConditions);
@@ -34,7 +34,7 @@ public final class SetLogic {
     }
 
 
-    public static ArrayList<NBN> isFilter(ArrayList<NBN> nodes,ArrayList<String> isConditions){
+    public static ArrayList<Node> isFilter(ArrayList<Node> nodes, ArrayList<String> isConditions){
         //Is filter
         for(String term : isConditions) {
             nodes = isFilter(nodes, term);
@@ -43,11 +43,11 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> isFilter(ArrayList<NBN> nodes, String isCondition){
-        Iterator<NBN> iterator = nodes.iterator();
+    public static ArrayList<Node> isFilter(ArrayList<Node> nodes, String isCondition){
+        Iterator<Node> iterator = nodes.iterator();
 
         while (iterator.hasNext()){
-            NBN option = iterator.next();
+            Node option = iterator.next();
             //Is filter
 
             if (!Noun.isP(option, isCondition.trim())) {
@@ -59,7 +59,7 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> hasFilter(ArrayList<NBN> nodes, ArrayList<String> hasConditions){
+    public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, ArrayList<String> hasConditions){
         //Is filter
         for(String term : hasConditions) {
             nodes = hasFilter(nodes, term);
@@ -68,11 +68,11 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> hasFilter(ArrayList<NBN> nodes, String hasCondition){
-        Iterator<NBN> iterator = nodes.iterator();
+    public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, String hasCondition){
+        Iterator<Node> iterator = nodes.iterator();
 
         while (iterator.hasNext()){
-            NBN option = iterator.next();
+            Node option = iterator.next();
             //Is filter
 
             if (!Noun.hasP(option, hasCondition.trim())) {
@@ -84,7 +84,7 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, ArrayList<Expression> LDATAConditions){
+    public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, ArrayList<Expression> LDATAConditions){
         //Is filter
         for(Expression term : LDATAConditions) {
             nodes = LDATAFilter(nodes, term);
@@ -93,11 +93,11 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> LDATAFilter(ArrayList<NBN> nodes, Expression LDATACondition){
-        Iterator<NBN> iterator = nodes.iterator();
+    public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, Expression LDATACondition){
+        Iterator<Node> iterator = nodes.iterator();
 
         while (iterator.hasNext()){
-            NBN option = iterator.next();
+            Node option = iterator.next();
             //Is filter
             if(!LDATA.validateP(option, LDATACondition)){
                 iterator.remove();
@@ -108,7 +108,7 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<NBN> getSetMembers (NBN node){
+    public static ArrayList<Node> getSetMembers (Node node){
 
         return Noun.getLogicalChildren(node);
 
@@ -119,11 +119,11 @@ public final class SetLogic {
      * @param node
      * @return
      */
-    public static ArrayList<NBN> getSets (NBN node){
+    public static ArrayList<Node> getSets (Node node){
         return Noun.getLogicalParents(node);
     }
 
-    public static boolean xISyP(NBN x, NBN y){
+    public static boolean xISyP(Node x, Node y){
 
         if(y == null || x == null)
             return false;
@@ -152,7 +152,7 @@ public final class SetLogic {
      * @param y - the parent
      * @return
      */
-    public static NBN xINHERITy(NBN x, NBN y){
+    public static Node xINHERITy(Node x, Node y){
 
         //SR-71 Blackbird   INHERITS        supersonic jet
         x = Noun.add(x, "^logicalParents", Noun.getTitle(y));
@@ -174,7 +174,13 @@ public final class SetLogic {
         return x;
     }
 
-    public static NBN xLikey(NBN x, NBN y){
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static Node xLikey(Node x, Node y){
         ArrayList<String> keys = Noun.getKeys(y);
         for(String key: keys){
             x = Noun.add(x, key);
@@ -188,9 +194,9 @@ public final class SetLogic {
     TODO How to decide which ones get placed in the resulting set?
      */
 
-    public ArrayList<NBN> intersection(ArrayList<NBN> setA, ArrayList<NBN> setB){
-        ArrayList<NBN> finalSet = new ArrayList<>();
-        for(NBN node : setA){
+    public ArrayList<Node> intersection(ArrayList<Node> setA, ArrayList<Node> setB){
+        ArrayList<Node> finalSet = new ArrayList<>();
+        for(Node node : setA){
             if(memberP(setB, node)){
                 //TODO should merge nodes here.
                 finalSet.add(node);
@@ -199,17 +205,17 @@ public final class SetLogic {
         return finalSet;
     }
 
-    public ArrayList<NBN> difference(ArrayList<NBN> setA, ArrayList<NBN> setB){
-        ArrayList<NBN> finalSet = new ArrayList<>();
+    public ArrayList<Node> difference(ArrayList<Node> setA, ArrayList<Node> setB){
+        ArrayList<Node> finalSet = new ArrayList<>();
 
         //Node from setA is not present in setB
-        for(NBN node : setA){
+        for(Node node : setA){
             if(!memberP(setB, node)){
                 finalSet.add(node);
             }
         }
         //Node from setB is not present in setA
-        for(NBN node : setB){
+        for(Node node : setB){
             if(!memberP(setA, node)){
                 finalSet.add(node);
             }
@@ -217,16 +223,16 @@ public final class SetLogic {
         return finalSet;
     }
 
-    public ArrayList<NBN> union(ArrayList<NBN> setA, ArrayList<NBN> setB){
-        ArrayList<NBN> finalSet = new ArrayList<>();
-        for(NBN node : setA){
+    public ArrayList<Node> union(ArrayList<Node> setA, ArrayList<Node> setB){
+        ArrayList<Node> finalSet = new ArrayList<>();
+        for(Node node : setA){
             if(memberP(setB, node)){
                 //TODO merge
             }else{
                 finalSet.add(node);
             }
         }
-        for(NBN node : setB){
+        for(Node node : setB){
             if(memberP(setA, node)){
                 //TODO merge
             }else{
@@ -242,8 +248,8 @@ public final class SetLogic {
      * @param setB
      * @return
      */
-    public boolean supersetP(ArrayList<NBN> setA, ArrayList<NBN> setB){
-        for(NBN node : setB){
+    public boolean supersetP(ArrayList<Node> setA, ArrayList<Node> setB){
+        for(Node node : setB){
             if(!memberP(setA, node)){
                 return false;
             }
@@ -257,8 +263,8 @@ public final class SetLogic {
      * @param setB
      * @return
      */
-    public boolean subsetP(ArrayList<NBN> setA, ArrayList<NBN> setB){
-        for(NBN node : setA){
+    public boolean subsetP(ArrayList<Node> setA, ArrayList<Node> setB){
+        for(Node node : setA){
             if(!memberP(setB, node)){
                 return false;
             }
@@ -266,8 +272,8 @@ public final class SetLogic {
         return true;
     }
 
-    public boolean memberP(ArrayList<NBN> set, NBN node){
-        for(NBN member : set){
+    public boolean memberP(ArrayList<Node> set, Node node){
+        for(Node member : set){
             if(member.getTitle().equals(node.getTitle())){
                 return true;
             }

@@ -114,18 +114,19 @@ public final class PA {
 
     }
 
-    public static void put(NBN node){
-        put(node.getBaseNode(), "noun");
+    public static void put(Node node){
+        if(!started){
+            startLibraries();
+        }
+
+        put(node, "noun");
     }
 
-    public static void put(LDBN node){
-        put(node.getBaseNode(), "ldata");
-    }
     /**
      * TODO implement log walker.
      * @param node
      */
-    public static void put(BaseNode node, String db){
+    public static void put(Node node, String db){
 
         if(!started){
             startLibraries();
@@ -222,7 +223,7 @@ public final class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    private static ArrayList<TreeNode> hashSearch(String db, String terms) {
+    public static ArrayList<TreeNode> hashSearch(String db, String terms) {
 
         if(!started){
             startLibraries();
@@ -263,52 +264,21 @@ public final class PA {
         return treeNodeBase;
     }
 
-    public static ArrayList<NBN> nounHashSearch(String terms){
 
+    public static ArrayList<Node> hashSearch(String terms){
         if(!started){
             startLibraries();
         }
 
-        ArrayList<NBN> nounBaseNodes = new ArrayList<>();
+        ArrayList<Node> nounBaseNodes = new ArrayList<>();
         ArrayList<TreeNode> nodes = hashSearch("noun", terms);
         for (TreeNode node : nodes){
-            nounBaseNodes.add(new NBN(node)); //let's see how we're instantiating these NBNs
+            nounBaseNodes.add(new Node(node));
         }
         return nounBaseNodes;
     }
 
-    public static ArrayList<LDBN> ldataHashSearch(String terms){
-
-        if(!started){
-            startLibraries();
-        }
-
-        ArrayList<LDBN> ldataBaseNodes = new ArrayList<>();
-        ArrayList<TreeNode> nodes = hashSearch("ldata", terms);
-        for (TreeNode node : nodes){
-            ldataBaseNodes.add(new LDBN(node)); //let's see how we're instantiating these NBNs
-        }
-        return ldataBaseNodes;
-    }
-
-    /**
-     * TODO dont know why this is here
-     * @param name
-     * @param filter
-     * @return
-     */
-    public static ArrayList<NBN>  getNouns(String name, String filter) {
-
-        if(!started){
-            startLibraries();
-        }
-
-        if(rDBexists("noun"))
-            return nounHashSearch(name + "`" + filter); //Hopefully this filter has ` in them.
-        return null;
-    }
-
-    public static NBN getNoun(String title){
+    public static Node get(String title){
         if(!started){
             startLibraries();
         }
@@ -316,7 +286,7 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
             TreeNode node = getRb("noun").get("R/noun/" + title);
-            NBN nounBase = new NBN(node);
+            Node nounBase = new Node(node);
             if(nounBase.getTitle().equals(title))
                 return nounBase;
             else
@@ -325,61 +295,7 @@ public final class PA {
         return null;
     }
 
-    /**
-     * TODO need to automatically add all the ^ headers that NBN's normally have
-     * @param title
-     * @return
-     */
-    public static NBN createNBN(String title){
-        if(!started){
-            startLibraries();
-        }
 
-        //I mirrored the logic you used in your nounHashSearch method.
-        if(rDBexists("noun")){
-            getRb("noun").add(title, "R/noun/");
-            NBN node = getNoun(title);
-            node = Noun.add(node,"^logicalChildren");
-            node = Noun.add(node,"^logicalParents");
-            node = Noun.add(node,"^names");
-            node = Noun.add(node,"^names",title);
-            node = Noun.add(node,"^notKey");
-            put(node);
-            return node;
-        }
-        return null;
-    }
-
-    public static LDBN getLDATA(String title){
-        if(!started){
-            startLibraries();
-        }
-
-        //I mirrored the logic you used in your nounHashSearch method.
-        if(rDBexists("ldata")){
-            TreeNode node = getRb("ldata").get("R/ldata/" + title);
-            LDBN ldataBase = new LDBN(node);
-            if(ldataBase.getTitle().equals(title))
-                return ldataBase;
-            else
-                return null;
-        }
-        return null;
-    }
-
-    public static LDBN createLDBN(String title){
-        if(!started){
-            startLibraries();
-        }
-
-        //I mirrored the logic you used in your nounHashSearch method.
-        if(rDBexists("ldata")){
-            getRb("ldata").add(title, "R/ldata/");
-            //TODO add default ldata ^carrotHeaders
-            return getLDATA(title);
-        }
-        return null;
-    }
 
     public static void save() {
 

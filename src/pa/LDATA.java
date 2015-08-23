@@ -1,6 +1,7 @@
 package pa;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import funct.Reader;
 import org.apache.log4j.Logger;
@@ -12,6 +13,8 @@ import util.Expression;
  * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * TODO Need to QA everything
  * Default return value is true.
+ *
+ * TODO add structured addition and removal functions as well as strucutred get.
  */
 public final class LDATA {
 
@@ -23,7 +26,7 @@ public final class LDATA {
      */
     private LDATA(){}
 
-    public static int compare(String valA, String valB){
+    private static int compare(String valA, String valB){
         String [] valueA = valA.split(" ");
         String [] valueB = valB.split(" ");
         if(valueA.length == 2 && valueB.length == 2 && valueA[0].matches("\\d+") && valueB[0].matches("\\d+")){
@@ -43,13 +46,12 @@ public final class LDATA {
         }
         //TODO returning 0 okay here?
         return 0;
-
     }
 
     public static boolean validateP(String key, String val){
         if(val.matches("\\d+"))
             return true;
-        LDBN node = PA.getLDATA(key);
+        Node node = PA.get(key);
         if(node != null){
             return validateP(node, val);
         }else
@@ -61,7 +63,7 @@ public final class LDATA {
      * @param val
      * @return
      */
-    public static boolean validateP(LDBN node, String val){
+    public static boolean validateP(Node node, String val){
         ArrayList<Expression> ranges = getValRanges(node);
         if(getComp(node).equals("count") || getComp(node).equals("measurement")) {
             for (Expression expression : ranges) {
@@ -74,10 +76,10 @@ public final class LDATA {
     }
 
     /**
-     * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the NBN.
+     * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the Node.
      * K:V pair values can be either a:
      *      LData Value
-     *      Ans to Set (NBN)
+     *      Ans to Set (Node)
      *      # of KEY
      *      Overflown Node (not an ans, at all) - search takes care of this case.
      *      Blank - Search should also never return a blank value.
@@ -87,7 +89,7 @@ public final class LDATA {
      * @param node
      * @return
      */
-    public static boolean validateP(NBN node, Expression expression){
+    public static boolean validateP(Node node, Expression expression){
         String value = Noun.simpleSearch(node, expression.getType());
         if(value == null){
             return true;
@@ -102,7 +104,7 @@ public final class LDATA {
         }
     }
 
-    public static boolean validateP(NBN node, String expression){
+    public static boolean validateP(Node node, String expression){
         Expression exp = Reader.parseExpression(expression);
         if(exp != null)
             return validateP(node, exp );
@@ -152,7 +154,7 @@ public final class LDATA {
      */
     public static String convert(String initialValue, String unitTo){
         String [] terms = initialValue.trim().split(" ");
-        LDBN type = getType(terms[1]);
+        Node type = getType(terms[1]);
 
         String conversionFactors = getConversion(type, terms[1], unitTo);
         String[] conversionSteps = conversionFactors.split(" ");
@@ -184,8 +186,8 @@ public final class LDATA {
      * @param value
      * @return
      */
-    public static LDBN getType(String value) {
-        ArrayList<LDBN> nodes = PA.ldataHashSearch(value.split(" ")[1]);
+    public static Node getType(String value) {
+        ArrayList<Node> nodes = PA.hashSearch(value.split(" ")[1]);
         if( nodes != null)
             return nodes.get(0);
         else
@@ -199,7 +201,7 @@ public final class LDATA {
      * @return
      */
     public static boolean ldataP(String type){
-        if(PA.getLDATA(type) != null){
+        if(PA.get(type) != null){
             return true;
         }else if(getType(type.split(" ")[1]) != null){
             return true;
@@ -235,22 +237,6 @@ public final class LDATA {
         return false;
     }
 
-    public static String getConversion(LDBN type, String unitTo, String unitFrom){
-        return type.getConversion(unitFrom, unitTo);
-    }
-
-    public static ArrayList<Expression> getValRanges(LDBN type){
-        return type.getValRanges();
-    }
-
-    public static String getComp(LDBN type){
-        return type.getComp();
-    }
-
-    public static ArrayList<String> getUnits(LDBN type){
-        return type.getUnits();
-    }
-
     /**
      * accounts for periods
      * @param str
@@ -267,40 +253,136 @@ public final class LDATA {
         return true;
     }
 
-    public static String getTitle(LDBN node){
+    public static String getTitle(Node node){
         return node.getTitle();
     }
 
-    public static ArrayList<String> getName(LDBN node){
-        ArrayList<String> returnItem = new ArrayList<String>();
-        returnItem.add(node.getTitle());
-        return returnItem;
+    public static double getAndConvert(Node node, String key, String unit){
+
     }
 
-    public static ArrayList<String> getKeys(LDBN node){
-        return node.getKeys();
+    public static int getAndConvert(Node node, String key, String unit){
+
     }
 
-    public static ArrayList<String> get(LDBN node, String key){
-        return node.get(key);
+    public static Node setStorageType(Node node, String type){
+        if(node.get("^storage") == null){
+            node = node.add("^storage", type);
+        }
+        return node;
     }
 
-    public static LDBN add(LDBN node, String key){ return node.add(key); }
-
-    public static LDBN add(LDBN node, String key, String val ){
-        return node.add(key, val);
+    public static Node setIsParam(Node node, String param){
+        if(node.get("^is") == null){
+            node = node.add("^is", param);
+        }
+        return node;
     }
 
-    public static LDBN rm(LDBN node, String key){
-        return node.rm(key);
+    public static Node addConversion(Node node, String convertTitle, String convertSteps){
+
     }
 
-    public static LDBN rm(LDBN node, String key, String val ){
-        return node.rm(key, val);
+    public static Node addValRange(Node node, String valRange){
+
     }
 
-    public static LDBN update(LDBN node, String key, String oldVal, String newVal){
-        return node.update(key, oldVal, newVal);
+    public static Node addUnit(Node node, String key){
+
     }
 
+    public static String unitScaling(String value){
+
+    }
+
+    /**
+     * need to check this before you can just compare the way Im doing it now in LDATA.
+     *
+     * @return
+     */
+    public static String getComp(Node TN) {
+        if (TN.get("^comparison").contains("ordered")) {
+            return "ordered";
+        } else if (TN.get("^comparison").contains("count")) {
+            return "count";
+        } else {
+            //TODO more complex logic containers/Time etc. Dont know how to do yet.
+            return "Nothing";
+        }
+    }
+
+
+    /**
+     * TODO new LDATA conversion form meters->ft->CONVERSIONSTEPS
+     * @param unitFrom
+     * @param unitTo
+     * @return
+     */
+    public static String getConversion(Node TN, String unitFrom, String unitTo) {
+        List<String> conversions = TN.get("^conversions");
+
+        for (String conversion : conversions) {
+            String[] types = conversion.split("->");
+            if (types[0].equals(unitFrom) && types[1].equals(unitTo)) {
+                //assumes that there is only one conversion grouping and that it's in the operation postion.
+                return types[2];
+            }
+        }
+        return "Nothing";
+    }
+
+    /**
+     * @return
+     */
+    public static ArrayList<Expression> getValRanges(Node TN) {
+        ArrayList<String> children = TN.get("^value_ranges");
+        if (children.size() == 0) {
+            logger.error("Node: GetValRanges: No ranges.");
+            return null;
+        } else {
+            ArrayList<Expression> expressions = new ArrayList<>();
+            //assumes value is always in the operation position and that there is only one.
+            for (String range : children) {
+                String[] terms = range.trim().split(" ");
+                // [ 12 - 324 ft ]
+                if (range.startsWith("[") || range.startsWith("(")) {
+                    if (terms.length == 6) {
+                        //Opening paren
+                        if (terms[0].equals("(")) {
+                            expressions.add(new Expression(TN.getTitle(), ">", terms[1], terms[4]));
+                        } else if (terms[0].equals("[")) {
+                            expressions.add(new Expression(TN.getTitle(), ">=", terms[1], terms[4]));
+                        }
+                        //closing paren
+                        if (terms[5].equals(")")) {
+                            expressions.add(new Expression(TN.getTitle(), "<", terms[3], terms[4]));
+                        } else if (terms[5].equals("]")) {
+                            expressions.add(new Expression(TN.getTitle(), "<=", terms[3], terms[4]));
+                        }
+                    } else {
+                        //Opening paren
+                        if (terms[0].equals("(")) {
+                            expressions.add(new Expression(TN.getTitle(), ">", terms[1], "count"));
+                        } else if (terms[0].equals("[")) {
+                            expressions.add(new Expression(TN.getTitle(), ">=", terms[1], "count"));
+                        }
+                        //closing paren
+                        if (terms[5].equals(")")) {
+                            expressions.add(new Expression(TN.getTitle(), "<", terms[3], "count"));
+                        } else if (terms[5].equals("]")) {
+                            expressions.add(new Expression(TN.getTitle(), "<=", terms[3], "count"));
+                        }
+                    }
+                } else {
+                    if (terms.length == 5)
+                        expressions.add(new Expression(terms[0], terms[1], terms[2], terms[3]));
+                    else
+                        expressions.add(new Expression(terms[0], terms[1], terms[2], "count"));
+                }
+            }
+            return expressions;
+        }
+
+
+    }
 }

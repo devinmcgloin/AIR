@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 7/12/15.
- * This is the class that sets up the libraries and deals with NBNs.
- * These are the only methods that can be called in the libraries that are built on top of NBN.
+ * This is the class that sets up the libraries and deals with Nodes.
+ * These are the only methods that can be called in the libraries that are built on top of Node.
  *
- * This gives us flexibility later down the line, and allows us to change this class to redirect to a different system for processing NBN. If we called functions on NBN then we would never be able to switch from an object based system, as there would be loads of legacy calls to NBN.
- * Here we can direct to any implementation of NBN ideas just be refactoring the types of whats being sent in rather than the calls and code syntax.
+ * This gives us flexibility later down the line, and allows us to change this class to redirect to a different system for processing Node. If we called functions on Node then we would never be able to switch from an object based system, as there would be loads of legacy calls to Node.
+ * Here we can direct to any implementation of Node ideas just be refactoring the types of whats being sent in rather than the calls and code syntax.
  * comment to push
  */
 public final class Noun {
@@ -22,7 +22,7 @@ public final class Noun {
      */
     private Noun() {}
 
-    public static String getTitle(NBN node){
+    public static String getTitle(Node node){
         return node.getTitle();
     }
 
@@ -31,59 +31,63 @@ public final class Noun {
      * @param node
      * @return
      */
-    public static ArrayList<String> getName(NBN node){
+    public static ArrayList<String> getName(Node node){
         return node.get("^name");
     }
 
-    public static ArrayList<String> getKeys(NBN node){
+    public static ArrayList<String> getKeys(Node node){
         return node.getKeys();
     }
 
-    public static ArrayList<String> get(NBN node, String key){
+    public static ArrayList<String> get(Node node, String key){
         return node.get(key);
     }
 
-    public static boolean hasP(NBN node, String key){
+    public static boolean hasP(Node node, String key){
         if(node.get(key) != null )
             return true;
         else
             return false;
     }
 
-    public static boolean isP(NBN node, String key){
-        for(String entry : node.get("^is")){
+    /**
+     * TODO need to come back to this, right now it just returns false if the first one doesnt match.
+     * @param node
+     * @param key
+     * @return
+     */
+    public static boolean isP(Node node, String key){
+        for(String entry : node.get("^logicalParent")){
             if(entry.equals(key))
                 return true;
-            else
-                return false;
         }
         return false;
     }
 
-    public static NBN add(NBN node, String key){ return node.add(key); }
+    public static Node add(Node node, String key){ return node.add(key); }
 
-    public static NBN add(NBN node, String key, String val ){
+    public static Node add(Node node, String key, String val ){
         if(!validateP(key, val) || !LDATA.validateP(key, val))
             return node.add(key, val);
         logger.warn("Value not verified, original node returned.");
         return node;
     }
 
-    public static NBN rm(NBN node, String key){
+    public static Node rm(Node node, String key){
         node = Noun.add(node,"^notKey", key);
         return node.rm(key);
     }
 
-    public static NBN rm(NBN node, String key, String val ){
+    public static Node rm(Node node, String key, String val ){
         return node.rm(key, val);
     }
 
-    public static NBN update(NBN node, String key, String oldVal, String newVal){
+    public static Node update(Node node, String key, String oldVal, String newVal){
         return node.update(key, oldVal, newVal);
     }
 
     public static boolean nounP(String value){
-        if(PA.getNoun(value) != null)
+        if(PA.get(value) != null)
             return true;
         else
             return false;
@@ -96,9 +100,9 @@ public final class Noun {
      * @return
      */
     public static boolean validateP(String key, String val){
-        NBN NBNnode = PA.getNoun(key);
-        if(NBNnode != null){
-            for(NBN node : getLogicalChildren(NBNnode)){
+        Node Nodenode = PA.get(key);
+        if(Nodenode != null){
+            for(Node node : getLogicalChildren(Nodenode)){
                 for(String name : Noun.getName(node)){
                     if(name.equals(val)){
                         return true;
@@ -109,11 +113,11 @@ public final class Noun {
         return false;
     }
 
-    public static ArrayList<String> search(NBN node, String key){
+    public static ArrayList<String> search(Node node, String key){
         return null;
     }
 
-    public static String simpleSearch(NBN node, String key){
+    public static String simpleSearch(Node node, String key){
         //Have to make sure it accounts for overflow.
 
         if(node == null)
@@ -134,17 +138,17 @@ public final class Noun {
 
     }
 
-    public static ArrayList<NBN> getLogicalParents(NBN node){
+    public static ArrayList<Node> getLogicalParents(Node node){
         if(node == null){
             return null;
         }
 
-        ArrayList<NBN> parents = new ArrayList<NBN>();
+        ArrayList<Node> parents = new ArrayList<Node>();
         ArrayList<String> tmp = node.get("^logicalParents");
         if(tmp ==null)
             return null;
         for(String title: tmp){
-            NBN foo = PA.getNoun(title);
+            Node foo = PA.get(title);
             if(foo == null) {
                 logger.error("NOUN: Couldn't find node: " + title);
                 continue;
@@ -154,17 +158,17 @@ public final class Noun {
         return parents;
     }
 
-    public static ArrayList<NBN> getLogicalChildren(NBN node){
+    public static ArrayList<Node> getLogicalChildren(Node node){
         if(node == null){
             return null;
         }
 
-        ArrayList<NBN> children = new ArrayList<NBN>();
+        ArrayList<Node> children = new ArrayList<Node>();
         ArrayList<String> tmp = node.get("^logicalChildren");
         if(tmp ==null)
             return null;
         for(String title: tmp){
-            NBN foo = PA.getNoun(title);
+            Node foo = PA.get(title);
             if(foo == null) {
                 logger.error("NOUN: Couldn't find node: " + title);
                 continue;
@@ -176,12 +180,12 @@ public final class Noun {
 
 
 
-    //Returns an arraylist of OFlowed NBNs that contain the key.
-    public static ArrayList<NBN> overflowSearch(NBN node, String key){
+    //Returns an arraylist of OFlowed Nodes that contain the key.
+    public static ArrayList<Node> overflowSearch(Node node, String key){
         //Couldn't find Value, must account for overflow.
         ArrayList<String> keys = Noun.getKeys(node);
         ArrayList<String> tmpOF = new ArrayList<>();
-        ArrayList<NBN> OFlows = new ArrayList<>();
+        ArrayList<Node> OFlows = new ArrayList<>();
 
         //Look into all current keys for overflow nodes
         for( String k: keys ){
@@ -195,7 +199,7 @@ public final class Noun {
 
         //Search the overflown nodes for the key.
         for( String OFTitle :tmpOF ){
-            NBN tmp  = PA.getNoun(OFTitle);
+            Node tmp  = PA.get(OFTitle);
             String val = simpleSearch(tmp, key);
             if( !val.startsWith("^") ){
                 //Found a valid value for the key!
@@ -207,8 +211,8 @@ public final class Noun {
             }
 
             //Otherwise, try finding deeper levels!
-            ArrayList<NBN> otherSuccesses = overflowSearch(tmp, key);
-            for(NBN success : otherSuccesses ){
+            ArrayList<Node> otherSuccesses = overflowSearch(tmp, key);
+            for(Node success : otherSuccesses ){
                 OFlows.add(success);
             }
 

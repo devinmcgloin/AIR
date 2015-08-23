@@ -22,8 +22,8 @@ import org.apache.log4j.Logger;
  * ARRAYLIST OF LDBN: {#1,#2 , #3} Spaces do not matter
  */
 public class REPL {
-    ArrayList<NBN> NBNnodes = new ArrayList<>();
-    ArrayList<LDBN> LDBNnodes = new ArrayList<>();
+    ArrayList<Node> NBNnodes = new ArrayList<>();
+    ArrayList<Node> LDBNnodes = new ArrayList<>();
     Scanner input = new Scanner(System.in);
     private final String ldataID = "#";
     private final String nounID = "@";
@@ -45,25 +45,25 @@ public class REPL {
                     ExecutionFlow flow = new ExecutionFlow(method);
                     for(String id : argumentID){
                         if(id.startsWith(nounID)){
-                            NBN node = parseNBN(id);
+                            Node node = parse(id);
                             if(node != null)
                                 flow.applyArgument(node);
                             else
                                 return null;
                         }else if(id.startsWith(ldataID)) {
-                            LDBN node = parseLDBN(id);
+                            Node node = parse(id);
                             if(node != null)
                                 flow.applyArgument(node);
                             else
                                 return null;
                         }else if(id.startsWith(setIDopen) && id.contains(nounID)) {
-                            ArrayList<NBN> array = parseArrayNBN(id);
+                            ArrayList<Node> array = parseArray(id);
                             if(Core.checkArray(array))
                                 flow.applyArgument(array);
                             else
                                 return null;
                         }else if(id.startsWith(setIDopen) && id.contains(ldataID)) {
-                            ArrayList<LDBN> array = parseArrayLDBN(id);
+                            ArrayList<Node> array = parseArray(id);
                             if(Core.checkArray(array))
                                 flow.applyArgument(array);
                             else
@@ -163,56 +163,56 @@ public class REPL {
     }
 
 
-    private NBN parseNBN(String N1){
-        if(N1.length() == 2 && N1.replace(nounID, "").matches("\\d+")) {
-            return NBNnodes.get(Integer.parseInt(N1.replace(nounID, "")) - 1);
-        }else{
-            for(NBN node : NBNnodes){
-                for(String name : Noun.getName(node)){
-                    if(name.equals(N1)){
+    private Node parse(String N1){
+        if(N1.startsWith("@")) {
+            if (N1.length() == 2 && N1.replace(nounID, "").matches("\\d+")) {
+                return NBNnodes.get(Integer.parseInt(N1.replace(nounID, "")) - 1);
+            } else {
+                for (Node node : NBNnodes) {
+                    for (String name : node.getName()) {
+                        if (name.equals(N1)) {
+                            return node;
+                        }
+                    }
+                }
+                return null;
+            }
+        }else if(N1.startsWith("#")){
+            if(N1.length() == 2 && N1.replace(ldataID, "").matches("\\d+")) {
+                return LDBNnodes.get(Integer.parseInt(N1.replace(ldataID, "")) - 1);
+            }else{
+                for(Node node : LDBNnodes){
+                    if(LDATA.getTitle(node).equals(N1)){
                         return node;
                     }
                 }
+                return null;
             }
-            return null;
         }
+        return null;
     }
 
-    private LDBN parseLDBN(String L1){
-        if(L1.length() == 2 && L1.replace(ldataID, "").matches("\\d+")) {
-            return LDBNnodes.get(Integer.parseInt(L1.replace(ldataID, "")) - 1);
-        }else{
-            for(LDBN node : LDBNnodes){
-                if(LDATA.getTitle(node).equals(L1)){
-                    return node;
-                }
+    private ArrayList<Node> parseArray(String array){
+        if(array.contains("@")) {
+            array = array.replace(setIDopen, "");
+            array = array.replace(setIDclose, "");
+            String[] split = array.split(",");
+            ArrayList<Node> nbns = new ArrayList<>();
+            for (String node : split) {
+                nbns.add(parse(node.trim()));
             }
-            return null;
-        }
+            return nbns;
+        }else if (array.contains("#")){
+            array = array.replace(setIDopen, "");
+            array = array.replace(setIDclose, "");
+            String[] split = array.split(",");
+            ArrayList<Node> ldbns = new ArrayList<>();
+            for (String node : split){
+                ldbns.add(parse(node.trim()));
+            }
+            return ldbns;
+        }else return null;
     }
-
-    private ArrayList<NBN> parseArrayNBN(String array){
-        array = array.replace(setIDopen, "");
-        array = array.replace(setIDclose, "");
-        String[] split = array.split(",");
-        ArrayList<NBN> nbns = new ArrayList<>();
-        for (String node : split){
-            nbns.add(parseNBN(node.trim()));
-        }
-        return nbns;
-    }
-
-    private ArrayList<LDBN> parseArrayLDBN(String array){
-        array = array.replace(setIDopen, "");
-        array = array.replace(setIDclose, "");
-        String[] split = array.split(",");
-        ArrayList<LDBN> ldbns = new ArrayList<>();
-        for (String node : split){
-            ldbns.add(parseLDBN(node.trim()));
-        }
-        return ldbns;
-    }
-
 
     private ArrayList<String> parseArrayString(String array){
         array = array.replace(setIDopen, "");
@@ -260,28 +260,28 @@ public class REPL {
     }
 
 
-    private void replace(NBN node){
-        for(NBN term : NBNnodes){
-            if(term.getTitle().equals(node.getTitle())){
-                int index = NBNnodes.indexOf(term);
-                NBNnodes.remove(term);
-                NBNnodes.add(index, node);
-                return;
+    private void replace(Node node){
+        if(node.isP("NBN")) {
+            for (Node term : NBNnodes) {
+                if (term.getTitle().equals(node.getTitle())) {
+                    int index = NBNnodes.indexOf(term);
+                    NBNnodes.remove(term);
+                    NBNnodes.add(index, node);
+                    return;
+                }
             }
-        }
-        NBNnodes.add(node);
-    }
-
-    private void replace(LDBN node){
-        for(LDBN term : LDBNnodes){
-            if(term.getTitle().equals(node.getTitle())){
-                int index = NBNnodes.indexOf(term);
-                LDBNnodes.remove(term);
-                LDBNnodes.add(index, node);
-                return;
+            NBNnodes.add(node);
+        }else if(node.isP("ldata")){
+            for(Node term : LDBNnodes){
+                if(term.getTitle().equals(node.getTitle())){
+                    int index = NBNnodes.indexOf(term);
+                    LDBNnodes.remove(term);
+                    LDBNnodes.add(index, node);
+                    return;
+                }
             }
+            LDBNnodes.add(node);
         }
-        LDBNnodes.add(node);
     }
 
     private boolean matchTypes(Method m, ArrayList<String> arguments){
