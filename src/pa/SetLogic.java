@@ -110,7 +110,7 @@ public final class SetLogic {
 
     public static ArrayList<Node> getSetMembers (Node node){
 
-        return Noun.getLogicalChildren(node);
+        return Node.getLogicalChildren(node);
 
     }
 
@@ -120,7 +120,7 @@ public final class SetLogic {
      * @return
      */
     public static ArrayList<Node> getSets (Node node){
-        return Noun.getLogicalParents(node);
+        return Node.getLogicalParents(node);
     }
 
     public static boolean xISyP(Node x, Node y){
@@ -129,7 +129,7 @@ public final class SetLogic {
             return false;
 
         //Get the logical children of the "parent" node
-        ArrayList<String> logicalChildren = Noun.get(y, "^logicalChildren");
+        ArrayList<String> logicalChildren = Node.get(y, "^logicalChildren");
 
         //If there are no logical children, clearly this is false.
         if(logicalChildren == null || logicalChildren.isEmpty()){
@@ -137,7 +137,7 @@ public final class SetLogic {
         }
 
         //If the title of the logical child is contained in the logicalChildren of the logical parent, everything is fine.
-        if( logicalChildren.contains( Noun.getTitle(x) ) ){
+        if( logicalChildren.contains( Node.getTitle(x) ) ){
             return true;
         }
 
@@ -155,17 +155,17 @@ public final class SetLogic {
     public static Node xINHERITy(Node x, Node y){
 
         //SR-71 Blackbird   INHERITS        supersonic jet
-        x = Noun.add(x, "^logicalParents", Noun.getTitle(y));
+        x = Node.add(x, "^logicalParents", Node.getTitle(y));
 
         //supersonice jet   gets        SR-71 Blackbird     as a child
-        y = Noun.add(y, "^logicalChildren", Noun.getTitle(x));
+        y = Node.add(y, "^logicalChildren", Node.getTitle(x));
 
         //Additional logic:
         //Now the child gets all the keys from the parent, with the exception of the carrot headers. (Even though those should be fine...)
-        ArrayList<String> keys = Noun.getKeys(y);
+        ArrayList<String> keys = Node.getKeys(y);
         for(String key: keys){
-            if(!x.get("^notKey").contains(key)) {
-                x = Noun.add(x, key);
+            if(!Node.get(x, "^notKey").contains(key)) {
+                x = Node.add(x, key);
             }
         }
 //TODO: eval this to see if it would be better to return both.
@@ -181,9 +181,9 @@ public final class SetLogic {
      * @return
      */
     public static Node xLikey(Node x, Node y){
-        ArrayList<String> keys = Noun.getKeys(y);
+        ArrayList<String> keys = Node.getKeys(y);
         for(String key: keys){
-            x = Noun.add(x, key);
+            x = Node.add(x, key);
         }
         //TODO: eval this to see if it would be better to return both.
         return x;
@@ -274,7 +274,7 @@ public final class SetLogic {
 
     public boolean memberP(ArrayList<Node> set, Node node){
         for(Node member : set){
-            if(member.getTitle().equals(node.getTitle())){
+            if(Node.getTitle(member).equals(Node.getTitle(node))){
                 return true;
             }
         }

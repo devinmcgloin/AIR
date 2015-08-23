@@ -2,6 +2,7 @@ bmw
     ^logicalChildren
     ^logicalParents
         car
+        NBN
     brakes
     door
     engine
@@ -34,6 +35,7 @@ hillary clinton
     ^logicalParents
         person
         politician
+        NBN
     ^names
     ^notKey
         car

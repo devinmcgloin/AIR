@@ -22,29 +22,10 @@ public final class Noun {
      */
     private Noun() {}
 
-    public static String getTitle(Node node){
-        return node.getTitle();
-    }
 
-    /**
-     * TODO start adding things by their name, not their title.
-     * @param node
-     * @return
-     */
-    public static ArrayList<String> getName(Node node){
-        return node.get("^name");
-    }
-
-    public static ArrayList<String> getKeys(Node node){
-        return node.getKeys();
-    }
-
-    public static ArrayList<String> get(Node node, String key){
-        return node.get(key);
-    }
 
     public static boolean hasP(Node node, String key){
-        if(node.get(key) != null )
+        if(Node.get(node, key) != null )
             return true;
         else
             return false;
@@ -57,34 +38,13 @@ public final class Noun {
      * @return
      */
     public static boolean isP(Node node, String key){
-        for(String entry : node.get("^logicalParent")){
+        for(String entry : Node.get(node,"^logicalParent")){
             if(entry.equals(key))
                 return true;
         }
         return false;
     }
 
-    public static Node add(Node node, String key){ return node.add(key); }
-
-    public static Node add(Node node, String key, String val ){
-        if(!validateP(key, val) || !LDATA.validateP(key, val))
-            return node.add(key, val);
-        logger.warn("Value not verified, original node returned.");
-        return node;
-    }
-
-    public static Node rm(Node node, String key){
-        node = Noun.add(node,"^notKey", key);
-        return node.rm(key);
-    }
-
-    public static Node rm(Node node, String key, String val ){
-        return node.rm(key, val);
-    }
-
-    public static Node update(Node node, String key, String oldVal, String newVal){
-        return node.update(key, oldVal, newVal);
-    }
 
     public static boolean nounP(String value){
         if(PA.get(value) != null)
@@ -102,8 +62,8 @@ public final class Noun {
     public static boolean validateP(String key, String val){
         Node Nodenode = PA.get(key);
         if(Nodenode != null){
-            for(Node node : getLogicalChildren(Nodenode)){
-                for(String name : Noun.getName(node)){
+            for(Node node : Node.getLogicalChildren(Nodenode)){
+                for(String name : Node.getName(node)){
                     if(name.equals(val)){
                         return true;
                     }
@@ -127,7 +87,7 @@ public final class Noun {
             return "^No Key";   //if no key, try triggering overflowSearch and filtering on context.
 
 
-        ArrayList<String> x = Noun.get(node, key);
+        ArrayList<String> x = Node.get(node, key);
         if(x == null){
             return "^No Value"; //if no value, try tracing up to logical parents to get a spread of likelihood.
             //TODO (best guess search)
@@ -138,52 +98,13 @@ public final class Noun {
 
     }
 
-    public static ArrayList<Node> getLogicalParents(Node node){
-        if(node == null){
-            return null;
-        }
-
-        ArrayList<Node> parents = new ArrayList<Node>();
-        ArrayList<String> tmp = node.get("^logicalParents");
-        if(tmp ==null)
-            return null;
-        for(String title: tmp){
-            Node foo = PA.get(title);
-            if(foo == null) {
-                logger.error("NOUN: Couldn't find node: " + title);
-                continue;
-            }
-            parents.add( foo );
-        }
-        return parents;
-    }
-
-    public static ArrayList<Node> getLogicalChildren(Node node){
-        if(node == null){
-            return null;
-        }
-
-        ArrayList<Node> children = new ArrayList<Node>();
-        ArrayList<String> tmp = node.get("^logicalChildren");
-        if(tmp ==null)
-            return null;
-        for(String title: tmp){
-            Node foo = PA.get(title);
-            if(foo == null) {
-                logger.error("NOUN: Couldn't find node: " + title);
-                continue;
-            }
-            children.add(foo);
-        }
-        return children;
-    }
 
 
 
     //Returns an arraylist of OFlowed Nodes that contain the key.
     public static ArrayList<Node> overflowSearch(Node node, String key){
         //Couldn't find Value, must account for overflow.
-        ArrayList<String> keys = Noun.getKeys(node);
+        ArrayList<String> keys = Node.getKeys(node);
         ArrayList<String> tmpOF = new ArrayList<>();
         ArrayList<Node> OFlows = new ArrayList<>();
 

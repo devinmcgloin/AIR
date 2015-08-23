@@ -41,7 +41,7 @@ public class REPL {
             for(Method method : methods){
                 logger.debug(method.getName() + " == " + methodName);
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
-                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size() && matchTypes(method, argumentID)){
+                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
                     for(String id : argumentID){
                         if(id.startsWith(nounID)){
@@ -114,27 +114,15 @@ public class REPL {
         }else{
             switch (terms[0]) {
                 case "add":
-                    if (command.contains(nounID)) {
-                        return parseCommand(command.replace("add", "Noun.add"));
-                    } else if (command.contains(ldataID)) {
-                        return parseCommand(command.replace("add", "LDATA.add"));
-                    } else return null;
+                    return parseCommand(command.replace("add", "Node.add"));
                 case "remove":
-                    if (command.contains(nounID)) {
-                        return parseCommand(command.replace("remove", "Noun.rm"));
-                    } else if (command.contains(ldataID)) {
-                        return parseCommand(command.replace("remove", "LDATA.rm"));
-                    } else return null;
+                    return parseCommand(command.replace("remove", "Node.remove"));
                 case "update":
-                    if (command.contains(nounID)) {
-                        return parseCommand(command.replace("update", "Noun.rm"));
-                    } else if (command.contains(ldataID)) {
-                        return parseCommand(command.replace("update", "LDATA.rm"));
-                    } else return null;
+                    return parseCommand(command.replace("update", "Node.update"));
                 case "getldata":
-                    return parseCommand(command.replace("getldata", "PA.getLDATA"));
+                    return parseCommand(command.replace("getldata", "PA.get"));
                 case "getnoun":
-                    return parseCommand(command.replace("getnoun", "PA.getNoun"));
+                    return parseCommand(command.replace("getnoun", "PA.get"));
                 case "inherit":
                     return parseCommand(command.replace("inherit", "SetLogic.xINHERITy"));
                 case "put":
@@ -144,17 +132,9 @@ public class REPL {
                 case "createldata":
                     return parseCommand(command.replace("createldata", "PA.createLDBN"));
                 case "get":
-                    if (command.contains(nounID)) {
-                        return parseCommand(command.replace("get", "Noun.get"));
-                    } else if (command.contains(ldataID)) {
-                        return parseCommand(command.replace("get", "LDATA.get"));
-                    } else return null;
+                    return parseCommand(command.replace("get", "Node.get"));
                 case "keys":
-                    if (command.contains(nounID)) {
-                        return parseCommand(command.replace("keys", "Noun.getKeys"));
-                    } else if (command.contains(ldataID)) {
-                        return parseCommand(command.replace("keys", "LDATA.getKeys"));
-                    } else return null;
+                    return parseCommand(command.replace("keys", "Node.getKeys"));
                 default:
                     return null;
             }
@@ -169,7 +149,7 @@ public class REPL {
                 return NBNnodes.get(Integer.parseInt(N1.replace(nounID, "")) - 1);
             } else {
                 for (Node node : NBNnodes) {
-                    for (String name : node.getName()) {
+                    for (String name : Node.getName(node)) {
                         if (name.equals(N1)) {
                             return node;
                         }
@@ -182,7 +162,7 @@ public class REPL {
                 return LDBNnodes.get(Integer.parseInt(N1.replace(ldataID, "")) - 1);
             }else{
                 for(Node node : LDBNnodes){
-                    if(LDATA.getTitle(node).equals(N1)){
+                    if(Node.getTitle(node).equals(N1)){
                         return node;
                     }
                 }
@@ -247,10 +227,8 @@ public class REPL {
             ExecutionFlow flow = invoke((String) parsedCommands.first, (String) parsedCommands.second, (ArrayList<String>) parsedCommands.third);
             if (flow != null && flow.getResult() != null) {
                 Type resultType = flow.getResult().getClass();
-                if (resultType.getTypeName().equals("pa.NBN")) {
-                    replace((NBN) flow.getResult());
-                } else if (resultType.getTypeName().equals("pa.LDBN")) {
-                    replace((LDBN) flow.getResult());
+                if ( resultType.getTypeName().equals("pa.Node")) {
+                    replace((Node)flow.getResult());
                 } else {
                     System.out.println(flow.getResult());
                 }
@@ -263,7 +241,7 @@ public class REPL {
     private void replace(Node node){
         if(node.isP("NBN")) {
             for (Node term : NBNnodes) {
-                if (term.getTitle().equals(node.getTitle())) {
+                if (Node.getTitle(term).equals(Node.getTitle(node))) {
                     int index = NBNnodes.indexOf(term);
                     NBNnodes.remove(term);
                     NBNnodes.add(index, node);
@@ -273,7 +251,7 @@ public class REPL {
             NBNnodes.add(node);
         }else if(node.isP("ldata")){
             for(Node term : LDBNnodes){
-                if(term.getTitle().equals(node.getTitle())){
+                if(Node.getTitle(term).equals(Node.getTitle(node))){
                     int index = NBNnodes.indexOf(term);
                     LDBNnodes.remove(term);
                     LDBNnodes.add(index, node);

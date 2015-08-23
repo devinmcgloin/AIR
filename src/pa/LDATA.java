@@ -104,15 +104,15 @@ public final class LDATA {
         }
     }
 
-    public static boolean validateP(Node node, String expression){
-        Expression exp = Reader.parseExpression(expression);
-        if(exp != null)
-            return validateP(node, exp );
-        else {
-            logger.warn("Invalid Expression");
-            return true;
-        }
-    }
+//    public static boolean validateP(Node node, String expression){
+//        Expression exp = Reader.parseExpression(expression);
+//        if(exp != null)
+//            return validateP(node, exp );
+//        else {
+//            logger.warn("Invalid Expression");
+//            return true;
+//        }
+//    }
 
     /**
      *
@@ -253,47 +253,43 @@ public final class LDATA {
         return true;
     }
 
-    public static String getTitle(Node node){
-        return node.getTitle();
-    }
-
-    public static double getAndConvert(Node node, String key, String unit){
-
-    }
-
-    public static int getAndConvert(Node node, String key, String unit){
-
-    }
+//    public static double getAndConvert(Node node, String key, String unit){
+//
+//    }
 
     public static Node setStorageType(Node node, String type){
-        if(node.get("^storage") == null){
-            node = node.add("^storage", type);
+        if(Node.get(node, "^storage") == null){
+            node = Node.add(node, "^storage", type);
         }
         return node;
     }
 
     public static Node setIsParam(Node node, String param){
-        if(node.get("^is") == null){
-            node = node.add("^is", param);
+        if(Node.get(node, "^is") == null){
+            node = Node.add(node, "^is", param);
         }
         return node;
     }
 
-    public static Node addConversion(Node node, String convertTitle, String convertSteps){
+//    public static Node addConversion(Node node, String convertTitle, String convertSteps){
+//
+//    }
+//
+//    public static Node addValRange(Node node, String valRange){
+//
+//    }
+//
+//    public static Node addUnit(Node node, String key){
+//
+//    }
 
+    public static ArrayList<String> getUnits(Node n){
+        return Node.get(n, "^units");
     }
 
-    public static Node addValRange(Node node, String valRange){
-
-    }
-
-    public static Node addUnit(Node node, String key){
-
-    }
-
-    public static String unitScaling(String value){
-
-    }
+//    public static String unitScaling(String value){
+//
+//    }
 
     /**
      * need to check this before you can just compare the way Im doing it now in LDATA.
@@ -301,9 +297,9 @@ public final class LDATA {
      * @return
      */
     public static String getComp(Node TN) {
-        if (TN.get("^comparison").contains("ordered")) {
+        if (Node.get(TN, "^comparison").contains("ordered")) {
             return "ordered";
-        } else if (TN.get("^comparison").contains("count")) {
+        } else if (Node.get(TN, "^comparison").contains("count")) {
             return "count";
         } else {
             //TODO more complex logic containers/Time etc. Dont know how to do yet.
@@ -319,7 +315,7 @@ public final class LDATA {
      * @return
      */
     public static String getConversion(Node TN, String unitFrom, String unitTo) {
-        List<String> conversions = TN.get("^conversions");
+        List<String> conversions = Node.get(TN,"^conversions");
 
         for (String conversion : conversions) {
             String[] types = conversion.split("->");
@@ -335,7 +331,7 @@ public final class LDATA {
      * @return
      */
     public static ArrayList<Expression> getValRanges(Node TN) {
-        ArrayList<String> children = TN.get("^value_ranges");
+        ArrayList<String> children = Node.get(TN, "^value_ranges");
         if (children.size() == 0) {
             logger.error("Node: GetValRanges: No ranges.");
             return null;
@@ -349,28 +345,28 @@ public final class LDATA {
                     if (terms.length == 6) {
                         //Opening paren
                         if (terms[0].equals("(")) {
-                            expressions.add(new Expression(TN.getTitle(), ">", terms[1], terms[4]));
+                            expressions.add(new Expression(Node.getTitle(TN), ">", terms[1], terms[4]));
                         } else if (terms[0].equals("[")) {
-                            expressions.add(new Expression(TN.getTitle(), ">=", terms[1], terms[4]));
+                            expressions.add(new Expression(Node.getTitle(TN), ">=", terms[1], terms[4]));
                         }
                         //closing paren
                         if (terms[5].equals(")")) {
-                            expressions.add(new Expression(TN.getTitle(), "<", terms[3], terms[4]));
+                            expressions.add(new Expression(Node.getTitle(TN), "<", terms[3], terms[4]));
                         } else if (terms[5].equals("]")) {
-                            expressions.add(new Expression(TN.getTitle(), "<=", terms[3], terms[4]));
+                            expressions.add(new Expression(Node.getTitle(TN), "<=", terms[3], terms[4]));
                         }
                     } else {
                         //Opening paren
                         if (terms[0].equals("(")) {
-                            expressions.add(new Expression(TN.getTitle(), ">", terms[1], "count"));
+                            expressions.add(new Expression(Node.getTitle(TN), ">", terms[1], "count"));
                         } else if (terms[0].equals("[")) {
-                            expressions.add(new Expression(TN.getTitle(), ">=", terms[1], "count"));
+                            expressions.add(new Expression(Node.getTitle(TN), ">=", terms[1], "count"));
                         }
                         //closing paren
                         if (terms[5].equals(")")) {
-                            expressions.add(new Expression(TN.getTitle(), "<", terms[3], "count"));
+                            expressions.add(new Expression(Node.getTitle(TN), "<", terms[3], "count"));
                         } else if (terms[5].equals("]")) {
-                            expressions.add(new Expression(TN.getTitle(), "<=", terms[3], "count"));
+                            expressions.add(new Expression(Node.getTitle(TN), "<=", terms[3], "count"));
                         }
                     }
                 } else {

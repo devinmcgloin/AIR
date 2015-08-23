@@ -21,22 +21,22 @@ import funct.Core.*;
  */
 public final class Comparison {
 
-//    public static void getDiff(NBN a, NBN b){
+//    public static void getDiff(Node a, Node b){
 //        //Might be able to pass in "fidelity" level for OF?
 //
 //    }
 //
-//    public static void compareBy(metric?, NBN a, NBN b){
+//    public static void compareBy(metric?, Node a, Node b){
 //        //idk what metric means...
 //        //int ordering for things
 //    }
 //
-//    public static void stableSort(metric? , ArrayList<NBN> nodes){
+//    public static void stableSort(metric? , ArrayList<Node> nodes){
 //        //idk what metric means...
 //        //sort by a second qualifier if two are equal, without disturbing the order of the first
 //    }
 //
-//    public static void compare(NBN a, NBN b){
+//    public static void compare(Node a, Node b){
 //        //proximity. should be very simple.
 //        //it should be simple because it could be used by the AI to try and decide if a new node that's being talked about
 //            //might belong to another set. (Would allow it to ask if x is y and then inherit more keys it could ask about.
@@ -59,7 +59,7 @@ public final class Comparison {
      * @param val
      * @return
      */
-    public static double getProbability(ArrayList<NBN> set, String key, String val){
+    public static double getProbability(ArrayList<Node> set, String key, String val){
 
         ArrayList<keyVal> dist = getDistribution(set, key);
 
@@ -76,11 +76,11 @@ public final class Comparison {
      * @param set
      * @param key
      */
-    public static ArrayList<keyVal> getDistribution(ArrayList<NBN> set, String key){
+    public static ArrayList<keyVal> getDistribution(ArrayList<Node> set, String key){
 
         ArrayList<keyVal> dist = new ArrayList<keyVal>();
 
-        LDBN ldbn = PA.getLDATA(key);
+        Node ldbn = PA.get(key);
         if(ldbn.equals(null)){
             System.out.println("Comparison: You shit outta luck");
             return null;
@@ -97,7 +97,7 @@ public final class Comparison {
 
         String value = "";
         //Check to see if they have the value, get the total
-        for(NBN node: set){
+        for(Node node: set){
             value = Noun.simpleSearch(node, key);
             if(value.startsWith("^")){
                 System.out.println("Comparison: Yo i didn't even have that key or value, homes");

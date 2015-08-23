@@ -138,9 +138,9 @@ public final class PA {
         //-then continue the regular adding methods PA has.
 
         //Check if node already exists in DB, if not, add it. Then continue regular put.
-        TreeNode x = getRb(db).get("R/" + db + "/" + node.getTitle());
-        if( !x.getTitle().equals(node.getTitle()) ){
-            getRb(db).add(node.getTitle(), "R/" + db + "/" + node.getTitle());
+        TreeNode x = getRb(db).get("R/" + db + "/" + Node.getTitle(node));
+        if( !x.getTitle().equals(Node.getTitle(node)) ){
+            getRb(db).add(Node.getTitle(node), "R/" + db + "/" + Node.getTitle(node));
         }
 
 
@@ -157,10 +157,10 @@ public final class PA {
                     if(record.getVal() == null ){
                         //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
                         //System.out.println("\n\nyup\n\n");
-                        getRb(db).add(record.getKey(), "R/" + db + "/" + node.getTitle() );
+                        getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node) );
                     }else{
-                        getRb(db).add(record.getKey(),"R/" + db + "/" + node.getTitle() );
-                        getRb(db).add(record.getVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey() );
+                        getRb(db).add(record.getKey(),"R/" + db + "/" + Node.getTitle(node) );
+                        getRb(db).add(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey() );
 
                     }
                     //HOW R'S ADD WORKS:
@@ -173,17 +173,17 @@ public final class PA {
             }else if(record.getOperation().equals("rm")) {
                 if(rDBexists(db)){
                     if(record.getVal() == null ){
-                        getRb(db).del(record.getKey(), "R/" + db + "/" + node.getTitle());
+                        getRb(db).del(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
                     }else{
                         //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
-                        getRb(db).del(record.getVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
+                        getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
                     }
                 }
             }
             else if(record.getOperation().equals("update")){
                 if(rDBexists(db)){
-                    getRb(db).del(record.getVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
-                    getRb(db).add(record.getNewVal(), "R/" + db + "/" + node.getTitle() + "/" + record.getKey());
+                    getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                    getRb(db).add(record.getNewVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
                 }
             }else{
                 logger.error("Record: " + record.toString() + "\n Is not a valid record");
@@ -287,7 +287,7 @@ public final class PA {
         if(rDBexists("noun")){
             TreeNode node = getRb("noun").get("R/noun/" + title);
             Node nounBase = new Node(node);
-            if(nounBase.getTitle().equals(title))
+            if(Node.getTitle(nounBase).equals(title))
                 return nounBase;
             else
                 return null;

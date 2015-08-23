@@ -39,15 +39,98 @@ public class Node {
         this.record = new ArrayList<>();
     }
 
-    public String getTitle() {
+    public static Node add(Node node, String key){ return node.add(key); }
+
+    public static Node add(Node node, String key, String val ){
+        if(!Noun.validateP(key, val) || !LDATA.validateP(key, val))
+            return node.add(key, val);
+        logger.warn("Value not verified, original node returned.");
+        return node;
+    }
+
+    public static Node rm(Node node, String key){
+        node = add(node,"^notKey", key);
+        return node.rm(key);
+    }
+
+    public static Node rm(Node node, String key, String val ){
+        return node.rm(key, val);
+    }
+
+    public static ArrayList<Node> getLogicalParents(Node node){
+        if(node == null){
+            return null;
+        }
+
+        ArrayList<Node> parents = new ArrayList<Node>();
+        ArrayList<String> tmp = node.get("^logicalParents");
+        if(tmp ==null)
+            return null;
+        for(String title: tmp){
+            Node foo = PA.get(title);
+            if(foo == null) {
+                logger.error("NOUN: Couldn't find node: " + title);
+                continue;
+            }
+            parents.add( foo );
+        }
+        return parents;
+    }
+
+    public static ArrayList<Node> getLogicalChildren(Node node){
+        if(node == null){
+            return null;
+        }
+
+        ArrayList<Node> children = new ArrayList<Node>();
+        ArrayList<String> tmp = node.get("^logicalChildren");
+        if(tmp ==null)
+            return null;
+        for(String title: tmp){
+            Node foo = PA.get(title);
+            if(foo == null) {
+                logger.error("NOUN: Couldn't find node: " + title);
+                continue;
+            }
+            children.add(foo);
+        }
+        return children;
+    }
+
+    /**
+     * TODO start adding things by their name, not their title.
+     * @param node
+     * @return
+     */
+    public static ArrayList<String> getName(Node node){
+        return node.get("^name");
+    }
+
+    public static ArrayList<String> getKeys(Node node){
+        return node.getKeys();
+    }
+
+    public static ArrayList<String> get(Node node, String key){
+        return node.get(key);
+    }
+
+    public static Node update(Node node, String key, String oldVal, String newVal){
+        return node.update(key, oldVal, newVal);
+    }
+
+    private String getTitle() {
         return TN.getTitle();
+    }
+
+    public static String getTitle(Node node){
+        return node.getTitle();
     }
 
     public String toString() {
         return TN.getTitle();
     }
 
-    public ArrayList<String> getKeys() {
+    private ArrayList<String> getKeys() {
         return TN.getChildrenString();
     }
 
@@ -59,11 +142,11 @@ public class Node {
         }
         return false;
     }
-    public ArrayList<String> getName(){
+    private ArrayList<String> getName(){
         return get("^name");
     }
 
-    public ArrayList<String> get(String Key) {
+    private ArrayList<String> get(String Key) {
         TreeNode kid = TN.getChild(Key);
         if(kid==null)
             return null;
@@ -104,7 +187,7 @@ public class Node {
      *
      */
 
-    public Node add(String key){
+    private Node add(String key){
         //First and foremost, we need a new root:
         TreeNode newNode = copyNode(TN);
 
@@ -119,7 +202,7 @@ public class Node {
      * @param Val
      * @return
      */
-    public Node add(String Key, String Val) {
+    private Node add(String Key, String Val) {
 
         //First and foremost, we need a new root:
         TreeNode newNode = copyNode(TN);
@@ -133,7 +216,7 @@ public class Node {
      * @param Key
      * @return
      */
-    public Node rm(String Key) {
+    private Node rm(String Key) {
         TreeNode newNode = copyNode(TN);
         removeChild(newNode, Key);
         return new Node(newNode, copyRecordAddContent(this.record, new Record("rm", Key)));
@@ -145,7 +228,7 @@ public class Node {
      * @param Val
      * @return
      */
-    public Node rm(String Key, String Val) {
+    private Node rm(String Key, String Val) {
         TreeNode newNode = copyNode(TN);
         rm(newNode, Key, Val);
         return new Node(newNode, copyRecordAddContent(record, new Record("rm", Key, Val)));
@@ -159,7 +242,7 @@ public class Node {
      * @return
      */
 
-    public Node update(String key, String oldVal, String newVal) {
+    private Node update(String key, String oldVal, String newVal) {
         TreeNode newNode = copyNode(TN);
 
         update(newNode, key, oldVal, newVal);
@@ -174,7 +257,7 @@ public class Node {
      * @param vals
      * @return
      */
-    public Node batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
+    private Node batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -191,7 +274,7 @@ public class Node {
      * @param keys
      * @return
      */
-    public Node batchRM(ArrayList<String> keys) {
+    private Node batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -208,7 +291,7 @@ public class Node {
      * @param vals
      * @return
      */
-    public Node batchRM(ArrayList<String> keys, ArrayList<String> vals) {
+    private Node batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 
@@ -229,7 +312,7 @@ public class Node {
      * @param newVals
      * @return
      */
-    public Node batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
+    private Node batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
         ArrayList<Record> additions = new ArrayList<Record>();
 

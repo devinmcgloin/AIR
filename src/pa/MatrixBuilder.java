@@ -15,13 +15,13 @@ public class MatrixBuilder {
      * @param attributes
      * @return
      */
-    public static String [][] genMatrix(ArrayList<NBN> nodes, ArrayList<String> attributes){
+    public static String [][] genMatrix(ArrayList<Node> nodes, ArrayList<String> attributes){
         //[rows][Col]
         String [][] matrix = new String [nodes.size()][attributes.size()];
 
         for(int i = 0; i < nodes.size(); i++){
             for(int j = 0; j < attributes.size(); j++){
-                matrix[i][j] = Noun.get(nodes.get(i), attributes.get(j)).get(0);
+                matrix[i][j] = Node.get(nodes.get(i), attributes.get(j)).get(0);
             }
         }
         return matrix;
