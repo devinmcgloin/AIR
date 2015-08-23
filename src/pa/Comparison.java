@@ -64,6 +64,10 @@ public final class Comparison {
      */
     public static double getProbability(ArrayList<NBN> set, String key, String val){
 
+        if(val.split(" ").length >1){
+            val = val.split(" ")[0];
+        }
+
         double nullHyp = Double.parseDouble(val);
 
         ArrayList<keyVal> dist = getDistribution(set, key);
