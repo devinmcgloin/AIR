@@ -118,6 +118,20 @@ public class Node {
         return node.update(key, oldVal, newVal);
     }
 
+    /**
+     * TODO need to come back to this, right now it just returns false if the first one doesnt match.
+     * @param node
+     * @param key
+     * @return
+     */
+    public static boolean isP(Node node, String key){
+        for(String entry : get(node,"^logicalParent")){
+            if(entry.equals(key))
+                return true;
+        }
+        return false;
+    }
+
     private String getTitle() {
         return TN.getTitle();
     }

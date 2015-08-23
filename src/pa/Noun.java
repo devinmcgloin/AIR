@@ -31,20 +31,6 @@ public final class Noun {
             return false;
     }
 
-    /**
-     * TODO need to come back to this, right now it just returns false if the first one doesnt match.
-     * @param node
-     * @param key
-     * @return
-     */
-    public static boolean isP(Node node, String key){
-        for(String entry : Node.get(node,"^logicalParent")){
-            if(entry.equals(key))
-                return true;
-        }
-        return false;
-    }
-
 
     public static boolean nounP(String value){
         if(PA.get(value) != null)

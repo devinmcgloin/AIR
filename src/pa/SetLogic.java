@@ -4,12 +4,9 @@ package pa;
 import org.apache.log4j.Logger;
 import util.Expression;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -50,7 +47,7 @@ public final class SetLogic {
             Node option = iterator.next();
             //Is filter
 
-            if (!Noun.isP(option, isCondition.trim())) {
+            if (!Node.isP(option, isCondition.trim())) {
                 iterator.remove();
                 break;
             }
