@@ -95,9 +95,24 @@ public class Stats {
         double mean;
         double s;
         int n;
-        double negativeC; //t-stat ... 1 - ci/2
+        double negativeC; //t-stat
         double positiveC; //t-stat
+        double negativeP; //cumulative probability of the negative tail. ... (ci - 1)/2
+        double positiveP; //cumulative probability of the positive tail. ... (1 - ci)/2
+        double lowerBound; //actual value calculated in context of the arraylist of values
+        double upperBound;
 
+        //Solve for the overall distribution for the arraylist of values since we will need the mean, s and n.
+
+        //Use the C.I. passed in to calculate the two cumulative probabilities of the respective tails.
+
+        //Use inverse cumulative prob to get the -c and +c  t-statistics
+
+        //Use those t-statistics to solve for mu in the t-stat equation. This mu would be the hypothetical
+        //  null value that would have needed to be inputed into the t-stat equation to get the probabilities
+        //  of the two tails corresponding to the confidence interval.
+
+        //t-stat equation: t  =  (mean - mu) / (s/sqrt(n))
 
 
 
