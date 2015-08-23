@@ -227,6 +227,9 @@ public class REPL {
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
             return;
+        }else if(command.toLowerCase().equals("clearRecent")){
+            mostRecent = null;
+            return;
         }
         returnTuple parsedCommands = parseCommand(command);
         if(parsedCommands != null) {
