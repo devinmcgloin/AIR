@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
  * Created by @devinmcgloin on 8/17/2015.
  * TODO currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
  *
+ * TODO pull out nodes implicity when provided string arguments. The only time strings will be looked at as strings would be for manipulating content inside the node.
  *
  * TODO support sets for NBNs
  *
@@ -227,19 +228,19 @@ public class REPL {
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
             return;
-        }else if(command.toLowerCase().equals("clearRecent")){
+        }else if(command.toLowerCase().equals("clear")){
             mostRecent = null;
-            return;
-        }
-        returnTuple parsedCommands = parseCommand(command);
-        if(parsedCommands != null) {
-            ExecutionFlow flow = invoke((String) parsedCommands.first, (String) parsedCommands.second, (ArrayList<String>) parsedCommands.third);
-            if (flow != null && flow.getResult() != null) {
-                Type resultType = flow.getResult().getClass();
-                if ( resultType.getTypeName().equals("pa.Node")) {
-                    replace((Node)flow.getResult());
-                } else {
-                    System.out.println(flow.getResult());
+        }else {
+            returnTuple parsedCommands = parseCommand(command);
+            if (parsedCommands != null) {
+                ExecutionFlow flow = invoke((String) parsedCommands.first, (String) parsedCommands.second, (ArrayList<String>) parsedCommands.third);
+                if (flow != null && flow.getResult() != null) {
+                    Type resultType = flow.getResult().getClass();
+                    if (resultType.getTypeName().equals("pa.Node")) {
+                        replace((Node) flow.getResult());
+                    } else {
+                        System.out.println(flow.getResult());
+                    }
                 }
             }
         }
@@ -248,7 +249,7 @@ public class REPL {
 
 
     private void replace(Node node){
-        if(Node.getKeys(node).size() == 0 || Node.getTitle(node).equals(Node.getTitle(mostRecent))){
+        if(Node.getKeys(node).size() == 0 || Node.getTitle(node).equals(Node.getTitle(mostRecent)) || Node.get(node,"^logicalParents").size() == 0){
            mostRecent = node;
         }
         else if(node.isP("noun")) {

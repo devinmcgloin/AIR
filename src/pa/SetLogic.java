@@ -144,7 +144,7 @@ public final class SetLogic {
     }
 
     /**
-     *
+     * todo - LDATA INHERIT VALUES,
      * @param x - the child
      * @param y - the parent
      * @return

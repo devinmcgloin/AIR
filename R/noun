@@ -1,3 +1,4 @@
+blah
 bmw
     ^logicalChildren
     ^logicalParents
@@ -106,3 +107,6 @@ politician
     mass
     occupation
     weight
+show
+    ^logicalChildren
+    stringRepresentation

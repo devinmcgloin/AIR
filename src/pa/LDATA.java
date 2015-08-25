@@ -3,9 +3,7 @@ package pa;
 import java.util.ArrayList;
 import java.util.List;
 
-import funct.Reader;
 import org.apache.log4j.Logger;
-import util.Expression;
 
 /**
  * Created by devinmcgloin on 6/17/15.
@@ -271,25 +269,25 @@ public final class LDATA {
         return node;
     }
 
-//    public static Node addConversion(Node node, String convertTitle, String convertSteps){
-//
-//    }
-//
-//    public static Node addValRange(Node node, String valRange){
-//
-//    }
-//
-//    public static Node addUnit(Node node, String key){
-//
-//    }
+    public static Node addConversion(Node node, String convertTitle, String convertSteps){
+
+    }
+
+    public static Node addValRange(Node node, String valRange){
+
+    }
+
+    public static Node addUnit(Node node, String key){
+
+    }
 
     public static ArrayList<String> getUnits(Node n){
         return Node.get(n, "^units");
     }
 
-//    public static String unitScaling(String value){
-//
-//    }
+    public static String unitScaling(String value){
+
+    }
 
     /**
      * need to check this before you can just compare the way Im doing it now in LDATA.
