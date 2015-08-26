@@ -10,7 +10,7 @@ public class Error {
     private Error() {
     }
 
-    public static Node newError() {
-
-    }
+//    public static Node newError() {
+//
+//    }
 }
