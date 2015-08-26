@@ -44,7 +44,7 @@ public class Node {
     public static Node add(Node node, String key){ return node.add(key); }
 
     public static Node add(Node node, String key, String val ){
-        if (!SetLogic.validateP(key, val) || !LDATA.isValid(key, val))
+        if (!SetLogic.isValid(key, val) || !LDATA.isValid(key, val))
             return node.add(key, val);
         logger.warn("Value not verified, original node returned.");
         return node;

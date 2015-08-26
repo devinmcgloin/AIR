@@ -26,31 +26,46 @@ public final class SetLogic {
     }
 
 
-    public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Node> LDATAConditions) {
+    public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<Node> isConditions, ArrayList<Node> hasConditions, ArrayList<Node> LDATAConditions) {
         nodes = isFilter(nodes, isConditions);
         nodes = hasFilter(nodes, hasConditions);
         nodes = LDATAFilter(nodes, LDATAConditions);
         return nodes;
     }
 
+    public static ArrayList<Node> nameFilter(ArrayList<Node> nodes, String name) {
+        ArrayList<Node> returnNodes = new ArrayList<>();
+        for (Node option : nodes) {
+            //Is filter
+            ArrayList<String> nodeNames = Node.getName(option);
+            for (String nodeName : nodeNames) {
+                if (nodeName.equals(name)) {
+                    returnNodes.add(option);
+                }
+            }
+        }
 
-    public static ArrayList<Node> isFilter(ArrayList<Node> nodes, ArrayList<String> isConditions){
+        return returnNodes;
+    }
+
+
+    public static ArrayList<Node> isFilter(ArrayList<Node> nodes, ArrayList<Node> isConditions) {
         //Is filter
-        for(String term : isConditions) {
+        for (Node term : isConditions) {
             nodes = isFilter(nodes, term);
         }
 
         return nodes;
     }
 
-    public static ArrayList<Node> isFilter(ArrayList<Node> nodes, String isCondition){
+    public static ArrayList<Node> isFilter(ArrayList<Node> nodes, Node isCondition) {
         Iterator<Node> iterator = nodes.iterator();
 
         while (iterator.hasNext()){
             Node option = iterator.next();
             //Is filter
 
-            if (!Node.isP(option, isCondition.trim())) {
+            if (!xISyP(option, isCondition)) {
                 iterator.remove();
                 break;
             }
@@ -59,23 +74,23 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, ArrayList<String> hasConditions){
+    public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, ArrayList<Node> hasConditions) {
         //Is filter
-        for(String term : hasConditions) {
+        for (Node term : hasConditions) {
             nodes = hasFilter(nodes, term);
         }
 
         return nodes;
     }
 
-    public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, String hasCondition){
+    public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, Node hasCondition) {
         Iterator<Node> iterator = nodes.iterator();
 
         while (iterator.hasNext()){
             Node option = iterator.next();
             //Is filter
 
-            if (!Node.hasP(option, hasCondition.trim())) {
+            if (!Node.hasP(option, hasCondition)) {
                 iterator.remove();
                 break;
             }
@@ -115,7 +130,7 @@ public final class SetLogic {
      * @param node
      * @return
      */
-    public static ArrayList<Node> getLogicalParent(Node node) {
+    public static Node getLogicalParent(Node node) {
         if(node == null){
             logger.warn("Cannot get parents of null node.");
             return null;
@@ -143,9 +158,9 @@ public final class SetLogic {
                 logger.error("Couldn't find node: " + title);
                 continue;
             }
-            parents.add( foo );
+            return foo;
         }
-        return parents;
+        return null;
     }
 
     public static ArrayList<Node> getLogicalChildren(Node node){

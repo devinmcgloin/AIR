@@ -1,5 +1,6 @@
 package pa;
 
+import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
 import r.TreeNode;
@@ -274,6 +275,8 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
             TreeNode node = getRb("noun").get("R/noun/" + title);
+            if (node == null)
+                return null;
             Node nounBase = new Node(node);
             if(Node.getTitle(nounBase).equals(title))
                 return nounBase;
@@ -283,12 +286,27 @@ public final class PA {
         return null;
     }
 
-    public static Node getByName(String name) {
+    public static ArrayList<Node> getByName(String name) {
         start();
+        ArrayList<Node> options = generalSearch(name);
+        options = SetLogic.nameFilter(options, name);
+        return options;
     }
 
-    public static Node getByTitle(String title) {
+    public static ArrayList<Node> getByTitle(String title) {
         start();
+        Node n = getByExactTitle(title);
+        ArrayList<Node> nodes = new ArrayList<>();
+        if (n != null) {
+            nodes.add(n);
+        } else {
+            int i = 0;
+            while (getByExactTitle(title + i) != null) {
+                i = i++;
+                nodes.add(getByExactTitle(title + i));
+            }
+        }
+        return nodes;
     }
 
 

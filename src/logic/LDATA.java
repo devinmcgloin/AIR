@@ -103,7 +103,7 @@ public final class LDATA {
      * @return
      */
     public static Node getType(String unit) {
-        return Node.getLogicalParent(PA.getByExactTitle(unit));
+        return SetLogic.getLogicalParent(PA.getByExactTitle(unit));
     }
 
     /**
@@ -112,7 +112,13 @@ public final class LDATA {
      * @return
      */
     public static boolean isLdata(String type) {
-
+        if (isExpression(type))
+            return true;
+        else if (isNumeric(type))
+            return true;
+        else if (isUnit(type))
+            return true;
+        else return SetLogic.xISyP(PA.getByExactTitle(type), PA.getByExactTitle("ldata"));
     }
 
     public static boolean isExpression(String expression) {
@@ -127,7 +133,12 @@ public final class LDATA {
     }
 
     public static boolean isUnit(String unit) {
-
+        Node unitNode = PA.getByExactTitle("unit");
+        for (String possibleMatch : Node.getCarrot(unitNode, "^unit")) {
+            if (possibleMatch.equals(unit))
+                return true;
+        }
+        return false;
     }
 
     public static boolean isUnitsEqual(Node a, Node b) {
