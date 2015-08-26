@@ -249,22 +249,12 @@ public final class LDATA {
         return true;
     }
 
-//    public static double getAndConvert(Node node, String key, String unit){
-//
-//    }
+    public static double getCastConvert(Node node, String key, String unit) {
 
-    public static Node setStorageType(Node node, String type){
-        if(Node.get(node, "^storage") == null){
-            node = Node.add(node, "^storage", type);
-        }
-        return node;
     }
 
-    public static Node setIsParam(Node node, String param){
-        if(Node.get(node, "^is") == null){
-            node = Node.add(node, "^is", param);
-        }
-        return node;
+    public static double getCast(Node node, String key) {
+
     }
 
     public static Node addConversion(Node node, String convertTitle, String convertSteps){
