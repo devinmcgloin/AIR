@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 /**
  * Created by devinmcgloin on 6/3/15.
+ * Dam sun
  * Set logic needs to create sets of like information
  * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and getCarrot all of its logical children. (Ideally)
  * TODO: Implement or filtering.
