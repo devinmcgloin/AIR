@@ -205,6 +205,16 @@ public final class Comparison {
 
     }
 
+    /**
+     * @param metric
+     * @param A
+     * @param B
+     * @return
+     */
+    public static int compareBy(String metric, Node A, Node B) {
+
+    }
+
 
 
 }

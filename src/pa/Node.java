@@ -141,10 +141,6 @@ public class Node {
 //        return false;
 //    }
 
-    public static boolean hasP(Node node, String key) {
-        return getCarrot(node, key) != null;
-    }
-
     public static String getTitle(Node node) {
         return node.getTitle();
     }

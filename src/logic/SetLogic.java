@@ -90,7 +90,7 @@ public final class SetLogic {
             Node option = iterator.next();
             //Is filter
 
-            if (!Node.hasP(option, hasCondition)) {
+            if (!hasP(option, hasCondition)) {
                 iterator.remove();
                 break;
             }
@@ -270,6 +270,10 @@ public final class SetLogic {
         }
         //TODO: eval this to see if it would be better to return both.
         return x;
+    }
+
+    public static boolean hasP(Node node, Node key) {
+
     }
 
     /*

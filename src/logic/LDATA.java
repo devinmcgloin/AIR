@@ -26,16 +26,6 @@ public final class LDATA {
      */
     private LDATA(){}
 
-    /**
-     *
-     * @param metric
-     * @param A
-     * @param B
-     * @return
-     */
-    public static int compareBy(String metric, Node A, Node B) {
-
-    }
 
 
     /**
@@ -125,9 +115,9 @@ public final class LDATA {
         String[] parsedExpression = expression.split(" ");
         if (parsedExpression.length != 3)
             return false;
-        if (!parsedExpression[0].matches("(<|>|=<|=>|==)"))
+        else if (!parsedExpression[0].matches("(<|>|=<|=>|==)"))
             return false;
-        if (!isNumeric(parsedExpression[1]))
+        else if (!isNumeric(parsedExpression[1]))
             return false;
         return isUnit(parsedExpression[2]);
     }
@@ -211,6 +201,8 @@ public final class LDATA {
                 tmp = Node.add(tmp, "value", parsedExpression[1]);
                 tmp = Node.add(tmp, "unit", parsedExpression[2]);
                 expressions.add(tmp);
+            } else {
+                logger.warn("Expression: " + expression + " is not a valid expression.");
             }
 
         }
