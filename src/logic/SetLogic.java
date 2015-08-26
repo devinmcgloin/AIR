@@ -22,7 +22,7 @@ public final class SetLogic {
 
     private SetLogic(){}
 
-    public static boolean validateP() {
+    public static boolean validateP(String key, String val) {
 
         return false;
     }
