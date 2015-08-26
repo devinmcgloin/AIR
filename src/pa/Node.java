@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 8/17/15.
+ * This class is basically locked.
  */
 public class Node {
 
@@ -127,12 +128,11 @@ public class Node {
         return node.update(key, oldVal, newVal);
     }
 
-    /**
-     * TODO need to come back to this, right now it just returns false if the first one doesnt match.
-     * @param node
-     * @param key
-     * @return
-     */
+//    /**
+//     * @param node
+//     * @param key
+//     * @return
+//     */
 //    public static boolean isP(Node node, String key){
 //        for (String entry : getCarrot(node, "^logicalParent")) {
 //            if(entry.equals(key))
