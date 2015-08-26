@@ -1,15 +1,15 @@
-package main;
+package output;
 
 import funct.Core;
-import pa.*;
+import org.apache.log4j.Logger;
+import pa.Node;
+import util.ExecutionFlow;
 import util.returnTuple;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.apache.log4j.Logger;
 
 /**
  * Created by @devinmcgloin on 8/17/2015.
@@ -23,16 +23,15 @@ import org.apache.log4j.Logger;
  * ARRAYLIST OF LDBN: {#1,#2 , #3} Spaces do not matter
  */
 public class REPL {
-    ArrayList<Node> NBNnodes = new ArrayList<>();
-    ArrayList<Node> LDBNnodes = new ArrayList<>();
-    Node mostRecent;
-    Scanner input = new Scanner(System.in);
+    static Logger logger = Logger.getLogger(REPL.class);
     private final String ldataID = "#";
     private final String nounID = "@";
     private final String setIDopen = "{";
     private final String setIDclose = "}";
-
-    static Logger logger = Logger.getLogger(REPL.class);
+    ArrayList<Node> NBNnodes = new ArrayList<>();
+    ArrayList<Node> LDBNnodes = new ArrayList<>();
+    Node mostRecent;
+    Scanner input = new Scanner(System.in);
 
     public REPL(){}
 

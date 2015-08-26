@@ -1,5 +1,7 @@
 package pa;
 
+import logic.LDATA;
+import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Record;
@@ -11,10 +13,9 @@ import java.util.ArrayList;
  */
 public class Node {
 
+    static Logger logger = Logger.getLogger(Node.class);
     private final TreeNode TN;
     private final ArrayList<Record> record;
-
-    static Logger logger = Logger.getLogger(Node.class);
 
 
     public Node(TreeNode TN) {
@@ -42,7 +43,7 @@ public class Node {
     public static Node add(Node node, String key){ return node.add(key); }
 
     public static Node add(Node node, String key, String val ){
-        if(!Noun.validateP(key, val) || !LDATA.validateP(key, val))
+        if (!SetLogic.validateP(key, val) || !LDATA.validateP(key, val))
             return node.add(key, val);
         logger.warn("Value not verified, original node returned.");
         return node;
@@ -57,7 +58,7 @@ public class Node {
         return node.rm(key, val);
     }
 
-    public static ArrayList<Node> getLogicalParents(Node node){
+    public static ArrayList<Node> getLogicalParent(Node node) {
         if(node == null){
             return null;
         }
@@ -132,12 +133,16 @@ public class Node {
         return false;
     }
 
-    private String getTitle() {
-        return TN.getTitle();
+    public static boolean hasP(Node node, String key) {
+        return get(node, key) != null;
     }
 
-    public static String getTitle(Node node){
+    public static String getTitle(Node node) {
         return node.getTitle();
+    }
+
+    private String getTitle() {
+        return TN.getTitle();
     }
 
     public String toString() {
@@ -148,6 +153,12 @@ public class Node {
         return TN.getChildrenString();
     }
 
+    /**
+     * TODO check all other logical parents.
+     *
+     * @param term
+     * @return
+     */
     public boolean isP(String term){
         for(String is : Node.get(this,"^logicalParents")){
             if(term.equals(is)){
@@ -167,29 +178,6 @@ public class Node {
         else
             return kid.getChildrenString();
     }
-
-//    public ArrayList<String> get(String firstKey, String secondKey) {
-//        TreeNode kid = TN.getChild(firstKey);
-//        if(kid==null)
-//            return null;
-//        else{
-//            TreeNode grandKid = kid.getChild(secondKey);
-//            if (grandKid == null)
-//                return null;
-//            else
-//                return grandKid.getChildrenString();
-//        }
-//
-//    }
-
-//    public ArrayList<String> add(String firstKey, String secondKey, String thirdKey) {
-//        TreeNode newNode = copyNode(TN);
-//
-//
-//        add(newNode, firstKey, secondKey);
-//
-//        return new Node(newNode, copyRecordAddContent(this.record, new Record("add", firstKey, secondKey)));
-//    }
 
     public ArrayList<Record> getRecord(){
         return record;

@@ -1,10 +1,6 @@
-package main;
+package output;
 
 import org.apache.log4j.Logger;
-import pa.PA;
-import r.TreeNode;
-
-import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/3/15.

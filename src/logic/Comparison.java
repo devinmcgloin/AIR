@@ -1,16 +1,14 @@
-package pa;
+package logic;
 
 import funct.Core;
 import funct.Stats;
-import org.apache.commons.math3.distribution.TDistribution;
-import org.apache.commons.math3.stat.inference.TTest;
+import pa.Node;
+import pa.PA;
+import util.keyVal;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import util.keyVal;
-import funct.Core.*;
 
 /**
  * comment to push
@@ -98,7 +96,7 @@ public final class Comparison {
         String value = "";
         //Check to see if they have the value, get the total
         for(Node node: set){
-            value = Noun.simpleSearch(node, key);
+            value = Search.simpleSearch(node, key);
             if(value.startsWith("^")){
                 System.out.println("Comparison: Yo i didn't even have that key or value, homes");
                 continue;

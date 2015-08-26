@@ -1,10 +1,9 @@
-package main;
+package output;
 
-
-import pa.PA;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
+import pa.PA;
+
 /**
  * Alright bub,
  * This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.

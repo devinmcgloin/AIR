@@ -1,10 +1,13 @@
-package pa;
+package logic;
+
+import org.apache.log4j.Logger;
+import pa.Node;
+import pa.Noun;
+import pa.PA;
+import util.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import util.Expression;
 
 /**
  * Created by devinmcgloin on 6/17/15.
@@ -89,7 +92,7 @@ public final class LDATA {
      * @return
      */
     public static boolean validateP(Node node, Expression expression){
-        String value = Noun.simpleSearch(node, expression.getType());
+        String value = Search.simpleSearch(node, expression.getType());
         if(value == null){
             return true;
         }else if(ldataP(value)){
@@ -129,11 +132,7 @@ public final class LDATA {
         }else if(expression.getValue().equals("inf")){
             if(expression.getOperator().equals(">")){
                 return false;
-            }else if(expression.getOperator().contains("=") && terms[0].equals("inf")) {
-                return true;
-            }else{
-                return false;
-            }
+            } else return expression.getOperator().contains("=") && terms[0].equals("inf");
         }else if(expression.getUnit().equals(terms[1])){
             //no conversion needed
             return comp(terms[1], expression.getOperator(), expression.getValue());
@@ -204,9 +203,7 @@ public final class LDATA {
             return true;
         }else if(getType(type.split(" ")[1]) != null){
             return true;
-        }else if(isNumeric(type)){
-            return true;
-        }else return false;
+        } else return isNumeric(type);
     }
 
     /**

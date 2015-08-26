@@ -1,63 +1,50 @@
-package pa;
+package logic;
 
 import org.apache.log4j.Logger;
+import pa.Node;
+import pa.PA;
 
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 7/12/15.
- * This is the class that sets up the libraries and deals with Nodes.
- * These are the only methods that can be called in the libraries that are built on top of Node.
+ * Created by devinmcgloin on 6/6/15.
+ * Controls TreeNodeHash and is present in R.
  *
- * This gives us flexibility later down the line, and allows us to change this class to redirect to a different system for processing Node. If we called functions on Node then we would never be able to switch from an object based system, as there would be loads of legacy calls to Node.
- * Here we can direct to any implementation of Node ideas just be refactoring the types of whats being sent in rather than the calls and code syntax.
- * comment to push
+ * CONSIDER the Following:
+ *
+ * ------- BASIC SEARCH ----------
+ * SEARCH FORM: "tree`leaves`green"
+ * First word is the primary term.
+ * Other words are secondary, with the 2nd having more weight than the valOne.
+ *
+ * Steps:
+ * locate operation node. in this case "tree"
+ * Find distance of the 2nd term from "tree", remove nodes that are further than say 3 steps away.
+ * Do the same for the valOne search and so on.
+ * Always keep nodes that do not meet the all search terms, but push them to the end of the list.
+ *
+ * ------- FUZZY SEARCH ----------
+ * What happens when Basic search cant locate a node?
+ *
+ * ------- SET SEARCH ----------
+ * There will be situations in which a special search is needed, this is mostly for set logic.
+ *
+ * First:
+ * What are sets? And what kinds of things do we want from them?
+ * Sets are
+ *
+ * ------- KEY VAL SEARCH ----------
+ * This type of search should only return key value pairs.
+ * EG "How tall is the Empire State Building" etc etc ad infinitum.
+ *
+ * Steps:
+ * Goto Empire State Building node, hash search for tall or synonyms.
+ * Pull out key value pair related to query.
  */
-public final class Noun {
+public final class Search {
 
-    static Logger logger = Logger.getLogger(Noun.class);
+    static Logger logger = Logger.getLogger(Search.class);
 
-    /**
-     * Don't let anyone instantiate this class.
-     */
-    private Noun() {}
-
-
-
-    public static boolean hasP(Node node, String key){
-        if(Node.get(node, key) != null )
-            return true;
-        else
-            return false;
-    }
-
-
-    public static boolean nounP(String value){
-        if(PA.get(value) != null)
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * TODO Have to validate from overflown node.
-     * @param key
-     * @param val
-     * @return
-     */
-    public static boolean validateP(String key, String val){
-        Node Nodenode = PA.get(key);
-        if(Nodenode != null){
-            for(Node node : Node.getLogicalChildren(Nodenode)){
-                for(String name : Node.getName(node)){
-                    if(name.equals(val)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     public static ArrayList<String> search(Node node, String key){
         return null;
@@ -83,9 +70,6 @@ public final class Noun {
         }
 
     }
-
-
-
 
     //Returns an arraylist of OFlowed Nodes that contain the key.
     public static ArrayList<Node> overflowSearch(Node node, String key){
@@ -126,5 +110,4 @@ public final class Noun {
         }
         return OFlows;
     }
-
 }

@@ -1,25 +1,22 @@
-package pa;
+package util;
 
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 8/14/15.
  */
 public final class ExecutionFlow {
+    static Logger logger = Logger.getLogger(ExecutionFlow.class);
     private final Method method;
     private final Type[] argTypes;
     private boolean[] appliedP;
     private Object[] arguments;
     private boolean completedP = false;
     private Object result;
-
-
-    static Logger logger = Logger.getLogger(ExecutionFlow.class);
 
     public ExecutionFlow(Method method){
         this.method = method;

@@ -1,4 +1,6 @@
-package pa;
+package funct;
+
+import pa.Node;
 
 import java.util.ArrayList;
 

@@ -1,12 +1,12 @@
-package pa;
+package logic;
 
 
 import org.apache.log4j.Logger;
+import pa.Node;
+import pa.PA;
 import util.Expression;
 
 import java.util.ArrayList;
-
-
 import java.util.Iterator;
 
 /**
@@ -21,6 +21,11 @@ public final class SetLogic {
     static Logger logger = Logger.getLogger(SetLogic.class);
 
     private SetLogic(){}
+
+    public static boolean validateP() {
+
+        return false;
+    }
 
 
     public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Expression> LDATAConditions){
@@ -72,7 +77,7 @@ public final class SetLogic {
             Node option = iterator.next();
             //Is filter
 
-            if (!Noun.hasP(option, hasCondition.trim())) {
+            if (!Node.hasP(option, hasCondition.trim())) {
                 iterator.remove();
                 break;
             }
@@ -117,7 +122,7 @@ public final class SetLogic {
      * @return
      */
     public static ArrayList<Node> getSets (Node node){
-        return Node.getLogicalParents(node);
+        return Node.getLogicalParent(node);
     }
 
     public static boolean xISyP(Node x, Node y){
