@@ -58,51 +58,45 @@ public class Node {
         return node.rm(key, val);
     }
 
-    /**
-     * TODO may be a good place to scan and organize logical parents.
-     *
-     * @param node
-     * @return
-     */
-    public static Node getLogicalParent(Node node) {
-        if(node == null){
-            return null;
-        }
+//    public static ArrayList<Node> getLogicalParent(Node node) {
+//        if(node == null){
+//            return null;
+//        }
+//
+//        ArrayList<Node> parents = new ArrayList<Node>();
+//        ArrayList<String> tmp = node.getCarrot("^logicalParents");
+//        if(tmp ==null)
+//            return null;
+//        for(String title: tmp){
+//            Node foo = PA.getByExactTitle(title);
+//            if(foo == null) {
+//                logger.error("NOUN: Couldn't find node: " + title);
+//                continue;
+//            }
+//            parents.add( foo );
+//        }
+//        return parents;
+//    }
 
-        ArrayList<Node> parents = new ArrayList<Node>();
-        ArrayList<String> tmp = node.getCarrot("^logicalParents");
-        if(tmp ==null)
-            return null;
-        for(String title: tmp){
-            Node foo = PA.getByExactTitle(title);
-            if(foo == null) {
-                logger.error("NOUN: Couldn't find node: " + title);
-                continue;
-            }
-            return foo;
-        }
-        return null;
-    }
-
-    public static ArrayList<Node> getLogicalChildren(Node node){
-        if(node == null){
-            return null;
-        }
-
-        ArrayList<Node> children = new ArrayList<Node>();
-        ArrayList<String> tmp = node.getCarrot("^logicalChildren");
-        if(tmp ==null)
-            return null;
-        for(String title: tmp){
-            Node foo = PA.getByExactTitle(title);
-            if(foo == null) {
-                logger.error("NOUN: Couldn't find node: " + title);
-                continue;
-            }
-            children.add(foo);
-        }
-        return children;
-    }
+//    public static ArrayList<Node> getLogicalChildren(Node node){
+//        if(node == null){
+//            return null;
+//        }
+//
+//        ArrayList<Node> children = new ArrayList<Node>();
+//        ArrayList<String> tmp = node.getCarrot("^logicalChildren");
+//        if(tmp ==null)
+//            return null;
+//        for(String title: tmp){
+//            Node foo = PA.getByExactTitle(title);
+//            if(foo == null) {
+//                logger.error("NODE: Couldn't find node: " + title);
+//                continue;
+//            }
+//            children.add(foo);
+//        }
+//        return children;
+//    }
 
     /**
      * TODO start adding things by their name, not their title.
@@ -139,13 +133,13 @@ public class Node {
      * @param key
      * @return
      */
-    public static boolean isP(Node node, String key){
-        for (String entry : getCarrot(node, "^logicalParent")) {
-            if(entry.equals(key))
-                return true;
-        }
-        return false;
-    }
+//    public static boolean isP(Node node, String key){
+//        for (String entry : getCarrot(node, "^logicalParent")) {
+//            if(entry.equals(key))
+//                return true;
+//        }
+//        return false;
+//    }
 
     public static boolean hasP(Node node, String key) {
         return getCarrot(node, key) != null;
@@ -167,20 +161,20 @@ public class Node {
         return TN.getChildrenString();
     }
 
-    /**
-     * TODO check all other logical parents.
-     *
-     * @param term
-     * @return
-     */
-    public boolean isP(String term){
-        for (String is : Node.getCarrot(this, "^logicalParents")) {
-            if(term.equals(is)){
-                return true;
-            }
-        }
-        return false;
-    }
+//    /**
+//     * TODO check all other logical parents.
+//     *
+//     * @param term
+//     * @return
+//     */
+//    private boolean isP(String term){
+//        for (String is : Node.getCarrot(this, "^logicalParents")) {
+//            if(term.equals(is)){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     private ArrayList<String> getName(){
         return getCarrot("^name");
     }

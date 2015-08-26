@@ -37,6 +37,7 @@ public class REPL {
 
     private ExecutionFlow invoke(String className, String methodName, ArrayList<String> argumentID){
         try {
+
             Class execution = Class.forName(className);
             Method[] methods = execution.getMethods();
             for(Method method : methods){

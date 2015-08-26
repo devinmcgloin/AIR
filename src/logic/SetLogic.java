@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 /**
  * Created by devinmcgloin on 6/3/15.
+ * Dam sun
  * Set logic needs to create sets of like information
  * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and getCarrot all of its logical children. (Ideally)
  * TODO: Implement or filtering.
@@ -108,40 +109,103 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<Node> getSetMembers (Node node){
 
-        return Node.getLogicalChildren(node);
+
+    public static ArrayList<Node> getLogicalParent(Node node) {
+        if(node == null){
+            logger.warn("Cannot get parents of null node.");
+            return null;
+        }
+
+        ArrayList<Node> parents = new ArrayList<Node>();
+        ArrayList<String> tmp = Node.getCarrot(node, "^logicalParents");
+        if(tmp == null) {
+            logger.warn(node.toString() + " did not contain the header ^logicalParents.");
+            return null;
+        }
+        if(tmp.size()==0){
+            logger.warn( node.toString() + " did not contain any ^logicalParents." );
+            return null;
+        }
+        if(tmp.size()>1){
+            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
+            //FUCK what now? restructure? delete one? This shouldn't even be possible.
+            return null;
+        }
+
+        for(String title: tmp){
+            Node foo = PA.getByExactTitle(title);
+            if(foo == null) {
+                logger.error("Couldn't find node: " + title);
+                continue;
+            }
+            parents.add( foo );
+        }
+        return parents;
+    }
+
+    public static ArrayList<Node> getLogicalChildren(Node node){
+        if(node == null){
+            logger.warn("Cannot get children of null node");
+            return null;
+        }
+
+        ArrayList<Node> children = new ArrayList<Node>();
+        ArrayList<String> tmp = Node.getCarrot(node, "^logicalChildren");
+        if(tmp == null) {
+            logger.warn(node.toString() + " did not contain the header ^logicalChildren.");
+            return null;
+        }
+        if(tmp.size()==0){
+            logger.warn(node.toString() + " does not have any ^logicalChildren.");
+            return null;
+        }
+        for(String title: tmp){
+            Node foo = PA.getByExactTitle(title);
+            if(foo == null) {
+                logger.error("Couldn't find node: " + title);
+                continue;
+            }
+            children.add(foo);
+        }
+        return children;
 
     }
 
-    /**
-     * Returns an arraylist of nodes that can be sent to getsetmembers in order to generate teh full set of those nodes.
-     * @param node
-     * @return
-     */
-    public static ArrayList<Node> getSets (Node node){
-        return Node.getLogicalParent(node);
-    }
+    public static boolean xISyP(Node lc, Node lp){
 
-    public static boolean xISyP(Node x, Node y){
-
-        if(y == null || x == null)
+        if(lp == null || lc == null)
             return false;
 
         //Get the logical children of the "parent" node
-        ArrayList<String> logicalChildren = Node.getCarrot(y, "^logicalChildren");
+        ArrayList<String> logicalChildren = Node.getCarrot(lp, "^logicalChildren");
+
+        //If there is no ^logicalChildren header we got a whole 'nother issue.
+        if(logicalChildren == null ){
+            logger.warn(lp.toString() + " does not contain the header ^logicalChildren.");
+            return false;
+        }
 
         //If there are no logical children, clearly this is false.
-        if(logicalChildren == null || logicalChildren.isEmpty()){
+        if(logicalChildren.isEmpty()){
             return false;
         }
 
         //If the title of the logical child is contained in the logicalChildren of the logical parent, everything is fine.
-        if( logicalChildren.contains( Node.getTitle(x) ) ){
+        if( logicalChildren.contains( Node.getTitle(lc) ) ){
             return true;
-        }
+        }else{
+            //Get the next logical child of the logical parent. (Maybe it's a set within a set).
+            ArrayList<Node> kids = getLogicalChildren(lp);
 
-        //Technically we should also check to make sure that there isn't information written in reverse. In case something wasn't reflexively written in.
+            for(Node kid : kids){
+                //Obviously these kids exist, i just got them.
+                boolean tmp = xISyP(lc, kid);
+                if(tmp){
+                    return tmp;
+                }
+            }
+        }
 
         return false;
     }
