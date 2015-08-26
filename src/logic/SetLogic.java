@@ -4,7 +4,6 @@ package logic;
 import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
-import util.Expression;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,13 +21,12 @@ public final class SetLogic {
 
     private SetLogic(){}
 
-    public static boolean validateP(String key, String val) {
+    public static boolean isValid(String key, String val) {
 
-        return false;
     }
 
 
-    public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Expression> LDATAConditions){
+    public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<String> isConditions, ArrayList<String> hasConditions, ArrayList<Node> LDATAConditions) {
         nodes = isFilter(nodes, isConditions);
         nodes = hasFilter(nodes, hasConditions);
         nodes = LDATAFilter(nodes, LDATAConditions);
@@ -86,22 +84,22 @@ public final class SetLogic {
         return nodes;
     }
 
-    public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, ArrayList<Expression> LDATAConditions){
+    public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, ArrayList<Node> LDATAConditions) {
         //Is filter
-        for(Expression term : LDATAConditions) {
+        for (Node term : LDATAConditions) {
             nodes = LDATAFilter(nodes, term);
         }
 
         return nodes;
     }
 
-    public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, Expression LDATACondition){
+    public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, Node LDATACondition) {
         Iterator<Node> iterator = nodes.iterator();
 
         while (iterator.hasNext()){
             Node option = iterator.next();
             //Is filter
-            if(!LDATA.validateP(option, LDATACondition)){
+            if (!LDATA.isValid(option, LDATACondition)) {
                 iterator.remove();
                 break;
             }

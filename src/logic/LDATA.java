@@ -52,11 +52,11 @@ public final class LDATA {
      * @param value
      * @return
      */
-    public static boolean validateP(Node node, Node value) {
+    public static boolean isValid(Node node, Node value) {
 
     }
 
-    public static boolean validateP(String node, String value) {
+    public static boolean isValid(String node, String value) {
 
     }
 
@@ -66,8 +66,35 @@ public final class LDATA {
      * @param unitTo
      * @return
      */
-    public static String convert(Node initialValue, String unitTo) {
+    public static Node convert(Node initialValue, String unitTo) {
+        Node unitNode = getUnits(initialValue);
+        String conversionStep = getConversionFactors(unitNode, unitTo);
+        String[] conversionSteps = conversionStep.split("->")[2].split(" ");
 
+        String oldVal = Double.toString(getCast(initialValue));
+        String oldUnit = Node.get(initialValue, "unit");
+        double num = getCast(initialValue);
+
+        for (int i = 2; i < conversionSteps.length; i += 2) {
+            switch (conversionSteps[i]) {
+                case "*":
+                    num = num * Double.valueOf(conversionSteps[i + 1]);
+                    break;
+                case "/":
+                    num = num / Double.valueOf(conversionSteps[i + 1]);
+                    break;
+                case "+":
+                    num = num + Double.valueOf(conversionSteps[i + 1]);
+                    break;
+                case "-":
+                    num = num - Double.valueOf(conversionSteps[i + 1]);
+                    break;
+            }
+        }
+        initialValue = Node.update(initialValue, "#", oldVal, Double.toString(num));
+        initialValue = Node.update(initialValue, "unit", oldUnit, unitTo);
+        Whiteboard.addNode(initialValue);
+        return initialValue;
     }
 
     /**
@@ -76,7 +103,7 @@ public final class LDATA {
      * @return
      */
     public static Node getType(String unit) {
-
+        return Node.getLogicalParent(PA.getByExactTitle(unit));
     }
 
     /**
@@ -84,8 +111,27 @@ public final class LDATA {
      * @param type
      * @return
      */
-    public static boolean ldataP(String type){
+    public static boolean isLdata(String type) {
 
+    }
+
+    public static boolean isExpression(String expression) {
+        String[] parsedExpression = expression.split(" ");
+        if (parsedExpression.length != 3)
+            return false;
+        if (!parsedExpression[0].matches("(<|>|=<|=>|==)"))
+            return false;
+        if (!isNumeric(parsedExpression[1]))
+            return false;
+        return isUnit(parsedExpression[2]);
+    }
+
+    public static boolean isUnit(String unit) {
+
+    }
+
+    public static boolean isUnitsEqual(Node a, Node b) {
+        return Node.get(a, "unit").equals(Node.get(b, "unit"));
     }
 
     /**
@@ -99,22 +145,21 @@ public final class LDATA {
 
     /**
      * @param node
-     * @param key
      * @param unit
      * @return
      */
-    public static double getCastConvert(Node node, String key, String unit) {
-
+    public static double getCastConvert(Node node, String unit) {
+        node = convert(node, unit);
+        return getCast(node);
     }
 
     /**
      *
      * @param node
-     * @param key
      * @return
      */
-    public static double getCast(Node node, String key) {
-
+    public static double getCast(Node node) {
+        return Double.parseDouble(Node.get(node, "#"));
     }
 
     /**
@@ -125,7 +170,10 @@ public final class LDATA {
      * @return
      */
     public static Node addConversion(Node node, String convertTitle, String convertSteps){
-
+        Node unitNode = getUnits(node);
+        unitNode = Node.add(unitNode, "^conversion", convertTitle + "->" + convertSteps);
+        Whiteboard.addNode(unitNode);
+        return unitNode;
     }
 
     /**
@@ -193,7 +241,7 @@ public final class LDATA {
      * @param value
      * @return
      */
-    public static String unitScaling(Node value) {
+    public static Node unitScaling(Node value) {
 
     }
 
@@ -209,9 +257,18 @@ public final class LDATA {
         return null;
     }
 
-    public static Node setValue(Node node, double value) {
+    public static Node addValue(Node node, double value) {
         Node tmp = Node.update(node, "#", Node.get(node, "#"), Double.toString(value));
         Whiteboard.addNode(tmp);
         return tmp;
+    }
+
+    private static int compare(double a, double b) {
+        if (a == b)
+            return 0;
+        else if (a > b)
+            return -1;
+        else
+            return 1;
     }
 }

@@ -43,7 +43,7 @@ public class Node {
     public static Node add(Node node, String key){ return node.add(key); }
 
     public static Node add(Node node, String key, String val ){
-        if (!SetLogic.validateP(key, val) || !LDATA.validateP(key, val))
+        if (!SetLogic.validateP(key, val) || !LDATA.isValid(key, val))
             return node.add(key, val);
         logger.warn("Value not verified, original node returned.");
         return node;
@@ -58,7 +58,13 @@ public class Node {
         return node.rm(key, val);
     }
 
-    public static ArrayList<Node> getLogicalParent(Node node) {
+    /**
+     * TODO may be a good place to scan and organize logical parents.
+     *
+     * @param node
+     * @return
+     */
+    public static Node getLogicalParent(Node node) {
         if(node == null){
             return null;
         }
@@ -73,9 +79,9 @@ public class Node {
                 logger.error("NOUN: Couldn't find node: " + title);
                 continue;
             }
-            parents.add( foo );
+            return foo;
         }
-        return parents;
+        return null;
     }
 
     public static ArrayList<Node> getLogicalChildren(Node node){
