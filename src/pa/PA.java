@@ -1,8 +1,8 @@
 package pa;
 
 import org.apache.log4j.Logger;
-import r.TreeNode;
 import r.R;
+import r.TreeNode;
 import r.TreeNodeBase;
 import util.Record;
 
@@ -30,9 +30,8 @@ public final class PA {
 
     protected static File rFolder = new File("./R/");
     protected static ArrayList<R>  rDB = new ArrayList<R>();
-    private static boolean started = false;
-
     static Logger logger = Logger.getLogger(PA.class);
+    private static boolean started = false;
 
 
     private PA(){}
@@ -53,11 +52,9 @@ public final class PA {
 
     public static void blaze(){
 
-        if(!started){
-            startLibraries();
-        }
+        start();
 
-//        TreeNode k = getRb("noun").get("R/noun/ferrari/^logicalChild");
+//        TreeNode k = getRb("noun").getCarrot("R/noun/ferrari/^logicalChild");
 //
 //
 //        for( NBN node : getNouns("ferrari", "car")) {
@@ -68,13 +65,13 @@ public final class PA {
 //                node = node.add("^logicalChild", "Childnode");
 //                for (String entry : node.getKeys()) {
 //                    System.out.println("   " + entry);
-//                    System.out.println("       " + node.get(entry));
+//                    System.out.println("       " + node.getCarrot(entry));
 //                }
 //
 //
 //            }
 //        }
-//        k = getRb("noun").get("R/noun/ferrari/");
+//        k = getRb("noun").getCarrot("R/noun/ferrari/");
 //        System.out.println("Boop:  " + k.getChildrenString() );
 
 //        TreeNode ba = new TreeNode("bmw^wheel");
@@ -83,7 +80,7 @@ public final class PA {
 //        NBN x = getNoun("bmw");
 //        NBN y = getNoun("car");
 ////        x = SetLogic.xINHERITy(x, y);
-//        System.out.println( Noun.getLogicalParents(x).get(0).getTitle() );
+//        System.out.println( Noun.getLogicalParents(x).getCarrot(0).getTitle() );
 //
 //        y = Noun.add(y, "wheel" );
 //        x = Noun.add(x, "wheel", "bmw^wheel");
@@ -107,17 +104,19 @@ public final class PA {
 
     public static void test(){
 
-        if(!started){
-            startLibraries();
-        }
+        start();
 
 
     }
 
-    public static void put(Node node){
-        if(!started){
+    public static void start() {
+        if (!started) {
             startLibraries();
         }
+    }
+
+    public static void put(Node node){
+        start();
 
         put(node, "noun");
     }
@@ -126,11 +125,10 @@ public final class PA {
      * TODO implement log walker.
      * @param node
      */
-    public static void put(Node node, String db){
+    private static void put(Node node, String db) {
 
-        if(!started){
-            startLibraries();
-        }
+        start();
+
         //Contextualy creating new Nodes:
         //-node you wanted doesn't exist, New TreeNode, New NBN
         //-put it back when done
@@ -146,7 +144,7 @@ public final class PA {
 
         for(Record record : node.getRecord()){
 
-           //TreeNode k = getRb("noun").get("R/");
+            //TreeNode k = getRb("noun").getCarrot("R/");
 //            for(String name: k.getChildrenString()){
 //                System.out.println("ROOT: "+name);
 //            }
@@ -193,11 +191,9 @@ public final class PA {
 
     }
 
-    public static R getRb(String db){
+    private static R getRb(String db) {
 
-        if(!started){
-            startLibraries();
-        }
+        start();
 
         for(R database : rDB){
             if(database.getName().equals(db))
@@ -206,11 +202,9 @@ public final class PA {
         return null;
     }
 
-    public static boolean rDBexists(String db){
+    private static boolean rDBexists(String db) {
 
-        if(!started){
-            startLibraries();
-        }
+        start();
 
         for(R database : rDB){
             if(database.getName().equals(db))
@@ -223,11 +217,9 @@ public final class PA {
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
     //if not, PA needs to flag it's about to return the highest number of matched terms it could.
-    public static ArrayList<TreeNode> hashSearch(String db, String terms) {
+    private static ArrayList<TreeNode> hashSearch(String db, String terms) {
 
-        if(!started){
-            startLibraries();
-        }
+        start();
 
         ArrayList<TreeNodeBase> baseNodes = getRb(db).rFullHashSearch(terms);
         ArrayList<TreeNode> treeNodeBase = new ArrayList<TreeNode>();
@@ -265,10 +257,8 @@ public final class PA {
     }
 
 
-    public static ArrayList<Node> hashSearch(String terms){
-        if(!started){
-            startLibraries();
-        }
+    public static ArrayList<Node> generalSearch(String terms) {
+        start();
 
         ArrayList<Node> nounBaseNodes = new ArrayList<>();
         ArrayList<TreeNode> nodes = hashSearch("noun", terms);
@@ -278,10 +268,8 @@ public final class PA {
         return nounBaseNodes;
     }
 
-    public static Node get(String title){
-        if(!started){
-            startLibraries();
-        }
+    public static Node getByExactTitle(String title) {
+        start();
 
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
@@ -295,13 +283,19 @@ public final class PA {
         return null;
     }
 
+    public static Node getByName(String name) {
+        start();
+    }
+
+    public static Node getByTitle(String title) {
+        start();
+    }
+
 
 
     public static void save() {
 
-        if(!started){
-            startLibraries();
-        }
+        start();
 
         for(R r : rDB)
             r.save();
@@ -313,14 +307,12 @@ public final class PA {
      * @return
      */
     public static Node createNode(String title){
-        if(!started){
-            startLibraries();
-        }
+        start();
 
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
             getRb("noun").add(title, "R/noun/");
-            Node node = get(title);
+            Node node = getByExactTitle(title);
             return node;
         }
         return null;

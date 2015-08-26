@@ -64,11 +64,11 @@ public class Node {
         }
 
         ArrayList<Node> parents = new ArrayList<Node>();
-        ArrayList<String> tmp = node.get("^logicalParents");
+        ArrayList<String> tmp = node.getCarrot("^logicalParents");
         if(tmp ==null)
             return null;
         for(String title: tmp){
-            Node foo = PA.get(title);
+            Node foo = PA.getByExactTitle(title);
             if(foo == null) {
                 logger.error("NOUN: Couldn't find node: " + title);
                 continue;
@@ -84,11 +84,11 @@ public class Node {
         }
 
         ArrayList<Node> children = new ArrayList<Node>();
-        ArrayList<String> tmp = node.get("^logicalChildren");
+        ArrayList<String> tmp = node.getCarrot("^logicalChildren");
         if(tmp ==null)
             return null;
         for(String title: tmp){
-            Node foo = PA.get(title);
+            Node foo = PA.getByExactTitle(title);
             if(foo == null) {
                 logger.error("NOUN: Couldn't find node: " + title);
                 continue;
@@ -104,15 +104,23 @@ public class Node {
      * @return
      */
     public static ArrayList<String> getName(Node node){
-        return node.get("^name");
+        return node.getCarrot("^name");
     }
 
     public static ArrayList<String> getKeys(Node node){
         return node.getKeys();
     }
 
-    public static ArrayList<String> get(Node node, String key){
-        return node.get(key);
+    public static String get(Node node, String key) {
+        return node.getCarrot(key).get(0);
+    }
+
+    public static String getStringRep(Node node) {
+        return Node.get(node, "^stringRepresentation");
+    }
+
+    public static ArrayList<String> getCarrot(Node node, String key) {
+        return node.getCarrot(key);
     }
 
     public static Node update(Node node, String key, String oldVal, String newVal){
@@ -126,7 +134,7 @@ public class Node {
      * @return
      */
     public static boolean isP(Node node, String key){
-        for(String entry : get(node,"^logicalParent")){
+        for (String entry : getCarrot(node, "^logicalParent")) {
             if(entry.equals(key))
                 return true;
         }
@@ -134,7 +142,7 @@ public class Node {
     }
 
     public static boolean hasP(Node node, String key) {
-        return get(node, key) != null;
+        return getCarrot(node, key) != null;
     }
 
     public static String getTitle(Node node) {
@@ -160,7 +168,7 @@ public class Node {
      * @return
      */
     public boolean isP(String term){
-        for(String is : Node.get(this,"^logicalParents")){
+        for (String is : Node.getCarrot(this, "^logicalParents")) {
             if(term.equals(is)){
                 return true;
             }
@@ -168,10 +176,10 @@ public class Node {
         return false;
     }
     private ArrayList<String> getName(){
-        return get("^name");
+        return getCarrot("^name");
     }
 
-    private ArrayList<String> get(String Key) {
+    private ArrayList<String> getCarrot(String Key) {
         TreeNode kid = TN.getChild(Key);
         if(kid==null)
             return null;
@@ -329,7 +337,7 @@ public class Node {
 
 //    /*
 //     * Copying nodes isnt as bad as I was thinking. You basically make a full copy of the root, and copy references to the keys while its in treenode form, you can then remove or add values. Removal works as you're only removing the reference from this new root, not the old one. Changes still have to be copied over into new nodes. The penaltity for small changes is minimal.
-//     * CopyNode only works on one individual node. You operation do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to get called on a alot of levels.
+//     * CopyNode only works on one individual node. You operation do it to the root, then whatever nodes you're changing. May be best to put this in side TreeNode, its going to getCarrot called on a alot of levels.
 //     */
 //
 //    /**
@@ -345,8 +353,8 @@ public class Node {
 ////            newNode.addChildBlindWithNoAddressUpdate(child);   //Hm. THis was never intended for adding entire branches. Yeah, so the address here is what's actually getting fucked.
 ////            //There are two possible solutions. One is to add a method in Tree node: addChildBlindWithNoAddressUpdate(child)
 ////            //But since I REEAAAAAALLLLLLLLLYYYYYYY don't want to go all the way down and fuck around with having LITERAL references to the DB in here and thinking thru all that logic,
-////            //I would MUCH much MUCH rather do a full copy of the node as soon as you get it.
-////            //Actually i just tried that too, still no dice. Seriously. Devin, you're right, we shouldn't mess with the actual DB, cause then you get these logical errors that no one wants
+////            //I would MUCH much MUCH rather do a full copy of the node as soon as you getCarrot it.
+////            //Actually i just tried that too, still no dice. Seriously. Devin, you're right, we shouldn't mess with the actual DB, cause then you getCarrot these logical errors that no one wants
 ////            //to fucking trace from A-Z. And it's not any line you can point to so it makes debugging harder since it's usually a few functions working together. I'm going to do a deep copy.
 ////            //Then, there should be no reason to copy again and again and again in here, it also allows us to think in a term of a cache system later.
 ////        }

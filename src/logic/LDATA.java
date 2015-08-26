@@ -1,13 +1,11 @@
 package logic;
 
+import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import pa.Node;
-import pa.Noun;
 import pa.PA;
-import util.Expression;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by devinmcgloin on 6/17/15.
@@ -16,7 +14,7 @@ import java.util.List;
  * TODO Need to QA everything
  * Default return value is true.
  *
- * TODO add structured addition and removal functions as well as strucutred get.
+ * TODO add structured addition and removal functions as well as strucutred getCarrot.
  */
 public final class LDATA {
 
@@ -28,54 +26,17 @@ public final class LDATA {
      */
     private LDATA(){}
 
-    private static int compare(String valA, String valB){
-        String [] valueA = valA.split(" ");
-        String [] valueB = valB.split(" ");
-        if(valueA.length == 2 && valueB.length == 2 && valueA[0].matches("\\d+") && valueB[0].matches("\\d+")){
-            if(valueA[1].equals(valueB[1])){
-                if(Double.valueOf(valueA[0]) == Double.valueOf(valueB[0]))
-                    return 0;
-                else if(Double.valueOf(valueA[0]) < Double.valueOf(valueB[0]))
-                    return -1;
-                else
-                    return 1;
-            }else{
-                String newValB = convert(valB, valueA[1]);
-                if(newValB != null){
-                    return compare(valA, newValB);
-                }
-            }
-        }
-        //TODO returning 0 okay here?
-        return 0;
-    }
-
-    public static boolean validateP(String key, String val){
-        if(val.matches("\\d+"))
-            return true;
-        Node node = PA.get(key);
-        if(node != null){
-            return validateP(node, val);
-        }else
-            return false;
-    }
     /**
      *
-     * @param node
-     * @param val
+     * @param metric
+     * @param A
+     * @param B
      * @return
      */
-    public static boolean validateP(Node node, String val){
-        ArrayList<Expression> ranges = getValRanges(node);
-        if(getComp(node).equals("count") || getComp(node).equals("measurement")) {
-            for (Expression expression : ranges) {
-                if (!numValidateP(expression, val))
-                    return false;
-            }
-            return true;
-        }
-        return true;
+    public static int compareBy(String metric, Node A, Node B) {
+
     }
+
 
     /**
      * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the Node.
@@ -86,63 +47,18 @@ public final class LDATA {
      *      Overflown Node (not an ans, at all) - search takes care of this case.
      *      Blank - Search should also never return a blank value.
      *
-     * TODO: QA
-     * @param expression
+     *
      * @param node
+     * @param value
      * @return
      */
-    public static boolean validateP(Node node, Expression expression){
-        String value = Search.simpleSearch(node, expression.getType());
-        if(value == null){
-            return true;
-        }else if(ldataP(value)){
-            return numValidateP(expression, value);
-        }else if(Noun.nounP(value)){
-            return numValidateP(expression, value);
-        }else if(isNumeric(value)){
-            return numValidateP(expression, value);
-        }else{
-            return true;
-        }
+    public static boolean validateP(Node node, Node value) {
+
     }
 
-//    public static boolean validateP(Node node, String expression){
-//        Expression exp = Reader.parseExpression(expression);
-//        if(exp != null)
-//            return validateP(node, exp );
-//        else {
-//            logger.warn("Invalid Expression");
-//            return true;
-//        }
-//    }
+    public static boolean validateP(String node, String value) {
 
-    /**
-     *
-     *
-     * Deals with conversion for ordered types: Counts and measurements
-     * Verifies that the val is acceptable given the expression.
-     * @param expression
-     * @param val - value is in this case a key. [value units]
-     * @return
-     */
-    private static boolean numValidateP(Expression expression, String val){
-        String [] terms = val.trim().split(" ");
-        if(expression.getUnit().equals("count") && terms.length == 1){
-            return comp(terms[0], expression.getOperator(), expression.getValue());
-        }else if(expression.getValue().equals("inf")){
-            if(expression.getOperator().equals(">")){
-                return false;
-            } else return expression.getOperator().contains("=") && terms[0].equals("inf");
-        }else if(expression.getUnit().equals(terms[1])){
-            //no conversion needed
-            return comp(terms[1], expression.getOperator(), expression.getValue());
-        }else {
-            //conversion has to happen
-            String convertedVal = convert(val, expression.getUnit());
-            return comp(convertedVal.split(" ")[1], expression.getOperator(), expression.getValue());
-        }
     }
-
 
     /**
      *
@@ -150,87 +66,26 @@ public final class LDATA {
      * @param unitTo
      * @return
      */
-    public static String convert(String initialValue, String unitTo){
-        String [] terms = initialValue.trim().split(" ");
-        Node type = getType(terms[1]);
+    public static String convert(Node initialValue, String unitTo) {
 
-        String conversionFactors = getConversion(type, terms[1], unitTo);
-        String[] conversionSteps = conversionFactors.split(" ");
-
-        double num = Double.valueOf(terms[0].trim());
-
-        for(int i = 0; i < conversionSteps.length; i += 2){
-            switch (conversionSteps[i]){
-                case "*":
-                    num = num * Double.valueOf(conversionSteps[i+1]);
-                    break;
-                case "/":
-                    num = num / Double.valueOf(conversionSteps[i+1]);
-                    break;
-                case "+":
-                    num = num + Double.valueOf(conversionSteps[i+1]);
-                    break;
-                case "-":
-                    num = num - Double.valueOf(conversionSteps[i+1]);
-                    break;
-            }
-        }
-
-        return String.valueOf(num) + " " + unitTo;
     }
 
     /**
      * Takes the unit and returns the ldata node associated with it
-     * @param value
+     * @param unit
      * @return
      */
-    public static Node getType(String value) {
-        ArrayList<Node> nodes = PA.hashSearch(value.split(" ")[1]);
-        if( nodes != null)
-            return nodes.get(0);
-        else
-            return null;
+    public static Node getType(String unit) {
+
     }
 
     /**
      * Takes a type of ldata, but also a string of ldata values.
-     * TODO: Rewrite to handle multiple forms of ldata.
      * @param type
      * @return
      */
     public static boolean ldataP(String type){
-        if(PA.get(type) != null){
-            return true;
-        }else if(getType(type.split(" ")[1]) != null){
-            return true;
-        } else return isNumeric(type);
-    }
 
-    /**
-     * Only can be used for ordered numerical data.
-     * @param operator
-     * @param nodeVal
-     * @param qualifier
-     * @return
-     */
-    private static boolean comp(String nodeVal, String operator, String qualifier){
-        if(operator.equals("==")){
-            return nodeVal.equals(qualifier);
-        }
-        else if(operator.equals("<")){
-            return Double.valueOf(nodeVal) < Double.valueOf(qualifier);
-        }
-        else if(operator.equals(">")){
-            return Double.valueOf(nodeVal) > Double.valueOf(qualifier);
-        }
-        else if(operator.equals("<=")){
-            return Double.valueOf(nodeVal) <= Double.valueOf(qualifier);
-        }
-        else if(operator.equals(">=")){
-            return Double.valueOf(nodeVal) >= Double.valueOf(qualifier);
-        }
-        logger.error("LDATA: SwitchBoard. Invalid operator.");
-        return false;
     }
 
     /**
@@ -239,132 +94,124 @@ public final class LDATA {
      * @return
      */
     public static boolean isNumeric(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)){
-                if(c != '.'){
-                    return false;
-                }
-            }
-        }
-        return true;
+        return str.matches("(\\d+|\\.{1})");
     }
 
+    /**
+     * @param node
+     * @param key
+     * @param unit
+     * @return
+     */
     public static double getCastConvert(Node node, String key, String unit) {
 
     }
 
+    /**
+     *
+     * @param node
+     * @param key
+     * @return
+     */
     public static double getCast(Node node, String key) {
 
     }
 
+    /**
+     *
+     * @param node
+     * @param convertTitle
+     * @param convertSteps
+     * @return
+     */
     public static Node addConversion(Node node, String convertTitle, String convertSteps){
 
     }
 
-    public static Node addValRange(Node node, String valRange){
-
-    }
-
-    public static Node addUnit(Node node, String key){
-
-    }
-
-    public static ArrayList<String> getUnits(Node n){
-        return Node.get(n, "^units");
-    }
-
-    public static String unitScaling(String value){
-
-    }
-
     /**
-     * need to check this before you can just compare the way Im doing it now in LDATA.
      *
+     * @param node
+     * @param valRange
      * @return
      */
-    public static String getComp(Node TN) {
-        if (Node.get(TN, "^comparison").contains("ordered")) {
-            return "ordered";
-        } else if (Node.get(TN, "^comparison").contains("count")) {
-            return "count";
-        } else {
-            //TODO more complex logic containers/Time etc. Dont know how to do yet.
-            return "Nothing";
-        }
+    public static Node addValRange(Node node, Node valRange) {
+        String strRep = Node.getStringRep(valRange);
+        node = Node.add(node, "^expression", strRep);
+        Whiteboard.addNode(node);
+        return node;
     }
 
-
-    /**
-     * TODO new LDATA conversion form meters->ft->CONVERSIONSTEPS
-     * @param unitFrom
-     * @param unitTo
-     * @return
-     */
-    public static String getConversion(Node TN, String unitFrom, String unitTo) {
-        List<String> conversions = Node.get(TN,"^conversions");
-
-        for (String conversion : conversions) {
-            String[] types = conversion.split("->");
-            if (types[0].equals(unitFrom) && types[1].equals(unitTo)) {
-                //assumes that there is only one conversion grouping and that it's in the operation postion.
-                return types[2];
+    public static ArrayList<Node> getValRange(Node node) {
+        ArrayList<String> valRanges = Node.getCarrot(node, "^expression");
+        ArrayList<Node> expressions = new ArrayList<>();
+        for (String expression : valRanges) {
+            String[] parsedExpression = expression.split(" ");
+            if (parsedExpression.length == 3) {
+                Node tmp = PA.getByExactTitle("expression");
+                tmp = Node.add(tmp, "operator", parsedExpression[0]);
+                tmp = Node.add(tmp, "value", parsedExpression[1]);
+                tmp = Node.add(tmp, "unit", parsedExpression[2]);
+                expressions.add(tmp);
             }
-        }
-        return "Nothing";
-    }
 
-    /**
-     * @return
-     */
-    public static ArrayList<Expression> getValRanges(Node TN) {
-        ArrayList<String> children = Node.get(TN, "^value_ranges");
-        if (children.size() == 0) {
-            logger.error("Node: GetValRanges: No ranges.");
+        }
+
+        if (expressions.size() == 0)
             return null;
-        } else {
-            ArrayList<Expression> expressions = new ArrayList<>();
-            //assumes value is always in the operation position and that there is only one.
-            for (String range : children) {
-                String[] terms = range.trim().split(" ");
-                // [ 12 - 324 ft ]
-                if (range.startsWith("[") || range.startsWith("(")) {
-                    if (terms.length == 6) {
-                        //Opening paren
-                        if (terms[0].equals("(")) {
-                            expressions.add(new Expression(Node.getTitle(TN), ">", terms[1], terms[4]));
-                        } else if (terms[0].equals("[")) {
-                            expressions.add(new Expression(Node.getTitle(TN), ">=", terms[1], terms[4]));
-                        }
-                        //closing paren
-                        if (terms[5].equals(")")) {
-                            expressions.add(new Expression(Node.getTitle(TN), "<", terms[3], terms[4]));
-                        } else if (terms[5].equals("]")) {
-                            expressions.add(new Expression(Node.getTitle(TN), "<=", terms[3], terms[4]));
-                        }
-                    } else {
-                        //Opening paren
-                        if (terms[0].equals("(")) {
-                            expressions.add(new Expression(Node.getTitle(TN), ">", terms[1], "count"));
-                        } else if (terms[0].equals("[")) {
-                            expressions.add(new Expression(Node.getTitle(TN), ">=", terms[1], "count"));
-                        }
-                        //closing paren
-                        if (terms[5].equals(")")) {
-                            expressions.add(new Expression(Node.getTitle(TN), "<", terms[3], "count"));
-                        } else if (terms[5].equals("]")) {
-                            expressions.add(new Expression(Node.getTitle(TN), "<=", terms[3], "count"));
-                        }
-                    }
-                } else {
-                    if (terms.length == 5)
-                        expressions.add(new Expression(terms[0], terms[1], terms[2], terms[3]));
-                    else
-                        expressions.add(new Expression(terms[0], terms[1], terms[2], "count"));
-                }
+
+        return expressions;
+    }
+
+    /**
+     * Adds units to the overflow node for that nodes units.
+     *
+     * @param node
+     * @param key
+     * @return
+     */
+    public static Node addUnit(Node node, String key){
+        Node unitNode = getUnits(node);
+        unitNode = Node.add(unitNode, "^unit", key);
+        Whiteboard.addNode(unitNode);
+        return unitNode;
+    }
+
+    /**
+     * @param ldataType
+     * @return the height^unit node.
+     */
+    public static Node getUnits(Node ldataType) {
+        ArrayList<Node> unitNodes = Search.overflowSearch(ldataType, "^unit");
+        if (unitNodes.size() == 1) {
+            Node unitNode = unitNodes.get(0);
+            return unitNode;
+        } else return null;
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    public static String unitScaling(Node value) {
+
+    }
+
+    private static String getConversionFactors(Node node, String unitTo) {
+        Node unitNode = getUnits(node);
+        for (String conversion : Node.getCarrot(unitNode, "^conversion")) {
+            String[] parsedConversion = conversion.split("->");
+            String currentUnit = Node.get(node, "unit");
+            if (parsedConversion[0].equals(currentUnit) && parsedConversion[1].equals(unitTo)) {
+                return parsedConversion[2];
             }
-            return expressions;
         }
+        return null;
+    }
 
-
+    public static Node setValue(Node node, double value) {
+        Node tmp = Node.update(node, "#", Node.get(node, "#"), Double.toString(value));
+        Whiteboard.addNode(tmp);
+        return tmp;
     }
 }

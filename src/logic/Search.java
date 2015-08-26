@@ -60,9 +60,9 @@ public final class Search {
             return "^No Key";   //if no key, try triggering overflowSearch and filtering on context.
 
 
-        ArrayList<String> x = Node.get(node, key);
+        ArrayList<String> x = Node.getCarrot(node, key);
         if(x == null){
-            return "^No Value"; //if no value, try tracing up to logical parents to get a spread of likelihood.
+            return "^No Value"; //if no value, try tracing up to logical parents to getCarrot a spread of likelihood.
             //TODO (best guess search)
         }
         else{
@@ -90,7 +90,7 @@ public final class Search {
 
         //Search the overflown nodes for the key.
         for( String OFTitle :tmpOF ){
-            Node tmp  = PA.get(OFTitle);
+            Node tmp = PA.getByExactTitle(OFTitle);
             String val = simpleSearch(tmp, key);
             if( !val.startsWith("^") ){
                 //Found a valid value for the key!

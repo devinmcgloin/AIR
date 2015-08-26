@@ -2,13 +2,7 @@ package r;
 
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,13 +22,12 @@ import java.util.List;
  */
 public class GeneralTree {
 
+    static Logger logger = Logger.getLogger(GeneralTree.class);
     protected final String FILEEXTENSION = "./R/";
     protected TreeNode current;
     protected TreeNode tmp;
     protected File rFolder = new File(FILEEXTENSION);
     protected HashBrowns hash;
-
-    static Logger logger = Logger.getLogger(GeneralTree.class);
 
 
 
@@ -435,9 +428,7 @@ public class GeneralTree {
      * @return
      */
     protected boolean containsAll(String searchTerm) {
-        if (current.containsAll(searchTerm))
-            return true;
-        return false;
+        return current.containsAll(searchTerm);
     }
 
     /**
@@ -541,7 +532,7 @@ public class GeneralTree {
         //Then try hash searching.
         TreeNode tmp = getCurrent();
         ArrayList<TreeNodeBase> hits = hash.fullHashSearch(terms, this);
-        setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
+        setCurrent(tmp); //i honestly only need this to guarentee we getCarrot back to where we were.
         return hits;
     }
 
@@ -599,9 +590,7 @@ public class GeneralTree {
      * @return
      */
     protected boolean contains(String searchTerm) {
-        if (current.contains(searchTerm)) //TODO : re-write in treenode with a BS
-            return true;
-        return false;
+        return current.contains(searchTerm);
     }
 
     /**
@@ -618,10 +607,10 @@ public class GeneralTree {
 //        List<TreeNode> children = current.getChildren();
 //        //COULD REPLACE WITH A GETNODE() func
 //        for (int i = 0; i < children.size(); i++) {
-//            String childName = children.get(i).getTitle();
+//            String childName = children.getCarrot(i).getTitle();
 //            if (name.equals(childName)) {
 //                //Go into that node, go into all it's children, delete everything.
-//                current.removeChild(children.get(i));
+//                current.removeChild(children.getCarrot(i));
 //                //Delete for HashMap happens on a failed search for a specific node address.
 //                //in the getNode() function where it searches by address for a node.
 //            }

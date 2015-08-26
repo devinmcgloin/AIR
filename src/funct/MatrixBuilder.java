@@ -23,7 +23,7 @@ public class MatrixBuilder {
 
         for(int i = 0; i < nodes.size(); i++){
             for(int j = 0; j < attributes.size(); j++){
-                matrix[i][j] = Node.get(nodes.get(i), attributes.get(j)).get(0);
+                matrix[i][j] = Node.getCarrot(nodes.get(i), attributes.get(j)).get(0);
             }
         }
         return matrix;

@@ -78,7 +78,7 @@ public final class Comparison {
 
         ArrayList<keyVal> dist = new ArrayList<keyVal>();
 
-        Node ldbn = PA.get(key);
+        Node ldbn = PA.getByExactTitle(key);
         if(ldbn.equals(null)){
             System.out.println("Comparison: You shit outta luck");
             return null;
@@ -94,7 +94,7 @@ public final class Comparison {
         ArrayList<String> units = LDATA.getUnits(ldbn);
 
         String value = "";
-        //Check to see if they have the value, get the total
+        //Check to see if they have the value, getCarrot the total
         for(Node node: set){
             value = Search.simpleSearch(node, key);
             if(value.startsWith("^")){

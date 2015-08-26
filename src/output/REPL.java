@@ -124,17 +124,17 @@ public class REPL {
                 case "update":
                     return parseCommand(command.replace("update", "Node.update"));
                 case "getldata":
-                    return parseCommand(command.replace("getldata", "PA.get"));
+                    return parseCommand(command.replace("getldata", "PA.getCarrot"));
                 case "getnoun":
-                    return parseCommand(command.replace("getnoun", "PA.get"));
+                    return parseCommand(command.replace("getnoun", "PA.getCarrot"));
                 case "inherit":
                     return parseCommand(command.replace("inherit", "SetLogic.xINHERITy"));
                 case "put":
                     return parseCommand(command.replace("put", "PA.put"));
                 case "create":
                     return parseCommand(command.replace("create", "PA.createNode"));
-                case "get":
-                    return parseCommand(command.replace("get", "Node.get"));
+                case "getCarrot":
+                    return parseCommand(command.replace("getCarrot", "Node.getCarrot"));
                 case "keys":
                     return parseCommand(command.replace("keys", "Node.getKeys"));
                 default:
@@ -248,7 +248,7 @@ public class REPL {
 
 
     private void replace(Node node){
-        if(Node.getKeys(node).size() == 0 || Node.getTitle(node).equals(Node.getTitle(mostRecent)) || Node.get(node,"^logicalParents").size() == 0){
+        if (Node.getKeys(node).size() == 0 || Node.getTitle(node).equals(Node.getTitle(mostRecent)) || Node.getCarrot(node, "^logicalParents").size() == 0) {
            mostRecent = node;
         }
         else if(node.isP("noun")) {
