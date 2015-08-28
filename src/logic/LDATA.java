@@ -15,6 +15,7 @@ import java.util.ArrayList;
  * Default return value is true.
  *
  * TODO add structured addition and removal functions as well as strucutred getCarrot.
+ * TODO need to add functionality that allows manpulation of ldata expressions in node form.
  */
 public final class LDATA {
 
@@ -115,7 +116,7 @@ public final class LDATA {
         String[] parsedExpression = expression.split(" ");
         if (parsedExpression.length != 3)
             return false;
-        else if (!parsedExpression[0].matches("(<|>|=<|=>|==)"))
+        else if (!parsedExpression[0].matches("^(<|>|=<|=>|==)$"))
             return false;
         else if (!isNumeric(parsedExpression[1]))
             return false;
@@ -141,7 +142,7 @@ public final class LDATA {
      * @return
      */
     public static boolean isNumeric(String str) {
-        return str.matches("(\\d+|\\.{1})");
+        return str.matches("^[-+]?\\d+(\\.\\d+)?$");
     }
 
     /**
@@ -262,6 +263,12 @@ public final class LDATA {
 
     public static Node addValue(Node node, double value) {
         Node tmp = Node.update(node, "#", Node.get(node, "#"), Double.toString(value));
+        Whiteboard.addNode(tmp);
+        return tmp;
+    }
+
+    public static Node addValue(Node node, String value) {
+        Node tmp = Node.update(node, "#", Node.get(node, "#"), value);
         Whiteboard.addNode(tmp);
         return tmp;
     }

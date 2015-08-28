@@ -25,4 +25,11 @@ public class Whiteboard {
         }
         workingMem.add(node);
     }
+
+    public static void addNodes(ArrayList<Node> nodes) {
+        for (Node n : nodes) {
+            addNode(n);
+        }
+    }
+
 }

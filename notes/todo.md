@@ -34,3 +34,5 @@ Useful:
 - Once a node filters to a very specific adhoc set using Key and Value distributions, it is easier to
     predict values for the remaining Keys. (Rear wheel drive, American made, Year 2008, 8 Cyl) makes
     it much easier to guess top speed.
+    
+- Sorting adhoc sets by a specific value would be sweet. 
