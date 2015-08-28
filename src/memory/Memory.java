@@ -11,7 +11,7 @@ public class Memory implements Comparable<Memory> {
 
     private Node node;
     private double decay;
-    private double time = 5;
+    private double time = 7;
 
     public Memory(Node node) {
         this.node = node;
@@ -27,7 +27,7 @@ public class Memory implements Comparable<Memory> {
     }
 
     public void cycle() {
-        decay = 1 * Math.pow(Math.E, -0.15 * time);
+        decay = 1 * Math.pow(Math.E, -0.10 * time);
         time = time++;
     }
 

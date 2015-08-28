@@ -47,7 +47,7 @@ public class REPL {
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
                 if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
-                    //TODO parsing strings happens here.
+                    //TODO saerching thru the whiteboard.
                     for(String id : argumentID){
 
                     }
@@ -128,8 +128,9 @@ public class REPL {
             Core.println("Ending this conversation");
             Whiteboard.putAll();
             PA.save();
+            Whiteboard.clearAll();
         }else {
-            //TODO here is where intgration with Whiteboard needs to happen.
+            //TODO return things back to the whiteboard.
             returnTuple parsedCommands = parseCommand(command);
             if (parsedCommands != null) {
 

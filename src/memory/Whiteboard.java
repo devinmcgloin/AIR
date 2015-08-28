@@ -55,11 +55,15 @@ public class Whiteboard {
                 return mem.getNode();
             }
         }
+        //TODO may need to update this search system to accomodate blaze.
         Node n = PA.searchExactTitle(nodeName);
-        if (n != null)
+        if (n != null) {
+            addNodeTime(n, 0.0);
             return n;
-        else {
-            return PA.searchName(nodeName).get(0);
+        } else {
+            n = PA.searchName(nodeName).get(0);
+            addNodeTime(n, 0.0);
+            return n;
         }
     }
 
@@ -71,12 +75,11 @@ public class Whiteboard {
                 return mem.getNode();
             }
         }
+        //TODO may need to update this search system to accomodate blaze.
+
         Node n = PA.searchExactTitle(title);
-        if (n != null)
-            return n;
-        else {
-            return PA.searchName(title).get(0);
-        }
+        addNodeTime(n, 0.0);
+        return n;
     }
 
     public static void cycle() {
@@ -101,6 +104,10 @@ public class Whiteboard {
             }
         }
         return prominentNodes;
+    }
+
+    public static void clearAll() {
+        workingMem.clear();
     }
 
 }
