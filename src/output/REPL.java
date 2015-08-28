@@ -1,7 +1,6 @@
 package output;
 
 import funct.Core;
-import memory.Memory;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -38,7 +37,7 @@ public class REPL {
 
     public REPL(){}
 
-    private ExecutionFlow invoke(String className, String methodName, ArrayList<Memory> argumentID) {
+    private ExecutionFlow invoke(String className, String methodName, ArrayList<String> argumentID) {
         try {
 
             Class execution = Class.forName(className);
@@ -130,6 +129,7 @@ public class REPL {
             Whiteboard.putAll();
             PA.save();
         }else {
+            //TODO here is where intgration with Whiteboard needs to happen.
             returnTuple parsedCommands = parseCommand(command);
             if (parsedCommands != null) {
 

@@ -90,7 +90,7 @@ public final class Search {
 
         //Search the overflown nodes for the key.
         for( String OFTitle :tmpOF ){
-            Node tmp = PA.getByExactTitle(OFTitle);
+            Node tmp = PA.searchExactTitle(OFTitle);
             String val = simpleSearch(tmp, key);
             if( !val.startsWith("^") ){
                 //Found a valid value for the key!

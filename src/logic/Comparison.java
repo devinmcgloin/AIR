@@ -78,7 +78,7 @@ public final class Comparison {
 
         ArrayList<keyVal> dist = new ArrayList<keyVal>();
 
-        Node ldbn = PA.getByExactTitle(key);
+        Node ldbn = PA.searchExactTitle(key);
         if(ldbn.equals(null)){
             System.out.println("Comparison: You shit outta luck");
             return null;

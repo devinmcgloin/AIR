@@ -55,7 +55,12 @@ public class Whiteboard {
                 return mem.getNode();
             }
         }
-        return null;
+        Node n = PA.searchExactTitle(nodeName);
+        if (n != null)
+            return n;
+        else {
+            return PA.searchName(nodeName).get(0);
+        }
     }
 
     public static Node searchByTitle(String title) {
@@ -66,7 +71,12 @@ public class Whiteboard {
                 return mem.getNode();
             }
         }
-        return null;
+        Node n = PA.searchExactTitle(title);
+        if (n != null)
+            return n;
+        else {
+            return PA.searchName(title).get(0);
+        }
     }
 
     public static void cycle() {

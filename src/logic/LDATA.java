@@ -94,7 +94,7 @@ public final class LDATA {
      * @return
      */
     public static Node getType(String unit) {
-        return SetLogic.getLogicalParent(PA.getByExactTitle(unit));
+        return SetLogic.getLogicalParent(PA.searchExactTitle(unit));
     }
 
     /**
@@ -109,7 +109,7 @@ public final class LDATA {
             return true;
         else if (isUnit(type))
             return true;
-        else return SetLogic.xISyP(PA.getByExactTitle(type), PA.getByExactTitle("ldata"));
+        else return SetLogic.xISyP(PA.searchExactTitle(type), PA.searchExactTitle("ldata"));
     }
 
     public static boolean isExpression(String expression) {
@@ -124,7 +124,7 @@ public final class LDATA {
     }
 
     public static boolean isUnit(String unit) {
-        Node unitNode = PA.getByExactTitle("unit");
+        Node unitNode = PA.searchExactTitle("unit");
         for (String possibleMatch : Node.getCarrot(unitNode, "^unit")) {
             if (possibleMatch.equals(unit))
                 return true;
@@ -197,7 +197,7 @@ public final class LDATA {
         for (String expression : valRanges) {
             String[] parsedExpression = expression.split(" ");
             if (parsedExpression.length == 3) {
-                Node tmp = PA.getByExactTitle("expression");
+                Node tmp = PA.searchExactTitle("expression");
                 tmp = Node.add(tmp, "operator", parsedExpression[0]);
                 tmp = Node.add(tmp, "value", parsedExpression[1]);
                 tmp = Node.add(tmp, "unit", parsedExpression[2]);

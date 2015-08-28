@@ -154,7 +154,7 @@ public final class SetLogic {
         }
 
         for(String title: tmp){
-            Node foo = PA.getByExactTitle(title);
+            Node foo = PA.searchExactTitle(title);
             if(foo == null) {
                 logger.error("Couldn't find node: " + title);
                 continue;
@@ -181,7 +181,7 @@ public final class SetLogic {
             return null;
         }
         for(String title: tmp){
-            Node foo = PA.getByExactTitle(title);
+            Node foo = PA.searchExactTitle(title);
             if(foo == null) {
                 logger.error("Couldn't find node: " + title);
                 continue;

@@ -37,18 +37,7 @@ public final class PA {
 
     private PA(){}
 
-    private static void startLibraries(){
-        if (rFolder.length() >= 1) {
-            for (File fileEntry : rFolder.listFiles()) {
-                if (fileEntry.isDirectory()) {
 
-                } else {
-                    rDB.add(new R(fileEntry.getName()));
-                }
-            }
-        }
-        started = true;
-    }
 
 
     public static void blaze(){
@@ -104,7 +93,6 @@ public final class PA {
 
 
     public static void test(){
-
         start();
 
 
@@ -112,7 +100,16 @@ public final class PA {
 
     public static void start() {
         if (!started) {
-            startLibraries();
+            if (rFolder.length() >= 1) {
+                for (File fileEntry : rFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+
+                    } else {
+                        rDB.add(new R(fileEntry.getName()));
+                    }
+                }
+            }
+            started = true;
         }
     }
 
@@ -269,7 +266,7 @@ public final class PA {
         return nounBaseNodes;
     }
 
-    public static Node getByExactTitle(String title) {
+    public static Node searchExactTitle(String title) {
         start();
 
         //I mirrored the logic you used in your nounHashSearch method.
@@ -286,7 +283,7 @@ public final class PA {
         return null;
     }
 
-    public static ArrayList<Node> getByName(String name) {
+    public static ArrayList<Node> searchName(String name) {
         start();
         ArrayList<Node> options = generalSearch(name);
         options = SetLogic.nameFilter(options, name);
@@ -295,15 +292,15 @@ public final class PA {
 
     public static ArrayList<Node> getByTitle(String title) {
         start();
-        Node n = getByExactTitle(title);
+        Node n = searchExactTitle(title);
         ArrayList<Node> nodes = new ArrayList<>();
         if (n != null) {
             nodes.add(n);
         } else {
             int i = 0;
-            while (getByExactTitle(title + i) != null) {
+            while (searchExactTitle(title + i) != null) {
                 i = i++;
-                nodes.add(getByExactTitle(title + i));
+                nodes.add(searchExactTitle(title + i));
             }
         }
         return nodes;
@@ -330,7 +327,7 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
             getRb("noun").add(title, "R/noun/");
-            Node node = getByExactTitle(title);
+            Node node = searchExactTitle(title);
             return node;
         }
         return null;
