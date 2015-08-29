@@ -154,11 +154,11 @@ public final class SetLogic {
             logger.warn( node.toString() + " did not contain any ^logicalParents." );
             return null;
         }
-        if(tmp.size()>1){
-            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
-            //FUCK what now? restructure? delete one? This shouldn't even be possible.
-            return null;
-        }
+//        if(tmp.size()>1){
+//            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
+//            //FUCK what now? restructure? delete one? This shouldn't even be possible.
+//            return null;
+//        }
 
         for(String title: tmp){
             Node foo = PA.searchExactTitle(title);
@@ -227,7 +227,7 @@ public final class SetLogic {
 
             for(Node kid : kids){
                 //Obviously these kids exist, i just got them.
-                boolean tmp = xISyP(lc, kid);
+                boolean tmp = xISyP(lc, kid); //FUCK god i hope these methods work
                 if(tmp){
                     return tmp;
                 }
