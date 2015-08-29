@@ -38,17 +38,24 @@ public final class LDATA {
      *      Overflown Node (not an ans, at all) - search takes care of this case.
      *      Blank - Search should also never return a blank value.
      *
-     *
+     * TODO
      * @param node
      * @param value
      * @return
      */
     public static boolean isValid(Node node, Node value) {
-
+        return false;
     }
 
+    /**
+     * TODO
+     *
+     * @param node
+     * @param value
+     * @return
+     */
     public static boolean isValid(String node, String value) {
-
+        return false;
     }
 
     /**
@@ -240,14 +247,14 @@ public final class LDATA {
         } else return null;
     }
 
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public static Node unitScaling(Node value) {
-
-    }
+//    /**
+//     *
+//     * @param value
+//     * @return
+//     */
+//    public static Node unitScaling(Node value) {
+//
+//    }
 
     private static String getConversionFactors(Node node, String unitTo) {
         Node unitNode = getUnits(node);

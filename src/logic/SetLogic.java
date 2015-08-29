@@ -22,8 +22,15 @@ public final class SetLogic {
 
     private SetLogic(){}
 
+    /**
+     * TODO
+     *
+     * @param key
+     * @param val
+     * @return
+     */
     public static boolean isValid(String key, String val) {
-
+        return false;
     }
 
 
@@ -273,8 +280,14 @@ public final class SetLogic {
         return x;
     }
 
+    /**
+     * TODO
+     * @param node
+     * @param key
+     * @return
+     */
     public static boolean hasP(Node node, Node key) {
-
+        return false;
     }
 
     /*

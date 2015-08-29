@@ -91,7 +91,7 @@ public final class Comparison {
         double q1, q2, q3; //q2 is median, q1 is middle of first half of data set.
 
         ArrayList<Double> values = new ArrayList<Double>();
-        ArrayList<String> units = LDATA.getUnits(ldbn);
+//        ArrayList<String> units = LDATA.getUnits(ldbn);
 
         String value = "";
         //Check to see if they have the value, getCarrot the total
@@ -205,15 +205,15 @@ public final class Comparison {
 
     }
 
-    /**
-     * @param metric
-     * @param A
-     * @param B
-     * @return
-     */
-    public static int compareBy(String metric, Node A, Node B) {
-
-    }
+//    /**
+//     * @param metric
+//     * @param A
+//     * @param B
+//     * @return
+//     */
+//    public static int compareBy(String metric, Node A, Node B) {
+//
+//    }
 
 
 

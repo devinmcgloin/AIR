@@ -23,9 +23,7 @@ import java.util.Scanner;
  */
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
-
-    Scanner input = new Scanner(System.in);
-    String help = "REPL Help:\n\n" +
+    private final String help = "REPL Help:\n\n" +
             "\nCommands:\n" +
             "(ADD    | +  ): Add node at current directory\n" +
             "(DEL    | -  ): PATH\n" +
@@ -34,6 +32,8 @@ public class REPL {
             "(CD     | cd ): Return to root.\n" +
             "(RENAME | mv ): PATH - newName\n" +
             "(Help   | ?  ): For help.\n\n";
+    private final String titleID = "@";
+    private Scanner input = new Scanner(System.in);
 
     public REPL(){}
 
@@ -47,9 +47,14 @@ public class REPL {
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
                 if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
-                    //TODO saerching thru the whiteboard.
+                    //TODO come back and QA this.
                     for(String id : argumentID){
-
+                        if (id.startsWith(titleID))
+                            flow.applyArgument(Whiteboard.searchByTitle(id.replace("@", "")));
+                        else if (id.startsWith("\"") || id.endsWith("\""))
+                            flow.applyArgument(id.replace("\"", ""));
+                        else
+                            flow.applyArgument(Whiteboard.search(id));
                     }
                     if(flow.appliedP())
                         flow.invoke();
@@ -91,6 +96,10 @@ public class REPL {
         }else{
             //TODO implement infix notation here.
             switch (terms[1]) {
+                case "add":
+                    command = command.replace("add", ",");
+                    command = "HighLevel.add " + command;
+                    return parseCommand(command);
                 default:
                     return null;
             }
@@ -130,10 +139,10 @@ public class REPL {
             PA.save();
             Whiteboard.clearAll();
         }else {
-            //TODO return things back to the whiteboard.
+            //TODO return things back to the whiteboard. Technically we can ignore the things these funcitons return as they will be placed on the whiteboard.
             returnTuple parsedCommands = parseCommand(command);
             if (parsedCommands != null) {
-
+                invoke(parsedCommands.getFirst(), parsedCommands.getSecond(), parsedCommands.getThird());
             }
         }
         cycle();
