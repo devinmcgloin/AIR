@@ -28,9 +28,32 @@ public class GhostTree {
         this.root = new GhostNode(root);
     }
 
-    private class GhostNode{
+    private void constructTree(){
+
+
+        ArrayList<String> keyStrings = Node.getKeys( root.node );
+
+
+
+    }
+
+    /**
+     * Eliminates Branches that have absolutely nothing to do with the nodes passed in.
+     * @param nodes
+     */
+    public void eliminateBranches(Node[] nodes){
+        //Change all nodes to ghostNode
+
+        //Run through the tree through the keepInTree(node from list, some node in tree)
+        //It's basically an extension of the xISyP + it checks if two nodes have same title.
+    }
+
+
+
+    private class GhostNode implements Comparable<GhostNode>{
 
         private Node node;
+        private ArrayList<GhostNode> kids;
 
 
         public GhostNode(Node node){
@@ -39,13 +62,29 @@ public class GhostTree {
                 return;
             }
 
-            //We need to get all the kids of this dude.
-            ArrayList<String> keys = Node.getKeys(node);
-
             this.node = node;
+            ArrayList kids = new ArrayList<GhostNode>();
         }
 
+        public void addKid(){
 
+        }
+
+        public boolean keepInTree(GhostNode lc, GhostNode lp){
+            if(lc.compareTo(lp) == 0)
+                return true;
+            return SetLogic.xISyP(lc.node, lp.node);
+        }
+
+        @Override
+        public int compareTo(GhostNode o) {
+            //Compares titles of the two nodes.
+            String me = this.node.toString();
+            String you = o.node.toString();
+
+            return me.compareTo(you);
+
+        }
     }
 
 }
