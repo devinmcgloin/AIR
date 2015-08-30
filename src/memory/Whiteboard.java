@@ -8,6 +8,7 @@ import java.util.Collections;
 
 /**
  * Created by devinmcgloin on 8/26/15.
+ * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
  */
 public class Whiteboard {
 
@@ -47,6 +48,12 @@ public class Whiteboard {
         }
     }
 
+    /**
+     * TODO May want to create a node on failed search
+     *
+     * @param nodeName
+     * @return
+     */
     public static Node search(String nodeName) {
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
@@ -62,11 +69,19 @@ public class Whiteboard {
             return n;
         } else {
             n = PA.searchName(nodeName).get(0);
-            addNodeTime(n, 0.0);
-            return n;
+            if (n != null) {
+                addNodeTime(n, 0.0);
+                return n;
+            }
+            return null;
         }
     }
 
+    /**
+     * TODO May want to create a node on failed search (Perhaps this is more applicable to search by name)
+     * @param title
+     * @return
+     */
     public static Node searchByTitle(String title) {
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
@@ -78,8 +93,12 @@ public class Whiteboard {
         //TODO may need to update this search system to accomodate blaze.
 
         Node n = PA.searchExactTitle(title);
-        addNodeTime(n, 0.0);
-        return n;
+        if (n != null) {
+            addNodeTime(n, 0.0);
+            return n;
+        } else {
+            return null;
+        }
     }
 
     public static void cycle() {
