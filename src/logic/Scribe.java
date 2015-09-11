@@ -41,12 +41,11 @@ public final class Scribe {
         }
 
 
-//        -- if two nodes ( BaseOF, Key )
+//        -- if two nodes ( BaseOF, Key )           OR   BaseOF, Val (of a Key inside BaseOF)
         if(nodes.length == 2){
             return addKey(nodes[0], nodes[1]);
         }
 
-        //If last node is a stopping point, send all but last node to crazySearch.
 
 //        -- check if second to last node is a Key to the Value.
         if( SetLogic.xISyP(tail, keyTmp) ){

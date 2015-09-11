@@ -1,9 +1,11 @@
 package logic;
 
+import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import pa.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Blazej on 8/29/2015.
@@ -26,13 +28,24 @@ public class GhostTree {
             return;
         }
         this.root = new GhostNode(root);
+
+        //Construct the Tree
+        constructTree();
     }
 
     private void constructTree(){
 
-
+        //First, take the root.
+        //Its children are either Keys that are string representable and should have a LData interpretable Val
+        //  or they are LPs (actual nodes).
         ArrayList<String> keyStrings = Node.getKeys( root.node );
+        ArrayList<Node> keyNodes = new ArrayList<Node>();
 
+        //Nodes in the tree will be sorted alphabetically.
+        Collections.sort(keyStrings);
+        for(String k : keyStrings ){
+            Whiteboard.searchByTitle(k);
+        }
 
 
     }
@@ -46,6 +59,15 @@ public class GhostTree {
 
         //Run through the tree through the keepInTree(node from list, some node in tree)
         //It's basically an extension of the xISyP + it checks if two nodes have same title.
+
+
+        //Will have to run through this backwards... It's very strange...I'm not really sure how to organize this tree.
+        //We have to start from the leaves? Or should we start from the root? Cause we can trim the tree at leaves or just
+        //try cutting off entire branches. (Which might be faster). THink about how you want to organize and construct this tree whilst thinking about what you'll do with it.
+
+        //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+
+
     }
 
 
@@ -71,19 +93,16 @@ public class GhostTree {
         }
 
         public boolean keepInTree(GhostNode lc, GhostNode lp){
-            if(lc.compareTo(lp) == 0)
+            if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
                 return true;
             return SetLogic.xISyP(lc.node, lp.node);
         }
 
-        @Override
+        @Override   //Compares titles of the two nodes.
         public int compareTo(GhostNode o) {
-            //Compares titles of the two nodes.
             String me = this.node.toString();
             String you = o.node.toString();
-
             return me.compareTo(you);
-
         }
     }
 
