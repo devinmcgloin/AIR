@@ -34,27 +34,26 @@ public class GhostTree {
         constructTree(this.root);
     }
 
-    private void constructTree(GhostNode node){
-
-
-        ArrayList<String> keyStrings = Node.getKeys( node.getOriginNode() );
-        ArrayList<GhostNode> keyNodes = new ArrayList<GhostNode>();
+    private void constructTree(GhostNode base){
 
         //Nodes in the tree will be sorted alphabetically.
+        ArrayList<String> keyStrings = Node.getKeys(base.getOriginNode());
         Collections.sort(keyStrings);
+
+
         for(String k : keyStrings ){
             //Alright, either it's a K:V for Height:179 cm
             //So if it's a String Representable Key, you gotta play it safe.
             //Either way it's a node you can get.
             Node t = Whiteboard.searchByTitle(k);
             GhostNode gkey = new GhostNode(t);
-            node.addKid(gkey);
+            base.addKid(gkey);
 
 
             //You need to search the Origin Node's Keys for Values. Since you can't use the Height Key Node to get Devin's Height.
 
             //MAKE SURE TO CATCH THE NULL
-            String val = node.getVal(gkey);
+            String val = base.getVal(gkey);
 
             if(val == null){
                 //We are done with this section of the ghost tree!!!
@@ -70,7 +69,19 @@ public class GhostTree {
 
                 }
 
-                //Otherwise, we need to create a GhostOF node as a LC of the Key and send that to be created as the rest of the tree.
+                //Otherwise, we need to create a GhostOF node as a LC of the Key.
+
+                //Create a new node...? Should this be via white board? Creating a OF node is a pretty unique case.
+                //Well, NODE seems to have a method for creating a new node so...
+                String ofTitle = base.toString() + "^" + gkey.toString();
+                Node of = new Node(ofTitle);
+
+                //FUCK FUCK FUCK now we need an inheritance method that doesn't automatically trigger ^lc ^lp shit frantically.
+
+                // Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
+                GhostNode gOF = new GhostNode(of);
+                gkey.addKid(gOF);   //add as a val to the current key for sure.
+                constructTree(gOF);
 
                 continue;
             }
@@ -80,14 +91,26 @@ public class GhostTree {
 
                 //Turn the string rep into an actual node
 
-                //Add it as that key's child, skip this branch.
+                //Add it as that key's child, we've reached the leaf of this branch.
+
+
+                continue;
 
             }
 
-            //Or it's going to be  a LC node of the LP
+            //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
+            Node t2 = Whiteboard.searchByTitle(val);
+            GhostNode lc = new GhostNode(t2);
 
-            //Get that kiddo, add it as the only child to this gkey, send that kiddo to continue having its tree be made.
+            //FUCK should we check just to make sure...
+            if( !keepInTree(lc, gkey) )
+                logger.warn("Huh that's weird..." + val + " isn't a logical child of the key: "+ gkey.toString());
 
+            //Take this lc node and add it as the only child of the current gkey.
+            gkey.addKid(lc);
+
+            // Then, send that LC to be branched out as a continuation of the ghost tree.
+            constructTree(lc);
 
             //IT'S LIKE THIS TREE WORKS IN THREE PART INTERVALS.
             //YOU SEND IN THE ROOTS AND IT CREATES THE TREE'S KEYS
@@ -98,7 +121,7 @@ public class GhostTree {
 
 
 
-        }
+        }   //END LOOP THROUGH KEYS
 
 
     }
@@ -123,12 +146,20 @@ public class GhostTree {
 
     }
 
+    public boolean keepInTree(GhostNode lc, GhostNode lp){
+        if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
+            return true;
+        return SetLogic.xISyP(lc.node, lp.node);
+    }
+
+
 
 
     private class GhostNode implements Comparable<GhostNode> {
 
         private Node node;
         private ArrayList<GhostNode> kids;
+        private GhostNode parent;
 
 
         public GhostNode(Node node){
@@ -151,19 +182,20 @@ public class GhostTree {
         }
 
         public void addKid(GhostNode kid){
+            kid.setParent(this);
             kids.add(kid);
 
+        }
+
+        public void setParent(GhostNode parent){
+            this.parent = parent;
         }
 
         protected Node getOriginNode(){
             return this.node;
         }
 
-        public boolean keepInTree(GhostNode lc, GhostNode lp){
-            if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
-                return true;
-            return SetLogic.xISyP(lc.node, lp.node);
-        }
+
 
         @Override
         public String toString(){
