@@ -1,5 +1,6 @@
 package logic;
 
+import funct.StringRepresentation;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -30,21 +31,73 @@ public class GhostTree {
         this.root = new GhostNode(root);
 
         //Construct the Tree
-        constructTree();
+        constructTree(this.root);
     }
 
-    private void constructTree(){
+    private void constructTree(GhostNode node){
 
-        //First, take the root.
-        //Its children are either Keys that are string representable and should have a LData interpretable Val
-        //  or they are LPs (actual nodes).
-        ArrayList<String> keyStrings = Node.getKeys( root.node );
-        ArrayList<Node> keyNodes = new ArrayList<Node>();
+
+        ArrayList<String> keyStrings = Node.getKeys( node.getOriginNode() );
+        ArrayList<GhostNode> keyNodes = new ArrayList<GhostNode>();
 
         //Nodes in the tree will be sorted alphabetically.
         Collections.sort(keyStrings);
         for(String k : keyStrings ){
-            Whiteboard.searchByTitle(k);
+            //Alright, either it's a K:V for Height:179 cm
+            //So if it's a String Representable Key, you gotta play it safe.
+            //Either way it's a node you can get.
+            Node t = Whiteboard.searchByTitle(k);
+            GhostNode gkey = new GhostNode(t);
+            node.addKid(gkey);
+
+
+            //You need to search the Origin Node's Keys for Values. Since you can't use the Height Key Node to get Devin's Height.
+
+            //MAKE SURE TO CATCH THE NULL
+            String val = node.getVal(gkey);
+
+            if(val == null){
+                //We are done with this section of the ghost tree!!!
+                //No wait, no we're not, we have to ghost it.
+
+                //If the Key we stopped on is String Representable, we need to get its confidence interval.
+                if( StringRepresentation.isKeyStringRepresentable(gkey.getOriginNode())){
+
+                    //get confidence interval of ghost value
+
+                    //add that ghost ci val to the gkey as its only child
+                    //skip this branch.
+
+                }
+
+                //Otherwise, we need to create a GhostOF node as a LC of the Key and send that to be created as the rest of the tree.
+
+                continue;
+            }
+
+            //Now either this "Val" is going to be string representable
+            if(StringRepresentation.isStringRepresentation(val)){
+
+                //Turn the string rep into an actual node
+
+                //Add it as that key's child, skip this branch.
+
+            }
+
+            //Or it's going to be  a LC node of the LP
+
+            //Get that kiddo, add it as the only child to this gkey, send that kiddo to continue having its tree be made.
+
+
+            //IT'S LIKE THIS TREE WORKS IN THREE PART INTERVALS.
+            //YOU SEND IN THE ROOTS AND IT CREATES THE TREE'S KEYS
+            // THEN IT LOOKS BACK INTO THE ROOT'S KEY'S VALUES
+            // THEN IT EITHER CREATES GHOST VALUES, OR SAVES VALUES AND REALIZES IT'S THE END OF THE BRANCH
+            // OR IT REALIZES THERE'S A LC THERE AS A VALUE / GHOSTOF NODE AND SENDS THAT TO CREATE THE NEXT INTERVAL OF THE TREE.
+
+
+
+
         }
 
 
@@ -72,7 +125,7 @@ public class GhostTree {
 
 
 
-    private class GhostNode implements Comparable<GhostNode>{
+    private class GhostNode implements Comparable<GhostNode> {
 
         private Node node;
         private ArrayList<GhostNode> kids;
@@ -88,14 +141,33 @@ public class GhostTree {
             ArrayList kids = new ArrayList<GhostNode>();
         }
 
-        public void addKid(){
+        public String getVal( GhostNode key){
 
+            Node n = this.getOriginNode();
+            String k = key.toString();
+
+            return Node.get(n, k);
+
+        }
+
+        public void addKid(GhostNode kid){
+            kids.add(kid);
+
+        }
+
+        protected Node getOriginNode(){
+            return this.node;
         }
 
         public boolean keepInTree(GhostNode lc, GhostNode lp){
             if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
                 return true;
             return SetLogic.xISyP(lc.node, lp.node);
+        }
+
+        @Override
+        public String toString(){
+            return this.node.toString();
         }
 
         @Override   //Compares titles of the two nodes.

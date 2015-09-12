@@ -43,13 +43,20 @@ public final class Scribe {
 
 //        -- if two nodes ( BaseOF, Key )           OR   BaseOF, Val (of a Key inside BaseOF)
         if(nodes.length == 2){
+            //Base - Val check if Val is Base, if not, check if Val is Val. If it's val, see if there's only one place to add it.
+                // if only one place to add it , ask if add it there. If not, ask with TreeTrueFalse
+            //
             return addKey(nodes[0], nodes[1]);
         }
 
 
-//        -- check if second to last node is a Key to the Value.
+//        -- check if second to last node is a Key to the Value.        //Although important, the way the churning and eliminating
+        //branches would work would already account for this.
         if( SetLogic.xISyP(tail, keyTmp) ){
+
+
             //That's great news! Now we just gotta find where we can add this K:V pair within the OF and all branches.
+
 
             //Keep in mind a Key or OF might be a ^LP of the Key that we're actually trying to add. Fucked up right?
             //ahha. this is fine. i'm not losing it. i'm fine.
@@ -87,7 +94,6 @@ public final class Scribe {
     }
 
 
-    //private static ArrayList<Node> ghostNodes()
 
     private static ArrayList<Node> crazySearch(Node[] nodes){
 
