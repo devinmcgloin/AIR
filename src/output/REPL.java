@@ -94,11 +94,15 @@ public class REPL {
             }
             return new returnTuple(className, methodName, arguments);
         }else{
-            //TODO implement infix notation here.
+            //TODO Need to account for LDATA node modifications as IS/HAS relationships don't apply.
             switch (terms[1]) {
-                case "add":
-                    command = command.replace("add", ",");
-                    command = "HighLevel.add " + command;
+                case "has":
+                    command = command.replace("has", ",");
+                    command = +command;
+                    return parseCommand(command);
+                case "is":
+                    command = command.replace("is", ",");
+                    command = +command;
                     return parseCommand(command);
                 default:
                     return null;

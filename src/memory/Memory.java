@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Memory implements Comparable<Memory> {
 
+    private final double DECAY_CONSTANT = -.10;
     private Node node;
     private double decay;
     private double time = 7;
@@ -27,7 +28,7 @@ public class Memory implements Comparable<Memory> {
     }
 
     public void cycle() {
-        decay = 1 * Math.pow(Math.E, -0.10 * time);
+        decay = 1 * Math.pow(Math.E, DECAY_CONSTANT * time);
         time = time++;
     }
 

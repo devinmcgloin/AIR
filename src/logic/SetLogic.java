@@ -1,6 +1,7 @@
 package logic;
 
 
+import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
@@ -259,8 +260,8 @@ public final class SetLogic {
                 x = Node.add(x, key);
             }
         }
-//TODO: eval this to see if it would be better to return both.
-        PA.put(y);
+        Whiteboard.addNode(y);
+        Whiteboard.addNode(x);
 
         return x;
     }
@@ -276,7 +277,7 @@ public final class SetLogic {
         for(String key: keys){
             x = Node.add(x, key);
         }
-        //TODO: eval this to see if it would be better to return both.
+        Whiteboard.addNode(x);
         return x;
     }
 

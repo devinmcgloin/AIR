@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 /**
  * Created by devinmcgloin on 6/8/15.
- * TODO: Implement this, develop query language for tables.
  * This is going to rely heavily on the more complex aspects of LDATA. Tabling for now.
  */
 public class MatrixBuilder {
@@ -23,7 +22,7 @@ public class MatrixBuilder {
 
         for(int i = 0; i < nodes.size(); i++){
             for(int j = 0; j < attributes.size(); j++){
-                matrix[i][j] = Node.getCarrot(nodes.get(i), attributes.get(j)).get(0);
+                matrix[i][j] = Node.get(nodes.get(i), attributes.get(j));
             }
         }
         return matrix;

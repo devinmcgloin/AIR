@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by devinmcgloin on 6/17/15.
  * GENERAL NOTES
- * TODO not sure about how to represent non nnumerical data, (time, geo, etc) with expressions and may just bypass it altogether.
+ * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * TODO Need to QA everything
  * Default return value is true.
  *
@@ -38,24 +38,27 @@ public final class LDATA {
      *      Overflown Node (not an ans, at all) - search takes care of this case.
      *      Blank - Search should also never return a blank value.
      *
-     * TODO
+     * TODO This is used to verify that a expression node works for the given node.
      * @param node
      * @param value
      * @return
      */
     public static boolean isValid(Node node, Node value) {
-        return false;
+
     }
 
     /**
-     * TODO
+     * TODO This is used to verify when adding values to nodes.
      *
      * @param node
      * @param value
      * @return
      */
     public static boolean isValid(String node, String value) {
-        return false;
+        if (!isLdata(node) || !isLdata(value))
+            return true;
+
+
     }
 
     /**

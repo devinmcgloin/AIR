@@ -21,12 +21,13 @@ public class Scanner {
      * @param LP
      * @param LC
      */
-    public static void restructuring(Node LP, Node LC) {
+    public static void restructure(Node LP, Node LC) {
         ArrayList<Node> LPAppearances = PA.generalSearch(LP.toString() + "`" + LC.toString());
         for (Node n : LPAppearances) {
             for (String firstKey : Node.getKeys(n)) {
                 for (String secondKey : Node.getKeys(n)) {
                     if (!firstKey.equals(secondKey) && SetLogic.xISyP(Whiteboard.searchByTitle(firstKey), Whiteboard.searchByTitle(secondKey))) {
+                        //TODO this will add it to ^notkey, is that alright?
                         n = Node.rm(n, secondKey);
                         n = Node.add(n, firstKey, secondKey);
                     }

@@ -9,6 +9,10 @@ import java.util.Collections;
 /**
  * Created by devinmcgloin on 8/26/15.
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
+ *
+ * TODO add whiteboard delete so the whiteboard isn't flooded with ghost tree nodes that were looking at, but never changed.
+ *
+ * TODO add temp staging area for addnode, then ask to commit after each cycle.
  */
 public class Whiteboard {
 
