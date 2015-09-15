@@ -42,9 +42,11 @@ public class GhostTree {
 
 
         for(String k : keyStrings ){
-            //Alright, either it's a K:V for Height:179 cm
+            //Alright, either it's a K:V for Height:Node^Height
             //So if it's a String Representable Key, you gotta play it safe.
-            //Either way it's a node you can get.
+            //Or it's going to be LP:LC
+            //Actually either way it's going to be LP:LC since K:V in string rep keys get changed to nodes upon pulling out of db.
+            //Either way, the Keys are Nodes you can get in the DB.
             Node t = Whiteboard.searchByTitle(k);
             GhostNode gkey = new GhostNode(t);
             base.addKid(gkey);
@@ -58,11 +60,14 @@ public class GhostTree {
             if(val == null){
                 //We are done with this section of the ghost tree!!!
                 //No wait, no we're not, we have to ghost it.
+                //------------------------------- GHOST PART OF THE GHOST TREE ----------------------------------------------//
 
                 //If the Key we stopped on is String Representable, we need to get its confidence interval.
+                //Actually, if the Key we stopped on is Numeric, we need to get its confidence interval.
                 if( StringRepresentation.isKeyStringRepresentable(gkey.getOriginNode())){
 
                     //get confidence interval of ghost value
+                    //Actually, we shouldn't do stats stuff at all. Not here. This is about just creating the tree, not guessing and asking questions and seeing proximity. Shouldn't do that.
 
                     //add that ghost ci val to the gkey as its only child
                     //skip this branch.
@@ -70,6 +75,37 @@ public class GhostTree {
                 }
 
                 //Otherwise, we need to create a GhostOF node as a LC of the Key.
+                //Which we actually need to do for numeric things anyway...i.e. Devin^Height node still needs to get created as a tmpGhostOF
+                //But that should be handled above, where we're handling the numeric shit.
+
+
+
+                //BEFORE we rush off to create a new OF Node as a Val to this Key...
+                //We need to stop the branch if the value is a qualitative Val that should just have a frequency Distribution or a Approximation by looking at other things close to it.
+                //Definitely if it's LData interpretable it should stop. (Location, Phone Number)
+                //If it's qualitative ans we need to handle that differenly (Color, Sex)
+                /**\
+                 * Handling Qualitative Values that shouldn't OF.
+                 * Key has no has attributes, just lots of ^LC
+                 *      -What if they're all OFs though? Then again, that would never happen. OFs imply building off the key.
+                 * ^LC of Key have no OFs...but that probably won't hold up. Would need a significant amount, or weighing them...
+                 * Go to LP, see how its LC have populated that same Key. If they rarely OF, then you should probably just stop. Other wise, you can take a freq dist. But that's more in the "questioning" thing.
+                 *
+                 * Actually, we shouldn't do stats stuff at all. Not here. This is about just creating the tree, not guessing and asking questions and seeing proximity. Shouldn't do that.
+                 *
+                 *
+                 * FUCK FUCK FUCK FUCK FUCK
+                 * DEFINITELY possible to have an infinte OF tree if you're not careful.
+                 * friend is person
+                 * person has friend
+                 * BOOM.
+                 * FUCK END FUCK END FUCK
+                 */
+
+
+
+
+
 
                 //Create a new node...? Should this be via white board? Creating a OF node is a pretty unique case.
                 //Well, NODE seems to have a method for creating a new node so...
@@ -84,9 +120,11 @@ public class GhostTree {
                 constructTree(gOF);
 
                 continue;
-            }
+            } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
+            //-----------------------false-----------------------------
             //Now either this "Val" is going to be string representable
+            //This won't happen since loading in the Node will change it to a Node
             if(StringRepresentation.isStringRepresentation(val)){
 
                 //Turn the string rep into an actual node
@@ -97,12 +135,13 @@ public class GhostTree {
                 continue;
 
             }
+            //-----------------------shouldn't happen ------------------
 
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
             Node t2 = Whiteboard.searchByTitle(val);
             GhostNode lc = new GhostNode(t2);
 
-            //FUCK should we check just to make sure...
+            //Just to make sure...
             if( !keepInTree(lc, gkey) )
                 logger.warn("Huh that's weird..." + val + " isn't a logical child of the key: "+ gkey.toString());
 
