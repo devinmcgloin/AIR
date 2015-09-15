@@ -63,14 +63,20 @@ public final class LDATA {
 
     /**
      *
-     * @param initialValue
+     * @param initialValue - We want this to be taj mahal^height, which is basically an instatiated height node.
      * @param unitTo
      * @return
      */
     public static Node convert(Node initialValue, String unitTo) {
-        Node unitNode = getUnits(initialValue);
+        Node unitNode = getUnits(initialValue); // gives you the meter node.
         String conversionStep = getConversionFactors(unitNode, unitTo);
-        String[] conversionSteps = conversionStep.split("->")[2].split(" ");
+        if (conversionStep == null) {
+            logger.warn("Node cannot be converted");
+            return initialValue;
+        }
+        String[] conversionSteps = conversionStep.split(" ");
+
+        //TODO this seems to be redundant as its already done in conversionsteps. It returns the new spec. Need to check notes at home. QA this.
 
         String oldVal = Double.toString(getCast(initialValue));
         String oldUnit = Node.get(initialValue, "unit");
@@ -105,6 +111,15 @@ public final class LDATA {
      */
     public static Node getType(String unit) {
         return SetLogic.getLogicalParent(PA.searchExactTitle(unit));
+    }
+
+    /**
+     * Takes the unit and returns the ldata node associated with it
+     * @param node
+     * @return
+     */
+    public static Node getType(Node node) {
+        return SetLogic.getLogicalParent(node);
     }
 
     /**
@@ -260,12 +275,12 @@ public final class LDATA {
 //    }
 
     private static String getConversionFactors(Node node, String unitTo) {
-        Node unitNode = getUnits(node);
+        Node unitNode = getType(node);
         for (String conversion : Node.getCarrot(unitNode, "^conversion")) {
             String[] parsedConversion = conversion.split("->");
             String currentUnit = Node.get(node, "unit");
             if (parsedConversion[0].equals(currentUnit) && parsedConversion[1].equals(unitTo)) {
-                return parsedConversion[2];
+                return parsedConversion[2]; //
             }
         }
         return null;
