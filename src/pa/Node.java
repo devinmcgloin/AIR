@@ -113,6 +113,12 @@ public class Node {
     }
 
     public static String get(Node node, String key) {
+        ArrayList<String> t = node.getCarrot(key);
+
+        if(t == null){
+            logger.warn("Throwing a null.");
+            return null;
+        }
         return node.getCarrot(key).get(0);
     }
 
@@ -121,6 +127,7 @@ public class Node {
     }
 
     public static ArrayList<String> getCarrot(Node node, String key) {
+
         return node.getCarrot(key);
     }
 
@@ -177,8 +184,10 @@ public class Node {
 
     private ArrayList<String> getCarrot(String Key) {
         TreeNode kid = TN.getChild(Key);
-        if(kid==null)
+        if(kid==null) {
+            logger.warn("Did not have the Key: "+Key);
             return null;
+        }
         else
             return kid.getChildrenString();
     }
