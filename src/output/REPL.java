@@ -23,7 +23,7 @@ import java.util.Scanner;
  */
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
-    private final String help = "REPL Help:\n\n" +
+    private final String HELP_STRING = "REPL Help:\n\n" +
             "\nCommands:\n" +
             "(ADD    | +  ): Add node at current directory\n" +
             "(DEL    | -  ): PATH\n" +
@@ -32,7 +32,7 @@ public class REPL {
             "(CD     | cd ): Return to root.\n" +
             "(RENAME | mv ): PATH - newName\n" +
             "(Help   | ?  ): For help.\n\n";
-    private final String titleID = "@";
+    private final String NODE_ID = "@";
     private Scanner input = new Scanner(System.in);
 
     public REPL(){}
@@ -49,7 +49,7 @@ public class REPL {
                     ExecutionFlow flow = new ExecutionFlow(method);
                     //TODO come back and QA this.
                     for(String id : argumentID){
-                        if (id.startsWith(titleID))
+                        if (id.startsWith(NODE_ID))
                             flow.applyArgument(Whiteboard.searchByTitle(id.replace("@", "")));
                         else if (id.startsWith("\"") || id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
@@ -135,8 +135,8 @@ public class REPL {
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
             return;
-        } else if (command.toLowerCase().equals("help") || command.toLowerCase().equals("?")) {
-            Core.println(help);
+        } else if (command.toLowerCase().equals("HELP_STRING") || command.toLowerCase().equals("?")) {
+            Core.println(HELP_STRING);
         } else if (command.toLowerCase().equals("end")) {
             Core.println("Ending this conversation");
             Whiteboard.putAll();
