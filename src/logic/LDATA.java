@@ -8,9 +8,7 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- * @author devinmcgloin
- * @version 6/17/15.
- *
+ * Created by devinmcgloin on 6/17/15.
  * GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * TODO Need to QA everything
@@ -50,7 +48,7 @@ public final class LDATA {
     public static boolean isValid(Node node, Node value) {
         if (!isLdata(node) || !isLdata(value))
             return true;
-
+        return true;
 
     }
 
@@ -64,7 +62,7 @@ public final class LDATA {
     public static boolean isValid(String node, String value) {
         if (!isLdata(node) || !isLdata(value))
             return true;
-
+        return true;
 
     }
 

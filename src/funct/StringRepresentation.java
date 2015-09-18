@@ -6,7 +6,7 @@ import pa.PA;
 
 /**
  * Created by devinmcgloin on 8/25/15.
- * TODO for translating string representations from strings into nodes and back again.
+ * TODO still storing hte original string inside the node correct? Still needs to be implemented.
  */
 public class StringRepresentation {
 
@@ -17,15 +17,7 @@ public class StringRepresentation {
      * @return
      */
     public static Node getStringRep(String strRep) {
-        if (isMeasurement(strRep))
-            return getMeasurement(strRep);
-        else if (isCount(strRep))
-            return getCount(strRep);
-        else if (isExpression(strRep))
-            return getExpression(strRep);
-        else if (isMeasurement(strRep))
-            return getMeasurement(strRep);
-        else return null;
+
     }
     /**
      * This is far easier for Devin than the previous idea:
@@ -34,7 +26,7 @@ public class StringRepresentation {
      * @param strRep
      * @return
      */
-    public static boolean isStrRep(String strRep) {
+    public static boolean isStringRepresentation(String strRep) {
         return isCount(strRep) || isExpression(strRep) || isMeasurement(strRep);
     }
 
@@ -49,7 +41,7 @@ public class StringRepresentation {
      * @return
      */
     public static boolean isKeyStringRepresentable(Node key){
-        return Node.getKeys(key).stream()
+        return Node.getCarrot(key, "^logicalParent").stream()
                 .anyMatch(s -> s.equals("string representable"));
     }
     
@@ -70,7 +62,6 @@ public class StringRepresentation {
                 return template;
             } else return null;
         } else return null;
-    }
 
     public static boolean isExpression(String expression) {
         return LDATA.isExpression(expression);
