@@ -8,7 +8,9 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 6/17/15.
+ * @author devinmcgloin
+ * @version 6/17/15.
+ *
  * GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * TODO Need to QA everything
@@ -39,11 +41,16 @@ public final class LDATA {
      *      Blank - Search should also never return a blank value.
      *
      * TODO This is used to verify that a expression node works for the given node.
+     *
+     * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level get.
      * @param node
      * @param value
      * @return
      */
     public static boolean isValid(Node node, Node value) {
+        if (!isLdata(node) || !isLdata(value))
+            return true;
+
 
     }
 
