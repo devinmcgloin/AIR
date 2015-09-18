@@ -74,13 +74,16 @@ number
 		ldata
 	#
 	^value ranges
+	string representable
 
 expression
 	^lp
 		ldata
+	type
 	operator
 	value
 	unit
+	string representable
 
 length
 	#
@@ -89,6 +92,7 @@ length
 		measurement
 	^conversion
 	^value ranges
+	string representable
 
 measurement
 	#
@@ -97,3 +101,4 @@ measurement
 		number
 	^conversion
 	^value ranges
+	string representable
