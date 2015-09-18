@@ -45,7 +45,7 @@ public final class LDATA {
      */
     public static boolean isValid(Node node, Node value) {
         //FUCK TODO
-        return false;
+        return true;
     }
 
     /**
@@ -60,7 +60,7 @@ public final class LDATA {
             return true;
 
         //FUCK TODO
-        return false; //this line wasn't here, don't know if it should be. I just need to test ghosttree.
+        return true; //this line wasn't here, don't know if it should be. I just need to test ghosttree.
     }
 
     /**

@@ -98,12 +98,12 @@ public class REPL {
             switch (terms[1]) {
                 case "has":
                     command = command.replace("has", ",");
-//                    command = +command; FUCK TODO, is what you wanted what i wrote below?
+                    command = "Highlevel.has" + command;
                     command += command;
                     return parseCommand(command);
                 case "is":
                     command = command.replace("is", ",");
-//                    command = +command;FUCK TODO, is what you wanted what i wrote below?
+                    command = "Highlevel.is" + command;
                     command += command;
                     return parseCommand(command);
                 default:

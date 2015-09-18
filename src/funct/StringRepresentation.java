@@ -6,7 +6,7 @@ import pa.PA;
 
 /**
  * Created by devinmcgloin on 8/25/15.
- * TODO for translating string representations from strings into nodes and back again.
+ * TODO still storing hte original string inside the node correct? Still needs to be implemented.
  */
 public class StringRepresentation {
 
@@ -17,8 +17,15 @@ public class StringRepresentation {
      * @return
      */
     public static Node getStringRep(String strRep) {
-        //FUCK TODO
-        return null;
+        if (isMeasurement(strRep))
+            return getMeasurement(strRep);
+        else if (isCount(strRep))
+            return getCount(strRep);
+        else if (isExpression(strRep))
+            return getExpression(strRep);
+        else if (isMeasurement(strRep))
+            return getMeasurement(strRep);
+        else return null;
     }
     /**
      * This is far easier for Devin than the previous idea:
@@ -27,8 +34,8 @@ public class StringRepresentation {
      * @param strRep
      * @return
      */
-    public static boolean isStrRep(String strRep) {
-        return isCount(strRep) || isExpression(strRep) || isLdata(strRep);
+    public static boolean isStringRepresentation(String strRep) {
+        return isCount(strRep) || isExpression(strRep) || isMeasurement(strRep);
     }
 
     /**
@@ -42,17 +49,27 @@ public class StringRepresentation {
      * @return
      */
     public static boolean isKeyStringRepresentable(Node key){
-
-        return false;
+        return Node.getCarrot(key, "^logicalParent").stream()
+                .anyMatch(s -> s.equals("string representable"));
     }
-    
+
     public static Node getExpression(String expression) {
-        Node template = PA.searchExactTitle("expression");
-        String[] parsedExpression = expression.split(" ");
-
-
-        //FUCK TODO
-        return null;
+        if (isExpression(expression)) {
+            Node template = PA.searchExactTitle("expression");
+            String[] parsedExpression = expression.split(" ");
+            if (parsedExpression.length == 3) {
+                template = Node.add(template, "type", parsedExpression[0]);
+                template = Node.add(template, "operator", parsedExpression[1]);
+                template = Node.add(template, "value", parsedExpression[2]);
+                return template;
+            } else if (parsedExpression.length == 4) {
+                template = Node.add(template, "type", parsedExpression[0]);
+                template = Node.add(template, "operator", parsedExpression[1]);
+                template = Node.add(template, "value", parsedExpression[2]);
+                template = Node.add(template, "unit", parsedExpression[3]);
+                return template;
+            } else return null;
+        } else return null;
     }
 
     public static boolean isExpression(String expression) {
@@ -62,11 +79,9 @@ public class StringRepresentation {
     public static Node getCount(String count) {
         if (isCount(count)) {
             Node template = PA.searchExactTitle("number");
-            template = Node.add(template, "^#", count);
+            template = Node.add(template, "#", count);
             return template;
         }
-
-        //FUCK TODO
         return null;
     }
 
@@ -74,13 +89,22 @@ public class StringRepresentation {
         return LDATA.isNumeric(count);
     }
 
-    public static Node getLdata(String ldataVal) {
-        //FUCK TODO
+    public static Node getMeasurement(String measure) {
+        if (isMeasurement(measure)) {
+            String[] splitMeasuremnt = measure.split(" ");
+            Node template = PA.searchExactTitle("measurement");
+            Node.add(template, "#", splitMeasuremnt[0]);
+            Node.add(template, "unit", splitMeasuremnt[1]);
+            return template;
+        }
         return null;
     }
 
-    public static boolean isLdata(String ldataVal) {
-        //FUCK TODO
-        return false;
+    public static boolean isMeasurement(String measure) {
+        String[] splitMeasuremnt = measure.split(" ");
+        if (splitMeasuremnt.length != 2) {
+            return false;
+        }
+        return isCount(splitMeasuremnt[0]) && LDATA.isUnit(splitMeasuremnt[1]);
     }
 }
