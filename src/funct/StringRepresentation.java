@@ -17,13 +17,14 @@ public class StringRepresentation {
      * @return
      */
     public static Node getStringRep(String strRep) {
-
+        //FUCK TODO
+        return null;
     }
     /**
      * This is far easier for Devin than the previous idea:
      * isKeyStringRepresentatble(Node key)     here you would submit "height" as a node to see that it takes a string rep.
      * Wait no i still need that function done.
-     * @param s
+     * @param strRep
      * @return
      */
     public static boolean isStrRep(String strRep) {
@@ -49,6 +50,9 @@ public class StringRepresentation {
         Node template = PA.searchExactTitle("expression");
         String[] parsedExpression = expression.split(" ");
 
+
+        //FUCK TODO
+        return null;
     }
 
     public static boolean isExpression(String expression) {
@@ -61,6 +65,9 @@ public class StringRepresentation {
             template = Node.add(template, "^#", count);
             return template;
         }
+
+        //FUCK TODO
+        return null;
     }
 
     public static boolean isCount(String count) {
@@ -68,10 +75,12 @@ public class StringRepresentation {
     }
 
     public static Node getLdata(String ldataVal) {
-
+        //FUCK TODO
+        return null;
     }
 
     public static boolean isLdata(String ldataVal) {
-
+        //FUCK TODO
+        return false;
     }
 }

@@ -34,7 +34,7 @@ public final class SetLogic {
         return false;
     }
 
-
+    //FUCK TODO: DEVIN, just letting you know this filter method uses the LDATAFilter which uses an isValidP in Ldata thatisn't filled out.
     public static ArrayList<Node> filter(ArrayList<Node> nodes, ArrayList<Node> isConditions, ArrayList<Node> hasConditions, ArrayList<Node> LDATAConditions) {
         nodes = isFilter(nodes, isConditions);
         nodes = hasFilter(nodes, hasConditions);

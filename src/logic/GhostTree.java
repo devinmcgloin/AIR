@@ -41,8 +41,9 @@ public class GhostTree {
         //Nodes in the tree will be sorted alphabetically.
         ArrayList<String> keyStrings = Node.getKeys(base.getOriginNode());
         Collections.sort(keyStrings);
-        if(gnodesInThisBranch ==null){
+        if(gnodesInThisBranch ==null) {
             gnodesInThisBranch = new ArrayList<GhostNode>();
+        }
         /*We need to keep track of the nodes that we let OF so that we don't cause an infinite Ghost Tree.
         I know. It's ridiculous. I spent half a day trying to figure out the logistics of how it would be caused.
         E.g. Friend is Person, Person has Friend. Friend OFs to Person^Friend and has Friend as a Key which OFs...
@@ -116,8 +117,6 @@ public class GhostTree {
 
 
 
-
-
                 //ANOTHER STOP
                 //We need to stop the branch if the value is a qualitative Val that should just have a frequency Distribution or a
                 //  Approximation by looking at other things close to it.
@@ -155,20 +154,7 @@ public class GhostTree {
                 continue;
             } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
-            //-----------------------false-----------------------------
-            //Now either this "Val" is going to be string representable
-            //This won't happen since loading in the Node will change it to a Node
-//            if(StringRepresentation.isStringRepresentation(val)){
-//
-//                //Turn the string rep into an actual node
-//
-//                //Add it as that key's child, we've reached the leaf of this branch.
-//
-//
-//                continue;
-//
-//            }
-            //-----------------------shouldn't happen ------------------
+
 
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
             Node t2 = Whiteboard.searchByTitle(val);
@@ -180,9 +166,11 @@ public class GhostTree {
 
             //Take this lc node and add it as the only child of the current gkey.
             gkey.addKid(lc);
+            //MARK ALL THE FUCKING KEYS THAT ARE IN THIS BRANCH.
+            gnodesInThisBranch.add(gkey);
 
             // Then, send that LC to be branched out as a continuation of the ghost tree.
-            constructTree(lc);
+            constructTree(lc, gnodesInThisBranch);
 
             //IT'S LIKE THIS TREE WORKS IN THREE PART INTERVALS.
             //YOU SEND IN THE ROOTS AND IT CREATES THE TREE'S KEYS

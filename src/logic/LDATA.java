@@ -44,7 +44,8 @@ public final class LDATA {
      * @return
      */
     public static boolean isValid(Node node, Node value) {
-
+        //FUCK TODO
+        return false;
     }
 
     /**
@@ -58,7 +59,8 @@ public final class LDATA {
         if (!isLdata(node) || !isLdata(value))
             return true;
 
-
+        //FUCK TODO
+        return false; //this line wasn't here, don't know if it should be. I just need to test ghosttree.
     }
 
     /**
