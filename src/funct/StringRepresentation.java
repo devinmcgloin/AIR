@@ -17,7 +17,13 @@ public class StringRepresentation {
      * @return
      */
     public static Node getStringRep(String strRep) {
-
+        if (isMeasurement(strRep))
+            return getMeasurement(strRep);
+        else if (isCount(strRep))
+            return getCount(strRep);
+        else if (isExpression(strRep))
+            return getExpression(strRep);
+        else return null;
     }
     /**
      * This is far easier for Devin than the previous idea:
@@ -62,6 +68,7 @@ public class StringRepresentation {
                 return template;
             } else return null;
         } else return null;
+    }
 
     public static boolean isExpression(String expression) {
         return LDATA.isExpression(expression);
