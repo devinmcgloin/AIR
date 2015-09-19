@@ -81,9 +81,10 @@ public class REPL {
 
         //Have the full class and method name
         if(terms[0].contains(".")){
-            int period = command.indexOf(".");
+            int firstPeriod = command.indexOf(".");
+            int period = command.indexOf(".", firstPeriod + 1);
 
-            String className = "pa." + command.substring(0, period);
+            String className = command.substring(0, period);
             String methodName = command.substring(period + 1, command.indexOf(" ")).trim();
             String everythingElse = command.substring(command.indexOf(" ") + 1, command.length());
 
@@ -146,8 +147,16 @@ public class REPL {
         }else {
             //TODO return things back to the whiteboard. Technically we can ignore the things these funcitons return as they will be placed on the whiteboard.
             returnTuple parsedCommands = parseCommand(command);
+            ExecutionFlow returnedObject = null;
             if (parsedCommands != null) {
-                invoke(parsedCommands.getFirst(), parsedCommands.getSecond(), parsedCommands.getThird());
+                returnedObject = invoke(parsedCommands.getFirst(), parsedCommands.getSecond(), parsedCommands.getThird());
+            }
+
+            if (returnedObject != null && returnedObject.completedP()) {
+                if (returnedObject.getResult() instanceof Node)
+                    Whiteboard.addNode((Node) returnedObject.getResult());
+                else if (returnedObject.getResult() instanceof String)
+                    System.out.println(returnedObject.getResult());
             }
         }
         cycle();

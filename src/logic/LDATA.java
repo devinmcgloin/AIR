@@ -46,8 +46,6 @@ public final class LDATA {
      * @return
      */
     public static boolean isValid(Node node, Node value) {
-        if (!isLdata(node) || !isLdata(value))
-            return true;
         return true;
 
     }
