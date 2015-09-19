@@ -33,7 +33,7 @@ public class GhostTree {
         //Construct the Tree
         ArrayList<GhostNode> gnodesInThisBranch = new ArrayList<GhostNode>();
         gnodesInThisBranch.add(this.root);
-        constructTree(this.root, null);
+        constructTree(this.root, null); // todo should go nodes be passed in?
     }
 
     private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch){
