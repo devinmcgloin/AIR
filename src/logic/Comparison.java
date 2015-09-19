@@ -178,7 +178,7 @@ public final class Comparison {
         tmp = new keyVal("min", values.get(0) );
         dist.add(tmp);
         tmp = new keyVal("max", values.get(values.size()-1) );
-
+        dist.add(tmp);
 
 
 
