@@ -24,13 +24,7 @@ public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
     private final String HELP_STRING = "REPL Help:\n\n" +
             "\nCommands:\n" +
-            "(ADD    | +  ): Add node at current directory\n" +
-            "(DEL    | -  ): PATH\n" +
-            "(PRINT  | ls ): List directory.\n" +
-            "(BACK   | .. ): Back one level.\n" +
-            "(CD     | cd ): Return to root.\n" +
-            "(RENAME | mv ): PATH - newName\n" +
-            "(Help   | ?  ): For help.\n\n";
+            "You must reference commands by their full path name. \nIf you want to create a node: pa.PA.createNode \nNotice that capitalization is important. \n\nOnly arguments that are aceeptable are Strings and Nodes. \nNodes have a @ sign before their title. Strings are surrounded in quotes. @esb \"Height\"";
     private final String NODE_ID = "@";
     private Scanner input = new Scanner(System.in);
 
