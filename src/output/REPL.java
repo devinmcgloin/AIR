@@ -62,8 +62,6 @@ public class REPL {
 
             }
 
-            logger.error("Method not found...");
-            logger.error("Desired: " + methodName);
         }catch(ClassNotFoundException e){
             logger.error("Class not found...");
         }
@@ -130,6 +128,9 @@ public class REPL {
         System.out.print(">>>");
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
+            Whiteboard.putAll();
+            PA.save();
+            Whiteboard.clearAll();
             return;
         } else if (command.toLowerCase().equals("HELP_STRING") || command.toLowerCase().equals("?")) {
             Core.println(HELP_STRING);
@@ -153,6 +154,7 @@ public class REPL {
                     System.out.println(returnedObject.getResult());
             }
         }
+        Whiteboard.cycle();
         cycle();
     }
 

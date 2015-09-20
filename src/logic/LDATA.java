@@ -41,13 +41,30 @@ public final class LDATA {
      * TODO This is used to verify that a expression node works for the given node.
      *
      * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level get.
-     * @param node
-     * @param value
+     * @param node - node that the expression is being compared to.
+     * @param value - Expression node
      * @return
      */
     public static boolean isValid(Node node, Node value) {
+//        String type = Node.get(value, "type");
+//        if(type == null)
+//            return true;
+//
+//        Node typeTemplate = Whiteboard.searchByTitle(type);
+//        String nodeType = Node.get(node, type);
+//
+//
+//        if(StringRepresentation.isStringRepresentation(nodeType)){
+//            if(StringRepresentation.isCount(nodeType)){
+//                Node n = StringRepresentation.getCount(nodeType);
+//                double num = getCast(n);
+//            }
+//            else if(StringRepresentation.isMeasurement(nodeType)){
+//                Node n = StringRepresentation.getMeasurement(nodeType);
+//
+//            }
+//        }
         return true;
-
     }
 
     /**

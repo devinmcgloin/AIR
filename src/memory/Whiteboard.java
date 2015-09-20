@@ -16,14 +16,17 @@ import java.util.Collections;
  */
 public class Whiteboard {
 
+    static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
     private static ArrayList<Memory> workingMem = new ArrayList<>();
-
     private Whiteboard() {
     }
 
     public static void addNode(Node node) {
         Memory mem = new Memory(node);
         for (Memory term : workingMem) {
+            logger.debug(Node.getTitle(term.getNode()));
+            logger.debug(Node.getTitle(mem.getNode()));
+            logger.debug(term.equals(mem));
             if (term.equals(mem)) {
                 workingMem.remove(term);
                 workingMem.add(mem);
@@ -61,7 +64,7 @@ public class Whiteboard {
     public static Node search(String nodeName) {
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
-            if (mem.nameEquals(nodeName)) {
+            if (mem.titleEquals(nodeName)) {
                 mem.setTime(0.0);
                 return mem.getNode();
             }

@@ -106,7 +106,6 @@ public final class Search {
             for(Node success : otherSuccesses ){
                 OFlows.add(success);
             }
-
         }
         return OFlows;
     }

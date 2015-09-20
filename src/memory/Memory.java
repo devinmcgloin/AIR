@@ -12,7 +12,7 @@ public class Memory implements Comparable<Memory> {
     private final double DECAY_CONSTANT = -.10;
     private Node node;
     private double decay;
-    private double time = 7;
+    private double time = 1;
 
     public Memory(Node node) {
         this.node = node;
@@ -47,6 +47,10 @@ public class Memory implements Comparable<Memory> {
 
     public boolean equals(Node n) {
         return Node.getTitle(node).equals(Node.getTitle(n));
+    }
+
+    public boolean equals(Memory m) {
+        return (Node.getTitle(node)).equals(Node.getTitle(m.getNode()));
     }
 
     public boolean nameEquals(String nodeName) {
