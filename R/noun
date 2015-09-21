@@ -76,6 +76,11 @@ bmw
     suspension
     wheel
     width
+bmw^door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+    ^notKey
 boat
     ^logicalChildren
         container ship
@@ -294,3 +299,4 @@ unit
     ^name
         unit
     ^notKey
+    ^unit

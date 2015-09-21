@@ -8,6 +8,8 @@ import pa.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
+
 import funct.Core.*;
 
 /**
@@ -39,6 +41,8 @@ public class GhostTree {
     }
 
     private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch){
+
+
 
         //Nodes in the tree will be sorted alphabetically.
         ArrayList<String> keyStrings = Node.getKeys(base.getOriginNode());
@@ -151,6 +155,7 @@ public class GhostTree {
 
 
                 //FUCK FUCK FUCK now we need an inheritance method that doesn't automatically trigger ^lc ^lp shit frantically.
+                of = SetLogic.xLikey(of, gkey.getOriginNode());
 
                 // Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
                 GhostNode gOF = new GhostNode(of);
@@ -237,11 +242,12 @@ public class GhostTree {
 
     protected StringBuilder export(GhostNode node) {
         StringBuilder DBout = new StringBuilder();
+        DBout.append(node.toString() +"\n");
 
         System.out.println(node.getLevel());
 
         if (node.getLevel() == 0) {
-            String buffer = "";
+            String buffer = "    ";
             GhostNode tmp;
             if(node.getKids()==null){
                 System.out.println(node.toString());
@@ -285,7 +291,7 @@ public class GhostTree {
 
         public GhostNode(Node node){
             if(node == null || Node.getKeys(node) == null || Node.getKeys(node).size() == 0 ){
-                logger.warn("You cannot create a GhostNode with a dud node.");
+                logger.warn("You cannot create a GhostNode with a dud node: " + node.toString());
                 return;
             }
 

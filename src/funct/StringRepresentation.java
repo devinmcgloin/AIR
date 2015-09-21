@@ -47,7 +47,7 @@ public class StringRepresentation {
      * @return
      */
     public static boolean isKeyStringRepresentable(Node key){
-        return Node.getCarrot(key, "^logicalParent").stream()
+        return Node.getCarrot(key, "^logicalParents").stream()
                 .anyMatch(s -> s.equals("string representable"));
     }
     

@@ -1,5 +1,6 @@
 package pa;
 
+import logic.GhostTree;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -94,6 +95,13 @@ public final class PA {
 
     public static void test(){
         start();
+
+        start();
+        Node bmw = memory.Whiteboard.search("bmw");
+
+        GhostTree gtree = new GhostTree(bmw);
+        System.out.println("gonna\n");
+        System.out.println(gtree.toString());
 
 
 
