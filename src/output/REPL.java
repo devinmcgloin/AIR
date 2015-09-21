@@ -27,18 +27,17 @@ public class REPL {
             "[command type] {example call}\n\n" +
             "( help | ? ) - [SOLO] help text\n" +
             "(     q    ) - [SOLO] quit the program\n" +
-            "(    end   ) - [SOLO] end the current converstation. Clears whiteboard and puts nodes.\n" +
+            "(    end   ) - [SOLO] end the current conversation. Clears whiteboard and puts nodes.\n" +
             "(   like   ) - [INFIX] triggers xLikey {motorcycle like bike}\n" +
             "(    is    ) - [INFIX] triggers xINHERITy {fruit is food}\n" +
             "(  create  ) - [PREFIX] creates a new node with default carrot headers {create fruit}\n" +
-            "(   view   ) - [PREFIX] prints the content of the node to stnd.out {view bmw}\n" +
+            "(   view   ) - [PREFIX] prints the content of the node to std.out {view bmw}\n" +
             "(   add    ) - [PREFIX] triggers Node.add {add bmw,\"wheel\" | add bmw,\"wheel\",\"4\"}\n" +
             "(  called  ) - [INFIX] adds name to the specified node {bmw called bimmer}\n" +
             "\n" +
             "String arguments must be surrounded by quotation marks. - used in the add function.\n" +
             "the called function and create function do not require quotation marks, they are added by the program implicitly.\n" +
             "Nodes are referenced by name.\n";
-    private final String NODE_ID = "@";
     private Scanner input = new Scanner(System.in);
 
     public REPL(){}
