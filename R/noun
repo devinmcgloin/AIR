@@ -81,6 +81,7 @@ physical node
     ^logicalParents
     ^name
         physical node
+        physical
     ^notKey
     color
     height
