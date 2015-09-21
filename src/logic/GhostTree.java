@@ -1,5 +1,6 @@
 package logic;
 
+import funct.Core;
 import funct.StringRepresentation;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
@@ -7,6 +8,7 @@ import pa.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import funct.Core.*;
 
 /**
  * Created by Blazej on 8/29/2015.
@@ -73,10 +75,13 @@ public class GhostTree {
             //Either way, the Keys are Nodes you can get in the DB.
             Node t = Whiteboard.searchByTitle(k);
 
-            if(t==null)
+            if(t==null) {
+                logger.warn("Couldn't find a node with the title: "+k);
                 continue;
+            }
 
             GhostNode gkey = new GhostNode(t);
+            System.out.println("I'M THE TROUBLE "+gkey.toString());
             base.addKid(gkey);
 
 
@@ -92,6 +97,8 @@ public class GhostTree {
                 //------------------------------- GHOST PART OF THE GHOST TREE ----------------------------------------------//
 
                 //--------DIFFERENT STOPS
+
+                System.out.println("hmmmmmm" + ( gkey.getOriginNode() == null) );
 
                 //If the Key we stopped on is String Representable, we need to STOP. Do not get CI. That is a cognitive postulating brain thing.
                 if( StringRepresentation.isKeyStringRepresentable(gkey.getOriginNode()) || LDATA.isLdata(gkey.toString())){
@@ -138,6 +145,9 @@ public class GhostTree {
                 String ofTitle = base.toString() + "^" + gkey.toString();
                 Node of = new Node(ofTitle);
 
+                if(of == null){
+                    logger.warn("what?");
+                }
 
 
                 //FUCK FUCK FUCK now we need an inheritance method that doesn't automatically trigger ^lc ^lp shit frantically.
@@ -158,6 +168,12 @@ public class GhostTree {
 
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
             Node t2 = Whiteboard.searchByTitle(val);
+
+            if(t2==null) {
+                logger.warn("Couldn't find a node with the title: "+val);
+                continue;
+            }
+
             GhostNode lc = new GhostNode(t2);
 
             //Just to make sure...
@@ -212,13 +228,58 @@ public class GhostTree {
         return SetLogic.xISyP(lc.node, lp.node);
     }
 
+    public String toString(){
+        String treeString = export(root).toString();
+
+        return treeString;
+    }
+
+
+    protected StringBuilder export(GhostNode node) {
+        StringBuilder DBout = new StringBuilder();
+
+        System.out.println(node.getLevel());
+
+        if (node.getLevel() == 0) {
+            String buffer = "";
+            GhostNode tmp;
+            if(node.getKids()==null){
+                System.out.println(node.toString());
+                return DBout;
+            }
+            for (GhostNode child : node.getKids()) {
+                DBout.append(buffer + child.toString() + "\n");
+                DBout.append(exportRec(child, buffer));
+            }
+            return DBout;
+        }
+        return DBout;
+    }
+
+    /**
+     *
+     * @param node
+     * @param buffer
+     * @return
+     */
+    private StringBuilder exportRec(GhostNode node, String buffer) {
+        StringBuilder DBout = new StringBuilder();
+        buffer += "    ";
+
+        for (GhostNode child : node.getKids()) {
+            DBout.append(buffer + child.toString() + "\n");
+            DBout.append(exportRec(child, buffer));
+        }
+        return DBout;
+    }
+
 
 
 
     private class GhostNode implements Comparable<GhostNode> {
 
         private Node node;
-        private ArrayList<GhostNode> kids;
+        private ArrayList<GhostNode> kids = new ArrayList<GhostNode>();
         private GhostNode parent;
 
 
@@ -229,7 +290,7 @@ public class GhostTree {
             }
 
             this.node = node;
-            ArrayList kids = new ArrayList<GhostNode>();
+
         }
 
         public String getVal( GhostNode key){
@@ -247,6 +308,13 @@ public class GhostTree {
 
         }
 
+        public int getLevel() {
+            if (this.equals(root))
+                return 0;
+            else
+                return parent.getLevel() + 1;
+        }
+
         public void setParent(GhostNode parent){
             this.parent = parent;
         }
@@ -255,6 +323,9 @@ public class GhostTree {
             return this.node;
         }
 
+        protected ArrayList<GhostNode> getKids(){
+            return kids;
+        }
 
 
         @Override

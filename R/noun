@@ -131,6 +131,12 @@ container ship
     length
     mass
     width
+door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        door
+    ^notKey
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -282,3 +288,9 @@ tug boat
     length
     mass
     width
+unit
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        unit
+    ^notKey
