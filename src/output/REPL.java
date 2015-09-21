@@ -3,9 +3,9 @@ package output;
 import funct.Core;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
+import org.javatuples.Triplet;
 import pa.Node;
 import pa.PA;
-import util.returnTuple;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class REPL {
         return null;
     }
 
-    private returnTuple parseFull(String command) {
+    private Triplet<String, String, ArrayList<String>> parseFull(String command) {
         //Have the full class and method name
         int firstPeriod = command.indexOf(".");
         int period = command.indexOf(".", firstPeriod + 1);
@@ -91,7 +91,7 @@ public class REPL {
         for (String term : everythingElse.split(",")) {
             arguments.add(term.trim());
         }
-        return new returnTuple(className, methodName, arguments);
+        return new Triplet<>(className, methodName, arguments);
     }
 
 
@@ -156,7 +156,7 @@ public class REPL {
             Whiteboard.clearAll();
         }else {
             String[] terms = command.split(" ");
-            returnTuple parsedCommands = null;
+            Triplet<String, String, ArrayList<String>> parsedCommands = null;
             //Have the full class and method name
 
 
@@ -201,7 +201,7 @@ public class REPL {
             ExecutionFlow returnedObject = null;
 
             if (parsedCommands != null) {
-                returnedObject = invoke(parsedCommands.getFirst(), parsedCommands.getSecond(), parsedCommands.getThird());
+                returnedObject = invoke(parsedCommands.getValue0(), parsedCommands.getValue1(), parsedCommands.getValue2());
             }
 
             if (returnedObject != null && returnedObject.completedP()) {

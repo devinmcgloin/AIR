@@ -10,7 +10,7 @@ import org.apache.commons.math3.stat.inference.TTest;
  */
 public class Stats {
 
-    public static double tcdf(double sigma, int df){
+    public static double tcdf(double sigma, double df) {
         TTest gosset = new TTest();
         TDistribution t = new TDistribution(df);
 
