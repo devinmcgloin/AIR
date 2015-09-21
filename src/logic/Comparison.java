@@ -2,9 +2,9 @@ package logic;
 
 import funct.Core;
 import funct.Stats;
+import org.javatuples.Pair;
 import pa.Node;
 import pa.PA;
-import util.keyVal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,13 +59,17 @@ public final class Comparison {
      */
     public static double getProbability(ArrayList<Node> set, String key, String val){
 
-        ArrayList<keyVal> dist = getDistribution(set, key);
+        ArrayList<Pair<String, Double>> dist = getDistribution(set, key);
 
-        double sigma = (Double)Core.getVal(dist, "s");
-        int df = (Integer)Core.getVal(dist, "df");
+        if (Core.getVal(dist, "s") != null && Core.getVal(dist, "df") != null) {
+            double sigma = Core.getVal(dist, "s");
 
-        return Stats.tcdf(sigma, df);
+            double df = Core.getVal(dist, "df");
 
+            return Stats.tcdf(sigma, df);
+        }
+
+        return -123.23432413134342534;
 
     }
 
@@ -74,12 +78,11 @@ public final class Comparison {
      * @param set
      * @param key
      */
-    public static ArrayList<keyVal> getDistribution(ArrayList<Node> set, String key){
+    public static ArrayList<Pair<String, Double>> getDistribution(ArrayList<Node> set, String key) {
 
-        ArrayList<keyVal> dist = new ArrayList<keyVal>();
 
         Node ldbn = PA.searchExactTitle(key);
-        if(ldbn.equals(null)){
+        if (ldbn == null) {
             System.out.println("Comparison: You shit outta luck");
             return null;
         }
@@ -159,25 +162,26 @@ public final class Comparison {
         }
 
 
-        keyVal tmp = new keyVal("s", sd);
+        ArrayList<Pair<String, Double>> dist = new ArrayList<Pair<String, Double>>();
+        Pair<String, Double> tmp = new Pair<>("s", sd);
         dist.add(tmp);
-        tmp = new keyVal("q1", q1);
+        tmp = new Pair<>("q1", q1);
         dist.add(tmp);
-        tmp = new keyVal("q2", q2);
+        tmp = new Pair<>("q2", q2);
         dist.add(tmp);
-        tmp = new keyVal("q3", q3);
+        tmp = new Pair<>("q3", q3);
         dist.add(tmp);
-        tmp = new keyVal("n", count);
+        tmp = new Pair<>("n", (double) count);
         dist.add(tmp);
-        tmp = new keyVal("mean", mean);
+        tmp = new Pair<>("mean", mean);
         dist.add(tmp);
-        tmp = new keyVal("df", count-1);
+        tmp = new Pair<>("df", (double) count - 1);
         dist.add(tmp);
-        tmp = new keyVal("total", total);
+        tmp = new Pair<>("total", total);
         dist.add(tmp);
-        tmp = new keyVal("min", values.get(0) );
+        tmp = new Pair<>("min", values.get(0));
         dist.add(tmp);
-        tmp = new keyVal("max", values.get(values.size()-1) );
+        tmp = new Pair<>("max", values.get(values.size() - 1));
         dist.add(tmp);
 
 

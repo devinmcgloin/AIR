@@ -1,7 +1,7 @@
 package funct;
 
 import org.apache.log4j.Logger;
-import util.keyVal;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 
@@ -40,10 +40,10 @@ public class Core {
     }
 
 
-    public static Object getVal(ArrayList<keyVal> pairs, String key){
-        for(keyVal pair : pairs){
-            if(pair.getKey().equals(key))
-                return pair.getVal();
+    public static <T> T getVal(ArrayList<Pair<String, T>> pairs, String key) {
+        for (Pair<String, T> pair : pairs) {
+            if (pair.getValue0().equals(key))
+                return pair.getValue1();
         }
         return null;
     }

@@ -16,8 +16,13 @@ public class Main {
 
         logger.info("Entering application.");
 
+
         REPL repl = new REPL();
-        repl.cycle();
+
+        boolean cont = true;
+        while (cont) {
+            cont = repl.cycle();
+        }
         PA.save();
 
         logger.info("Exiting application.");
