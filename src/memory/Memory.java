@@ -45,7 +45,18 @@ public class Memory implements Comparable<Memory> {
             return -1;
     }
 
-    public boolean equals(Node n) {
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Memory{");
+        sb.append("DECAY_CONSTANT=").append(DECAY_CONSTANT);
+        sb.append(", node=").append(node);
+        sb.append(", decay=").append(decay);
+        sb.append(", time=").append(time);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public boolean nodeEquals(Node n) {
         return Node.getTitle(node).equals(Node.getTitle(n));
     }
 

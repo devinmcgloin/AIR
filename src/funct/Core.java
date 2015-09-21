@@ -47,4 +47,13 @@ public class Core {
         }
         return null;
     }
+
+    public static <T> boolean contains(T[] list, T val) {
+        for (T item : list) {
+            if (item.equals(val)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

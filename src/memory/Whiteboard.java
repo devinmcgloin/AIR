@@ -16,8 +16,10 @@ import java.util.Collections;
  */
 public class Whiteboard {
 
+    private static final double PROMINENCE_THRESHOLD = .6;
     static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
     private static ArrayList<Memory> workingMem = new ArrayList<>();
+
     private Whiteboard() {
     }
 
@@ -62,26 +64,28 @@ public class Whiteboard {
      * @return
      */
     public static Node search(String nodeName) {
+        nodeName = nodeName.trim();
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
-            if (mem.titleEquals(nodeName)) {
+            if (mem.nameEquals(nodeName)) {
                 mem.setTime(0.0);
                 return mem.getNode();
             }
-        }
+            }
         //TODO may need to update this search system to accomodate blaze.
-        Node n = PA.searchExactTitle(nodeName);
-        if (n != null) {
-            addNodeTime(n, 0.0);
-            return n;
-        } else {
-            n = PA.searchName(nodeName).get(0);
+
+        ArrayList<Node> nodes = PA.searchName(nodeName);
+        if (!nodes.isEmpty()) {
+            Node n = nodes.get(0);
             if (n != null) {
                 addNodeTime(n, 0.0);
                 return n;
             }
+        } else {
+            logger.warn(String.format("Node %s not found.", nodeName));
             return null;
         }
+        return null;
     }
 
     /**
@@ -123,7 +127,7 @@ public class Whiteboard {
         Collections.sort(workingMem);
         ArrayList<Node> prominentNodes = new ArrayList<>();
         for (Memory mem : workingMem) {
-            if (mem.getDecay() > .6) {
+            if (mem.getDecay() > PROMINENCE_THRESHOLD) {
                 prominentNodes.add(mem.getNode());
             } else {
                 return prominentNodes;

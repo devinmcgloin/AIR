@@ -1,112 +1,102 @@
-blah
-bmw
+apple
     ^logicalChildren
     ^logicalParents
-        NBN
-        car
-    brakes
-    door
-    engine
-    hatch
-    roof
-    seat
-    spoiler
-    wheel
-        bmw^wheel
-bmw^wheel
-    NumOf
-        4
-    NumberOf
-        4
+        fruit
+    ^name
+        apple
+    ^notKey
+    color
+    height
+    length
+    mass
+    stem
+    width
 car
     ^logicalChildren
-        bmw
-    brakes
-    door
-        4
-    engine
-    hatch
-    roof
-    seat
-    spoiler
-    wheel
-        4
-hillary clinton
-    ^logicalChildren
     ^logicalParents
-        NBN
-        person
-        politician
-    ^names
-    ^notKey
+        transport
+    ^name
         car
-    height
-        169 cm
-    hobbies
-    income
-    mass
-    occupation
-        first lady
-        presidential hopeful
-        secretary of state
-    weight
-jeb bush
-    ^logicalChildren
-    ^logicalParents
-        person
-        politician
-    ^names
-        Governor Jeb Bush
-        jeb bush
     ^notKey
+    color
+    door
+    engine
     height
-    hobbies
-    income
+    length
+    light
     mass
-    occupation
-    weight
-ldata
+    suspension
+    wheel
+    width
+food
     ^logicalChildren
+        fruit
     ^logicalParents
-        ldata
-noun
-    ^logicalChildren
-    ^logicalParents
-        noun
-    ^names
-        noun
+        physical node
+    ^name
+        food
     ^notKey
-person
-    ^logicalChildren
-        hillary clinton
-        jeb bush
-        politician
-    ^logicalParents
-    ^names
-        person
-    ^notKey
-    car
+    color
     height
-    hobbies
-    income
+    length
     mass
-    occupation
-    weight
-politician
+    width
+fruit
     ^logicalChildren
-        hillary clinton
-        jeb bush
+        apple
+        pear
     ^logicalParents
-        person
-    ^names
-        politician
+        food
+    ^name
+        fruit
     ^notKey
+    color
     height
-    hobbies
-    income
+    length
     mass
-    occupation
-    weight
-show
+    width
+node
     ^logicalChildren
-    stringRepresentation
+    ^logicalParents
+    ^name
+        node
+    ^notKey
+pear
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        pear
+    ^notKey
+    color
+    height
+    length
+    mass
+    stem
+    width
+physical node
+    ^logicalChildren
+        food
+        transport
+    ^logicalParents
+    ^name
+        physical node
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+transport
+    ^logicalChildren
+        car
+    ^logicalParents
+        physical node
+    ^name
+        transport
+    ^notKey
+    color
+    height
+    length
+    mass
+    width

@@ -115,7 +115,7 @@ public class Node {
     public static String get(Node node, String key) {
         ArrayList<String> t = node.getCarrot(key);
 
-        if(t == null){
+        if (t == null || t.isEmpty()) {
             logger.warn("Throwing a null.");
             return null;
         }

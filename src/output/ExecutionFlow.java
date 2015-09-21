@@ -26,6 +26,10 @@ public final class ExecutionFlow {
     }
 
     public ExecutionFlow invoke(){
+        for (Object o : arguments) {
+            if (o == null)
+                return this;
+        }
         try {
             if (argTypes.length == 1) {
                 result = method.invoke(null, arguments[0]);

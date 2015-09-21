@@ -42,9 +42,7 @@ public class REPL {
                     ExecutionFlow flow = new ExecutionFlow(method);
                     //TODO come back and QA this.
                     for(String id : argumentID){
-                        if (id.startsWith(NODE_ID))
-                            flow.applyArgument(Whiteboard.searchByTitle(id.replace("@", "")));
-                        else if (id.startsWith("\"") || id.endsWith("\""))
+                        if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
                         else
                             flow.applyArgument(Whiteboard.search(id));
@@ -68,58 +66,63 @@ public class REPL {
         return null;
     }
 
-    private returnTuple parseCommand(String command){
-        String[] terms = command.split(" ");
-
+    private returnTuple parseFull(String command) {
         //Have the full class and method name
-        if(terms[0].contains(".")){
-            int firstPeriod = command.indexOf(".");
-            int period = command.indexOf(".", firstPeriod + 1);
+        int firstPeriod = command.indexOf(".");
+        int period = command.indexOf(".", firstPeriod + 1);
 
-            String className = command.substring(0, period);
-            String methodName = command.substring(period + 1, command.indexOf(" ")).trim();
-            String everythingElse = command.substring(command.indexOf(" ") + 1, command.length());
+        String className = command.substring(0, period);
+        String methodName = command.substring(period + 1, command.indexOf(" ")).trim();
+        String everythingElse = command.substring(command.indexOf(" ") + 1, command.length());
 
-            ArrayList<String> arguments = new ArrayList<>();
-            for(String term : everythingElse.split(",")){
-                arguments.add(term.trim());
-            }
-            return new returnTuple(className, methodName, arguments);
-        }else{
-            //TODO Need to account for LDATA node modifications as IS/HAS relationships don't apply.
-            switch (terms[1]) {
-                case "has":
-                    command = command.replace("has", ",");
-                    command = "Highlevel.has" + command;
-                    command += command;
-                    return parseCommand(command);
-                case "is":
-                    command = command.replace("is", ",");
-                    command = "Highlevel.is" + command;
-                    command += command;
-                    return parseCommand(command);
-                default:
-                    return null;
-            }
-
+        ArrayList<String> arguments = new ArrayList<>();
+        for (String term : everythingElse.split(",")) {
+            arguments.add(term.trim());
         }
+        return new returnTuple(className, methodName, arguments);
     }
 
 
-    private Node parse(String nodeName) {
-        if (nodeName.startsWith("@")) {
-            return Whiteboard.searchByTitle(nodeName.replace("@", ""));
-        }
-        return Whiteboard.search(nodeName);
-    }
-
-
-    private String formatNodes(ArrayList<Node> items) {
-        String output = "";
+    public String formatNodes(ArrayList<Node> items) {
+        StringBuilder output = new StringBuilder();
         for (Node node : items) {
-            output += " " + node.toString() + " ";
+            output.append(" ").append(node.toString()).append(" ,");
         }
-        return output;
+        return output.toString();
+    }
+
+    private String viewNode(Node n) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (n != null) {
+            int depth = 1;
+            stringBuilder.append(stringSpacer(depth)).append(Node.getTitle(n)).append("\n");
+            for (String kid : Node.getKeys(n)) {
+                if (kid.startsWith("^")) {
+                    stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
+                    for (String kidKid : Node.getCarrot(n, kid)) {
+                        stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
+
+                    }
+                } else {
+                    stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
+                    String kidKid = Node.get(n, kid);
+                    if (kidKid != null)
+                        stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
+
+                }
+            }
+        } else {
+            return "";
+        }
+        return stringBuilder.toString();
+    }
+
+    private String stringSpacer(int i) {
+        String returnString = "";
+        for (int j = 0; j < i; j++) {
+            returnString += " ";
+        }
+        return returnString;
     }
 
     public void cycle(){
@@ -132,7 +135,7 @@ public class REPL {
             PA.save();
             Whiteboard.clearAll();
             return;
-        } else if (command.toLowerCase().equals("HELP_STRING") || command.toLowerCase().equals("?")) {
+        } else if (command.toLowerCase().equals("help") || command.toLowerCase().equals("?")) {
             Core.println(HELP_STRING);
         } else if (command.toLowerCase().equals("end")) {
             Core.println("Ending this conversation");
@@ -140,9 +143,47 @@ public class REPL {
             PA.save();
             Whiteboard.clearAll();
         }else {
-            //TODO return things back to the whiteboard. Technically we can ignore the things these funcitons return as they will be placed on the whiteboard.
-            returnTuple parsedCommands = parseCommand(command);
+            String[] terms = command.split(" ");
+            returnTuple parsedCommands = null;
+            //Have the full class and method name
+
+
+            if (terms.length == 1) {
+                Whiteboard.search(terms[0]);
+            } else if (terms[0].contains(".") && terms.length > 1) {
+                parsedCommands = parseFull(command);
+            } else if (Core.contains(terms, "has") || Core.contains(terms, "is")) {
+                //Infix Notation
+                if (Core.contains(terms, "has")) {
+                    command = command.replace("like", ",");
+                    command = "logic.SetLogic.xLikey " + command;
+                    parsedCommands = parseFull(command);
+                } else if (Core.contains(terms, "is")) {
+                    command = command.replace("is", ",");
+                    command = "logic.SetLogic.xINHERITy " + command;
+                    parsedCommands = parseFull(command);
+                }
+            } else {
+                //Prefix Notation
+                switch (terms[0]) {
+                    case "createNode":
+                        Whiteboard.addNode(PA.createNode(command.replace("createNode", "").trim()));
+                        break;
+                    case "view":
+                        Core.println(viewNode(Whiteboard.search(command.replace("view", ""))));
+                        break;
+                    case "add":
+                        command = command.replace("add", "pa.Node.add");
+                        parsedCommands = parseFull(command);
+                        break;
+                    default:
+                        cycle();
+                }
+            }
+
+
             ExecutionFlow returnedObject = null;
+
             if (parsedCommands != null) {
                 returnedObject = invoke(parsedCommands.getFirst(), parsedCommands.getSecond(), parsedCommands.getThird());
             }

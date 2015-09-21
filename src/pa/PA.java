@@ -327,8 +327,12 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if(rDBexists("noun")){
             getRb("noun").add(title, "R/noun/");
-            Node node = searchExactTitle(title);
-            return node;
+            getRb("noun").add("^name", "R/noun/" + title);
+            getRb("noun").add("^notKey", "R/noun/" + title);
+            getRb("noun").add("^logicalChildren", "R/noun/" + title);
+            getRb("noun").add("^logicalParents", "R/noun/" + title);
+            getRb("noun").add(title, "R/noun/" + title + "/" + "^name");
+            return searchExactTitle(title);
         }
         return null;
     }
