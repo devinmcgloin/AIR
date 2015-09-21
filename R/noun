@@ -11,8 +11,94 @@ apple
     mass
     stem
     width
+audi
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        audi
+    ^notKey
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+bicycle
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        bicycle
+        bike
+        road bike
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+blueberry
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        blueberry
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+bmw
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        bavarian motor works
+        bmw
+    ^notKey
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+boat
+    ^logicalChildren
+        container ship
+        tug boat
+    ^logicalParents
+        transport
+    ^name
+        boat
+        ship
+    ^notKey
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
 car
     ^logicalChildren
+        audi
+        bmw
+        ferrari
     ^logicalParents
         transport
     ^name
@@ -25,6 +111,42 @@ car
     length
     light
     mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+container ship
+    ^logicalChildren
+    ^logicalParents
+        boat
+    ^name
+        container ship
+    ^notKey
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
+ferrari
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        ferrari
+    ^notKey
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
     suspension
     wheel
     width
@@ -44,11 +166,26 @@ food
 fruit
     ^logicalChildren
         apple
+        blueberry
         pear
+        strawberry
     ^logicalParents
         food
     ^name
         fruit
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+motorcycle
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        motorbike
+        motorcycle
     ^notKey
     color
     height
@@ -88,9 +225,38 @@ physical node
     length
     mass
     width
+strawberry
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        strawberry
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+submarine
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        sub
+        submarine
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
 transport
     ^logicalChildren
+        bicycle
+        boat
         car
+        motorcycle
+        submarine
     ^logicalParents
         physical node
     ^name
@@ -98,6 +264,21 @@ transport
     ^notKey
     color
     height
+    length
+    mass
+    width
+tug boat
+    ^logicalChildren
+    ^logicalParents
+        boat
+    ^name
+        tug boat
+    ^notKey
+    color
+    displacement
+    engine
+    height
+    hull
     length
     mass
     width

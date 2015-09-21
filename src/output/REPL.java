@@ -182,7 +182,7 @@ public class REPL {
             } else {
                 //Prefix Notation
                 switch (terms[0]) {
-                    case "createNode":
+                    case "create":
                         Whiteboard.addNode(PA.createNode(command.replace("create", "").trim()));
                         break;
                     case "view":
