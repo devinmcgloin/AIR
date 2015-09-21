@@ -137,7 +137,7 @@ public class REPL {
         return returnString;
     }
 
-    public void cycle(){
+    public boolean cycle() {
         System.out.println("\n");
         System.out.println("Nodes::       " + formatNodes(Whiteboard.getProminentNodes()));
         System.out.print(">>>");
@@ -146,7 +146,7 @@ public class REPL {
             Whiteboard.putAll();
             PA.save();
             Whiteboard.clearAll();
-            return;
+            return false;
         } else if (command.toLowerCase().equals("help") || command.toLowerCase().equals("?")) {
             Core.println(HELP_STRING);
         } else if (command.toLowerCase().equals("end")) {
@@ -193,7 +193,7 @@ public class REPL {
                         parsedCommands = parseFull(command);
                         break;
                     default:
-                        cycle();
+                        return true;
                 }
             }
 
@@ -212,7 +212,7 @@ public class REPL {
             }
         }
         Whiteboard.cycle();
-        cycle();
+        return true;
     }
 
 
