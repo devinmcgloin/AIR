@@ -22,7 +22,7 @@ public class Main {
         boolean cont = true;
         while (cont) {
             cont = repl.cycle();
-//            PA.test();
+            PA.test();
         }
         PA.save();
 

@@ -233,7 +233,9 @@ public class GhostTree {
         //Then it sends that node in the tree to "contenders"
         if(contenders.size()==0){
             for(GhostNode g: allGNodes){
-                if ( xISy(g, gnode) ){
+
+                if ( xISy(gnode, g) ){
+                    System.out.println("We got:  " + g.toString());
                     contenders.add(g);
                 }
             }
@@ -325,7 +327,7 @@ public class GhostTree {
 
 
 
-    private class GhostNode implements Comparable<GhostNode> {
+    public class GhostNode implements Comparable<GhostNode> {
 
         private Node node;
         private ArrayList<GhostNode> kids = new ArrayList<GhostNode>();

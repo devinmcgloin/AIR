@@ -98,10 +98,19 @@ public final class PA {
 
         start();
         Node bmw = memory.Whiteboard.search("bmw");
+        Node door =memory.Whiteboard.search("door");
+        Node color = memory.Whiteboard.search("color");
+        Node blue = memory.Whiteboard.search("blue");
 
         GhostTree gtree = new GhostTree(bmw);
-        System.out.println("gonna\n");
-        System.out.println(gtree.toString());
+
+        gtree.filterBranches(blue);
+        gtree.filterBranches(door);
+
+        ArrayList<GhostTree.GhostNode> contenders = gtree.getContenders();
+        for(GhostTree.GhostNode c : contenders){
+            System.out.println("YAAAAAS: " + c.toString() +" -- " +c.getParent().toString());
+        }
 
 
 
