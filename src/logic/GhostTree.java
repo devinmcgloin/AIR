@@ -22,6 +22,7 @@ public class GhostTree {
     static Logger logger = Logger.getLogger(LDATA.class);
 
     private GhostNode root;
+    protected ArrayList<GhostNode> allGNodes;
 
     public GhostTree(Node root){
         if(root == null) {
@@ -35,6 +36,8 @@ public class GhostTree {
         this.root = new GhostNode(root);
 
         //Construct the Tree
+        allGNodes = new ArrayList<GhostNode>();
+        allGNodes.add(this.root);
         ArrayList<GhostNode> gnodesInThisBranch = new ArrayList<GhostNode>();
         gnodesInThisBranch.add(this.root);
         constructTree(this.root, null); // todo should go nodes be passed in?
@@ -71,11 +74,13 @@ public class GhostTree {
 
 
         for(String k : keyStrings ){
-            //Check if key is a carrot header,
+            //Check if key is a carrot header
+            if(k.startsWith("^"))
+                continue;
             //Alright, either it's a K:V for Height:Node^Height
             //So if it's a String Representable Key, you gotta play it safe.
             //Or it's going to be LP:LC
-            //Actually either way it's going to be LP:LC since K:V in string rep keys get changed to nodes upon pulling out of db.
+            //Actually either way it's going to be LP:LC since K:V in string rep keys get changed to nodes upon pulling out of db. Check with Devin on this.
             //Either way, the Keys are Nodes you can get in the DB.
             Node t = Whiteboard.searchByTitle(k);
 
@@ -85,30 +90,27 @@ public class GhostTree {
             }
 
             GhostNode gkey = new GhostNode(t);
-            System.out.println("I'M THE TROUBLE "+gkey.toString());
             base.addKid(gkey);
+            allGNodes.add(gkey);
 
 
 
-
-            //You need to search the Origin Node's Keys for Values. Since you can't use the Height Key Node to get Devin's Height.
+            //You need to search the Origin Node's Keys for Values. (Since you can't use the Height Key Node to get Devin's Height.)
             //MAKE SURE TO CATCH THE NULL
             String val = base.getVal(gkey);
 
             if(val == null){
-                //We are done with this section of the ghost tree!!!
-                //No wait, no we're not, we have to ghost it.
+                //We have to ghost it.
                 //------------------------------- GHOST PART OF THE GHOST TREE ----------------------------------------------//
 
                 //--------DIFFERENT STOPS
 
-                System.out.println("hmmmmmm" + ( gkey.getOriginNode() == null) );
+                //System.out.println("hmmmmmm" + ( gkey.getOriginNode() == null) );
 
                 //If the Key we stopped on is String Representable, we need to STOP. Do not get CI. That is a cognitive postulating brain thing.
                 if( StringRepresentation.isKeyStringRepresentable(gkey.getOriginNode()) || LDATA.isLdata(gkey.toString())){
                     continue;
                 }
-
 
                 //OF High Level Stop #1
                 //If K is either a ^lc of the Origin or if K literally is the Origin.
@@ -118,7 +120,6 @@ public class GhostTree {
 
                 //OF High Level Stop #2
                 boolean cont = false;
-
                 for (GhostNode pastg : gnodesInThisBranch){
                     if(xISy(gkey, pastg))
                         cont = true;
@@ -127,8 +128,7 @@ public class GhostTree {
                     continue;
 
 
-
-                //ANOTHER STOP
+                //ANOTHER STOP (OPTIONAL)
                 //We need to stop the branch if the value is a qualitative Val that should just have a frequency Distribution or a
                 //  Approximation by looking at other things close to it.
 
@@ -144,24 +144,25 @@ public class GhostTree {
                 //---------END STOPS
 
                 //Otherwise, we need to create a GhostOF node as a LC of the Key.
-                //Create a new node...? Should this be via white board? Creating a OF node is a pretty unique case.
-                //Well, NODE seems to have a method for creating a new node so...
                 String ofTitle = base.toString() + "^" + gkey.toString();
                 Node of = new Node(ofTitle);
 
                 if(of == null){
-                    logger.warn("what?");
+                    logger.warn("How could this possibly be null? I'm creating a new node!");
                 }
 
 
                 //FUCK FUCK FUCK now we need an inheritance method that doesn't automatically trigger ^lc ^lp shit frantically.
+                //Or a temp whiteboard. Or a way to delete from whiteboard. Or literally anything.
+                //Discussed with Devin. You will continue to use the xLIKEy method. Then, when user confirms OF existence, trigger the xISy.
                 of = SetLogic.xLikey(of, gkey.getOriginNode());
 
-                // Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
+                //Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
                 GhostNode gOF = new GhostNode(of);
 
-                //MARK ALL THE FUCKING KEYS THAT ARE IN THIS BRANCH.
+                //Mark the key that's in this branch.
                 gnodesInThisBranch.add(gkey);
+                allGNodes.add(gOF);
 
                 gkey.addKid(gOF);   //add as a val to the current key for sure.
                 constructTree(gOF, gnodesInThisBranch);
