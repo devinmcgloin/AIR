@@ -40,26 +40,15 @@ public final class Scribe {
         }
 
 
-//        -- if two nodes ( branchBase, Key )   OR   (branchBase, Val) for a key inside of base
-        if(nodes.length == 2){
-            // ( base, val ) - check if val can be an ans to any of the current keys.
-
-            // ( base, key ) - ask if you want to add it as a key.
-
-            //actually, it's not that simple.
-            //there's a possibility it's something that should be restructured deeper in the node. Like an Iphone as a product of apple.
-            //  or there's this crazzzy possibility that i say shelby has 5.0L Coyote
-            //  and then that'll go under the Shelby Engine.
-            //  BUT WHAT IIF SHELBY ENGINE IS ALREADY FILLED OUT?
-            //  NOW , it'll go into the OF node, and just say that it's a 5.0L Coyote, and then it'll also have to match up info from that node to this node.
-            //  This implies a different type of inheritence.
-
-            return addKey(nodes[0], nodes[1]);
-        }
+        //Keep in mind length of nodes given.
+        //Anything above 3 implies OF.
+        //IF 3 exactly, B, K, V is still possible.
+        //IF 2, high likelyhood of B, K or B, V being triggered.
 
 
-//        -- check if second to last node is a Key to the Value.        //Although important, the way the churning and eliminating
-        //branches would work would already account for this.
+
+
+//        //-- check if second to last node is a Key to the Value.
         if( SetLogic.xISyP(tail, keyTmp) ){
 
 
@@ -80,8 +69,7 @@ public final class Scribe {
 
 //        it actually IS a K:V   -- ask if V is K?
 
-//     If regular search didn't work...check invisible branches. (Parent's OF branches)
-//        -- Once adding V to K, check in ^LP if that V should go in an OF node...
+
 
 
 

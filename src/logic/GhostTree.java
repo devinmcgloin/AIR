@@ -24,6 +24,9 @@ public class GhostTree {
     private GhostNode root;
     protected ArrayList<GhostNode> allGNodes;
 
+    protected ArrayList<GhostNode> contenders = new ArrayList<GhostNode>();
+
+
     public GhostTree(Node root){
         if(root == null) {
             logger.warn("You cannot start the GhostTree with a null node.");
@@ -208,25 +211,64 @@ public class GhostTree {
 
     }
 
+
+
+
     /**
-     * Eliminates Branches that have absolutely nothing to do with the nodes passed in.
-     * @param nodes
+     * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch.
+     * For the time being, the use of the filter branches method should be from leaf to root.
+     * First give the values (what you truly want to add). Then add additional contextual nodes.
+     *
+     * If you are using filterBranches, make sure to clearContenders() first.
+     *
+     * @param node - this node (or a lp) must be located somewhere in a contending branch.
      */
-    public void eliminateBranches(Node[] nodes){
-        //Change all nodes to ghostNode
-
-        //Run through the tree through the xISy(node from list, some node in tree)
-        //It's basically an extension of the xISyP + it checks if two nodes have same title.
-
-
-        //Will have to run through this backwards... It's very strange...I'm not really sure how to organize this tree.
-        //We have to start from the leaves? Or should we start from the root? Cause we can trim the tree at leaves or just
-        //try cutting off entire branches. (Which might be faster). THink about how you want to organize and construct this tree whilst thinking about what you'll do with it.
-
+    public void filterBranches(Node node){
+        //FUCK FUCK FUCK
         //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+
+        GhostNode gnode = new GhostNode(node);
+
+        //The first time you use filterBranches, it will find branches within the whole tree that contain your node.
+        //Then it sends that node in the tree to "contenders"
+        if(contenders.size()==0){
+            for(GhostNode g: allGNodes){
+                if ( xISy(g, gnode) ){
+                    contenders.add(g);
+                }
+            }
+        }else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
+            ArrayList<GhostNode> keepPlease = new ArrayList<GhostNode>();
+            for(GhostNode c: contenders){
+                if(c.containsInBranch(gnode)){
+                    keepPlease.add(c);
+                }else{
+                    //contenders.remove(c);     NOT SURE IF WORKS WHILE ITERATING, DON'T RISK IT.
+                }
+
+            }
+            //Now clear the past contenders, add in the ones that had hits in the branch (keepPlease)
+            contenders = keepPlease;
+        }
 
 
     }
+
+
+
+    public void clearContenders(){
+        //FUCK FUCK FUCK
+        //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+        //Or should we do this when a new tree is created? Need to talk to Dev about staging & tmps.
+        contenders.clear();
+    }
+
+    public ArrayList<GhostNode> getContenders(){
+        return contenders;
+    }
+
+
+
 
     public boolean xISy(GhostNode lc, GhostNode lp){
         if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
@@ -300,6 +342,10 @@ public class GhostTree {
 
         }
 
+        public GhostNode getParent(){
+            return parent;
+        }
+
         public String getVal( GhostNode key){
 
             Node n = this.getOriginNode();
@@ -313,6 +359,22 @@ public class GhostTree {
             kid.setParent(this);
             kids.add(kid);
 
+        }
+
+        /**
+         * Checks to see if current node has node as ancestor in the branch.
+         * @param ancestor
+         * @return
+         */
+        protected boolean containsInBranch(GhostNode ancestor){
+            GhostNode tmp = parent;
+            while( tmp != root){          //checks to see if c has gnode in branch (going backwards towards root)
+                if ( xISy(tmp, ancestor) ){
+                    return true;
+                }
+                tmp = tmp.getParent();
+            }
+            return false;
         }
 
         public int getLevel() {
