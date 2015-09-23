@@ -61,6 +61,8 @@ public class REPL {
                     for(String id : argumentID){
                         if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
+                        else if (id.startsWith("~"))
+                            flow.applyArgument(StrRep.getStringRep(id.replace("~", "")));
                         else
                             flow.applyArgument(Notepad.search(id));
                     }
@@ -102,8 +104,8 @@ public class REPL {
 
     public boolean cycle() {
         System.out.println("\n");
-        System.out.println("Nodes::       " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
-        System.out.print(">>>");
+        System.out.println("Nodes:    " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
+        System.out.print(">>> ");
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
             Whiteboard.putAll();
@@ -130,7 +132,7 @@ public class REPL {
                     Notepad.search(terms[0]);
             } else if (terms[0].contains(".") && terms.length > 1) {
                 parsedCommands = parseFull(command);
-            } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called")) {
+            } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called") || Core.contains(terms, "has")) {
                 //Infix Notation
                 if (Core.contains(terms, "like")) {
                     command = command.replace("like", ",");
@@ -147,6 +149,7 @@ public class REPL {
                 } else if (Core.contains(terms, "has")) {
                     String[] hasSplit = command.split("has");
                     if (StrRep.isStringRepresentation(hasSplit[1])) {
+                        //TODO ~ is the special string rep character.
 
                     } else {
 

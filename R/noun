@@ -238,6 +238,18 @@ fruit
     length
     mass
     width
+liquid
+    ^logicalChildren
+    ^logicalParents
+        physical node
+    ^name
+        liquid
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
 motorcycle
     ^logicalChildren
     ^logicalParents
@@ -253,6 +265,7 @@ motorcycle
     width
 node
     ^logicalChildren
+        physical node
     ^logicalParents
     ^name
         node
@@ -273,8 +286,10 @@ pear
 physical node
     ^logicalChildren
         food
+        liquid
         transport
     ^logicalParents
+        node
     ^name
         physical node
         physical
