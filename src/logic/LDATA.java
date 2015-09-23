@@ -39,6 +39,7 @@ public final class LDATA {
      *      Blank - Search should also never return a blank value.
      *
      * TODO This is used to verify that a expression node works for the given node.
+     * TODO Take multiple params and run it thru blaze search.
      *
      * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level get.
      * @param node - node that the expression is being compared to.
@@ -54,13 +55,13 @@ public final class LDATA {
 //        String nodeType = Node.get(node, type);
 //
 //
-//        if(StringRepresentation.isStringRepresentation(nodeType)){
-//            if(StringRepresentation.isCount(nodeType)){
-//                Node n = StringRepresentation.getCount(nodeType);
+//        if(StrRep.isStringRepresentation(nodeType)){
+//            if(StrRep.isCount(nodeType)){
+//                Node n = StrRep.getCount(nodeType);
 //                double num = getCast(n);
 //            }
-//            else if(StringRepresentation.isMeasurement(nodeType)){
-//                Node n = StringRepresentation.getMeasurement(nodeType);
+//            else if(StrRep.isMeasurement(nodeType)){
+//                Node n = StrRep.getMeasurement(nodeType);
 //
 //            }
 //        }

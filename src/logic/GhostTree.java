@@ -1,6 +1,6 @@
 package logic;
 
-import funct.StringRepresentation;
+import funct.StrRep;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -94,7 +94,7 @@ public class GhostTree {
                 //--------DIFFERENT STOPS
 
                 //If the Key we stopped on is String Representable, we need to STOP. Do not get CI. That is a cognitive postulating brain thing.
-                if( StringRepresentation.isKeyStringRepresentable(gkey.getOriginNode()) || LDATA.isLdata(gkey.toString())){
+                if (StrRep.isKeyStringRepresentable(gkey.getOriginNode()) || LDATA.isLdata(gkey.toString())) {
                     continue;
                 }
 

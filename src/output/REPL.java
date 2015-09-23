@@ -1,6 +1,7 @@
 package output;
 
 import funct.Core;
+import funct.StrRep;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import org.javatuples.Triplet;
@@ -11,14 +12,17 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /**
  * Created by @devinmcgloin on 8/17/2015.
- * TODO currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
  *
- * TODO pull out nodes implicity when provided string arguments. The only time strings will be looked at as strings would be for manipulating content inside the node.
+ * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
  *
- * TODO support sets for NBNs
+ * TODO have repl check for string representations inside arguments and pass along the instantiated nodes into the functions.
  *
+ * TODO Bulk add
+ * TODO arrow up to get last command
+ * TODO first command is create program fails
  */
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
@@ -103,6 +107,12 @@ public class REPL {
         return output.toString();
     }
 
+    /**
+     * todo need to also have a quick view.
+     *
+     * @param n
+     * @return
+     */
     private String viewNode(Node n) {
         StringBuilder stringBuilder = new StringBuilder();
         if (n != null) {
@@ -178,6 +188,13 @@ public class REPL {
                     String[] calledSplit = command.split("called");
                     command = "pa.Node.add " + calledSplit[0].trim() + ", \"^name\", \"" + calledSplit[1].trim() + "\"";
                     parsedCommands = parseFull(command);
+                } else if (Core.contains(terms, "has")) {
+                    String[] hasSplit = command.split("has");
+                    if (StrRep.isStringRepresentation(hasSplit[1])) {
+
+                    } else {
+
+                    }
                 }
             } else {
                 //Prefix Notation

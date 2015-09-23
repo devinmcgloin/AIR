@@ -13,6 +13,8 @@ import java.util.Collections;
  * TODO add whiteboard delete so the whiteboard isn't flooded with ghost tree nodes that were looking at, but never changed.
  *
  * TODO add temp staging area for addnode, then ask to commit after each cycle.
+ *
+ * TODO going to build out staging area for ghost tree / add.
  */
 public class Whiteboard {
 
@@ -76,7 +78,7 @@ public class Whiteboard {
 
         ArrayList<Node> nodes = PA.searchName(nodeName);
         if (!nodes.isEmpty()) {
-            Node n = nodes.get(0);
+            Node n = nodes.get(0); //TODO need to ask which one
             if (n != null) {
                 addNodeTime(n, 0.0);
                 return n;
