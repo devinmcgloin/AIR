@@ -234,12 +234,12 @@ public class GhostTree {
             for(GhostNode g: allGNodes){
 
                 if ( xISy(gnode, g) ){
-                    System.out.println("We got:  " + g.toString());
+                    logger.debug("We got:  " + g.toString());
                     contenders.add(g);
                 }
             }
         }else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
-            ArrayList<GhostNode> keepPlease = new ArrayList<GhostNode>();
+            ArrayList<GhostNode> keepPlease = new ArrayList<>();
             for(GhostNode c: contenders){
                 if(c.containsInBranch(gnode)){
                     keepPlease.add(c);
@@ -288,7 +288,7 @@ public class GhostTree {
         StringBuilder DBout = new StringBuilder();
         DBout.append(node.toString() +"\n");
 
-        System.out.println(node.getLevel());
+        logger.debug(node.getLevel());
 
         if (node.getLevel() == 0) {
             String buffer = "    ";

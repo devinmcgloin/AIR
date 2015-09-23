@@ -184,6 +184,7 @@ public class REPL {
                     System.out.println(returnedObject.getResult());
             }
         }
+        Whiteboard.addAllNotepadNodes();
         Whiteboard.cycle();
         return true;
     }
