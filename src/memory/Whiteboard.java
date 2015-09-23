@@ -73,16 +73,20 @@ public class Whiteboard {
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
             if (mem.nameEquals(nodeName)) {
-                mem.setTime(0.0);
                 return mem.getNode();
             }
-            }
+        }
 
         ArrayList<Node> nodes = PA.searchName(nodeName);
         if (!nodes.isEmpty()) {
-            Node n = nodes.get(0); //TODO need to ask which one
+            Node n;
+            if (nodes.size() == 1) {
+                n = nodes.get(0);
+            } else {
+                int i = Pauser.whichOne(nodes);
+                n = nodes.get(i);
+            }
             if (n != null) {
-                addNodeTime(n, 0.0);
                 return n;
             }
         } else {
@@ -101,14 +105,12 @@ public class Whiteboard {
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
             if (mem.titleEquals(title)) {
-                mem.setTime(0.0);
                 return mem.getNode();
             }
         }
 
         Node n = PA.searchExactTitle(title);
         if (n != null) {
-            addNodeTime(n, 0.0);
             return n;
         } else {
             return null;

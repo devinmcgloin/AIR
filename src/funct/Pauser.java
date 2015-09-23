@@ -1,6 +1,7 @@
 package funct;
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -20,6 +21,13 @@ public class Pauser {
 
     public static int tree(String s) {
         Core.println(s);
+        return input.nextInt();
+    }
+
+    public static <T> int whichOne(ArrayList<T> list) {
+        for (int i = 0; i < list.size(); i++) {
+            Core.print(String.format("(%2d) = %s", i, list.get(i).toString()));
+        }
         return input.nextInt();
     }
 

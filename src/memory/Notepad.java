@@ -47,8 +47,22 @@ public class Notepad {
             if (Node.getTitle(mem).equals(title))
                 return mem;
 
+        Node n = Whiteboard.searchByTitle(title);
+        if (n != null)
+            return n;
 
-        Node n = PA.searchExactTitle(title);
+        n = PA.searchExactTitle(title);
+
+        return n != null ? n : null;
+    }
+
+    public static Node search(String name) {
+
+        for (Node mem : workingNodes)
+            if (Node.nameEquals(mem, name))
+                return mem;
+
+        Node n = Whiteboard.search(name);
 
         return n != null ? n : null;
     }
