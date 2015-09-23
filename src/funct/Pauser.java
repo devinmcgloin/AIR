@@ -16,7 +16,7 @@ public class Pauser {
     public static boolean trueFalse(String s) {
         Scanner input = new Scanner(System.in);
         Core.println(s + " (true | false)");
-        Core.print(">>>");
+        Core.print(">>> ");
         String line = input.next();
         return line.matches("(true|t|yes|T|True)");
     }
@@ -24,7 +24,7 @@ public class Pauser {
     public static int tree(String s) {
         Scanner input = new Scanner(System.in);
         Core.println(s);
-        Core.print(">>>");
+        Core.print(">>> ");
         String line = input.next();
         if (line.matches("d+")) {
             return Integer.parseInt(line);
@@ -39,13 +39,9 @@ public class Pauser {
         for (int i = 0; i < list.size(); i++) {
             Core.print(String.format("( %2d ) = %s\n", i, list.get(i).toString()));
         }
-        Core.print(">>>");
+        Core.print(">>> ");
         String line = input.next();
-        if (line.matches("d+")) {
-            return Integer.parseInt(line);
-        } else {
-            return -1;
-        }
+        return line.matches("d+") ? Integer.parseInt(line) : -1;
     }
 
 }
