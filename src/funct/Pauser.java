@@ -1,6 +1,7 @@
 package funct;
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -8,19 +9,39 @@ import java.util.Scanner;
  */
 public class Pauser {
 
-    Scanner input = new Scanner(System.in);
 
     private Pauser() {
     }
 
-    public boolean trueFalse(String s) {
-        Core.println(s);
-        return input.hasNextBoolean();
+    public static boolean trueFalse(String s) {
+        Scanner input = new Scanner(System.in);
+        Core.println(s + " (true | false)");
+        Core.print(">>> ");
+        String line = input.next();
+        return line.matches("(true|t|yes|T|True)");
     }
 
-    public int tree(String s) {
+    public static int tree(String s) {
+        Scanner input = new Scanner(System.in);
         Core.println(s);
-        return input.nextInt();
+        Core.print(">>> ");
+        String line = input.next();
+        if (line.matches("d+")) {
+            return Integer.parseInt(line);
+        } else {
+            return -1;
+        }
+    }
+
+    public static <T> int whichOne(ArrayList<T> list) {
+        Scanner input = new Scanner(System.in);
+        Core.println("Enter a positive number to select a node, negative number escapes.");
+        for (int i = 0; i < list.size(); i++) {
+            Core.print(String.format("( %2d ) = %s\n", i, list.get(i).toString()));
+        }
+        Core.print(">>> ");
+        String line = input.next();
+        return line.matches("d+") ? Integer.parseInt(line) : -1;
     }
 
 }

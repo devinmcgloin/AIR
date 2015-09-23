@@ -1,7 +1,9 @@
 package output;
 
 import funct.Core;
+import funct.Formatter;
 import funct.StrRep;
+import memory.Notepad;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import org.javatuples.Triplet;
@@ -22,7 +24,7 @@ import java.util.Scanner;
  *
  * TODO Bulk add from a file.
  * TODO arrow up to get last command
- * TODO first command is create program fails
+ *
  */
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
@@ -56,12 +58,11 @@ public class REPL {
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
                 if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
-                    //TODO come back and QA this.
                     for(String id : argumentID){
                         if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
                         else
-                            flow.applyArgument(Whiteboard.search(id));
+                            flow.applyArgument(Notepad.search(id));
                     }
                     if(flow.appliedP())
                         flow.invoke();
@@ -99,57 +100,9 @@ public class REPL {
     }
 
 
-    public String formatNodes(ArrayList<Node> items) {
-        StringBuilder output = new StringBuilder();
-        for (Node node : items) {
-            output.append(" ").append(node.toString()).append(" ,");
-        }
-        return output.toString();
-    }
-
-    /**
-     * todo need to also have a quick view.
-     *
-     * @param n
-     * @return
-     */
-    private String viewNode(Node n) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (n != null) {
-            int depth = 1;
-            stringBuilder.append(stringSpacer(depth)).append(Node.getTitle(n)).append("\n");
-            for (String kid : Node.getKeys(n)) {
-                if (kid.startsWith("^")) {
-                    stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
-                    for (String kidKid : Node.getCarrot(n, kid)) {
-                        stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
-
-                    }
-                } else {
-                    stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
-                    String kidKid = Node.get(n, kid);
-                    if (kidKid != null)
-                        stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
-
-                }
-            }
-        } else {
-            return "";
-        }
-        return stringBuilder.toString();
-    }
-
-    private String stringSpacer(int i) {
-        String returnString = "";
-        for (int j = 0; j < i; j++) {
-            returnString += " ";
-        }
-        return returnString;
-    }
-
     public boolean cycle() {
         System.out.println("\n");
-        System.out.println("Nodes::       " + formatNodes(Whiteboard.getProminentNodes()));
+        System.out.println("Nodes::       " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
         System.out.print(">>>");
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
@@ -174,7 +127,7 @@ public class REPL {
                 if (terms[0].equals("test"))
                     PA.test();
                 else
-                    Whiteboard.search(terms[0]);
+                    Notepad.search(terms[0]);
             } else if (terms[0].contains(".") && terms.length > 1) {
                 parsedCommands = parseFull(command);
             } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called")) {
@@ -203,10 +156,10 @@ public class REPL {
                 //Prefix Notation
                 switch (terms[0]) {
                     case "create":
-                        Whiteboard.addNode(PA.createNode(command.replace("create", "").trim()));
+                        Notepad.addNode(PA.createNode(command.replace("create", "").trim()));
                         break;
                     case "view":
-                        Core.println(viewNode(Whiteboard.search(command.replace("view", ""))));
+                        Core.println(Formatter.viewNode(Notepad.search(command.replace("view", ""))));
                         break;
                     case "add":
                         command = command.replace("add", "pa.Node.add");
@@ -226,11 +179,12 @@ public class REPL {
 
             if (returnedObject != null && returnedObject.completedP()) {
                 if (returnedObject.getResult() instanceof Node)
-                    Whiteboard.addNode((Node) returnedObject.getResult());
+                    Notepad.addNode((Node) returnedObject.getResult());
                 else if (returnedObject.getResult() instanceof String)
                     System.out.println(returnedObject.getResult());
             }
         }
+        Whiteboard.addAllNotepadNodes();
         Whiteboard.cycle();
         return true;
     }

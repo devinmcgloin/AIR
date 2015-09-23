@@ -61,20 +61,20 @@ star wars iv^character
 	^collection
 	^lp
 		set plural
-		string representable
+		string representation
 
 set plural
 	^#of
 	^collection
 
-string representable
+string representation
 
 number
 	^lp
 		ldata
 	#
 	^value ranges
-	string representable
+	string representation
 
 expression
 	^lp
@@ -83,7 +83,7 @@ expression
 	operator
 	value
 	unit
-	string representable
+	string representation
 
 length
 	#
@@ -92,7 +92,7 @@ length
 		measurement
 	^conversion
 	^value ranges
-	string representable
+	string representation
 
 measurement
 	#
@@ -101,4 +101,4 @@ measurement
 		number
 	^conversion
 	^value ranges
-	string representable
+	string representation

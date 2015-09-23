@@ -95,10 +95,10 @@ public final class PA {
     public static void test(){
         start();
 
-        Node bmw = memory.Whiteboard.search("bmw");
-        Node door =memory.Whiteboard.search("door");
-        Node color = memory.Whiteboard.search("color");
-        Node blue = memory.Whiteboard.search("blue");
+        Node bmw = memory.Notepad.searchByTitle("bmw");
+        Node door = memory.Notepad.searchByTitle("door");
+        Node color = memory.Notepad.searchByTitle("color");
+        Node blue = memory.Notepad.searchByTitle("blue");
 
         GhostTree gtree = new GhostTree(bmw);
 
@@ -107,9 +107,8 @@ public final class PA {
 
         ArrayList<GhostTree.GhostNode> contenders = gtree.getContenders();
         for(GhostTree.GhostNode c : contenders){
-            System.out.println("YAAAAAS: " + c.toString() +" -- " +c.getParent().toString());
+            logger.debug("YAAAAAS: " + c.toString() + " -- " + c.getParent().toString());
         }
-
 
 
     }

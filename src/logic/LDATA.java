@@ -1,6 +1,6 @@
 package logic;
 
-import memory.Whiteboard;
+import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
@@ -51,7 +51,7 @@ public final class LDATA {
 //        if(type == null)
 //            return true;
 //
-//        Node typeTemplate = Whiteboard.searchByTitle(type);
+//        Node typeTemplate = Notepad.searchByTitle(type);
 //        String nodeType = Node.get(node, type);
 //
 //
@@ -121,7 +121,7 @@ public final class LDATA {
         }
         initialValue = Node.update(initialValue, "#", oldVal, Double.toString(num));
         initialValue = Node.update(initialValue, "unit", oldUnit, unitTo);
-        Whiteboard.addNode(initialValue);
+        Notepad.addNode(initialValue);
         return initialValue;
     }
 
@@ -225,7 +225,7 @@ public final class LDATA {
     public static Node addConversion(Node node, String convertTitle, String convertSteps){
         Node unitNode = getUnits(node);
         unitNode = Node.add(unitNode, "^conversion", convertTitle + "->" + convertSteps);
-        Whiteboard.addNode(unitNode);
+        Notepad.addNode(unitNode);
         return unitNode;
     }
 
@@ -238,7 +238,7 @@ public final class LDATA {
     public static Node addValRange(Node node, Node valRange) {
         String strRep = Node.getStringRep(valRange);
         node = Node.add(node, "^expression", strRep);
-        Whiteboard.addNode(node);
+        Notepad.addNode(node);
         return node;
     }
 
@@ -275,7 +275,7 @@ public final class LDATA {
     public static Node addUnit(Node node, String key){
         Node unitNode = getUnits(node);
         unitNode = Node.add(unitNode, "^unit", key);
-        Whiteboard.addNode(unitNode);
+        Notepad.addNode(unitNode);
         return unitNode;
     }
 
@@ -314,13 +314,13 @@ public final class LDATA {
 
     public static Node addValue(Node node, double value) {
         Node tmp = Node.update(node, "#", Node.get(node, "#"), Double.toString(value));
-        Whiteboard.addNode(tmp);
+        Notepad.addNode(tmp);
         return tmp;
     }
 
     public static Node addValue(Node node, String value) {
         Node tmp = Node.update(node, "#", Node.get(node, "#"), value);
-        Whiteboard.addNode(tmp);
+        Notepad.addNode(tmp);
         return tmp;
     }
 

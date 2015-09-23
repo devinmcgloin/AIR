@@ -9,20 +9,6 @@ import org.junit.Test;
  */
 public class StrRepTest {
 
-    @Test
-    public void testGetStringRep() throws Exception {
-
-    }
-
-    @Test
-    public void testIsStringRepresentation() throws Exception {
-        Assert.assertEquals("1: Improper String Rep Parsing", true, StrRep.isStringRepresentation("123.3"));
-        Assert.assertEquals("2: Improper String Rep Parsing", false, StrRep.isStringRepresentation(".3"));
-        Assert.assertEquals("3: Improper String Rep Parsing", true, StrRep.isStringRepresentation("0.3"));
-        Assert.assertEquals("4: Improper String Rep Parsing", true, StrRep.isStringRepresentation("height < 2"));
-        Assert.assertEquals("5: Improper String Rep Parsing", false, StrRep.isStringRepresentation("height <== 2"));
-        Assert.assertEquals("6: Improper String Rep Parsing", true, StrRep.isStringRepresentation("height > 0.2"));
-    }
 
     @Test
     public void testIsKeyStringRepresentable() throws Exception {
@@ -36,6 +22,11 @@ public class StrRepTest {
 
     @Test
     public void testIsExpression() throws Exception {
+        Assert.assertEquals("Expression Parsing {height < 2}", true, StrRep.isExpression("height < 2"));
+        Assert.assertEquals("Expression Parsing {height <== 2}", false, StrRep.isExpression("height <== 2"));
+        Assert.assertEquals("Expression Parsing {height > 0.2}", true, StrRep.isExpression("height > 0.2"));
+        Assert.assertEquals("Expression Parsing {length == .2}", false, StrRep.isExpression("length == .2"));
+        Assert.assertEquals("Expression Parsing {length == 0.2}", true, StrRep.isExpression("length == 0.2"));
 
     }
 
@@ -46,7 +37,10 @@ public class StrRepTest {
 
     @Test
     public void testIsCount() throws Exception {
-
+        Assert.assertEquals("Double parsing {123.3}", true, StrRep.isCount("123.3"));
+        Assert.assertEquals("Double parsing {.3}", false, StrRep.isCount(".3"));
+        Assert.assertEquals("Double Parsing {0.3}", true, StrRep.isCount("0.3"));
+        Assert.assertEquals("Double Parsing {0}", true, StrRep.isCount("0"));
     }
 
     @Test
