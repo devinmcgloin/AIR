@@ -106,6 +106,7 @@ boat
         boat
         ship
     ^notKey
+    bridge
     color
     displacement
     engine
@@ -152,6 +153,7 @@ container ship
     ^name
         container ship
     ^notKey
+    bridge
     color
     displacement
     engine
@@ -331,6 +333,7 @@ tug boat
     ^name
         tug boat
     ^notKey
+    bridge
     color
     displacement
     engine
