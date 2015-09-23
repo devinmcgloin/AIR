@@ -1,5 +1,8 @@
 package memory;
 
+import funct.Core;
+import funct.Formatter;
+import funct.Pauser;
 import pa.Node;
 import pa.PA;
 
@@ -74,7 +77,6 @@ public class Whiteboard {
                 return mem.getNode();
             }
             }
-        //TODO may need to update this search system to accomodate blaze.
 
         ArrayList<Node> nodes = PA.searchName(nodeName);
         if (!nodes.isEmpty()) {
@@ -103,7 +105,6 @@ public class Whiteboard {
                 return mem.getNode();
             }
         }
-        //TODO may need to update this search system to accomodate blaze.
 
         Node n = PA.searchExactTitle(title);
         if (n != null) {
@@ -140,6 +141,16 @@ public class Whiteboard {
 
     public static void clearAll() {
         workingMem.clear();
+    }
+
+    public static void addAllShortTermNodes() {
+        ArrayList<Node> nodes = ShortTermMemory.getWorkingNodes();
+        for (Node n : nodes) {
+            Core.println(Formatter.quickView(n));
+        }
+        boolean cont = Pauser.trueFalse("Can these be added to whiteboard? (t|f)");
+        if (cont)
+            addNodes(nodes);
     }
 
 }

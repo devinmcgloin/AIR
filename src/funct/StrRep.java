@@ -6,7 +6,7 @@ import pa.PA;
 
 /**
  * Created by devinmcgloin on 8/25/15.
- * TODO still storing hte original string inside the node correct? Still needs to be implemented.
+ *
  */
 public class StrRep {
 
@@ -65,6 +65,7 @@ public class StrRep {
                 template = Node.add(template, "operator", parsedExpression[1]);
                 template = Node.add(template, "value", parsedExpression[2]);
                 template = Node.add(template, "unit", parsedExpression[3]);
+                template = Node.add(template, "string representation", expression);
                 return template;
             } else return null;
         } else return null;
@@ -78,6 +79,7 @@ public class StrRep {
         if (isCount(count)) {
             Node template = PA.searchExactTitle("number");
             template = Node.add(template, "#", count);
+            template = Node.add(template, "string representation", count);
             return template;
         }
         return null;
@@ -91,8 +93,9 @@ public class StrRep {
         if (isMeasurement(measure)) {
             String[] splitMeasuremnt = measure.split(" ");
             Node template = PA.searchExactTitle("measurement");
-            Node.add(template, "#", splitMeasuremnt[0]);
-            Node.add(template, "unit", splitMeasuremnt[1]);
+            template = Node.add(template, "#", splitMeasuremnt[0]);
+            template = Node.add(template, "unit", splitMeasuremnt[1]);
+            template = Node.add(template, "string representation", measure);
             return template;
         }
         return null;

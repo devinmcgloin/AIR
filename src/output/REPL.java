@@ -1,6 +1,7 @@
 package output;
 
 import funct.Core;
+import funct.Formatter;
 import funct.StrRep;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
@@ -99,57 +100,9 @@ public class REPL {
     }
 
 
-    public String formatNodes(ArrayList<Node> items) {
-        StringBuilder output = new StringBuilder();
-        for (Node node : items) {
-            output.append(" ").append(node.toString()).append(" ,");
-        }
-        return output.toString();
-    }
-
-    /**
-     * todo need to also have a quick view.
-     *
-     * @param n
-     * @return
-     */
-    private String viewNode(Node n) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (n != null) {
-            int depth = 1;
-            stringBuilder.append(stringSpacer(depth)).append(Node.getTitle(n)).append("\n");
-            for (String kid : Node.getKeys(n)) {
-                if (kid.startsWith("^")) {
-                    stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
-                    for (String kidKid : Node.getCarrot(n, kid)) {
-                        stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
-
-                    }
-                } else {
-                    stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
-                    String kidKid = Node.get(n, kid);
-                    if (kidKid != null)
-                        stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
-
-                }
-            }
-        } else {
-            return "";
-        }
-        return stringBuilder.toString();
-    }
-
-    private String stringSpacer(int i) {
-        String returnString = "";
-        for (int j = 0; j < i; j++) {
-            returnString += " ";
-        }
-        return returnString;
-    }
-
     public boolean cycle() {
         System.out.println("\n");
-        System.out.println("Nodes::       " + formatNodes(Whiteboard.getProminentNodes()));
+        System.out.println("Nodes::       " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
         System.out.print(">>>");
         String command = input.nextLine().trim();
         if(command.toLowerCase().equals("q")){
@@ -206,7 +159,7 @@ public class REPL {
                         Whiteboard.addNode(PA.createNode(command.replace("create", "").trim()));
                         break;
                     case "view":
-                        Core.println(viewNode(Whiteboard.search(command.replace("view", ""))));
+                        Core.println(Formatter.viewNode(Whiteboard.search(command.replace("view", ""))));
                         break;
                     case "add":
                         command = command.replace("add", "pa.Node.add");
