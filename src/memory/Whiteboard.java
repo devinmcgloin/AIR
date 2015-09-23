@@ -143,8 +143,8 @@ public class Whiteboard {
         workingMem.clear();
     }
 
-    public static void addAllShortTermNodes() {
-        ArrayList<Node> nodes = ShortTermMemory.getWorkingNodes();
+    public static void addAllNotepadNodes() {
+        ArrayList<Node> nodes = Notepad.getWorkingNodes();
         for (Node n : nodes) {
             Core.println(Formatter.quickView(n));
         }

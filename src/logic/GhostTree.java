@@ -1,14 +1,12 @@
 package logic;
 
-import funct.Core;
 import funct.StrRep;
-import memory.Whiteboard;
+import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 
 /**
@@ -19,11 +17,9 @@ import java.util.Set;
 public class GhostTree {
 
     static Logger logger = Logger.getLogger(LDATA.class);
-
-    private GhostNode root;
     protected ArrayList<GhostNode> allGNodes;
-
     protected ArrayList<GhostNode> contenders = new ArrayList<GhostNode>();
+    private GhostNode root;
 
 
     public GhostTree(Node root){
@@ -87,7 +83,7 @@ public class GhostTree {
             //Or it's going to be LP:LC
             //Actually either way it's going to be LP:LC since K:V in string rep keys get changed to nodes upon pulling out of db. Check with Devin on this.
             //Either way, the Keys are Nodes you can get in the DB.
-            Node t = Whiteboard.searchByTitle(k);
+            Node t = Notepad.searchByTitle(k);
 
             if(t==null) {
                 logger.warn("Couldn't find a node with the title: "+k);
@@ -179,7 +175,7 @@ public class GhostTree {
             //IF VAL NOT NULL, BUT STRING REP (in string form) send to string rep to create into a tmp node, store as val, contiue
 
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
-            Node t2 = Whiteboard.searchByTitle(val);
+            Node t2 = Notepad.searchByTitle(val);
 
             if(t2==null) {
                 logger.warn("Couldn't find a node with the title: "+val);
@@ -351,6 +347,10 @@ public class GhostTree {
             return parent;
         }
 
+        public void setParent(GhostNode parent) {
+            this.parent = parent;
+        }
+
         public String getVal( GhostNode key){
 
             Node n = this.getOriginNode();
@@ -387,10 +387,6 @@ public class GhostTree {
                 return 0;
             else
                 return parent.getLevel() + 1;
-        }
-
-        public void setParent(GhostNode parent){
-            this.parent = parent;
         }
 
         protected Node getOriginNode(){

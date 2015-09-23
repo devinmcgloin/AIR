@@ -157,6 +157,10 @@ public class Node {
         return node.getTitle();
     }
 
+    public static boolean titleEquals(Node nodeA, Node nodeB) {
+        return getTitle(nodeA).equals(getTitle(nodeB));
+    }
+
     private String getTitle() {
         return TN.getTitle();
     }
