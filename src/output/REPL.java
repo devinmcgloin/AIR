@@ -24,7 +24,7 @@ import java.util.Scanner;
  *
  * TODO Bulk add from a file.
  * TODO arrow up to get last command
- * TODO first command is create program fails
+ *
  */
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
@@ -58,7 +58,6 @@ public class REPL {
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
                 if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
                     ExecutionFlow flow = new ExecutionFlow(method);
-                    //TODO come back and QA this.
                     for(String id : argumentID){
                         if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));

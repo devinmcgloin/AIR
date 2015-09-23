@@ -119,6 +119,7 @@ car
         audi
         bmw
         ferrari
+        ford
     ^logicalParents
         transport
     ^name
@@ -198,6 +199,26 @@ food
     height
     length
     mass
+    width
+ford
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        ford
+    ^notKey
+    break
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
     width
 fruit
     ^logicalChildren

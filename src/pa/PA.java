@@ -341,13 +341,13 @@ public final class PA {
         R r = getRb("noun");
         //I mirrored the logic you used in your nounHashSearch method.
         if (r != null) {
-            Node n = searchExactTitle(title);
-            n = Node.add(n, "^name", title);
-            n = Node.add(n, "^notKey");
-            n = Node.add(n, "^logicalChildren");
-            n = Node.add(n, "^logicalParents");
-            return n;
-
+            r.add(title, "R/noun/");
+            r.add("^name", "R/noun/" + title);
+            r.add("^notKey", "R/noun/" + title);
+            r.add("^logicalChildren", "R/noun/" + title);
+            r.add("^logicalParents", "R/noun/" + title);
+            r.add(title, "R/noun/" + title + "/" + "^name");
+            return searchExactTitle(title);
         }
         return null;
     }

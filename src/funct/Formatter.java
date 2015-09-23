@@ -51,7 +51,11 @@ public class Formatter {
 
     public static String quickView(Node n) {
         ArrayList<String> logicalParents = Node.getCarrot(n, "^logicalParents");
-        return String.format("%s --> %s", logicalParents.get(0), Node.getTitle(n));
+        if (!logicalParents.isEmpty()) {
+            return String.format("%s --> %s", logicalParents.get(0), Node.getTitle(n));
+        } else {
+            return String.format("%s --> %s", "N/A", Node.getTitle(n));
+        }
     }
 
     private static String stringSpacer(int i) {

@@ -151,6 +151,25 @@ public class Whiteboard {
         boolean cont = Pauser.trueFalse("Can these be added to whiteboard?");
         if (cont)
             addNodes(nodes);
+        else {
+            boolean modified = false;
+            while (nodes.size() > 0) {
+                Core.println("Which one would you like to remove? ");
+                int n = Pauser.whichOne(nodes);
+                if (n >= 0) {
+                    nodes.remove(n);
+                    modified = true;
+                } else
+                    break;
+            }
+            if (modified) {
+                cont = Pauser.trueFalse("Can these edited be added to whiteboard?");
+                if (cont)
+                    addNodes(nodes);
+            }
+        }
+
+
         Notepad.erasePage();
     }
 

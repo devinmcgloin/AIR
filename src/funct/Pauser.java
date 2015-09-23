@@ -16,21 +16,36 @@ public class Pauser {
     public static boolean trueFalse(String s) {
         Scanner input = new Scanner(System.in);
         Core.println(s + " (true | false)");
-        return input.hasNextBoolean();
+        Core.print(">>>");
+        String line = input.next();
+        return line.matches("(true|t|yes|T|True)");
     }
 
     public static int tree(String s) {
         Scanner input = new Scanner(System.in);
         Core.println(s);
-        return input.nextInt();
+        Core.print(">>>");
+        String line = input.next();
+        if (line.matches("d+")) {
+            return Integer.parseInt(line);
+        } else {
+            return -1;
+        }
     }
 
     public static <T> int whichOne(ArrayList<T> list) {
         Scanner input = new Scanner(System.in);
+        Core.println("Enter a positive number to select a node, negative number escapes.");
         for (int i = 0; i < list.size(); i++) {
-            Core.print(String.format("(%2d) = %s", i, list.get(i).toString()));
+            Core.print(String.format("( %2d ) = %s\n", i, list.get(i).toString()));
         }
-        return input.nextInt();
+        Core.print(">>>");
+        String line = input.next();
+        if (line.matches("d+")) {
+            return Integer.parseInt(line);
+        } else {
+            return -1;
+        }
     }
 
 }
