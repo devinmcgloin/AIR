@@ -26,7 +26,7 @@ public class Pauser {
         Core.println(s);
         Core.print(">>> ");
         String line = input.next();
-        if (line.matches("d+")) {
+        if (line.matches("\\d+")) {
             return Integer.parseInt(line);
         } else {
             return -1;
