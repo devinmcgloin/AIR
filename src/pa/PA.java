@@ -1,5 +1,6 @@
 package pa;
 
+import logic.GhostTree;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -94,6 +95,23 @@ public final class PA {
 
     public static void test(){
         start();
+
+        start();
+        Node bmw = memory.Whiteboard.search("bmw");
+        Node door =memory.Whiteboard.search("door");
+        Node color = memory.Whiteboard.search("color");
+        Node blue = memory.Whiteboard.search("blue");
+
+        GhostTree gtree = new GhostTree(bmw);
+
+        gtree.filterBranches(blue);
+        gtree.filterBranches(door);
+
+        ArrayList<GhostTree.GhostNode> contenders = gtree.getContenders();
+        for(GhostTree.GhostNode c : contenders){
+            System.out.println("YAAAAAS: " + c.toString() +" -- " +c.getParent().toString());
+        }
+
 
 
     }

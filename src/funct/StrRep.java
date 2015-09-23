@@ -25,12 +25,10 @@ public class StrRep {
             return getExpression(strRep);
         else return null;
     }
-
     /**
      * This is far easier for Devin than the previous idea:
      * isKeyStringRepresentatble(Node key)     here you would submit "height" as a node to see that it takes a string rep.
      * Wait no i still need that function done.
-     *
      * @param strRep
      * @return
      */
@@ -41,7 +39,7 @@ public class StrRep {
     /**
      * If I pass in the "Height" node from RN i need to know the values that go under it will be string representable.
      * This is important in the construction of the ghost tree (which is responsible for searches and adding and deleting.
-     * <p>
+     *
      * I need it because if I get to a Key and I see it has no Value I need to handle creating either a GhostValue (a CI on a range
      * of height) or if I need to create a GhostOF node (which is a LC of the Key). Those two are handled entirely differently.
      *
@@ -52,7 +50,7 @@ public class StrRep {
         return Node.getCarrot(key, "^logicalParents").stream()
                 .anyMatch(s -> s.equals("string representable"));
     }
-
+    
     public static Node getExpression(String expression) {
         if (isExpression(expression)) {
             Node template = PA.searchExactTitle("expression");

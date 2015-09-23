@@ -26,12 +26,11 @@ public final class Scribe {
         Node keyTmp = nodes[nodes.length-2]; //The second to last node must be checked as a contender for a Key in a K:V pair.
 
         for(Node n: nodes){
+            //All nodes should exist in DB (implied, might be necessary to check at later time).
             if(n==null){
-                logger.error("Null node.");
+                logger.error("Null node. Couldn't complete function, returning null.");
                 return null;
             }
-
-            //All nodes should exist in DB (implied, might be necessary to check at later time).
         }
 
         //Val shouldn't be an OF node.
@@ -41,26 +40,19 @@ public final class Scribe {
         }
 
 
-//        -- if two nodes ( BaseOF, Key )           OR   BaseOF, Val (of a Key inside BaseOF)
-        if(nodes.length == 2){
-            //Base - Val check if Val is Base, if not, check if Val is Val. If it's val, see if there's only one place to add it.
-                // if only one place to add it , ask if add it there. If not, ask with TreeTrueFalse
-            //
-            return addKey(nodes[0], nodes[1]);
-        }
+        //Keep in mind length of nodes given.
+        //Anything above 3 implies OF.
+        //IF 3 exactly, B, K, V is still possible.
+        //IF 2, high likelyhood of B, K or B, V being triggered.
 
 
-//        -- check if second to last node is a Key to the Value.        //Although important, the way the churning and eliminating
-        //branches would work would already account for this.
+
+
+//        //-- check if second to last node is a Key to the Value.
         if( SetLogic.xISyP(tail, keyTmp) ){
 
 
             //That's great news! Now we just gotta find where we can add this K:V pair within the OF and all branches.
-
-
-            //Keep in mind a Key or OF might be a ^LP of the Key that we're actually trying to add. Fucked up right?
-            //ahha. this is fine. i'm not losing it. i'm fine.
-
 
 
         }
@@ -74,16 +66,11 @@ public final class Scribe {
 //        K might be a node in OF tree.
 //         ---> if V is a stopping point, implies remaining nodes are for the use of OF branch finding.
 //          OR--->will have to figure out correct K to classify it under
-//        if it's a K in the base node, then chances are you're trying to OF?
-//        it actually IS a K:V
 
-//     If regular search didn't work...check invisible branches. (Parent's OF branches)
-//        -- Once adding V to K, check in ^LP if that V should go in an OF node...
+//        it actually IS a K:V   -- ask if V is K?
 
 
 
-
-        //full crazy search.
 
 
 
@@ -95,17 +82,7 @@ public final class Scribe {
 
 
 
-    private static ArrayList<Node> crazySearch(Node[] nodes){
 
-        ArrayList<Node> contenders = new ArrayList<Node>();
-
-
-
-
-
-        return contenders;
-
-    }
 
     public static Node addKey(Node base, Node key){
 

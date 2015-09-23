@@ -44,6 +44,13 @@ bicycle
     length
     mass
     width
+blue
+    ^logicalChildren
+    ^logicalParents
+        color
+    ^name
+        blue
+    ^notKey
 blueberry
     ^logicalChildren
     ^logicalParents
@@ -76,6 +83,17 @@ bmw
     suspension
     wheel
     width
+bmw^color
+    ^logicalChildren
+    ^logicalParents
+    ^name
+    ^notKey
+bmw^door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+    ^notKey
+    color
 boat
     ^logicalChildren
         container ship
@@ -116,6 +134,13 @@ car
     suspension
     wheel
     width
+color
+    ^logicalChildren
+        blue
+    ^logicalParents
+    ^name
+        color
+    ^notKey
 container ship
     ^logicalChildren
     ^logicalParents
@@ -131,6 +156,13 @@ container ship
     length
     mass
     width
+door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        door
+    ^notKey
+    color
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -282,3 +314,10 @@ tug boat
     length
     mass
     width
+unit
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        unit
+    ^notKey
+    ^unit
