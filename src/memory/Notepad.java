@@ -1,5 +1,6 @@
 package memory;
 
+import funct.Pauser;
 import pa.Node;
 import pa.PA;
 
@@ -65,5 +66,18 @@ public class Notepad {
         Node n = Whiteboard.search(name);
 
         return n != null ? n : null;
+    }
+
+    public static Node createNode(String title) {
+        if (searchByTitle(title) == null) {
+            return new Node(title);
+        } else {
+            for (int i = 1; ; i++) {
+                if (searchByTitle(title) == null) {
+                    if (Pauser.trueFalse(String.format("Calling this %s (t|f)", title + i)))
+                        return new Node(title + i);
+                }
+            }
+        }
     }
 }
