@@ -277,7 +277,6 @@ public final class SetLogic {
         for(String key: keys){
             x = Node.add(x, key);
         }
-        Whiteboard.addNode(x);
         return x;
     }
 
