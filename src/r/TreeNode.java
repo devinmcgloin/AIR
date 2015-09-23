@@ -1,5 +1,7 @@
 package r;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,6 +17,8 @@ public class TreeNode implements Comparable<TreeNode> {
     private String address;
     private TreeNode parent;
     private ArrayList<TreeNode> children;
+
+    static Logger logger = Logger.getLogger(TreeNode.class);
 
 
     /**
@@ -153,7 +157,7 @@ public class TreeNode implements Comparable<TreeNode> {
         childNode.parent = this;
         childNode.updateAddress();
         if(contains(childNode.getTitle())) {
-            System.out.printf("Dimension: %s already exists.\n", childNode.getTitle());
+            logger.debug(String.format("Dimension: %s already exists.\n", childNode.getTitle()));
             return;
         }
         this.children.add(childNode);
@@ -314,7 +318,7 @@ public class TreeNode implements Comparable<TreeNode> {
     public TreeNode getBaseNode() {
         TreeNode n = this;
         if(n.isRoot()) {
-            System.out.println("TreeNode: Base node function is called on root.");
+            logger.debug("TreeNode: Base node function is called on root.");
             return null;
         }
         if (n.isBaseNode())

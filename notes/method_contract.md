@@ -3,6 +3,8 @@
 - All predicate functions have an uppercase P at the end of their function name.
 
 #LDATA
+Default return value is true, as to not filter out nodes on accout of improper expressions.
+
 - validateP(LDBN, Value) - Bool
 - validateP(NBN, expression) - Bool
 - convert(Value, unitTo) - converted Val
@@ -20,7 +22,7 @@
 - genSet()
 - hasFilter(NBN, String[] attributes)
 - isFilter(NBN, String[] attributes)
-- conditionFilter(NBN, ArrayList<expressions> expressions)
+- LDATAFilter(NBN, ArrayList<expressions> expressions)
 - getSetMembers(NBN), returns the nodes that are members of the NBN set. REQUIRES: access to PA to return the NBNs that the passed in node is a member of.
 - getSets(NBN), returns the sets by name, that the NBN is a member of. In turn those set names can be used to generate the set of objects that are members of that set using getSetMembers. REQUIRES: Access to PA in order to pull out nodes that are part of the set the NBN represents.
 - xISyP(NBN-A, NBN-B) - Bool true if A is a member of the B set
@@ -28,7 +30,9 @@
 - xLikeY(NBN-A, NBN-B) - Inheritance without the set, you get the keys but no values and are not logical children.
 
 ###Set Logic Methods
+
 Set logic methods can be called with two or more NBN (In which case the function will operate on the set members of that NBN), or they can be called with sets (In which case the functions will operate on the sets themselves.)
+
 - intersection(2 or more NBN)
 - difference(2 or more NBN)
 - union(2 or more NBN)

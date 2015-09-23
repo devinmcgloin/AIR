@@ -3,6 +3,8 @@ package r;
 /**
  * Created by Blazej on 6/1/2015.
  */
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 
 
@@ -17,6 +19,9 @@ public class R {
     GeneralTree genTree;
     ArrayList<TreeNodeBase> hits;
     TreeNode current;
+
+    static Logger logger = Logger.getLogger(R.class);
+
 
     //Start R Interface
     public R(String name){

@@ -1,26 +1,323 @@
+apple
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        apple
+    ^notKey
+    color
+    height
+    length
+    mass
+    stem
+    width
+audi
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        audi
+    ^notKey
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+bicycle
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        bicycle
+        bike
+        road bike
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+blue
+    ^logicalChildren
+    ^logicalParents
+        color
+    ^name
+        blue
+    ^notKey
+blueberry
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        blueberry
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
 bmw
     ^logicalChildren
     ^logicalParents
         car
+    ^name
+        bavarian motor works
+        bmw
+    ^notKey
+    color
+    door
     engine
-    roof
-    spoiler
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
     wheel
-        bmw^wheel
-bmw^wheel
-    NumOf
-        4
-    NumberOf
-        4
+    width
+bmw^color
+    ^logicalChildren
+    ^logicalParents
+    ^name
+    ^notKey
+bmw^door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+    ^notKey
+    color
+boat
+    ^logicalChildren
+        container ship
+        tug boat
+    ^logicalParents
+        transport
+    ^name
+        boat
+        ship
+    ^notKey
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
 car
     ^logicalChildren
+        audi
         bmw
+        ferrari
+    ^logicalParents
+        transport
+    ^name
+        car
+    ^notKey
+    color
     door
-        4
     engine
-    roof
-    spoiler
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
     wheel
-        4
-count
-    rand
+    width
+color
+    ^logicalChildren
+        blue
+    ^logicalParents
+    ^name
+        color
+    ^notKey
+container ship
+    ^logicalChildren
+    ^logicalParents
+        boat
+    ^name
+        container ship
+    ^notKey
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
+door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        door
+    ^notKey
+    color
+ferrari
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        ferrari
+    ^notKey
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+food
+    ^logicalChildren
+        fruit
+    ^logicalParents
+        physical node
+    ^name
+        food
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+fruit
+    ^logicalChildren
+        apple
+        blueberry
+        pear
+        strawberry
+    ^logicalParents
+        food
+    ^name
+        fruit
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+motorcycle
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        motorbike
+        motorcycle
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+node
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        node
+    ^notKey
+pear
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        pear
+    ^notKey
+    color
+    height
+    length
+    mass
+    stem
+    width
+physical node
+    ^logicalChildren
+        food
+        transport
+    ^logicalParents
+    ^name
+        physical node
+        physical
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+strawberry
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        strawberry
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+submarine
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        sub
+        submarine
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+transport
+    ^logicalChildren
+        bicycle
+        boat
+        car
+        motorcycle
+        submarine
+    ^logicalParents
+        physical node
+    ^name
+        transport
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+tug boat
+    ^logicalChildren
+    ^logicalParents
+        boat
+    ^name
+        tug boat
+    ^notKey
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
+unit
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        unit
+    ^notKey
+    ^unit

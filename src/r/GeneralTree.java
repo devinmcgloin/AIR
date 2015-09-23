@@ -1,12 +1,8 @@
 package r;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.apache.log4j.Logger;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +22,13 @@ import java.util.List;
  */
 public class GeneralTree {
 
+    static Logger logger = Logger.getLogger(GeneralTree.class);
     protected final String FILEEXTENSION = "./R/";
     protected TreeNode current;
     protected TreeNode tmp;
     protected File rFolder = new File(FILEEXTENSION);
     protected HashBrowns hash;
+
 
 
     protected GeneralTree() {
@@ -39,19 +37,21 @@ public class GeneralTree {
         current.setAddress("R");
 
         //Add the possible files it could have. (DBs)
-        //TODO: Could be a null pointer...do i throw an error? jeez. it's such a big program.
-        //maybe we could have an error log for the program as a whole!
-        if (rFolder.length() >= 1) {
-            for (File fileEntry : rFolder.listFiles()) {
-                if (fileEntry.isDirectory()) {
-                    continue;
-                } else {
-                    tmp = new TreeNode(fileEntry.getName());
-                    current.addChildBlind(tmp);
+        if(rFolder.exists()) {
+            if (rFolder.length() >= 1) {
+                for (File fileEntry : rFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        continue;
+                    } else {
+                        tmp = new TreeNode(fileEntry.getName());
+                        current.addChildBlind(tmp);
+                    }
                 }
+                //Sort database nodes so they work with BS.
+                current.sortChildren();
             }
-            //Sort database nodes so they work with BS.
-            current.sortChildren();
+        }else{
+            logger.fatal("R file folder does not exist.");
         }
 
         //Start a new hashmap.
@@ -83,7 +83,7 @@ public class GeneralTree {
      * SAVE
      */
     protected void exportDB() {
-        System.out.println("export called");
+        logger.info("export called");
         //Go back until we're at Foo.txt
         if (current.isRoot())
             return;
@@ -106,7 +106,7 @@ public class GeneralTree {
             out.write(DBout);
             out.close();
         } catch (Exception e) {
-            System.out.println("You suck at writing to files");
+            logger.fatal("You suck at writing to files");
         }
     }
 
@@ -186,7 +186,7 @@ public class GeneralTree {
         try {
             in = new FileReader(FILEEXTENSION + dbName);
         } catch (FileNotFoundException e) {
-            System.out.println("Invalid database name.");
+            logger.fatal("Invalid database name.");
             return;
         }
 
@@ -262,7 +262,7 @@ public class GeneralTree {
         // System.out.println("address: "+address);
 
         if (!address.contains("/")) {
-            System.out.println("GenTree -- Incorrect format for address: " + address);
+            logger.error("GenTree -- Incorrect format for address: " + address);
             return current;
         }
         //We are sending a command to "R/" directory.
@@ -272,7 +272,7 @@ public class GeneralTree {
         }
         String dbName = address.split("/")[1];
         if (dbName.equals("") || dbName.equals("\n")) {
-            System.out.println("No DB Name provided.");
+            logger.error("No DB Name provided.");
             return current;
         }
 
@@ -286,7 +286,7 @@ public class GeneralTree {
         }
         //NO DB loaded and asking for incorrect DB
         if (!current.contains(dbName) && current.isRoot()) {
-            System.out.println("No DB by name: " + dbName);
+            logger.error("No DB by name: " + dbName);
             return current;
         }
 
@@ -300,17 +300,16 @@ public class GeneralTree {
             }
             //Now check if that DB exists
             if (!current.contains(dbName) && current.isRoot()) {
-                System.out.println("No DB by name: " + dbName);
+                logger.error("No DB by name: " + dbName);
                 return current;
             }
             //Now load db of the address we were given.
             childTraverse(dbName);
             //Check if DB is already in memory. If so, just traverse into it.
             //TODO QA this fix
-            if(current.getChildren() != null) {
-                //We good.
-            } else{
-                loadDB(dbName); //This was where where export doubling.
+            if(current.getChildren() == null) {
+                //This was where where export doubling.
+                loadDB(dbName);
             }
 
 
@@ -357,14 +356,14 @@ public class GeneralTree {
         }
         //Check if that name is already being used. (Implies you must rename the node you want to add first)...
         if (current.getParent().contains(name)) {
-            System.out.printf("Add Parent Dimension: %s already exists.\n", name);
+            logger.debug("Add Parent Dimension: " + name + " already exists.\n");
             return;
         }
-        System.out.println("Hey this is where we are: " + current.getAddress());
+        logger.debug("Hey this is where we are: " + current.getAddress());
         //Create the new node
         tmp = new TreeNode(name);
         current.insertParent(tmp);
-        System.out.println("Hey this is where we are: " + current.getAddress());
+        logger.debug("Hey this is where we are: " + current.getAddress());
 
         hash.add(tmp);
     }
@@ -429,9 +428,7 @@ public class GeneralTree {
      * @return
      */
     protected boolean containsAll(String searchTerm) {
-        if (current.containsAll(searchTerm))
-            return true;
-        return false;
+        return current.containsAll(searchTerm);
     }
 
     /**
@@ -535,7 +532,7 @@ public class GeneralTree {
         //Then try hash searching.
         TreeNode tmp = getCurrent();
         ArrayList<TreeNodeBase> hits = hash.fullHashSearch(terms, this);
-        setCurrent(tmp); //i honestly only need this to guarentee we get back to where we were.
+        setCurrent(tmp); //i honestly only need this to guarentee we getCarrot back to where we were.
         return hits;
     }
 
@@ -554,7 +551,7 @@ public class GeneralTree {
         if (current.getParent() != null) {
             //Check if backing out of DB (triggers save)
             if (current.getParent().isRoot()) {
-                System.out.println("goBack() -- > Is this why exporting twice? ");
+                logger.debug("goBack() -- > Is this why exporting twice? ");
                 exportDB();
             }
             current = current.getParent();
@@ -572,7 +569,7 @@ public class GeneralTree {
         int index = current.binarySearch(name);
 
         if (index >= 0) {
-            System.out.printf("Dimension: %s already exists.\n", name);
+            logger.warn(String.format("Dimension: %s already exists.\n", name));
             return;
         }
         tmp = new TreeNode(name);
@@ -593,9 +590,7 @@ public class GeneralTree {
      * @return
      */
     protected boolean contains(String searchTerm) {
-        if (current.contains(searchTerm)) //TODO : re-write in treenode with a BS
-            return true;
-        return false;
+        return current.contains(searchTerm);
     }
 
     /**
@@ -612,10 +607,10 @@ public class GeneralTree {
 //        List<TreeNode> children = current.getChildren();
 //        //COULD REPLACE WITH A GETNODE() func
 //        for (int i = 0; i < children.size(); i++) {
-//            String childName = children.get(i).getTitle();
+//            String childName = children.getCarrot(i).getTitle();
 //            if (name.equals(childName)) {
 //                //Go into that node, go into all it's children, delete everything.
-//                current.removeChild(children.get(i));
+//                current.removeChild(children.getCarrot(i));
 //                //Delete for HashMap happens on a failed search for a specific node address.
 //                //in the getNode() function where it searches by address for a node.
 //            }
