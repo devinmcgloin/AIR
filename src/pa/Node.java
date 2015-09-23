@@ -100,7 +100,7 @@ public class Node {
 //    }
 
     /**
-     * TODO start adding things by their name, not their title.
+     *
      * @param node
      * @return
      */
@@ -112,6 +112,11 @@ public class Node {
         return node.getKeys();
     }
 
+    /**
+     * @param node
+     * @param key
+     * @return
+     */
     public static String get(Node node, String key) {
         ArrayList<String> t = node.getCarrot(key);
 
@@ -164,20 +169,7 @@ public class Node {
         return TN.getChildrenString();
     }
 
-//    /**
-//     * TODO check all other logical parents.
-//     *
-//     * @param term
-//     * @return
-//     */
-//    private boolean isP(String term){
-//        for (String is : Node.getCarrot(this, "^logicalParents")) {
-//            if(term.equals(is)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+
     private ArrayList<String> getName(){
         return getCarrot("^name");
     }

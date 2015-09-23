@@ -6,19 +6,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-/**
- *
- * TODO update addresses for each node.
- *
- */
+
 public class TreeNode implements Comparable<TreeNode> {
 
+    static Logger logger = Logger.getLogger(TreeNode.class);
     private String title;
     private String address;
     private TreeNode parent;
     private ArrayList<TreeNode> children;
-
-    static Logger logger = Logger.getLogger(TreeNode.class);
 
 
     /**
@@ -234,7 +229,6 @@ public class TreeNode implements Comparable<TreeNode> {
 
 
     /**
-     * TODO: rewrite using hash
      * QA on containsAll
      *
      * @param term
@@ -242,10 +236,6 @@ public class TreeNode implements Comparable<TreeNode> {
      */
     public boolean containsAll(String term) {
 
-        //TODO REMOVE THIS:
-//        if(getTitle().equals(term)){
-//            return true;
-//        }
 
 
         //First, check its immediate children for contains.
@@ -265,9 +255,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     public boolean contains(String nodeName){
         //NOT SORTING CHILDREN, ASSUMES DATABASE IS SORTED.
-        if(binarySearch(nodeName) >= 0)
-            return true;
-        return false;
+        return binarySearch(nodeName) >= 0;
     }
 
     public void sortChildren(){

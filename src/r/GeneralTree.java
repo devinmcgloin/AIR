@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO: navigate by address!
 //could just create a func(addressOfNodeToDoFuncOn, valueOfNameFuncShouldTake)
 //Then rrename genTree to R
 
 /**
  * Thinks of the General tree as a whole.
- * Makes all changes and everything to the tree. TODO: is that true? yeah.
+ * Makes all changes and everything to the tree.
  * Keeps last used node in memory.
  * <p/>
  * This is also what will handle loading in databases to populate a tree.
@@ -131,7 +130,7 @@ public class GeneralTree {
         StringBuilder DBout = new StringBuilder();
         if (node.getLevel() == 1) {
             String buffer = "";
-            //TODO: Organize children alphabetically on export. (Check if already sorted, duh).
+            //Organize children alphabetically on export. (Check if already sorted, duh).
             Collections.sort(node.getChildren());
             TreeNode tmp;
             for (TreeNode child : node.getChildren()) {
@@ -253,9 +252,7 @@ public class GeneralTree {
     protected TreeNode getNodeByAddress(String address) {
 
 
-
-
-        //TODO: Make sure you have the right directory and GenTree has files right.
+        //Make sure you have the right directory and GenTree has files right.
         address = address.trim();
         String[] tmpS = address.split("/");
 
@@ -306,7 +303,7 @@ public class GeneralTree {
             //Now load db of the address we were given.
             childTraverse(dbName);
             //Check if DB is already in memory. If so, just traverse into it.
-            //TODO QA this fix
+            // QA this fix
             if(current.getChildren() == null) {
                 //This was where where export doubling.
                 loadDB(dbName);
@@ -316,7 +313,7 @@ public class GeneralTree {
         }
 
 
-        //TODO: holla at yo boy. Y'all gotta know, you gotta keep your currents your currents.
+        //holla at yo boy. Y'all gotta know, you gotta keep your currents your currents.
         //Earlier I had TreeNode tmp = genTree.getNode(address).
         //bruh, that's like have two nodes to the same tree in the same db. ain't worth it. not cool.
         //That's why we was getting a doubling up on the db.
@@ -447,7 +444,7 @@ public class GeneralTree {
     }
 
     /**
-     * TODO: Change search  -AT LEAST BE ALPHABETIC. Implement a BST search.
+     *
      * Takes the name of the next node you want to go to within current's children.
      * @param next
      * @return

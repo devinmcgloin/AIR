@@ -17,7 +17,6 @@ import java.util.ArrayList;
  *
  */
 
-//External Methods of PA
 public final class PA {
 
 
@@ -96,7 +95,6 @@ public final class PA {
     public static void test(){
         start();
 
-        start();
         Node bmw = memory.Whiteboard.search("bmw");
         Node door =memory.Whiteboard.search("door");
         Node color = memory.Whiteboard.search("color");
@@ -138,7 +136,7 @@ public final class PA {
     }
 
     /**
-     * TODO implement log walker.
+     *  implement log walker.
      * @param node
      */
     private static void put(Node node, String db) {
@@ -250,7 +248,7 @@ public final class PA {
         //Number of terms matches baseNode hits
         if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
-            //TODO assumes there will be values that dont match. This isnt always true. Fixed with for each loop.
+            // assumes there will be values that dont match. This isnt always true. Fixed with for each loop.
 
             for (TreeNodeBase node : baseNodes) {
                 if (node.getRank() == termSize) {
@@ -317,7 +315,7 @@ public final class PA {
         } else {
             int i = 0;
             while (searchExactTitle(title + i) != null) {
-                i = i++;
+                i = i + 1;
                 nodes.add(searchExactTitle(title + i));
             }
         }
@@ -335,21 +333,21 @@ public final class PA {
     }
 
     /**
-     * TODO need to automatically add all the ^ headers that NBN's normally have
+     *  automatically add all the ^ headers that NBN's normally have
      * @param title
      * @return
      */
     public static Node createNode(String title){
         start();
-
+        R r = getRb("noun");
         //I mirrored the logic you used in your nounHashSearch method.
-        if(rDBexists("noun")){
-            getRb("noun").add(title, "R/noun/");
-            getRb("noun").add("^name", "R/noun/" + title);
-            getRb("noun").add("^notKey", "R/noun/" + title);
-            getRb("noun").add("^logicalChildren", "R/noun/" + title);
-            getRb("noun").add("^logicalParents", "R/noun/" + title);
-            getRb("noun").add(title, "R/noun/" + title + "/" + "^name");
+        if (r != null) {
+            r.add(title, "R/noun/");
+            r.add("^name", "R/noun/" + title);
+            r.add("^notKey", "R/noun/" + title);
+            r.add("^logicalChildren", "R/noun/" + title);
+            r.add("^logicalParents", "R/noun/" + title);
+            r.add(title, "R/noun/" + title + "/" + "^name");
             return searchExactTitle(title);
         }
         return null;

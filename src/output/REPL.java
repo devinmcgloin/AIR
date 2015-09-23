@@ -20,7 +20,7 @@ import java.util.Scanner;
  *
  * TODO have repl check for string representations inside arguments and pass along the instantiated nodes into the functions.
  *
- * TODO Bulk add
+ * TODO Bulk add from a file.
  * TODO arrow up to get last command
  * TODO first command is create program fails
  */
@@ -171,7 +171,10 @@ public class REPL {
 
 
             if (terms.length == 1) {
-                Whiteboard.search(terms[0]);
+                if (terms[0].equals("test"))
+                    PA.test();
+                else
+                    Whiteboard.search(terms[0]);
             } else if (terms[0].contains(".") && terms.length > 1) {
                 parsedCommands = parseFull(command);
             } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called")) {
