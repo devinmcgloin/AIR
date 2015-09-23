@@ -1,7 +1,7 @@
 package logic;
 
 
-import memory.Whiteboard;
+import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
@@ -260,8 +260,8 @@ public final class SetLogic {
                 x = Node.add(x, key);
             }
         }
-        Whiteboard.addNode(y);
-        Whiteboard.addNode(x);
+        Notepad.addNode(y);
+        Notepad.addNode(x);
 
         return x;
     }

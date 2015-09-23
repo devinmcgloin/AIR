@@ -74,10 +74,14 @@ public class Notepad {
         } else {
             for (int i = 1; ; i++) {
                 if (searchByTitle(title) == null) {
-                    if (Pauser.trueFalse(String.format("Calling this %s (t|f)", title + i)))
+                    if (Pauser.trueFalse(String.format("Calling this %s", title + i)))
                         return new Node(title + i);
                 }
             }
         }
+    }
+
+    protected static void erasePage() {
+        workingNodes.clear();
     }
 }

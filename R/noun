@@ -18,6 +18,7 @@ audi
     ^name
         audi
     ^notKey
+    break
     color
     door
     engine
@@ -71,6 +72,7 @@ bmw
         bavarian motor works
         bmw
     ^notKey
+    break
     color
     door
     engine
@@ -122,6 +124,7 @@ car
     ^name
         car
     ^notKey
+    break
     color
     door
     engine
@@ -170,6 +173,7 @@ ferrari
     ^name
         ferrari
     ^notKey
+    break
     color
     door
     engine

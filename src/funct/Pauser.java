@@ -9,22 +9,24 @@ import java.util.Scanner;
  */
 public class Pauser {
 
-    private static Scanner input = new Scanner(System.in);
 
     private Pauser() {
     }
 
     public static boolean trueFalse(String s) {
-        Core.println(s);
+        Scanner input = new Scanner(System.in);
+        Core.println(s + " (true | false)");
         return input.hasNextBoolean();
     }
 
     public static int tree(String s) {
+        Scanner input = new Scanner(System.in);
         Core.println(s);
         return input.nextInt();
     }
 
     public static <T> int whichOne(ArrayList<T> list) {
+        Scanner input = new Scanner(System.in);
         for (int i = 0; i < list.size(); i++) {
             Core.print(String.format("(%2d) = %s", i, list.get(i).toString()));
         }

@@ -3,6 +3,7 @@ package output;
 import funct.Core;
 import funct.Formatter;
 import funct.StrRep;
+import memory.Notepad;
 import memory.Whiteboard;
 import org.apache.log4j.Logger;
 import org.javatuples.Triplet;
@@ -62,7 +63,7 @@ public class REPL {
                         if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
                         else
-                            flow.applyArgument(Whiteboard.search(id));
+                            flow.applyArgument(Notepad.search(id));
                     }
                     if(flow.appliedP())
                         flow.invoke();
@@ -127,7 +128,7 @@ public class REPL {
                 if (terms[0].equals("test"))
                     PA.test();
                 else
-                    Whiteboard.search(terms[0]);
+                    Notepad.search(terms[0]);
             } else if (terms[0].contains(".") && terms.length > 1) {
                 parsedCommands = parseFull(command);
             } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called")) {
@@ -156,10 +157,10 @@ public class REPL {
                 //Prefix Notation
                 switch (terms[0]) {
                     case "create":
-                        Whiteboard.addNode(PA.createNode(command.replace("create", "").trim()));
+                        Notepad.addNode(PA.createNode(command.replace("create", "").trim()));
                         break;
                     case "view":
-                        Core.println(Formatter.viewNode(Whiteboard.search(command.replace("view", ""))));
+                        Core.println(Formatter.viewNode(Notepad.search(command.replace("view", ""))));
                         break;
                     case "add":
                         command = command.replace("add", "pa.Node.add");
@@ -179,7 +180,7 @@ public class REPL {
 
             if (returnedObject != null && returnedObject.completedP()) {
                 if (returnedObject.getResult() instanceof Node)
-                    Whiteboard.addNode((Node) returnedObject.getResult());
+                    Notepad.addNode((Node) returnedObject.getResult());
                 else if (returnedObject.getResult() instanceof String)
                     System.out.println(returnedObject.getResult());
             }

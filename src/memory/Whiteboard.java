@@ -145,9 +145,13 @@ public class Whiteboard {
         for (Node n : nodes) {
             Core.println(Formatter.quickView(n));
         }
-        boolean cont = Pauser.trueFalse("Can these be added to whiteboard? (t|f)");
+        if (nodes.isEmpty())
+            return;
+
+        boolean cont = Pauser.trueFalse("Can these be added to whiteboard?");
         if (cont)
             addNodes(nodes);
+        Notepad.erasePage();
     }
 
 }
