@@ -76,6 +76,9 @@ public class GhostTree {
          */
 
 
+        //FUCK FUCK FUCK
+        //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure.
+
         for(String k : keyStrings ){
             //Check if key is a carrot header
             if(k.startsWith("^"))
@@ -173,7 +176,8 @@ public class GhostTree {
                 continue;
             } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
-
+            //FUCK FUCK FUCK FUCK
+            //IF VAL NOT NULL, BUT STRING REP (in string form) send to string rep to create into a tmp node, store as val, contiue
 
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
             Node t2 = Whiteboard.searchByTitle(val);
