@@ -71,8 +71,6 @@ public class GhostTree {
          */
 
 
-        //FUCK FUCK FUCK
-        //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure.
 
         for(String k : keyStrings ){
             //Check if key is a carrot header
@@ -144,6 +142,7 @@ public class GhostTree {
 
                 //---------END STOPS
 
+
                 //Otherwise, we need to create a GhostOF node as a LC of the Key.
                 String ofTitle = base.toString() + "^" + gkey.toString();
                 Node of = new Node(ofTitle);
@@ -153,10 +152,29 @@ public class GhostTree {
                 }
 
 
-                //FUCK FUCK FUCK now we need an inheritance method that doesn't automatically trigger ^lc ^lp shit frantically.
-                //Or a temp whiteboard. Or a way to delete from whiteboard. Or literally anything.
-                //Discussed with Devin. You will continue to use the xLIKEy method. Then, when user confirms OF existence, trigger the xISy.
-                of = SetLogic.xLikey(of, gkey.getOriginNode());
+                //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure/inheritance.
+                Node lp = SetLogic.getLogicalParent(root.getOriginNode()); //car
+                String value = Node.get( lp, gkey.toString() );    //String value, or null
+                if( value == null || !value.contains("^") || value.startsWith("^") ){
+                    //Just inherit from the Key instead.
+
+                    //FUCK FUCK FUCK need inheritance method where i can store but not apply adding ^lc and ^lp relation.
+                    of = SetLogic.xLikey(of, gkey.getOriginNode());
+                } else{
+                    //Get the value node (if you can)
+                    Node oflp = Notepad.searchByTitle(value);
+
+                    if (oflp == null){
+                        //Just inherit from the Key instead.
+                        of = SetLogic.xLikey(of, gkey.getOriginNode());
+                    }
+                    else{
+                        of = SetLogic.xLikey(of, oflp);
+                    }
+
+
+                }
+
 
                 //Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
                 GhostNode gOF = new GhostNode(of);
@@ -171,8 +189,30 @@ public class GhostTree {
                 continue;
             } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
-            //FUCK FUCK FUCK FUCK
-            //IF VAL NOT NULL, BUT STRING REP (in string form) send to string rep to create into a tmp node, store as val, contiue
+            //CONTINUING FOR IF VAL WASN'T NULL
+            //If the Key we stopped on is String Representable, send value to string rep to create into a tmp node, store as val in gtree, cont.
+            if ( StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLdata(gkey.toString())*/ ) {
+                if(  StrRep.isExpression(val) ){
+                    Node exp = StrRep.getExpression(val);
+                    GhostNode gExp = new GhostNode(exp);
+                    gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
+                    allGNodes.add(gExp);
+                    gkey.addKid(gExp);   //add as a val to the current key for sure.
+                } else if( StrRep.isMeasurement( val )){
+                    Node mes = StrRep.getExpression(val);
+                    GhostNode gMes = new GhostNode(mes);
+                    gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
+                    allGNodes.add(gMes);
+                    gkey.addKid(gMes);   //add as a val to the current key for sure.
+                } else if( StrRep.isCount( val )){
+                    Node cnt = StrRep.getExpression(val);
+                    GhostNode gCnt= new GhostNode(cnt);
+                    gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
+                    allGNodes.add(gCnt);
+                    gkey.addKid(gCnt);   //add as a val to the current key for sure.
+                }
+                continue;
+            }
 
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
             Node t2 = Notepad.searchByTitle(val);
@@ -196,13 +236,14 @@ public class GhostTree {
             // Then, send that LC to be branched out as a continuation of the ghost tree.
             constructTree(lc, gnodesInThisBranch);
 
+
+
+            //Further Explanation of the Overview of GhostTree construction/also the moment of realization of how to do it:
             //IT'S LIKE THIS TREE WORKS IN THREE PART INTERVALS.
             //YOU SEND IN THE ROOTS AND IT CREATES THE TREE'S KEYS
             // THEN IT LOOKS BACK INTO THE ROOT'S KEY'S VALUES
             // THEN IT EITHER CREATES GHOST VALUES, OR SAVES VALUES AND REALIZES IT'S THE END OF THE BRANCH
             // OR IT REALIZES THERE'S A LC THERE AS A VALUE / GHOSTOF NODE AND SENDS THAT TO CREATE THE NEXT INTERVAL OF THE TREE.
-
-
 
 
         }   //END LOOP THROUGH KEYS
