@@ -152,6 +152,7 @@ public class GhostTree {
                 }
 
 
+
                 //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure/inheritance.
                 Node lp = SetLogic.getLogicalParent(root.getOriginNode()); //car
                 String value = Node.get( lp, gkey.toString() );    //String value, or null
@@ -175,6 +176,8 @@ public class GhostTree {
 
                 }
 
+                //Send the new OF node (of) to the notepad
+                Notepad.addNode(of); //FUCK
 
                 //Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
                 GhostNode gOF = new GhostNode(of);
@@ -189,6 +192,8 @@ public class GhostTree {
                 continue;
             } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
+
+            //FUCK FUCK FUCK DEVIN PLEASE CONFIRM THIS IS CORRECT
             //CONTINUING FOR IF VAL WASN'T NULL
             //If the Key we stopped on is String Representable, send value to string rep to create into a tmp node, store as val in gtree, cont.
             if ( StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLdata(gkey.toString())*/ ) {
@@ -254,6 +259,8 @@ public class GhostTree {
 
 
 
+
+
     /**
      * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch.
      * For the time being, the use of the filter branches method should be from leaf to root.
@@ -264,8 +271,6 @@ public class GhostTree {
      * @param node - this node (or a lp) must be located somewhere in a contending branch.
      */
     public void filterBranches(Node node){
-        //FUCK FUCK FUCK
-        //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
 
         GhostNode gnode = new GhostNode(node);
 
@@ -277,6 +282,11 @@ public class GhostTree {
                 if ( xISy(gnode, g) ){
                     logger.debug("We got:  " + g.toString());
                     contenders.add(g);
+                }else{
+                    //Contenders.remove(c)
+                    //FUCK FUCK FUCK
+                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+
                 }
             }
         }else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
@@ -286,6 +296,9 @@ public class GhostTree {
                     keepPlease.add(c);
                 }else{
                     //contenders.remove(c);     NOT SURE IF WORKS WHILE ITERATING, DON'T RISK IT.
+                    //FUCK FUCK FUCK
+                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+
                 }
 
             }
