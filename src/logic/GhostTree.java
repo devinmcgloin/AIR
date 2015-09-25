@@ -17,8 +17,8 @@ import java.util.Collections;
 public class GhostTree {
 
     static Logger logger = Logger.getLogger(LDATA.class);
-    protected ArrayList<GhostNode> allGNodes;
-    protected ArrayList<GhostNode> contenders = new ArrayList<GhostNode>();
+    private ArrayList<GhostNode> allGNodes;
+    private ArrayList<GhostNode> contenders = new ArrayList<GhostNode>();
     private GhostNode root;
 
 
@@ -305,8 +305,19 @@ public class GhostTree {
         contenders.clear();
     }
 
-    public ArrayList<GhostNode> getContenders(){
-        return contenders;
+
+
+
+    public ArrayList<Node> getContenders(){
+        ArrayList<Node> contendersNodes = new ArrayList<Node>();
+        if(contenders == null ) //this should never happen
+            return null;
+
+        for(GhostNode g : contenders){
+            contendersNodes.add(g.getOriginNode());
+        }
+
+        return contendersNodes;
     }
 
 

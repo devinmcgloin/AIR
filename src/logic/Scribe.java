@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import pa.Node;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Blazej on 8/28/2015.
@@ -35,7 +36,7 @@ public final class Scribe {
 
         //Val shouldn't be an OF node.
         if(tail.toString().contains("^")){
-            logger.error("You cannot add an overflow node as a value. Although this may change in future.");
+            logger.error("You cannot add an overflow node as a value. Although this may most definitely change in future.");
             return null;
         }
 
@@ -43,23 +44,30 @@ public final class Scribe {
         //Keep in mind length of nodes given.
         //Anything above 3 implies OF.
         //IF 3 exactly, B, K, V is still possible.
-        //IF 2, high likelyhood of B, K or B, V being triggered.
+        //IF 2, high likelihood of B, K or B, V being triggered.
 
 
+        //Get all base
+        ArrayList<Node> baseNodes = searchHighLevel( new ArrayList<Node>(Arrays.asList(nodes)) );
 
+        if(baseNodes == null || baseNodes.size() == 0){
+            logger.error("Couldn't find any nodes in a single branch given that combination.");
+            //FUCK Could also imply there was a Key that should exist but doesn't.
+            return null;
+        }
 
-//        //-- check if second to last node is a Key to the Value.
+        //If two last nodes are KV pair, just find a place to put them.
+        boolean kvTail = false;
         if( SetLogic.xISyP(tail, keyTmp) ){
+            kvTail = true;
+        }
 
-
-            //That's great news! Now we just gotta find where we can add this K:V pair within the OF and all branches.
-
+        if( baseNodes.size() == 1){
 
         }
 
-//        Search Alternate
-//        just first find anywhere the value can be put in the OF tree,
-//                then filter on the keys/path.
+
+
 //
 //
 // -- FALSE K:V
@@ -72,7 +80,7 @@ public final class Scribe {
 
 
 
-
+//If you have other nodes with a key or val, you can maybe ask if you should structure them like those nodes. *shrug*
 
 
 
@@ -81,6 +89,49 @@ public final class Scribe {
     }
 
 
+    //Wait, question. Technically since it's a highlevel function it could ask you which node it is that you wanted with Pauser.
+    //That way it only returns one node, like addHighLevel.
+
+    /**
+     * Takes an arrayList of nodes that must be in the order you think they are in the tree. (Technically I can write a method that
+     * sorts them on its own to figure out how they lay in the tree, but I was told this wasn't a priority)
+     * @param nodes
+     * @return
+     */
+    public static ArrayList<Node> searchHighLevel( ArrayList<Node> nodes ){
+        ArrayList<Node> contenders;
+
+        if(nodes == null || nodes.size() < 2){
+            logger.error("Add function requires at least two arguements.");
+            return null;
+        }
+
+        Node target = null;     //Node that will get the change. (Might be an OF node).
+        Node branchBase = nodes.get(0);     //The branch base
+        Node tail = nodes.get(nodes.size()-1); //Either a key that needs to be added or a val to a key.
+        Node keyTmp = nodes.get(nodes.size() - 2); //The second to last node must be checked as a contender for a Key in a K:V pair.
+
+        for(Node n: nodes){
+            //All nodes should exist in DB (implied, might be necessary to check at later time).
+            if(n==null){
+                logger.error("Null node. Couldn't complete function, returning null.");
+                return null;
+            }
+        }
+
+        //Create the ghost tree
+        GhostTree ghostTree = new GhostTree(branchBase);
+
+        //Filter branches incrementally.
+        for(Node n: nodes) {
+            ghostTree.filterBranches(n);
+        }
+
+        return ghostTree.getContenders();
+
+
+
+    }
 
 
 
