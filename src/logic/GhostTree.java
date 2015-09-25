@@ -193,7 +193,7 @@ public class GhostTree {
             } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
 
-            //FUCK FUCK FUCK DEVIN PLEASE CONFIRM THIS IS CORRECT
+
             //CONTINUING FOR IF VAL WASN'T NULL
             //If the Key we stopped on is String Representable, send value to string rep to create into a tmp node, store as val in gtree, cont.
             if ( StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLdata(gkey.toString())*/ ) {
@@ -283,9 +283,8 @@ public class GhostTree {
                     logger.debug("We got:  " + g.toString());
                     contenders.add(g);
                 }else{
-                    //Contenders.remove(c)
-                    //FUCK FUCK FUCK
-                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
+                    Notepad.delNode(g.getOriginNode());   //FUCK FUCK FUCK test this
 
                 }
             }
@@ -295,9 +294,8 @@ public class GhostTree {
                 if(c.containsInBranch(gnode)){
                     keepPlease.add(c);
                 }else{
-                    //contenders.remove(c);     NOT SURE IF WORKS WHILE ITERATING, DON'T RISK IT.
-                    //FUCK FUCK FUCK
-                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
+                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
+                    Notepad.delNode(c.getOriginNode());   //FUCK FUCK FUCK test this
 
                 }
 
