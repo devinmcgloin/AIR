@@ -292,6 +292,7 @@ public class GhostTree {
                 }else{
                     //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
                     Notepad.delNode(c.getOriginNode());   //FUCK FUCK FUCK test this
+                    //Problem with above method is that it doens't account for remainder of parents in branch added in the first filter on contenders.
 
                 }
 
@@ -309,6 +310,8 @@ public class GhostTree {
      * Checks to make sure the contenders and their branch still exist in the NotePad.
      */
     private void updateNotePad(){
+
+
 
         for(GhostNode gN : contenders){   //For each contender
             GhostNode tmp = gN;

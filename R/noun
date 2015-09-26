@@ -77,6 +77,7 @@ bmw
     door
     engine
     height
+    hood
     length
     light
     mass
@@ -85,17 +86,6 @@ bmw
     suspension
     wheel
     width
-bmw^color
-    ^logicalChildren
-    ^logicalParents
-    ^name
-    ^notKey
-bmw^door
-    ^logicalChildren
-    ^logicalParents
-    ^name
-    ^notKey
-    color
 boat
     ^logicalChildren
         container ship
@@ -244,6 +234,13 @@ handle
     ^logicalParents
     ^name
         handle
+    ^notKey
+    color
+hood
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        hood
     ^notKey
     color
 motorcycle

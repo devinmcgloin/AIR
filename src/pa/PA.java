@@ -97,6 +97,7 @@ public final class PA {
 
         Node bmw = memory.Notepad.searchByTitle("bmw");
         Node door = memory.Notepad.searchByTitle("door");
+        Node handle = memory.Notepad.searchByTitle("handle");
         Node color = memory.Notepad.searchByTitle("color");
         Node blue = memory.Notepad.searchByTitle("blue");
 
@@ -105,13 +106,13 @@ public final class PA {
 
         logger.debug(gtree.toString());
 
-//        gtree.filterBranches(blue);
-//        gtree.filterBranches(door);
+        gtree.filterBranches(blue);
+        gtree.filterBranches(door);
 //
-//        ArrayList<Node> contenders = gtree.getContenders();
-//        for(Node c : contenders){
-//            logger.debug("YAAAAAS: " + c.toString() );
-//        }
+        ArrayList<Node> contenders = gtree.getContenders();
+        for(Node c : contenders){
+            logger.debug("YAAAAAS: " + c.toString() );
+        }
 
 
     }
