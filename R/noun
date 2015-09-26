@@ -169,6 +169,7 @@ door
         door
     ^notKey
     color
+    handle
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -238,6 +239,13 @@ fruit
     length
     mass
     width
+handle
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        handle
+    ^notKey
+    color
 motorcycle
     ^logicalChildren
     ^logicalParents

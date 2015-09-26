@@ -43,15 +43,14 @@ public class GhostTree {
 
     private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch){
 
-
-
         //Nodes in the tree will be sorted alphabetically.
         ArrayList<String> keyStrings = Node.getKeys(base.getOriginNode());
         Collections.sort(keyStrings);
         if(gnodesInThisBranch ==null) {
             gnodesInThisBranch = new ArrayList<GhostNode>();
         }
-        /*We need to keep track of the nodes that we let OF so that we don't cause an infinite Ghost Tree.
+        /* NOTES ON INFINITE GHOST TREE
+        We need to keep track of the nodes that we let OF so that we don't cause an infinite Ghost Tree.
         I know. It's ridiculous. I spent half a day trying to figure out the logistics of how it would be caused.
         E.g. Friend is Person, Person has Friend. Friend OFs to Person^Friend and has Friend as a Key which OFs...
         Two things could cause it:
@@ -77,10 +76,8 @@ public class GhostTree {
             if(k.startsWith("^"))
                 continue;
             //Alright, either it's a K:V for Height:Node^Height
-            //So if it's a String Representable Key, you gotta play it safe.
-            //Or it's going to be LP:LC
-            //Actually either way it's going to be LP:LC since K:V in string rep keys get changed to nodes upon pulling out of db. Check with Devin on this.
-            //Either way, the Keys are Nodes you can get in the DB.
+            //So if it's a String Representable Key/Ldata you need to play it safe.
+            //Otherwise, keys are nodes you can find in the DB.
             Node t = Notepad.searchByTitle(k);
 
             if(t==null) {
@@ -93,7 +90,6 @@ public class GhostTree {
             allGNodes.add(gkey);
 
 
-
             //You need to search the Origin Node's Keys for Values. (Since you can't use the Height Key Node to get Devin's Height.)
             //MAKE SURE TO CATCH THE NULL
             String val = base.getVal(gkey);
@@ -103,9 +99,7 @@ public class GhostTree {
                 //------------------------------- GHOST PART OF THE GHOST TREE ----------------------------------------------//
 
                 //--------DIFFERENT STOPS
-
-                //System.out.println("hmmmmmm" + ( gkey.getOriginNode() == null) );
-
+                //STOP #0
                 //If the Key we stopped on is String Representable, we need to STOP. Do not get CI. That is a cognitive postulating brain thing.
                 if (StrRep.isKeyStringRepresentable(gkey.getOriginNode()) || LDATA.isLdata(gkey.toString())) {
                     continue;
@@ -160,6 +154,7 @@ public class GhostTree {
                     //Just inherit from the Key instead.
 
                     //FUCK FUCK FUCK need inheritance method where i can store but not apply adding ^lc and ^lp relation.
+                    //FUCK could store a boolean, then access that boolean when removing from notepad
                     of = SetLogic.xLikey(of, gkey.getOriginNode());
                 } else{
                     //Get the value node (if you can)
@@ -177,7 +172,7 @@ public class GhostTree {
                 }
 
                 //Send the new OF node (of) to the notepad
-                Notepad.addNode(of); //FUCK
+                Notepad.addNode(of); //FUCK check if works
 
                 //Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
                 GhostNode gOF = new GhostNode(of);
@@ -235,7 +230,7 @@ public class GhostTree {
 
             //Take this lc node and add it as the only child of the current gkey.
             gkey.addKid(lc);
-            //MARK ALL THE FUCKING KEYS THAT ARE IN THIS BRANCH.
+            //Mark all keys that are in this branch. (Only need keys since Keys are LP of Values anyway.
             gnodesInThisBranch.add(gkey);
 
             // Then, send that LC to be branched out as a continuation of the ghost tree.
@@ -288,6 +283,7 @@ public class GhostTree {
 
                 }
             }
+            updateNotePad();
         }else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
             ArrayList<GhostNode> keepPlease = new ArrayList<>();
             for(GhostNode c: contenders){
@@ -302,17 +298,34 @@ public class GhostTree {
             }
             //Now clear the past contenders, add in the ones that had hits in the branch (keepPlease)
             contenders = keepPlease;
+            //Make sure that the parents of all contenders still exist in NotePad.
+            updateNotePad();
         }
 
 
     }
 
+    /**
+     * Checks to make sure the contenders and their branch still exist in the NotePad.
+     */
+    private void updateNotePad(){
+
+        for(GhostNode gN : contenders){   //For each contender
+            GhostNode tmp = gN;
+            while(tmp.getParent()!=root){ //For their entire branch
+                Node n = tmp.getOriginNode();
+                if(!Notepad.containsInMem(n)) //If NotePad doesn't have a node in that branch
+                    Notepad.addNode(n);     //Add that node in branch to the NotePad
+                tmp = tmp.getParent();
+            }
+        }
+    }
 
 
+    /**
+     * Not to be used with removing from NotePad surprisingly.
+     */
     public void clearContenders(){
-        //FUCK FUCK FUCK
-        //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
-        //Or should we do this when a new tree is created? Need to talk to Dev about staging & tmps.
         contenders.clear();
     }
 
@@ -340,6 +353,7 @@ public class GhostTree {
         return SetLogic.xISyP(lc.node, lp.node);
     }
 
+    @Override
     public String toString(){
         String treeString = export(root).toString();
 
@@ -459,6 +473,8 @@ public class GhostTree {
         protected ArrayList<GhostNode> getKids(){
             return kids;
         }
+
+
 
 
         @Override

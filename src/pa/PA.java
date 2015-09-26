@@ -102,13 +102,16 @@ public final class PA {
 
         GhostTree gtree = new GhostTree(bmw);
 
-        gtree.filterBranches(blue);
-        gtree.filterBranches(door);
 
-        ArrayList<GhostTree.GhostNode> contenders = gtree.getContenders();
-        for(GhostTree.GhostNode c : contenders){
-            logger.debug("YAAAAAS: " + c.toString() + " -- " + c.getParent().toString());
-        }
+        logger.debug(gtree.toString());
+
+//        gtree.filterBranches(blue);
+//        gtree.filterBranches(door);
+//
+//        ArrayList<Node> contenders = gtree.getContenders();
+//        for(Node c : contenders){
+//            logger.debug("YAAAAAS: " + c.toString() );
+//        }
 
 
     }
