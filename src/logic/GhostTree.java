@@ -155,6 +155,17 @@ public class GhostTree {
 
                     //FUCK FUCK FUCK need inheritance method where i can store but not apply adding ^lc and ^lp relation.
                     //FUCK could store a boolean, then access that boolean when removing from notepad
+                    /*
+                    This would be solved easiest if there was a third type of inheritance function. Then when WhiteBoard is confirmed to add those nodes,
+                    it would shift the temporary ^tempLP in the node, and trigger an xISy between the tempLP and the node that had it.
+                    (Obviously no need to save ^tempLC in the parent node (car ^tempLC audi) is unecessary, especially since inheritence in overflow upon
+                    GhostTree creation is a liiiiiiitle bit more complex than that (it can take a LP from a populated value in an LP. Inherits from car^door as opposed to door)
+                    so it would just make most sense to store a ^tempLC or some shit into the origin node (the node, not the ghost node) and then when NotePad sends the nodes
+                     back to the whiteboard, if you get a confirmation, it should make sure to check there's no ^tempLC carrot key or that it's empty or someshit, and if there is
+                     it makes sure to get the actual node by title that it stored under the ^tempLC and trigger the xISy. ... also it would obviously have to delete the ^tempLC carrot
+                     header since that's not really important anywhere else except inbetween cycles on a GhostTree thing.)
+                     Good lord, that was a mouthful. That would work, just need Devin to sign off on that idea.
+                     */
                     of = SetLogic.xLikey(of, gkey.getOriginNode());
                 } else{
                     //Get the value node (if you can)
