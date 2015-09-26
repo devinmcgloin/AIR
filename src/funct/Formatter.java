@@ -18,8 +18,6 @@ public class Formatter {
     }
 
     /**
-     * todo need to also have a quick view.
-     *
      * @param n
      * @return
      */
@@ -52,9 +50,9 @@ public class Formatter {
     public static String quickView(Node n) {
         ArrayList<String> logicalParents = Node.getCarrot(n, "^logicalParents");
         if (!logicalParents.isEmpty()) {
-            return String.format("%s --> %s", logicalParents.get(0), Node.getTitle(n));
+            return String.format("%s <-- %s", logicalParents.get(0), Node.getTitle(n));
         } else {
-            return String.format("%s --> %s", "N/A", Node.getTitle(n));
+            return String.format("%s <-- %s", "N/A", Node.getTitle(n));
         }
     }
 

@@ -192,6 +192,7 @@ ferrari
 food
     ^logicalChildren
         fruit
+        meat
     ^logicalParents
         physical node
     ^name
@@ -244,6 +245,18 @@ liquid
         physical node
     ^name
         liquid
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+meat
+    ^logicalChildren
+    ^logicalParents
+        food
+    ^name
+        meat
     ^notKey
     color
     height

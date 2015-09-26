@@ -17,14 +17,13 @@ import java.util.Scanner;
 
 /**
  * Created by @devinmcgloin on 8/17/2015.
- *
+ * <p>
  * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
- *
+ * <p>
  * TODO have repl check for string representations inside arguments and pass along the instantiated nodes into the functions.
- *
+ * <p>
  * TODO Bulk add from a file.
  * TODO arrow up to get last command
- *
  */
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
@@ -46,19 +45,20 @@ public class REPL {
             "Nodes are referenced by name.\n";
     private Scanner input = new Scanner(System.in);
 
-    public REPL(){}
+    public REPL() {
+    }
 
     private ExecutionFlow invoke(String className, String methodName, ArrayList<String> argumentID) {
         try {
 
             Class execution = Class.forName(className);
             Method[] methods = execution.getMethods();
-            for(Method method : methods){
+            for (Method method : methods) {
                 logger.debug(method.getName() + " == " + methodName);
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
-                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
+                if (method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()) {
                     ExecutionFlow flow = new ExecutionFlow(method);
-                    for(String id : argumentID){
+                    for (String id : argumentID) {
                         if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
                         else if (id.startsWith("~"))
@@ -66,12 +66,12 @@ public class REPL {
                         else
                             flow.applyArgument(Notepad.search(id));
                     }
-                    if(flow.appliedP())
+                    if (flow.appliedP())
                         flow.invoke();
-                    if(flow.completedP()){
+                    if (flow.completedP()) {
                         logger.info("Method executed");
                         return flow;
-                    }else{
+                    } else {
                         logger.error("Method not executed");
                     }
                     break;
@@ -79,7 +79,7 @@ public class REPL {
 
             }
 
-        }catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             logger.error("Class not found...");
         }
         return null;
@@ -107,7 +107,7 @@ public class REPL {
         System.out.println("Nodes:    " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
         System.out.print(">>> ");
         String command = input.nextLine().trim();
-        if(command.toLowerCase().equals("q")){
+        if (command.toLowerCase().equals("q")) {
             Whiteboard.putAll();
             PA.save();
             Whiteboard.clearAll();
@@ -119,7 +119,7 @@ public class REPL {
             Whiteboard.putAll();
             PA.save();
             Whiteboard.clearAll();
-        }else {
+        } else {
             String[] terms = command.split(" ");
             Triplet<String, String, ArrayList<String>> parsedCommands = null;
             //Have the full class and method name

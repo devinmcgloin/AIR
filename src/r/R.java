@@ -3,10 +3,10 @@ package r;
 /**
  * Created by Blazej on 6/1/2015.
  */
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-
 
 
 /*
@@ -15,16 +15,15 @@ import java.util.ArrayList;
  */
 public class R {
 
+    static Logger logger = Logger.getLogger(R.class);
     String name;
     GeneralTree genTree;
     ArrayList<TreeNodeBase> hits;
     TreeNode current;
 
-    static Logger logger = Logger.getLogger(R.class);
-
 
     //Start R Interface
-    public R(String name){
+    public R(String name) {
         this.name = name;
         genTree = new GeneralTree();
         hits = new ArrayList<TreeNodeBase>();
@@ -32,17 +31,18 @@ public class R {
         current = get("R/" + name);
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void rename(String nodeName, String rAddress){
+    public void rename(String nodeName, String rAddress) {
         current = get(rAddress);
         genTree.rename(nodeName);
         genTree.current.updateAddress();
         //R.rename(nodeName, rAdress);
     }
-    public void del(String nodeName, String rAddress){
+
+    public void del(String nodeName, String rAddress) {
 
         current = get(rAddress);
         //System.out.println("did that work: "+current.getAddress());
@@ -50,9 +50,8 @@ public class R {
 
     }
 
-    public void add(String nodeName, String rAddress){
+    public void add(String nodeName, String rAddress) {
         //System.out.println( "oh shit  " + rAddress);
-
 
 
         current = get(rAddress);
@@ -62,8 +61,8 @@ public class R {
     }
 
     //INSERT parent for node
-    public void addParent(String nodeName, String rAddress){
-       // R.addParent(nodeName, rAddress);
+    public void addParent(String nodeName, String rAddress) {
+        // R.addParent(nodeName, rAddress);
         current = get(rAddress);
         genTree.addParent(nodeName);
 
@@ -74,19 +73,19 @@ public class R {
 
     }
 
-    public ArrayList<String> getChildren(String rAddress){
+    public ArrayList<String> getChildren(String rAddress) {
         return genTree.getNodeByAddress(rAddress).getChildrenString();
     }
 
-    public ArrayList<TreeNodeBase> rFullHashSearch(String terms){
+    public ArrayList<TreeNodeBase> rFullHashSearch(String terms) {
         return genTree.fullHashSearch(terms);
     }
 
-    public void save(){
+    public void save() {
         genTree.exportDB();
     }
 
-    public TreeNode getCurrent(){
+    public TreeNode getCurrent() {
         return genTree.getCurrent();
     }
 

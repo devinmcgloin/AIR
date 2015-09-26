@@ -10,7 +10,8 @@ public final class Reader {
     static Logger logger = Logger.getLogger(Reader.class);
 
 
-    private Reader(){}
+    private Reader() {
+    }
 
 
 }

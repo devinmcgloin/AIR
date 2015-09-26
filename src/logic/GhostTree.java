@@ -22,12 +22,12 @@ public class GhostTree {
     private GhostNode root;
 
 
-    public GhostTree(Node root){
-        if(root == null) {
+    public GhostTree(Node root) {
+        if (root == null) {
             logger.warn("You cannot start the GhostTree with a null node.");
             return;
         }
-        if(Node.getKeys(root) == null || Node.getKeys(root).size() == 0){
+        if (Node.getKeys(root) == null || Node.getKeys(root).size() == 0) {
             logger.warn("You cannot start the GhostTree with a dud node.");
             return;
         }
@@ -41,14 +41,13 @@ public class GhostTree {
         constructTree(this.root, null); // todo should go nodes be passed in?
     }
 
-    private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch){
-
+    private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch) {
 
 
         //Nodes in the tree will be sorted alphabetically.
         ArrayList<String> keyStrings = Node.getKeys(base.getOriginNode());
         Collections.sort(keyStrings);
-        if(gnodesInThisBranch ==null) {
+        if (gnodesInThisBranch == null) {
             gnodesInThisBranch = new ArrayList<GhostNode>();
         }
         /*We need to keep track of the nodes that we let OF so that we don't cause an infinite Ghost Tree.
@@ -74,9 +73,9 @@ public class GhostTree {
         //FUCK FUCK FUCK
         //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure.
 
-        for(String k : keyStrings ){
+        for (String k : keyStrings) {
             //Check if key is a carrot header
-            if(k.startsWith("^"))
+            if (k.startsWith("^"))
                 continue;
             //Alright, either it's a K:V for Height:Node^Height
             //So if it's a String Representable Key, you gotta play it safe.
@@ -85,8 +84,8 @@ public class GhostTree {
             //Either way, the Keys are Nodes you can get in the DB.
             Node t = Notepad.searchByTitle(k);
 
-            if(t==null) {
-                logger.warn("Couldn't find a node with the title: "+k);
+            if (t == null) {
+                logger.warn("Couldn't find a node with the title: " + k);
                 continue;
             }
 
@@ -95,12 +94,11 @@ public class GhostTree {
             allGNodes.add(gkey);
 
 
-
             //You need to search the Origin Node's Keys for Values. (Since you can't use the Height Key Node to get Devin's Height.)
             //MAKE SURE TO CATCH THE NULL
             String val = base.getVal(gkey);
 
-            if(val == null){
+            if (val == null) {
                 //We have to ghost it.
                 //------------------------------- GHOST PART OF THE GHOST TREE ----------------------------------------------//
 
@@ -115,17 +113,17 @@ public class GhostTree {
 
                 //OF High Level Stop #1
                 //If K is either a ^lc of the Origin or if K literally is the Origin.
-                if( xISy(gkey, base))
+                if (xISy(gkey, base))
                     continue;
 
 
                 //OF High Level Stop #2
                 boolean cont = false;
-                for (GhostNode pastg : gnodesInThisBranch){
-                    if(xISy(gkey, pastg))
+                for (GhostNode pastg : gnodesInThisBranch) {
+                    if (xISy(gkey, pastg))
                         cont = true;
                 }
-                if(cont)
+                if (cont)
                     continue;
 
 
@@ -148,7 +146,7 @@ public class GhostTree {
                 String ofTitle = base.toString() + "^" + gkey.toString();
                 Node of = new Node(ofTitle);
 
-                if(of == null){
+                if (of == null) {
                     logger.warn("How could this possibly be null? I'm creating a new node!");
                 }
 
@@ -177,16 +175,16 @@ public class GhostTree {
             //Or it's going to be a LC node of the LP   (which we check below in the fuck just in case)
             Node t2 = Notepad.searchByTitle(val);
 
-            if(t2==null) {
-                logger.warn("Couldn't find a node with the title: "+val);
+            if (t2 == null) {
+                logger.warn("Couldn't find a node with the title: " + val);
                 continue;
             }
 
             GhostNode lc = new GhostNode(t2);
 
             //Just to make sure...
-            if( !xISy(lc, gkey) )
-                logger.warn("Huh that's weird..." + val + " isn't a logical child of the key: "+ gkey.toString());
+            if (!xISy(lc, gkey))
+                logger.warn("Huh that's weird..." + val + " isn't a logical child of the key: " + gkey.toString());
 
             //Take this lc node and add it as the only child of the current gkey.
             gkey.addKid(lc);
@@ -203,26 +201,22 @@ public class GhostTree {
             // OR IT REALIZES THERE'S A LC THERE AS A VALUE / GHOSTOF NODE AND SENDS THAT TO CREATE THE NEXT INTERVAL OF THE TREE.
 
 
-
-
         }   //END LOOP THROUGH KEYS
 
 
     }
 
 
-
-
     /**
      * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch.
      * For the time being, the use of the filter branches method should be from leaf to root.
      * First give the values (what you truly want to add). Then add additional contextual nodes.
-     *
+     * <p>
      * If you are using filterBranches, make sure to clearContenders() first.
      *
      * @param node - this node (or a lp) must be located somewhere in a contending branch.
      */
-    public void filterBranches(Node node){
+    public void filterBranches(Node node) {
         //FUCK FUCK FUCK
         //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
 
@@ -230,20 +224,20 @@ public class GhostTree {
 
         //The first time you use filterBranches, it will find branches within the whole tree that contain your node.
         //Then it sends that node in the tree to "contenders"
-        if(contenders.size()==0){
-            for(GhostNode g: allGNodes){
+        if (contenders.size() == 0) {
+            for (GhostNode g : allGNodes) {
 
-                if ( xISy(gnode, g) ){
+                if (xISy(gnode, g)) {
                     logger.debug("We got:  " + g.toString());
                     contenders.add(g);
                 }
             }
-        }else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
+        } else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
             ArrayList<GhostNode> keepPlease = new ArrayList<>();
-            for(GhostNode c: contenders){
-                if(c.containsInBranch(gnode)){
+            for (GhostNode c : contenders) {
+                if (c.containsInBranch(gnode)) {
                     keepPlease.add(c);
-                }else{
+                } else {
                     //contenders.remove(c);     NOT SURE IF WORKS WHILE ITERATING, DON'T RISK IT.
                 }
 
@@ -256,28 +250,25 @@ public class GhostTree {
     }
 
 
-
-    public void clearContenders(){
+    public void clearContenders() {
         //FUCK FUCK FUCK
         //Don't forget to remove every one of those nodes that you eliminate from that branch from the whiteboard.
         //Or should we do this when a new tree is created? Need to talk to Dev about staging & tmps.
         contenders.clear();
     }
 
-    public ArrayList<GhostNode> getContenders(){
+    public ArrayList<GhostNode> getContenders() {
         return contenders;
     }
 
 
-
-
-    public boolean xISy(GhostNode lc, GhostNode lp){
-        if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
+    public boolean xISy(GhostNode lc, GhostNode lp) {
+        if (lc.compareTo(lp) == 0) //just in case it's literally the same node.
             return true;
         return SetLogic.xISyP(lc.node, lp.node);
     }
 
-    public String toString(){
+    public String toString() {
         String treeString = export(root).toString();
 
         return treeString;
@@ -286,14 +277,14 @@ public class GhostTree {
 
     protected StringBuilder export(GhostNode node) {
         StringBuilder DBout = new StringBuilder();
-        DBout.append(node.toString() +"\n");
+        DBout.append(node.toString() + "\n");
 
         logger.debug(node.getLevel());
 
         if (node.getLevel() == 0) {
             String buffer = "    ";
             GhostNode tmp;
-            if(node.getKids()==null){
+            if (node.getKids() == null) {
                 System.out.println(node.toString());
                 return DBout;
             }
@@ -307,7 +298,6 @@ public class GhostTree {
     }
 
     /**
-     *
      * @param node
      * @param buffer
      * @return
@@ -324,8 +314,6 @@ public class GhostTree {
     }
 
 
-
-
     public class GhostNode implements Comparable<GhostNode> {
 
         private Node node;
@@ -333,8 +321,8 @@ public class GhostTree {
         private GhostNode parent;
 
 
-        public GhostNode(Node node){
-            if(node == null || Node.getKeys(node) == null || Node.getKeys(node).size() == 0 ){
+        public GhostNode(Node node) {
+            if (node == null || Node.getKeys(node) == null || Node.getKeys(node).size() == 0) {
                 logger.warn("You cannot create a GhostNode with a dud node: " + node.toString());
                 return;
             }
@@ -343,7 +331,7 @@ public class GhostTree {
 
         }
 
-        public GhostNode getParent(){
+        public GhostNode getParent() {
             return parent;
         }
 
@@ -351,7 +339,7 @@ public class GhostTree {
             this.parent = parent;
         }
 
-        public String getVal( GhostNode key){
+        public String getVal(GhostNode key) {
 
             Node n = this.getOriginNode();
             String k = key.toString();
@@ -360,7 +348,7 @@ public class GhostTree {
 
         }
 
-        public void addKid(GhostNode kid){
+        public void addKid(GhostNode kid) {
             kid.setParent(this);
             kids.add(kid);
 
@@ -368,13 +356,14 @@ public class GhostTree {
 
         /**
          * Checks to see if current node has node as ancestor in the branch.
+         *
          * @param ancestor
          * @return
          */
-        protected boolean containsInBranch(GhostNode ancestor){
+        protected boolean containsInBranch(GhostNode ancestor) {
             GhostNode tmp = parent;
-            while( tmp != root){          //checks to see if c has gnode in branch (going backwards towards root)
-                if ( xISy(tmp, ancestor) ){
+            while (tmp != root) {          //checks to see if c has gnode in branch (going backwards towards root)
+                if (xISy(tmp, ancestor)) {
                     return true;
                 }
                 tmp = tmp.getParent();
@@ -389,17 +378,17 @@ public class GhostTree {
                 return parent.getLevel() + 1;
         }
 
-        protected Node getOriginNode(){
+        protected Node getOriginNode() {
             return this.node;
         }
 
-        protected ArrayList<GhostNode> getKids(){
+        protected ArrayList<GhostNode> getKids() {
             return kids;
         }
 
 
         @Override
-        public String toString(){
+        public String toString() {
             return this.node.toString();
         }
 

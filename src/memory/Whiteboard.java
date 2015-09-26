@@ -12,7 +12,6 @@ import java.util.Collections;
 /**
  * Created by devinmcgloin on 8/26/15.
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
- *
  */
 public class Whiteboard {
 
@@ -93,6 +92,7 @@ public class Whiteboard {
 
     /**
      * TODO May want to create a node on failed search (Perhaps this is more applicable to search by name)
+     *
      * @param title
      * @return
      */
@@ -142,30 +142,34 @@ public class Whiteboard {
 
     public static void addAllNotepadNodes() {
         ArrayList<Node> nodes = Notepad.getWorkingNodes();
+        if (nodes.isEmpty())
+            return;
+
         for (Node n : nodes) {
             Core.println(Formatter.quickView(n));
         }
-        if (nodes.isEmpty())
-            return;
 
         boolean cont = Pauser.trueFalse("Can these be added to whiteboard?");
         if (cont)
             addNodes(nodes);
         else {
-            boolean modified = false;
-            while (nodes.size() > 0) {
-                Core.println("Which one would you like to remove? ");
-                int n = Pauser.whichOne(nodes);
-                if (n >= 0) {
-                    nodes.remove(n);
-                    modified = true;
-                } else
-                    break;
-            }
-            if (modified) {
-                cont = Pauser.trueFalse("Can these edited be added to whiteboard?");
-                if (cont)
-                    addNodes(nodes);
+            cont = Pauser.trueFalse("Would you like to edit the Notepad?");
+            if (cont) {
+                boolean modified = false;
+                while (nodes.size() > 0) {
+                    Core.println("Which one would you like to remove? ");
+                    int n = Pauser.whichOne(nodes);
+                    if (n >= 0) {
+                        nodes.remove(n);
+                        modified = true;
+                    } else
+                        break;
+                }
+                if (modified) {
+                    cont = Pauser.trueFalse("Can these edited be added to whiteboard?");
+                    if (cont)
+                        addNodes(nodes);
+                }
             }
         }
 

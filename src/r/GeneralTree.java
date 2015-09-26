@@ -14,7 +14,7 @@ import java.util.List;
  * Thinks of the General tree as a whole.
  * Makes all changes and everything to the tree.
  * Keeps last used node in memory.
- * <p/>
+ * <p>
  * This is also what will handle loading in databases to populate a tree.
  * This is basically the tree.
  * Will also handle saving it.
@@ -29,14 +29,13 @@ public class GeneralTree {
     protected HashBrowns hash;
 
 
-
     protected GeneralTree() {
         //Start the R/ node.
         current = new TreeNode("R");
         current.setAddress("R");
 
         //Add the possible files it could have. (DBs)
-        if(rFolder.exists()) {
+        if (rFolder.exists()) {
             if (rFolder.length() >= 1) {
                 for (File fileEntry : rFolder.listFiles()) {
                     if (fileEntry.isDirectory()) {
@@ -49,7 +48,7 @@ public class GeneralTree {
                 //Sort database nodes so they work with BS.
                 current.sortChildren();
             }
-        }else{
+        } else {
             logger.fatal("R file folder does not exist.");
         }
 
@@ -65,7 +64,6 @@ public class GeneralTree {
             toParent();
 
     }
-
 
 
     /**
@@ -143,7 +141,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param node
      * @param buffer
      * @return
@@ -160,7 +157,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param dbName
      */
     protected void loadDB(String dbName) {
@@ -176,7 +172,7 @@ public class GeneralTree {
 
         //FOR OPTIMIZATION:
         //Replace the current "children" with a NEW longer initial ArrayList
-        if(current.getTitle().equals("test")) {
+        if (current.getTitle().equals("test")) {
             //current.setChildrenSize(120000);
         }
 
@@ -304,7 +300,7 @@ public class GeneralTree {
             childTraverse(dbName);
             //Check if DB is already in memory. If so, just traverse into it.
             // QA this fix
-            if(current.getChildren() == null) {
+            if (current.getChildren() == null) {
                 //This was where where export doubling.
                 loadDB(dbName);
             }
@@ -324,7 +320,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param newName
      */
     protected void rename(String newName) {
@@ -342,7 +337,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param name
      */
     protected void addParent(String name) {
@@ -444,15 +438,15 @@ public class GeneralTree {
     }
 
     /**
-     *
      * Takes the name of the next node you want to go to within current's children.
+     *
      * @param next
      * @return
      */
     protected boolean childTraverse(String next) {
         //Implementing using BS.
         int index = current.binarySearch(next);
-        if(index >= 0){
+        if (index >= 0) {
             current = current.getChildren().get(index);
             return true;
         }
@@ -464,7 +458,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param address
      * @return
      */
@@ -489,7 +482,7 @@ public class GeneralTree {
             //System.out.println("smkemltm:  " + nodeNames[i] + tabs);
             boolean foundNextNode = childTraverse(nodeNames[i]);
 
-           // System.out.println("Entereed");
+            // System.out.println("Entereed");
             //System.out.println(foundNextNode + ":  "  +nodeNames[i]);
 
             //Deletes from Hashmap if it couldn't find the node name.
@@ -509,7 +502,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param input
      * @return - list of all addresses that contain that node name.
      */
@@ -520,7 +512,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @param terms
      * @return
      */
@@ -556,9 +547,7 @@ public class GeneralTree {
     }
 
 
-
     /**
-     *
      * @param name
      */
     protected void addNode(String name) {
@@ -571,13 +560,12 @@ public class GeneralTree {
         }
         tmp = new TreeNode(name);
 
-        current.insertChild(tmp, (index*-1)-1);
+        current.insertChild(tmp, (index * -1) - 1);
         //We now use insertChild as oppose to addChildBlind
         //current.addChildBlind(tmp);
         hash.add(tmp);
 
     }
-
 
 
     /**
@@ -592,12 +580,13 @@ public class GeneralTree {
 
     /**
      * DEL NODE
+     *
      * @param name
      */
     protected void delNode(String name) {
         int index = current.binarySearch(name);
 
-        if(index>=0){
+        if (index >= 0) {
             current.removeChild(index);
         }
 
@@ -615,7 +604,6 @@ public class GeneralTree {
     }
 
     /**
-     *
      * @return - root of current node.
      */
     protected TreeNode getRoot() {
