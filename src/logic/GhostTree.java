@@ -286,9 +286,10 @@ public class GhostTree {
             for(GhostNode g: allGNodes){
 
                 if ( xISy(gnode, g) ){
-                    logger.debug("We got:  " + g.toString());
-                    contenders.add(g);
+                    contenders.add(g); // if it's a good key, you could place it under here.
                 }else{
+                    if(g == root)
+                        continue; //DON'T DELETE THE ROOT.
                     //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
                     Notepad.delNode(g.getOriginNode());
 
@@ -301,6 +302,8 @@ public class GhostTree {
                 if(c.containsInBranch(gnode)){
                     keepPlease.add(c);
                 }else{
+                    if(c == root)
+                        continue; //DON'T DELETE THE ROOT.
 
                     deleteNotePadBranch(c); //using NotePad.delNode isn't sufficient since you must also delete the branch from NotePad.
                     //Deleting the branch does not delete shared parents of still viable contenders since they will be added in the updateNotePad().
@@ -322,8 +325,14 @@ public class GhostTree {
      * @param leaf
      */
     private void deleteNotePadBranch(GhostNode leaf){
+        if(leaf ==null )
+            return;
+        if(leaf == root || leaf.getParent() == null)
+            if(Notepad.containsInMem(leaf.getOriginNode())) //If NotePad has the node in that branch
+                Notepad.delNode(leaf.getOriginNode());     //Del that node in branch to the NotePad
         GhostNode tmp = leaf;
-        while(tmp.getParent()!=root){ //For their entire branch
+        while(tmp.getParent()!=root || tmp == root){ //For their entire branch
+
             Node n = tmp.getOriginNode();
             if(Notepad.containsInMem(n)) //If NotePad has the node in that branch
                 Notepad.delNode(n);     //Del that node in branch to the NotePad
@@ -340,6 +349,8 @@ public class GhostTree {
 
         for(GhostNode gN : contenders){   //For each contender
             GhostNode tmp = gN;
+            if(tmp == null || tmp.getParent() == null)
+                continue;
             while(tmp.getParent()!=root){ //For their entire branch
                 Node n = tmp.getOriginNode();
                 if(!Notepad.containsInMem(n)) //If NotePad doesn't have a node in that branch
@@ -366,6 +377,19 @@ public class GhostTree {
             return null;
 
         for(GhostNode g : contenders){
+            contendersNodes.add(g.getOriginNode());
+        }
+
+        return contendersNodes;
+    }
+
+    public ArrayList<Node> getContendersBases(){
+        ArrayList<Node> contendersNodes = new ArrayList<Node>();
+        if(contenders == null ) //this should never happen
+            return null;
+
+        for(GhostNode g : contenders){
+            g = g.getParent();
             contendersNodes.add(g.getOriginNode());
         }
 
@@ -477,6 +501,8 @@ public class GhostTree {
          * @return
          */
         protected boolean containsInBranch(GhostNode ancestor){
+            if(parent == null)
+                return false;
             GhostNode tmp = parent;
             while( tmp != root){          //checks to see if c has gnode in branch (going backwards towards root)
                 if ( xISy(tmp, ancestor) ){

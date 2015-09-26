@@ -99,7 +99,6 @@ public final class Scribe {
      * @return
      */
     public static ArrayList<Node> searchHighLevel( ArrayList<Node> nodes ){
-        ArrayList<Node> contenders;
 
         if(nodes == null || nodes.size() < 2){
             logger.error("Add function requires at least two arguements.");
@@ -123,11 +122,11 @@ public final class Scribe {
         GhostTree ghostTree = new GhostTree(branchBase);
 
         //Filter branches incrementally.
-        for(Node n: nodes) {
-            ghostTree.filterBranches(n);
+        for(int i = nodes.size()-1; i>0; i--) {
+            ghostTree.filterBranches( nodes.get(i) );
         }
 
-        return ghostTree.getContenders();
+        return ghostTree.getContendersBases();
 
 
 

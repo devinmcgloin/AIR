@@ -1,6 +1,7 @@
 package pa;
 
 import logic.GhostTree;
+import logic.Scribe;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -101,16 +102,32 @@ public final class PA {
         Node color = memory.Notepad.searchByTitle("color");
         Node blue = memory.Notepad.searchByTitle("blue");
 
-        GhostTree gtree = new GhostTree(bmw);
+        ArrayList<Node> mahNodes = new ArrayList<Node>();
+        mahNodes.add(bmw);
+        mahNodes.add(door);
+        mahNodes.add(color);
+//
+//
 
 
-        logger.debug(gtree.toString());
+//        GhostTree gtree = new GhostTree(bmw);
+//
+//
+//        logger.debug(gtree.toString());
 
-        gtree.filterBranches(blue);
-//        gtree.filterBranches(door);
-        gtree.filterBranches(handle);
-        ArrayList<Node> contenders = gtree.getContenders();
-        for(Node c : contenders){
+        //GHOST TREE TESTS
+//        gtree.filterBranches(blue);
+////        gtree.filterBranches(door);
+//        gtree.filterBranches(handle);
+//        ArrayList<Node> contenders = gtree.getContenders();
+//        for(Node c : contenders){
+//            logger.debug("YAAAAAS: " + c.toString() );
+//        }
+
+
+        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
+//
+        for(Node c : searched){
             logger.debug("YAAAAAS: " + c.toString() );
         }
 
