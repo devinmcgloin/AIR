@@ -172,7 +172,7 @@ public class GhostTree {
                 }
 
                 //Send the new OF node (of) to the notepad
-                Notepad.addNode(of); //FUCK check if works
+                Notepad.addNode(of);
 
                 //Then, send that new GhostOF/LC to be branched out as a continuation of the ghost tree.
                 GhostNode gOF = new GhostNode(of);
@@ -279,7 +279,7 @@ public class GhostTree {
                     contenders.add(g);
                 }else{
                     //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
-                    Notepad.delNode(g.getOriginNode());   //FUCK FUCK FUCK test this
+                    Notepad.delNode(g.getOriginNode());
 
                 }
             }
@@ -290,20 +290,34 @@ public class GhostTree {
                 if(c.containsInBranch(gnode)){
                     keepPlease.add(c);
                 }else{
-                    //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
-                    Notepad.delNode(c.getOriginNode());   //FUCK FUCK FUCK test this
-                    //Problem with above method is that it doens't account for remainder of parents in branch added in the first filter on contenders.
+
+                    deleteNotePadBranch(c); //using NotePad.delNode isn't sufficient since you must also delete the branch from NotePad.
+                    //Deleting the branch does not delete shared parents of still viable contenders since they will be added in the updateNotePad().
 
                 }
 
             }
             //Now clear the past contenders, add in the ones that had hits in the branch (keepPlease)
             contenders = keepPlease;
-            //Make sure that the parents of all contenders still exist in NotePad.
+            //Make sure that the parents of all remaining contenders still exist in NotePad.
             updateNotePad();
         }
 
 
+    }
+
+    /**
+     * Similar to updateNotePad
+     * @param leaf
+     */
+    private void deleteNotePadBranch(GhostNode leaf){
+        GhostNode tmp = leaf;
+        while(tmp.getParent()!=root){ //For their entire branch
+            Node n = tmp.getOriginNode();
+            if(Notepad.containsInMem(n)) //If NotePad has the node in that branch
+                Notepad.delNode(n);     //Del that node in branch to the NotePad
+            tmp = tmp.getParent();
+        }
     }
 
     /**

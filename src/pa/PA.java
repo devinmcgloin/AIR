@@ -107,8 +107,8 @@ public final class PA {
         logger.debug(gtree.toString());
 
         gtree.filterBranches(blue);
-        gtree.filterBranches(door);
-//
+//        gtree.filterBranches(door);
+        gtree.filterBranches(handle);
         ArrayList<Node> contenders = gtree.getContenders();
         for(Node c : contenders){
             logger.debug("YAAAAAS: " + c.toString() );
