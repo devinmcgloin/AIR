@@ -131,7 +131,7 @@ public final class LDATA {
      * @return
      */
     public static Node getType(String unit) {
-        return SetLogic.getLogicalParent(PA.searchExactTitle(unit));
+        return SetLogic.getLogicalParents(PA.searchExactTitle(unit));
     }
 
     /**
@@ -140,7 +140,7 @@ public final class LDATA {
      * @return
      */
     public static Node getType(Node node) {
-        return SetLogic.getLogicalParent(node);
+        return SetLogic.getLogicalParents(node);
     }
 
     /**

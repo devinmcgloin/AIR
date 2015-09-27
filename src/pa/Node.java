@@ -59,7 +59,7 @@ public class Node {
         return node.rm(key, val);
     }
 
-//    public static ArrayList<Node> getLogicalParent(Node node) {
+//    public static ArrayList<Node> getLogicalParents(Node node) {
 //        if(node == null){
 //            return null;
 //        }

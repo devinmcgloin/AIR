@@ -138,7 +138,7 @@ public final class SetLogic {
      * @param node
      * @return
      */
-    public static Node getLogicalParent(Node node) {
+    public static Node getLogicalParents(Node node) {
         if(node == null){
             logger.warn("Cannot get parents of null node.");
             return null;
