@@ -1,7 +1,5 @@
 package pa;
 
-import logic.LDATA;
-import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Record;
@@ -9,8 +7,9 @@ import util.Record;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 8/17/15.
  * This class is basically locked.
+ * @author devinmcgloin
+ * @version 8/17/15.
  */
 public class Node {
 
@@ -26,7 +25,7 @@ public class Node {
     }
 
     //Used in adding more shit it needs to change.
-    public Node(TreeNode TN, ArrayList<Record> record){
+    public Node(TreeNode TN, ArrayList<Record> record) {
         this.TN = TN;
         this.record = record;
     }
@@ -41,74 +40,37 @@ public class Node {
         this.record = new ArrayList<>();
     }
 
-    public static Node add(Node node, String key){ return node.add(key); }
-
-    public static Node add(Node node, String key, String val ){
-        if (!SetLogic.isValid(key, val) || !LDATA.isValid(key, val))
-            return node.add(key, val);
-        logger.warn("Value not verified, original node returned.");
-        return node;
+    public static boolean contains(Node node, String query) {
+        return Node.getKeys(node).contains(query);
     }
 
-    public static Node rm(Node node, String key){
-        node = add(node,"^notKey", key);
+    public static Node add(Node node, String key) {
+        return node.add(key);
+    }
+
+    public static Node add(Node node, String key, String val) {
+        return node.add(key, val);
+    }
+
+    public static Node rm(Node node, String key) {
+        node = add(node, "^notKey", key);
         return node.rm(key);
     }
 
-    public static Node rm(Node node, String key, String val ){
+    public static Node rm(Node node, String key, String val) {
         return node.rm(key, val);
     }
 
-//    public static ArrayList<Node> getLogicalParents(Node node) {
-//        if(node == null){
-//            return null;
-//        }
-//
-//        ArrayList<Node> parents = new ArrayList<Node>();
-//        ArrayList<String> tmp = node.getCarrot("^logicalParents");
-//        if(tmp ==null)
-//            return null;
-//        for(String title: tmp){
-//            Node foo = PA.getByExactTitle(title);
-//            if(foo == null) {
-//                logger.error("NOUN: Couldn't find node: " + title);
-//                continue;
-//            }
-//            parents.add( foo );
-//        }
-//        return parents;
-//    }
-
-//    public static ArrayList<Node> getLogicalChildren(Node node){
-//        if(node == null){
-//            return null;
-//        }
-//
-//        ArrayList<Node> children = new ArrayList<Node>();
-//        ArrayList<String> tmp = node.getCarrot("^logicalChildren");
-//        if(tmp ==null)
-//            return null;
-//        for(String title: tmp){
-//            Node foo = PA.getByExactTitle(title);
-//            if(foo == null) {
-//                logger.error("NODE: Couldn't find node: " + title);
-//                continue;
-//            }
-//            children.add(foo);
-//        }
-//        return children;
-//    }
 
     /**
-     *
      * @param node
      * @return
      */
-    public static ArrayList<String> getName(Node node){
+    public static ArrayList<String> getName(Node node) {
         return node.getCarrot("^name");
     }
 
-    public static ArrayList<String> getKeys(Node node){
+    public static ArrayList<String> getKeys(Node node) {
         return node.getKeys();
     }
 
@@ -136,7 +98,7 @@ public class Node {
         return node.getCarrot(key);
     }
 
-    public static Node update(Node node, String key, String oldVal, String newVal){
+    public static Node update(Node node, String key, String oldVal, String newVal) {
         return node.update(key, oldVal, newVal);
     }
 
@@ -183,21 +145,20 @@ public class Node {
     }
 
 
-    private ArrayList<String> getName(){
+    private ArrayList<String> getName() {
         return getCarrot("^name");
     }
 
     private ArrayList<String> getCarrot(String Key) {
         TreeNode kid = TN.getChild(Key);
-        if(kid==null) {
-            logger.warn("Did not have the Key: "+Key);
+        if (kid == null) {
+            logger.warn("Did not have the Key: " + Key);
             return null;
-        }
-        else
+        } else
             return kid.getChildrenString();
     }
 
-    public ArrayList<Record> getRecord(){
+    public ArrayList<Record> getRecord() {
         return record;
     }
 
@@ -207,7 +168,7 @@ public class Node {
      *
      */
 
-    private Node add(String key){
+    private Node add(String key) {
         //First and foremost, we need a new root:
         TreeNode newNode = copyNode(TN);
 
@@ -218,6 +179,7 @@ public class Node {
 
     /**
      * See private add method for implementation.
+     *
      * @param Key
      * @param Val
      * @return
@@ -232,7 +194,6 @@ public class Node {
     }
 
     /**
-     *
      * @param Key
      * @return
      */
@@ -244,6 +205,7 @@ public class Node {
 
     /**
      * See private rm method for implementation.
+     *
      * @param Key
      * @param Val
      * @return
@@ -256,6 +218,7 @@ public class Node {
 
     /**
      * See private update method for implementation.
+     *
      * @param key
      * @param oldVal
      * @param newVal
@@ -273,13 +236,14 @@ public class Node {
 
     /**
      * See private add method for implementation.
+     *
      * @param keys
      * @param vals
      * @return
      */
     private Node batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
@@ -290,13 +254,12 @@ public class Node {
     }
 
     /**
-     *
      * @param keys
      * @return
      */
     private Node batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
         for (String key : keys) {
             removeChild(newNode, key);
@@ -307,13 +270,14 @@ public class Node {
 
     /**
      * See private rm method for implementation.
+     *
      * @param keys
      * @param vals
      * @return
      */
     private Node batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
 
         for (int i = 0; i < keys.size(); i++) {
@@ -334,14 +298,14 @@ public class Node {
      */
     private Node batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
 
         for (int i = 0; i < keys.size(); i++) {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
             additions.add(new Record("update", keys.get(i), oldVals.get(i), newVals.get(i)));
         }
-        return new Node(newNode);
+        return new Node(newNode, copyRecordAddContent(record, additions));
 
     }
 
@@ -383,7 +347,7 @@ public class Node {
 //
 //    }
 
-    private TreeNode copyNode(TreeNode oldNode){
+    private TreeNode copyNode(TreeNode oldNode) {
         TreeNode newNode = new TreeNode(oldNode.getTitle());
         newNode.setAddress(oldNode.getAddress());
         //Add copy to children.
@@ -396,7 +360,7 @@ public class Node {
     }
 
 
-    private TreeNode fullCopyNode(TreeNode oldNode){
+    private TreeNode fullCopyNode(TreeNode oldNode) {
         //First, copy the root of the BN
         TreeNode newNode = new TreeNode(oldNode.getTitle());
         newNode.setAddress(oldNode.getAddress());
@@ -414,7 +378,7 @@ public class Node {
 
     }
 
-    private TreeNode fullRecCopy(TreeNode oldNode){
+    private TreeNode fullRecCopy(TreeNode oldNode) {
         TreeNode newNode = new TreeNode(oldNode.getTitle());
         newNode.setAddress(oldNode.getAddress());
 
@@ -434,7 +398,8 @@ public class Node {
 
     /**
      * Sinful state function. acts upon the node passed in.
-     * @param node - Node you want to insert a value to
+     *
+     * @param node  - Node you want to insert a value to
      * @param value - treeNode you want to insert
      */
     private void insertNode(TreeNode node, TreeNode value) {
@@ -452,7 +417,8 @@ public class Node {
 
     /**
      * Sinful state function.
-     * @param node - node to remove the child from
+     *
+     * @param node  - node to remove the child from
      * @param child - string to indicate which child.
      */
     private void removeChild(TreeNode node, String child) { //Removes the child from the copied node.
@@ -461,10 +427,11 @@ public class Node {
 
     /**
      * Sinful state function.
+     *
      * @param newNode - node to be added to
-     * @param Key - key to add. Will work if key already exists or not.
+     * @param Key     - key to add. Will work if key already exists or not.
      */
-    private void add(TreeNode newNode, String Key){
+    private void add(TreeNode newNode, String Key) {
         //Root (newNode) is a copy. The any other changes must be copied up to the root.
         TreeNode key = newNode.getChild(Key);
         if (key == null) {
@@ -478,9 +445,10 @@ public class Node {
 
     /**
      * Sinful state function.
+     *
      * @param newNode - node to be added to
-     * @param Key - key to add. Will work if key already exists or not.
-     * @param Val - value to add to the key. Added to key before key joins new Node
+     * @param Key     - key to add. Will work if key already exists or not.
+     * @param Val     - value to add to the key. Added to key before key joins new Node
      */
     private void add(TreeNode newNode, String Key, String Val) {
         //Root (newNode) is a copy. The any other changes must be copied up to the root.
@@ -502,9 +470,10 @@ public class Node {
     /**
      * Removes VALUE
      * Sinful state function.
+     *
      * @param newNode - Node to remove from
-     * @param Key - Does not remove the key, but only the value that the key takes on. Keys can be removed using the public method rm.
-     * @param Val - values to remove from the key node.
+     * @param Key     - Does not remove the key, but only the value that the key takes on. Keys can be removed using the public method rm.
+     * @param Val     - values to remove from the key node.
      */
     private void rm(TreeNode newNode, String Key, String Val) {
         TreeNode keyNode = copyNode(newNode.getChild(Key)); //Make a copy of the new keynode (whose value will be removed)
@@ -515,10 +484,11 @@ public class Node {
 
     /**
      * Sinful state function.
+     *
      * @param newNode - node to be updated.
-     * @param key - key that is acted upon. Key value does not change, if key does not exist no values are changed.
-     * @param oldVal - if old value does not exist no update is made
-     * @param newVal -  values to replace old values.
+     * @param key     - key that is acted upon. Key value does not change, if key does not exist no values are changed.
+     * @param oldVal  - if old value does not exist no update is made
+     * @param newVal  -  values to replace old values.
      */
     private void update(TreeNode newNode, String key, String oldVal, String newVal) {
         TreeNode child = copyNode(newNode.getChild(key));   //copy of the key child
@@ -536,9 +506,9 @@ public class Node {
 
     }
 
-    private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, Record addition){
-        ArrayList<Record> newRecord = new ArrayList<Record>(); //I don't think you actually have to do this. I'll think it through later.
-        for(Record entry : record){
+    private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, Record addition) {
+        ArrayList<Record> newRecord = new ArrayList<>(); //I don't think you actually have to do this. I'll think it through later.
+        for (Record entry : record) {
             newRecord.add(entry);
         }
         newRecord.add(addition);
@@ -546,12 +516,12 @@ public class Node {
     }
 
     //Used in batch add?
-    private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, ArrayList<Record> addition){
-        ArrayList<Record> newRecord = new ArrayList<Record>();
-        for(Record entry : record){
+    private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, ArrayList<Record> addition) {
+        ArrayList<Record> newRecord = new ArrayList<>();
+        for (Record entry : record) {
             newRecord.add(entry);
         }
-        for(Record entry : addition){
+        for (Record entry : addition) {
             newRecord.add(entry);
         }
         return newRecord;

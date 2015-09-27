@@ -77,6 +77,7 @@ bmw
     door
     engine
     height
+    hood
     length
     light
     mass
@@ -85,17 +86,6 @@ bmw
     suspension
     wheel
     width
-bmw^color
-    ^logicalChildren
-    ^logicalParents
-    ^name
-    ^notKey
-bmw^door
-    ^logicalChildren
-    ^logicalParents
-    ^name
-    ^notKey
-    color
 boat
     ^logicalChildren
         container ship
@@ -169,6 +159,7 @@ door
         door
     ^notKey
     color
+    handle
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -192,6 +183,7 @@ ferrari
 food
     ^logicalChildren
         fruit
+        meat
     ^logicalParents
         physical node
     ^name
@@ -226,12 +218,51 @@ fruit
     ^logicalChildren
         apple
         blueberry
+        peach
         pear
         strawberry
     ^logicalParents
         food
     ^name
         fruit
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+handle
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        handle
+    ^notKey
+    color
+hood
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        hood
+    ^notKey
+    color
+liquid
+    ^logicalChildren
+    ^logicalParents
+        physical node
+    ^name
+        liquid
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+meat
+    ^logicalChildren
+    ^logicalParents
+        food
+    ^name
+        meat
     ^notKey
     color
     height
@@ -253,10 +284,23 @@ motorcycle
     width
 node
     ^logicalChildren
+        physical node
     ^logicalParents
     ^name
         node
     ^notKey
+peach
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        peach
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
 pear
     ^logicalChildren
     ^logicalParents
@@ -273,8 +317,10 @@ pear
 physical node
     ^logicalChildren
         food
+        liquid
         transport
     ^logicalParents
+        node
     ^name
         physical node
         physical

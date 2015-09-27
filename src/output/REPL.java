@@ -16,16 +16,18 @@ import java.util.Scanner;
 
 
 /**
- * Created by @devinmcgloin on 8/17/2015.
- *
+ * <p>
  * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
- *
+ * <p>
  * TODO have repl check for string representations inside arguments and pass along the instantiated nodes into the functions.
- *
+ * <p>
  * TODO Bulk add from a file.
  * TODO arrow up to get last command
- *
+
+ * @author devinmcgloin
+ * @version 8/17/2015.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
     private final String HELP_STRING = "REPL Help:\n" +
@@ -46,30 +48,33 @@ public class REPL {
             "Nodes are referenced by name.\n";
     private Scanner input = new Scanner(System.in);
 
-    public REPL(){}
+    public REPL() {
+    }
 
     private ExecutionFlow invoke(String className, String methodName, ArrayList<String> argumentID) {
         try {
 
             Class execution = Class.forName(className);
             Method[] methods = execution.getMethods();
-            for(Method method : methods){
+            for (Method method : methods) {
                 logger.debug(method.getName() + " == " + methodName);
                 logger.debug(method.getGenericParameterTypes().length + " == " + argumentID.size());
-                if(method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()){
+                if (method.getName().equals(methodName) && method.getGenericParameterTypes().length == argumentID.size()) {
                     ExecutionFlow flow = new ExecutionFlow(method);
-                    for(String id : argumentID){
+                    for (String id : argumentID) {
                         if (id.startsWith("\"") && id.endsWith("\""))
                             flow.applyArgument(id.replace("\"", ""));
+                        else if (id.startsWith("~"))
+                            flow.applyArgument(StrRep.getStringRep(id.replace("~", "")));
                         else
                             flow.applyArgument(Notepad.search(id));
                     }
-                    if(flow.appliedP())
+                    if (flow.appliedP())
                         flow.invoke();
-                    if(flow.completedP()){
+                    if (flow.completedP()) {
                         logger.info("Method executed");
                         return flow;
-                    }else{
+                    } else {
                         logger.error("Method not executed");
                     }
                     break;
@@ -77,13 +82,13 @@ public class REPL {
 
             }
 
-        }catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             logger.error("Class not found...");
         }
         return null;
     }
 
-    private Triplet<String, String, ArrayList<String>> parseFull(String command) {
+    public Triplet<String, String, ArrayList<String>> parseFull(String command) {
         //Have the full class and method name
         int firstPeriod = command.indexOf(".");
         int period = command.indexOf(".", firstPeriod + 1);
@@ -102,10 +107,10 @@ public class REPL {
 
     public boolean cycle() {
         System.out.println("\n");
-        System.out.println("Nodes::       " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
-        System.out.print(">>>");
+        System.out.println("Nodes:    " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
+        System.out.print(">>> ");
         String command = input.nextLine().trim();
-        if(command.toLowerCase().equals("q")){
+        if (command.toLowerCase().equals("q")) {
             Whiteboard.putAll();
             PA.save();
             Whiteboard.clearAll();
@@ -117,58 +122,8 @@ public class REPL {
             Whiteboard.putAll();
             PA.save();
             Whiteboard.clearAll();
-        }else {
-            String[] terms = command.split(" ");
-            Triplet<String, String, ArrayList<String>> parsedCommands = null;
-            //Have the full class and method name
-
-
-            if (terms.length == 1) {
-                if (terms[0].equals("test"))
-                    PA.test();
-                else
-                    Notepad.search(terms[0]);
-            } else if (terms[0].contains(".") && terms.length > 1) {
-                parsedCommands = parseFull(command);
-            } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called")) {
-                //Infix Notation
-                if (Core.contains(terms, "like")) {
-                    command = command.replace("like", ",");
-                    command = "logic.SetLogic.xLikey " + command;
-                    parsedCommands = parseFull(command);
-                } else if (Core.contains(terms, "is")) {
-                    command = command.replace("is", ",");
-                    command = "logic.SetLogic.xINHERITy " + command;
-                    parsedCommands = parseFull(command);
-                } else if (Core.contains(terms, "called")) {
-                    String[] calledSplit = command.split("called");
-                    command = "pa.Node.add " + calledSplit[0].trim() + ", \"^name\", \"" + calledSplit[1].trim() + "\"";
-                    parsedCommands = parseFull(command);
-                } else if (Core.contains(terms, "has")) {
-                    String[] hasSplit = command.split("has");
-                    if (StrRep.isStringRepresentation(hasSplit[1])) {
-
-                    } else {
-
-                    }
-                }
-            } else {
-                //Prefix Notation
-                switch (terms[0]) {
-                    case "create":
-                        Notepad.addNode(PA.createNode(command.replace("create", "").trim()));
-                        break;
-                    case "view":
-                        Core.println(Formatter.viewNode(Notepad.search(command.replace("view", ""))));
-                        break;
-                    case "add":
-                        command = command.replace("add", "pa.Node.add");
-                        parsedCommands = parseFull(command);
-                        break;
-                    default:
-                        return true;
-                }
-            }
+        } else {
+            Triplet<String, String, ArrayList<String>> parsedCommands = commandPreproccessor(command);
 
 
             ExecutionFlow returnedObject = null;
@@ -190,4 +145,59 @@ public class REPL {
     }
 
 
+    public Triplet<String, String, ArrayList<String>> commandPreproccessor(String command) {
+        String[] terms = command.split(" ");
+        Triplet<String, String, ArrayList<String>> parsedCommands = null;
+        //Have the full class and method name
+
+
+        if (terms.length == 1) {
+            if (terms[0].equals("test"))
+                PA.test();
+            else
+                Notepad.search(terms[0]);
+        } else if (terms[0].contains(".") && terms.length > 1) {
+            parsedCommands = parseFull(command);
+        } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called") || Core.contains(terms, "has")) {
+            //Infix Notation
+            if (Core.contains(terms, "like")) {
+                command = command.replace("like", ",");
+                command = "logic.SetLogic.xLikey " + command;
+                parsedCommands = parseFull(command);
+            } else if (Core.contains(terms, "is")) {
+                command = command.replace("is", ",");
+                command = "logic.SetLogic.xINHERITy " + command;
+                parsedCommands = parseFull(command);
+            } else if (Core.contains(terms, "called")) {
+                String[] calledSplit = command.split("called");
+                command = "pa.Node.add " + calledSplit[0].trim() + ", \"^name\", \"" + calledSplit[1].trim() + "\"";
+                parsedCommands = parseFull(command);
+            } else if (Core.contains(terms, "has")) {
+                String[] hasSplit = command.split("has");
+                if (StrRep.isStringRepresentation(hasSplit[1])) {
+                    //TODO ~ is the special string rep character.
+
+                } else {
+
+                }
+            }
+        } else {
+            //Prefix Notation
+            switch (terms[0]) {
+                case "create":
+                    Notepad.addNode(PA.createNode(command.replace("create", "").trim()));
+                    break;
+                case "view":
+                    Core.println(Formatter.viewNode(Notepad.search(command.replace("view", ""))));
+                    break;
+                case "add":
+                    command = command.replace("add", "pa.Node.add");
+                    parsedCommands = parseFull(command);
+                    break;
+                default:
+                    return null;
+            }
+        }
+        return parsedCommands;
+    }
 }

@@ -8,14 +8,15 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 6/17/15.
- * GENERAL NOTES
+ *  GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
- * TODO Need to QA everything
  * Default return value is true.
+ * <p>
+ * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
+ * implement functionality that allows manpulation of ldata expressions in node form.
+ * @author devinmcgloin
+ * @version 6/17/15.
  *
- * TODO add structured addition and removal functions as well as strucutred getCarrot.
- * TODO need to add functionality that allows manpulation of ldata expressions in node form.
  */
 public final class LDATA {
 
@@ -25,65 +26,63 @@ public final class LDATA {
     /**
      *
      */
-    private LDATA(){}
-
+    private LDATA() {
+    }
 
 
     /**
      * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the Node.
      * K:V pair values can be either a:
-     *      LData Value
-     *      Ans to Set (Node)
-     *      # of KEY
-     *      Overflown Node (not an ans, at all) - search takes care of this case.
-     *      Blank - Search should also never return a blank value.
-     *
+     * LData Value
+     * Ans to Set (Node)
+     * # of KEY
+     * Overflown Node (not an ans, at all) - search takes care of this case.
+     * Blank - Search should also never return a blank value.
+     * <p>
      * TODO This is used to verify that a expression node works for the given node.
      * TODO Take multiple params and run it thru blaze search.
-     *
+     * <p>
+     * Implement is valid for nodes in ldata
+     * <p>
      * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level get.
-     * @param node - node that the expression is being compared to.
-     * @param value - Expression node
+     *
+     * @param node       - node that the expression is being compared to.
+     * @param expression - Expression node
      * @return
      */
-    public static boolean isValid(Node node, Node value) {
-//        String type = Node.get(value, "type");
-//        if(type == null)
-//            return true;
-//
-//        Node typeTemplate = Notepad.searchByTitle(type);
-//        String nodeType = Node.get(node, type);
-//
-//
-//        if(StrRep.isStringRepresentation(nodeType)){
-//            if(StrRep.isCount(nodeType)){
-//                Node n = StrRep.getCount(nodeType);
-//                double num = getCast(n);
-//            }
-//            else if(StrRep.isMeasurement(nodeType)){
-//                Node n = StrRep.getMeasurement(nodeType);
-//
-//            }
-//        }
+    public static boolean expressionIsValid(Node node, Node expression) {
+        String type = Node.get(expression, "type");
+        if (type == null)
+            return true;
+
         return true;
+
+
     }
 
     /**
-     * TODO This is used to verify when adding values to nodes.
+     * TODO This is used to verify when adding values to nodes in the highlevel add function.
+     * <p>
+     * Implement isvalid in ldata
+     * <p>
+     * Going to need some backend number crunching.
      *
-     * @param node
+     * @param key
      * @param value
      * @return
      */
-    public static boolean isValid(String node, String value) {
-        if (!isLdata(node) || !isLdata(value))
+    public static boolean isValid(Node key, Node value) {
+        Node ldata = Notepad.searchByTitle("ldata");
+
+        if (!SetLogic.xISyP(key, ldata) || !SetLogic.xISyP(value, ldata))
             return true;
+
         return true;
+
 
     }
 
     /**
-     *
      * @param initialValue - We want this to be taj mahal^height, which is basically an instatiated height node.
      * @param unitTo
      * @return
@@ -127,6 +126,7 @@ public final class LDATA {
 
     /**
      * Takes the unit and returns the ldata node associated with it
+     *
      * @param unit
      * @return
      */
@@ -136,6 +136,7 @@ public final class LDATA {
 
     /**
      * Takes the unit and returns the ldata node associated with it
+     *
      * @param node
      * @return
      */
@@ -145,6 +146,7 @@ public final class LDATA {
 
     /**
      * Takes a type of ldata, but also a string of ldata values.
+     *
      * @param type
      * @return
      */
@@ -184,11 +186,16 @@ public final class LDATA {
     }
 
     public static boolean isUnitsEqual(Node a, Node b) {
-        return Node.get(a, "unit").equals(Node.get(b, "unit"));
+        if (Node.contains(a, "unit") && Node.contains(b, "unit"))
+            //noinspection ConstantConditions
+            return Node.get(a, "unit").equals(Node.get(b, "unit"));
+        else
+            return false;
     }
 
     /**
      * accounts for periods
+     *
      * @param str
      * @return
      */
@@ -207,22 +214,23 @@ public final class LDATA {
     }
 
     /**
-     *
      * @param node
      * @return
      */
     public static double getCast(Node node) {
-        return Double.parseDouble(Node.get(node, "#"));
+        if (Node.contains(node, "#"))
+            return Double.parseDouble(Node.get(node, "#"));
+        else
+            return -1;
     }
 
     /**
-     *
      * @param node
      * @param convertTitle
      * @param convertSteps
      * @return
      */
-    public static Node addConversion(Node node, String convertTitle, String convertSteps){
+    public static Node addConversion(Node node, String convertTitle, String convertSteps) {
         Node unitNode = getUnits(node);
         unitNode = Node.add(unitNode, "^conversion", convertTitle + "->" + convertSteps);
         Notepad.addNode(unitNode);
@@ -230,7 +238,6 @@ public final class LDATA {
     }
 
     /**
-     *
      * @param node
      * @param valRange
      * @return
@@ -272,7 +279,7 @@ public final class LDATA {
      * @param key
      * @return
      */
-    public static Node addUnit(Node node, String key){
+    public static Node addUnit(Node node, String key) {
         Node unitNode = getUnits(node);
         unitNode = Node.add(unitNode, "^unit", key);
         Notepad.addNode(unitNode);
@@ -286,13 +293,12 @@ public final class LDATA {
     public static Node getUnits(Node ldataType) {
         ArrayList<Node> unitNodes = Search.overflowSearch(ldataType, "^unit");
         if (unitNodes.size() == 1) {
-            Node unitNode = unitNodes.get(0);
-            return unitNode;
+            return unitNodes.get(0);
         } else return null;
     }
 
 //    /**
-//     *
+//     * implement unit scaling
 //     * @param value
 //     * @return
 //     */
