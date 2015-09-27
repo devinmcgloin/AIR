@@ -4,7 +4,8 @@ import org.apache.log4j.Logger;
 import pa.Node;
 
 /**
- * Created by Blazej on 8/28/2015.
+ * @author Blazej
+ * @version 8/28/2015.
  */
 public final class Scribe {
 

@@ -7,7 +7,8 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 8/25/15.
+ * @author devinmcgloin
+ * @version 8/25/15
  */
 public class Scanner {
 

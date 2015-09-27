@@ -7,7 +7,6 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 6/6/15.
  * Controls TreeNodeHash and is present in R.
  * <p>
  * CONSIDER the Following:
@@ -40,6 +39,10 @@ import java.util.ArrayList;
  * Steps:
  * Goto Empire State Building node, hash search for tall or synonyms.
  * Pull out key value pair related to query.
+ *
+ * @author devinmcgloin
+ * @version 6/6/15.
+ *
  */
 public final class Search {
 

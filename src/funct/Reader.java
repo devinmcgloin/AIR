@@ -3,7 +3,8 @@ package funct;
 import org.apache.log4j.Logger;
 
 /**
- * Created by devinmcgloin on 8/4/15.
+ * @author devinmcgloin
+ * @version 8/4/15
  */
 public final class Reader {
 

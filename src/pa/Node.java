@@ -7,8 +7,9 @@ import util.Record;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 8/17/15.
  * This class is basically locked.
+ * @author devinmcgloin
+ * @version 8/17/15.
  */
 public class Node {
 
@@ -37,6 +38,10 @@ public class Node {
     public Node(String title) {
         TN = new TreeNode(title);
         this.record = new ArrayList<>();
+    }
+
+    public static boolean contains(Node node, String query) {
+        return Node.getKeys(node).contains(query);
     }
 
     public static Node add(Node node, String key) {
@@ -238,7 +243,7 @@ public class Node {
      */
     private Node batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
         for (int i = 0; i < keys.size(); i++) {
             add(newNode, keys.get(i), vals.get(i));
@@ -254,7 +259,7 @@ public class Node {
      */
     private Node batchRM(ArrayList<String> keys) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
         for (String key : keys) {
             removeChild(newNode, key);
@@ -272,7 +277,7 @@ public class Node {
      */
     private Node batchRM(ArrayList<String> keys, ArrayList<String> vals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
 
         for (int i = 0; i < keys.size(); i++) {
@@ -293,14 +298,14 @@ public class Node {
      */
     private Node batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
         TreeNode newNode = copyNode(TN);
-        ArrayList<Record> additions = new ArrayList<Record>();
+        ArrayList<Record> additions = new ArrayList<>();
 
 
         for (int i = 0; i < keys.size(); i++) {
             update(newNode, keys.get(i), oldVals.get(i), newVals.get(i));
             additions.add(new Record("update", keys.get(i), oldVals.get(i), newVals.get(i)));
         }
-        return new Node(newNode);
+        return new Node(newNode, copyRecordAddContent(record, additions));
 
     }
 
@@ -502,7 +507,7 @@ public class Node {
     }
 
     private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, Record addition) {
-        ArrayList<Record> newRecord = new ArrayList<Record>(); //I don't think you actually have to do this. I'll think it through later.
+        ArrayList<Record> newRecord = new ArrayList<>(); //I don't think you actually have to do this. I'll think it through later.
         for (Record entry : record) {
             newRecord.add(entry);
         }
@@ -512,7 +517,7 @@ public class Node {
 
     //Used in batch add?
     private ArrayList<Record> copyRecordAddContent(ArrayList<Record> record, ArrayList<Record> addition) {
-        ArrayList<Record> newRecord = new ArrayList<Record>();
+        ArrayList<Record> newRecord = new ArrayList<>();
         for (Record entry : record) {
             newRecord.add(entry);
         }

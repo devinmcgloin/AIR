@@ -5,8 +5,10 @@ import pa.Node;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 6/8/15.
  * This is going to rely heavily on the more complex aspects of LDATA. Tabling for now.
+ * @author devinmcgloin
+ * @version 6/8/15.
+ *
  */
 public class MatrixBuilder {
 

@@ -12,7 +12,7 @@ public class Formatter {
     public static String formatNodes(ArrayList<Node> items) {
         StringBuilder output = new StringBuilder();
         for (Node node : items) {
-            output.append(" ").append(node.toString()).append(" ,");
+            output.append(" ").append(node.toString()).append(" |");
         }
         return output.toString();
     }
@@ -49,11 +49,7 @@ public class Formatter {
 
     public static String quickView(Node n) {
         ArrayList<String> logicalParents = Node.getCarrot(n, "^logicalParents");
-        if (!logicalParents.isEmpty()) {
-            return String.format("%s <-- %s", logicalParents.get(0), Node.getTitle(n));
-        } else {
-            return String.format("%s <-- %s", "N/A", Node.getTitle(n));
-        }
+        return !logicalParents.isEmpty() ? String.format("%s <-- %s", logicalParents.get(0), Node.getTitle(n)) : String.format("%s <-- %s", "N/A", Node.getTitle(n));
     }
 
     private static String stringSpacer(int i) {

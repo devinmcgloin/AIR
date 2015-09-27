@@ -1,7 +1,8 @@
 package r;
 
 /**
- * Created by Blazej on 6/1/2015.
+ * @author Blazej
+ * @version 6/1/2015
  */
 
 import org.apache.log4j.Logger;

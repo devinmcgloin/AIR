@@ -1,6 +1,7 @@
 package r;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class TreeNode implements Comparable<TreeNode> {
      */
     public TreeNode(String title) {
         this.title = title;
-        this.children = new ArrayList<TreeNode>();
+        this.children = new ArrayList<>();
 
     }
 
@@ -30,14 +31,14 @@ public class TreeNode implements Comparable<TreeNode> {
      * @param size
      */
     protected void setChildrenSize(int size) {
-        this.children = new ArrayList<TreeNode>(size);
+        this.children = new ArrayList<>(size);
 
     }
 
     public ArrayList<String> getAllNames() {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         names.add(getTitle());
-        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
+        ArrayList<TreeNode> allChildren = new ArrayList<>();
         for (TreeNode child : getAllChildren(allChildren)) {
             names.add(child.getTitle());
         }
@@ -80,7 +81,7 @@ public class TreeNode implements Comparable<TreeNode> {
 //    }
 
     public ArrayList<String> getChildrenString() {
-        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<>();
         for (TreeNode child : children) {
             a.add(child.getTitle());
         }
@@ -205,7 +206,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     @Override
     public java.lang.String toString() {
-        return title != null ? title.toString() : "[title null]";
+        return title != null ? title : "[title null]";
     }
 
     /**
@@ -295,7 +296,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     @Override
-    public int compareTo(TreeNode n) {
+    public int compareTo(@NotNull TreeNode n) {
         return this.address.compareTo(n.address);
     }
 

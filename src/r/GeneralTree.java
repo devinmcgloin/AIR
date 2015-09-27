@@ -39,6 +39,7 @@ public class GeneralTree {
             if (rFolder.length() >= 1) {
                 for (File fileEntry : rFolder.listFiles()) {
                     if (fileEntry.isDirectory()) {
+                        //noinspection UnnecessaryContinue
                         continue;
                     } else {
                         tmp = new TreeNode(fileEntry.getName());
@@ -132,7 +133,7 @@ public class GeneralTree {
             Collections.sort(node.getChildren());
             TreeNode tmp;
             for (TreeNode child : node.getChildren()) {
-                DBout.append(buffer + child.getTitle() + "\n");
+                DBout.append(buffer).append(child.getTitle()).append("\n");
                 DBout.append(exportRec(child, buffer));
             }
             return DBout;
@@ -150,7 +151,7 @@ public class GeneralTree {
         buffer += "    ";
         Collections.sort(node.getChildren());
         for (TreeNode child : node.getChildren()) {
-            DBout.append(buffer + child.getTitle() + "\n");
+            DBout.append(buffer).append(child.getTitle()).append("\n");
             DBout.append(exportRec(child, buffer));
         }
         return DBout;
@@ -506,7 +507,7 @@ public class GeneralTree {
      * @return - list of all addresses that contain that node name.
      */
     protected ArrayList<String> hashSearch(String input) {
-        ArrayList<String> addresses = new ArrayList<String>();
+        ArrayList<String> addresses = new ArrayList<>();
         addresses = hash.search(input);
         return addresses;
     }

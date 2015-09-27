@@ -12,8 +12,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created by Blazej on 6/3/2015.
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
+ * @author Blazej
+ * @version 6/3/2015.
  */
 
 public final class PA {
@@ -29,7 +30,7 @@ public final class PA {
      */
 
     protected static File rFolder = new File("./R/");
-    protected static ArrayList<R> rDB = new ArrayList<R>();
+    protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
 
@@ -158,40 +159,45 @@ public final class PA {
 //            }
 //            System.out.println(record);
 
-            if (record.getOperation().equals("add")) {
-                if (rDBexists(db)) {
-                    if (record.getVal() == null) {
-                        //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
-                        //System.out.println("\n\nyup\n\n");
-                        getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                    } else {
-                        getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                        getRb(db).add(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+            switch (record.getOperation()) {
+                case "add":
+                    if (rDBexists(db)) {
+                        if (record.getVal() == null) {
+                            //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
+                            //System.out.println("\n\nyup\n\n");
+                            getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
+                        } else {
+                            getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
+                            getRb(db).add(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
 
-                    }
-                    //HOW R'S ADD WORKS:
-                    //add("nodeName", "R/noun")
-                    //add, this node name, to this address.
+                        }
+                        //HOW R'S ADD WORKS:
+                        //add("nodeName", "R/noun")
+                        //add, this node name, to this address.
 
 //                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() + "/" + record.getKey());
 //                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() );
-                }
-            } else if (record.getOperation().equals("rm")) {
-                if (rDBexists(db)) {
-                    if (record.getVal() == null) {
-                        getRb(db).del(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                    } else {
-                        //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
-                        getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
                     }
-                }
-            } else if (record.getOperation().equals("update")) {
-                if (rDBexists(db)) {
-                    getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                    getRb(db).add(record.getNewVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                }
-            } else {
-                logger.error("Record: " + record.toString() + "\n Is not a valid record");
+                    break;
+                case "rm":
+                    if (rDBexists(db)) {
+                        if (record.getVal() == null) {
+                            getRb(db).del(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
+                        } else {
+                            //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
+                            getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                        }
+                    }
+                    break;
+                case "update":
+                    if (rDBexists(db)) {
+                        getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                        getRb(db).add(record.getNewVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                    }
+                    break;
+                default:
+                    logger.error("Record: " + record.toString() + "\n Is not a valid record");
+                    break;
             }
         }
 
@@ -228,7 +234,7 @@ public final class PA {
         start();
 
         ArrayList<TreeNodeBase> baseNodes = getRb(db).rFullHashSearch(terms);
-        ArrayList<TreeNode> treeNodeBase = new ArrayList<TreeNode>();
+        ArrayList<TreeNode> treeNodeBase = new ArrayList<>();
 
         //Check size
         int termSize = terms.split("`").length;

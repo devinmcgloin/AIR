@@ -1,7 +1,8 @@
 package logic;
 
 /**
- * Created by devinmcgloin on 8/25/15.
+ * @author devinmcgloin
+ * @version 8/25/15
  */
 public class Error {
 

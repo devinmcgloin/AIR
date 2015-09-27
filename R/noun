@@ -227,6 +227,7 @@ fruit
     ^logicalChildren
         apple
         blueberry
+        peach
         pear
         strawberry
     ^logicalParents
@@ -283,6 +284,18 @@ node
     ^name
         node
     ^notKey
+peach
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        peach
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
 pear
     ^logicalChildren
     ^logicalParents

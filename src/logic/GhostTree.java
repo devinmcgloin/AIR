@@ -3,6 +3,7 @@ package logic;
 import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import pa.Node;
 
 import java.util.ArrayList;
@@ -10,15 +11,16 @@ import java.util.Collections;
 
 
 /**
- * Created by Blazej on 8/29/2015.
  * Shit's ins@n3.
  * It's a Node with keys in it.
+ * @author Blazej
+ * @version 8/29/2015.
  */
 public class GhostTree {
 
     static Logger logger = Logger.getLogger(LDATA.class);
     protected ArrayList<GhostNode> allGNodes;
-    protected ArrayList<GhostNode> contenders = new ArrayList<GhostNode>();
+    protected ArrayList<GhostNode> contenders = new ArrayList<>();
     private GhostNode root;
 
 
@@ -34,9 +36,9 @@ public class GhostTree {
         this.root = new GhostNode(root);
 
         //Construct the Tree
-        allGNodes = new ArrayList<GhostNode>();
+        allGNodes = new ArrayList<>();
         allGNodes.add(this.root);
-        ArrayList<GhostNode> gnodesInThisBranch = new ArrayList<GhostNode>();
+        ArrayList<GhostNode> gnodesInThisBranch = new ArrayList<>();
         gnodesInThisBranch.add(this.root);
         constructTree(this.root, null); // todo should go nodes be passed in?
     }
@@ -48,7 +50,7 @@ public class GhostTree {
         ArrayList<String> keyStrings = Node.getKeys(base.getOriginNode());
         Collections.sort(keyStrings);
         if (gnodesInThisBranch == null) {
-            gnodesInThisBranch = new ArrayList<GhostNode>();
+            gnodesInThisBranch = new ArrayList<>();
         }
         /*We need to keep track of the nodes that we let OF so that we don't cause an infinite Ghost Tree.
         I know. It's ridiculous. I spent half a day trying to figure out the logistics of how it would be caused.
@@ -269,15 +271,13 @@ public class GhostTree {
     }
 
     public String toString() {
-        String treeString = export(root).toString();
-
-        return treeString;
+        return export(root).toString();
     }
 
 
     protected StringBuilder export(GhostNode node) {
         StringBuilder DBout = new StringBuilder();
-        DBout.append(node.toString() + "\n");
+        DBout.append(node.toString()).append("\n");
 
         logger.debug(node.getLevel());
 
@@ -289,7 +289,7 @@ public class GhostTree {
                 return DBout;
             }
             for (GhostNode child : node.getKids()) {
-                DBout.append(buffer + child.toString() + "\n");
+                DBout.append(buffer).append(child.toString()).append("\n");
                 DBout.append(exportRec(child, buffer));
             }
             return DBout;
@@ -307,7 +307,7 @@ public class GhostTree {
         buffer += "    ";
 
         for (GhostNode child : node.getKids()) {
-            DBout.append(buffer + child.toString() + "\n");
+            DBout.append(buffer).append(child.toString()).append("\n");
             DBout.append(exportRec(child, buffer));
         }
         return DBout;
@@ -317,7 +317,7 @@ public class GhostTree {
     public class GhostNode implements Comparable<GhostNode> {
 
         private Node node;
-        private ArrayList<GhostNode> kids = new ArrayList<GhostNode>();
+        private ArrayList<GhostNode> kids = new ArrayList<>();
         private GhostNode parent;
 
 
@@ -393,7 +393,7 @@ public class GhostTree {
         }
 
         @Override   //Compares titles of the two nodes.
-        public int compareTo(GhostNode o) {
+        public int compareTo(@NotNull GhostNode o) {
             String me = this.node.toString();
             String you = o.node.toString();
             return me.compareTo(you);

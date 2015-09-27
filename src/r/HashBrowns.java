@@ -33,11 +33,11 @@ public class HashBrowns {
 
     protected ArrayList<TreeNodeBase> fullHashSearch(String input, GeneralTree GenTree) {
         String address = "";
-        ArrayList<TreeNode> hits = new ArrayList<TreeNode>();
-        ArrayList<String> addresses = new ArrayList<String>();
-        ArrayList<String> allAddresses = new ArrayList<String>();
-        ArrayList<TreeNode> basePrep = new ArrayList<TreeNode>(); //helps eliminate dupes of Bases.
-        ArrayList<TreeNodeBase> allBaseNodes = new ArrayList<TreeNodeBase>(); //just a wrapper for holding TreeNode to sort.
+        ArrayList<TreeNode> hits = new ArrayList<>();
+        ArrayList<String> addresses = new ArrayList<>();
+        ArrayList<String> allAddresses = new ArrayList<>();
+        ArrayList<TreeNode> basePrep = new ArrayList<>(); //helps eliminate dupes of Bases.
+        ArrayList<TreeNodeBase> allBaseNodes = new ArrayList<>(); //just a wrapper for holding TreeNode to sort.
 
         String terms[] = input.split("`");
 
@@ -52,15 +52,14 @@ public class HashBrowns {
             }
 
             //Add those addresses to all addresses
-            for (int j = 0; j < addresses.size(); j++) {
-                allAddresses.add(addresses.get(j));
+            for (String address1 : addresses) {
+                allAddresses.add(address1);
             }
         }
 
         //Get the tree nodes for all addresses
-        for (int i = 0; i < allAddresses.size(); i++) {
-            address = allAddresses.get(i);
-            TreeNode tmp = GenTree.getNode(address);
+        for (String allAddress : allAddresses) {
+            TreeNode tmp = GenTree.getNode(allAddress);
             hits.add(tmp);
         }
 
@@ -76,8 +75,7 @@ public class HashBrowns {
         //In R's architecture they're the ones at the second dimension level. R/noun/TERM
 
         //Create a set of each node reversed to BASE addresses.
-        for (int i = 0; i < hits.size(); i++) {
-            TreeNode tmp = hits.get(i);
+        for (TreeNode tmp : hits) {
             tmp = tmp.getBaseNode();
             if (basePrep.contains(tmp))
                 continue;
@@ -95,8 +93,8 @@ public class HashBrowns {
 
             //Count how many it contains.
             //TODO this doesn't count for base nodes due to the way containsAll is defined.
-            for (int j = 0; j < terms.length; j++) {
-                if (tmp.containsAll(terms[j])) {
+            for (String term : terms) {
+                if (tmp.containsAll(term)) {
                     matchedTerms++;
                 }
             }
@@ -137,7 +135,7 @@ public class HashBrowns {
         if (map.get(name) != null) {
             addresses = map.get(name);
         } else {
-            addresses = new ArrayList<String>();
+            addresses = new ArrayList<>();
         }
 
         //Then it'll have to check if that add entry already exits. Although it never should.

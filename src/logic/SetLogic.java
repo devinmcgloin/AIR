@@ -9,13 +9,16 @@ import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
- * Created by devinmcgloin on 6/3/15.
  * Set logic needs to create sets of like information
  * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and getCarrot all of its logical children. (Ideally)
  * Implement or filtering - filter on multiple functions or expressions and take the union of all resulting sets.
  * TODO ideally the filter functions would return a new list, and not modify the old one.
+ * @author devinmcgloin
+ * @version 6/3/15.
+ *
  */
 public final class SetLogic {
 
@@ -57,11 +60,10 @@ public final class SetLogic {
         for (Node option : nodes) {
             //Is filter
             ArrayList<String> nodeNames = Node.getName(option);
-            for (String nodeName : nodeNames) {
-                if (nodeName.equals(name)) {
-                    returnNodes.add(option);
-                }
-            }
+            returnNodes.addAll(nodeNames.stream()
+                    .filter(nodeName -> nodeName.equals(name))
+                    .map(nodeName -> option)
+                    .collect(Collectors.toList()));
         }
 
         return returnNodes;
@@ -155,7 +157,7 @@ public final class SetLogic {
             return null;
         }
 
-        ArrayList<Node> parents = new ArrayList<Node>();
+        ArrayList<Node> parents = new ArrayList<>();
         ArrayList<String> tmp = Node.getCarrot(node, "^logicalParents");
         if (tmp == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalParents.");
@@ -177,7 +179,7 @@ public final class SetLogic {
                 logger.error("Couldn't find node: " + title);
                 continue;
             }
-            return foo;
+            parents.add(foo);
         }
         return null;
     }
@@ -188,7 +190,7 @@ public final class SetLogic {
             return null;
         }
 
-        ArrayList<Node> children = new ArrayList<Node>();
+        ArrayList<Node> children = new ArrayList<>();
         ArrayList<String> tmp = Node.getCarrot(node, "^logicalChildren");
         if (tmp == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalChildren.");

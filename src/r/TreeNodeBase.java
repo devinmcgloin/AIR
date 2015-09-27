@@ -1,6 +1,7 @@
 package r;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is only a wrapper for a TreeNode so we can use a different "compare" algorithim.
@@ -49,7 +50,7 @@ public class TreeNodeBase implements Comparable<TreeNodeBase> {
      * BASE = Strawberry  rank = 4 (contains all four search terms)	 *
      */
     @Override
-    public int compareTo(TreeNodeBase n) {
+    public int compareTo(@NotNull TreeNodeBase n) {
         //Stored from largest to smallest. Seems counter intuitive but it's not.
         if (this.rank < n.rank)
             return 1;

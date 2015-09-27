@@ -5,7 +5,8 @@ import pa.Node;
 import pa.PA;
 
 /**
- * Created by devinmcgloin on 8/25/15.
+ * @author devinmcgloin
+ * @version 8/25/15
  */
 public class StrRep {
 

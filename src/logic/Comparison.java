@@ -11,11 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * comment to push
- * you push your comment. what are you trying to say ambiguous comment?
- * <p>
- * okay now i know
- * Created by Blazej on 8/15/2015.
+ * @author Blazej
+ * @version 8/15/2015
  */
 public final class Comparison {
 
@@ -93,7 +90,7 @@ public final class Comparison {
         double sd = 0;
         double q1, q2, q3; //q2 is median, q1 is middle of first half of data set.
 
-        ArrayList<Double> values = new ArrayList<Double>();
+        ArrayList<Double> values = new ArrayList<>();
 //        ArrayList<String> units = LDATA.getUnits(ldbn);
 
         String value = "";
@@ -162,7 +159,7 @@ public final class Comparison {
         }
 
 
-        ArrayList<Pair<String, Double>> dist = new ArrayList<Pair<String, Double>>();
+        ArrayList<Pair<String, Double>> dist = new ArrayList<>();
         Pair<String, Double> tmp = new Pair<>("s", sd);
         dist.add(tmp);
         tmp = new Pair<>("q1", q1);

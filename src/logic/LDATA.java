@@ -8,13 +8,15 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 6/17/15.
- * GENERAL NOTES
+ *  GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * Default return value is true.
  * <p>
  * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
  * implement functionality that allows manpulation of ldata expressions in node form.
+ * @author devinmcgloin
+ * @version 6/17/15.
+ *
  */
 public final class LDATA {
 
@@ -184,7 +186,11 @@ public final class LDATA {
     }
 
     public static boolean isUnitsEqual(Node a, Node b) {
-        return Node.get(a, "unit").equals(Node.get(b, "unit"));
+        if (Node.contains(a, "unit") && Node.contains(b, "unit"))
+            //noinspection ConstantConditions
+            return Node.get(a, "unit").equals(Node.get(b, "unit"));
+        else
+            return false;
     }
 
     /**
@@ -212,7 +218,10 @@ public final class LDATA {
      * @return
      */
     public static double getCast(Node node) {
-        return Double.parseDouble(Node.get(node, "#"));
+        if (Node.contains(node, "#"))
+            return Double.parseDouble(Node.get(node, "#"));
+        else
+            return -1;
     }
 
     /**
@@ -284,8 +293,7 @@ public final class LDATA {
     public static Node getUnits(Node ldataType) {
         ArrayList<Node> unitNodes = Search.overflowSearch(ldataType, "^unit");
         if (unitNodes.size() == 1) {
-            Node unitNode = unitNodes.get(0);
-            return unitNode;
+            return unitNodes.get(0);
         } else return null;
     }
 

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by devinmcgloin on 8/28/15.
+ * @author devinmcgloin
+ * @version 8/28/15
  */
 public class Pauser {
 

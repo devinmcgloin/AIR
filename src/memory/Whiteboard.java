@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by devinmcgloin on 8/26/15.
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
+ * @author devinmcgloin
+ * @version 8/26/15.
  */
 public class Whiteboard {
 
     private static final double PROMINENCE_THRESHOLD = .6;
-    static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
+    private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
     private static ArrayList<Memory> workingMem = new ArrayList<>();
 
     private Whiteboard() {
@@ -51,9 +52,7 @@ public class Whiteboard {
     }
 
     protected static void addNodes(ArrayList<Node> nodes) {
-        for (Node n : nodes) {
-            addNode(n);
-        }
+        nodes.forEach(memory.Whiteboard::addNode);
     }
 
     /**
@@ -113,8 +112,7 @@ public class Whiteboard {
     }
 
     public static void cycle() {
-        for (Memory mem : workingMem)
-            mem.cycle();
+        workingMem.forEach(memory.Memory::cycle);
     }
 
     public static void putAll() {
