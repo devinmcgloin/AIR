@@ -32,7 +32,7 @@ public final class SetLogic {
      * @return
      */
     public static boolean isValid(String key, String val) {
-        if (StrRep.isStringRepresentation(val) && LDATA.isLdata(key))
+        if (!StrRep.isStringRepresentation(val) && !LDATA.isLdata(key))
             return true;
 
         Node keyNode = Notepad.searchByTitle(key);

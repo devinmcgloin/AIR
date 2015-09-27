@@ -11,11 +11,10 @@ import java.util.ArrayList;
  * Created by devinmcgloin on 6/17/15.
  * GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
- * TODO Need to QA everything
  * Default return value is true.
  * <p>
- * TODO add structured addition and removal functions as well as strucutred getCarrot.
- * TODO need to add functionality that allows manpulation of ldata expressions in node form.
+ * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
+ * implement functionality that allows manpulation of ldata expressions in node form.
  */
 public final class LDATA {
 
