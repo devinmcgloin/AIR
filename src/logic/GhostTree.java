@@ -151,7 +151,7 @@ public class GhostTree {
 
 
                 //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure/inheritance.
-                Node lp = SetLogic.getLogicalParent(root.getOriginNode()); //car
+                Node lp = SetLogic.getLogicalParents(root.getOriginNode()); //car
                 String value = Node.get( lp, gkey.toString() );    //String value, or null
                 if( value == null || !value.contains("^") || value.startsWith("^") ){
                     //Just inherit from the Key instead.
