@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by devinmcgloin on 8/28/15.
+ * @author devinmcgloin
+ * @version 8/28/15
  */
 public class Pauser {
 
@@ -26,7 +27,7 @@ public class Pauser {
         Core.println(s);
         Core.print(">>> ");
         String line = input.next();
-        if (line.matches("d+")) {
+        if (line.matches("\\d+")) {
             return Integer.parseInt(line);
         } else {
             return -1;

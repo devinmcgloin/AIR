@@ -1,10 +1,10 @@
 package r;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 
 
 public class TreeNode implements Comparable<TreeNode> {
@@ -21,23 +21,24 @@ public class TreeNode implements Comparable<TreeNode> {
      */
     public TreeNode(String title) {
         this.title = title;
-        this.children = new ArrayList<TreeNode>();
+        this.children = new ArrayList<>();
 
     }
 
     /**
      * Use in case of priming ArrayList for optimization.
+     *
      * @param size
      */
-    protected void setChildrenSize(int size){
-        this.children = new ArrayList<TreeNode>(size);
+    protected void setChildrenSize(int size) {
+        this.children = new ArrayList<>(size);
 
     }
 
     public ArrayList<String> getAllNames() {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         names.add(getTitle());
-        ArrayList<TreeNode> allChildren = new ArrayList<TreeNode>();
+        ArrayList<TreeNode> allChildren = new ArrayList<>();
         for (TreeNode child : getAllChildren(allChildren)) {
             names.add(child.getTitle());
         }
@@ -80,7 +81,7 @@ public class TreeNode implements Comparable<TreeNode> {
 //    }
 
     public ArrayList<String> getChildrenString() {
-        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<>();
         for (TreeNode child : children) {
             a.add(child.getTitle());
         }
@@ -105,8 +106,8 @@ public class TreeNode implements Comparable<TreeNode> {
         children.remove(childToRemove);
     }
 
-    protected void removeChild(int index){
-        if(index>=0){
+    protected void removeChild(int index) {
+        if (index >= 0) {
             children.remove(index);
         }
     }
@@ -132,7 +133,6 @@ public class TreeNode implements Comparable<TreeNode> {
         parent.addChildWithContainsCheck(n);    //make n a child of current's parent.
 
 
-
         parent.removeChild(this); //n's parent removes the old child.
         n.addChildWithContainsCheck(this);    //n gets current as a child
         this.parent = n;
@@ -148,10 +148,10 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
 
-    public void addChildWithContainsCheck(TreeNode childNode){
+    public void addChildWithContainsCheck(TreeNode childNode) {
         childNode.parent = this;
         childNode.updateAddress();
-        if(contains(childNode.getTitle())) {
+        if (contains(childNode.getTitle())) {
             logger.debug(String.format("Dimension: %s already exists.\n", childNode.getTitle()));
             return;
         }
@@ -172,29 +172,30 @@ public class TreeNode implements Comparable<TreeNode> {
         childNode.updateAddress();
 
 
-
         this.children.add(childNode);
 
     }
 
     //This didn't help. It's definitely an addressing issue though. And it has to do with cloning. A deep clone would be so much safer. And even faster depending on how it's being used.
-    public void addChildBlindWithNoAddressUpdate(TreeNode childNode){
+    public void addChildBlindWithNoAddressUpdate(TreeNode childNode) {
         childNode.parent = this;
         this.children.add(childNode);
     }
 
 
-    public void insertChild(TreeNode childNode, int index){
+    public void insertChild(TreeNode childNode, int index) {
         childNode.parent = this;
         childNode.updateAddress();
 
         this.children.add(index, childNode);
     }
-    public void insertChildNoAddressUpdate(TreeNode childNode, int index){
+
+    public void insertChildNoAddressUpdate(TreeNode childNode, int index) {
         childNode.parent = this;
 
         this.children.add(index, childNode);
     }
+
     public int getLevel() {
         if (this.isRoot())
             return 0;
@@ -203,10 +204,9 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
 
-
     @Override
     public java.lang.String toString() {
-        return title != null ? title.toString() : "[title null]";
+        return title != null ? title : "[title null]";
     }
 
     /**
@@ -226,8 +226,6 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
 
-
-
     /**
      * QA on containsAll
      *
@@ -237,33 +235,32 @@ public class TreeNode implements Comparable<TreeNode> {
     public boolean containsAll(String term) {
 
 
-
         //First, check its immediate children for contains.
-        if(contains(term))
+        if (contains(term))
             return true;
 
         //Then loop over its children.
-        for(TreeNode child : children){
+        for (TreeNode child : children) {
             boolean tmp = child.containsAll(term);
-            if(tmp)
+            if (tmp)
                 return tmp;
         }
         return false;
     }
 
 
-
-    public boolean contains(String nodeName){
+    public boolean contains(String nodeName) {
         //NOT SORTING CHILDREN, ASSUMES DATABASE IS SORTED.
         return binarySearch(nodeName) >= 0;
     }
 
-    public void sortChildren(){
+    public void sortChildren() {
         Collections.sort(this.children);
     }
 
     /**
      * You can use binarySearch if you already know the information is sorted.
+     *
      * @param nodeName
      * @return
      */
@@ -271,15 +268,15 @@ public class TreeNode implements Comparable<TreeNode> {
         int low = 0;
         int high = children.size() - 1;
         int middle = 0;
-        while(high >= low) {
+        while (high >= low) {
             middle = (low + high) / 2;
-            if( children.get(middle).getTitle().equals(nodeName) ) {
+            if (children.get(middle).getTitle().equals(nodeName)) {
                 return middle;
             }
-            if( children.get(middle).getTitle().compareTo(nodeName) < 0 ) {
+            if (children.get(middle).getTitle().compareTo(nodeName) < 0) {
                 low = middle + 1;
             }
-            if( children.get(middle).getTitle().compareTo(nodeName) > 0) {
+            if (children.get(middle).getTitle().compareTo(nodeName) > 0) {
                 high = middle - 1;
             }
         }
@@ -290,7 +287,7 @@ public class TreeNode implements Comparable<TreeNode> {
         //  Then, we insert at (index*-1)-1 or (index+1)*-1
 
 
-        return (low+1)*-1;
+        return (low + 1) * -1;
     }
 
 
@@ -299,13 +296,13 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     @Override
-    public int compareTo(TreeNode n) {
+    public int compareTo(@NotNull TreeNode n) {
         return this.address.compareTo(n.address);
     }
 
     public TreeNode getBaseNode() {
         TreeNode n = this;
-        if(n.isRoot()) {
+        if (n.isRoot()) {
             logger.debug("TreeNode: Base node function is called on root.");
             return null;
         }
@@ -327,7 +324,6 @@ public class TreeNode implements Comparable<TreeNode> {
 //    protected void setParent(TreeNode parent) {
 //        this.parent = parent;
 //    }
-
 
 
 }
