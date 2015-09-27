@@ -81,6 +81,15 @@ public class Notepad {
         }
     }
 
+    public static boolean containsInMem(Node node){
+        for(Node n: workingNodes){
+            if(n.toString().equals(node.toString())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected static void erasePage() {
         workingNodes.clear();
     }

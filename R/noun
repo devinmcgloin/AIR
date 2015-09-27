@@ -77,6 +77,7 @@ bmw
     door
     engine
     height
+    hood
     length
     light
     mass
@@ -85,17 +86,6 @@ bmw
     suspension
     wheel
     width
-bmw^color
-    ^logicalChildren
-    ^logicalParents
-    ^name
-    ^notKey
-bmw^door
-    ^logicalChildren
-    ^logicalParents
-    ^name
-    ^notKey
-    color
 boat
     ^logicalChildren
         container ship
@@ -169,6 +159,7 @@ door
         door
     ^notKey
     color
+    handle
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -240,6 +231,20 @@ fruit
     length
     mass
     width
+handle
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        handle
+    ^notKey
+    color
+hood
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        hood
+    ^notKey
+    color
 liquid
     ^logicalChildren
     ^logicalParents

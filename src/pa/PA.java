@@ -1,6 +1,7 @@
 package pa;
 
 import logic.GhostTree;
+import logic.Scribe;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -35,11 +36,12 @@ public final class PA {
     private static boolean started = false;
 
 
-    private PA() {
-    }
+    private PA(){}
 
 
-    public static void blaze() {
+
+
+    public static void blaze(){
 
         start();
 
@@ -84,25 +86,49 @@ public final class PA {
 //        put(ta);
 
 
+
+
     }
 
 
-    public static void test() {
+
+
+    public static void test(){
         start();
 
         Node bmw = memory.Notepad.searchByTitle("bmw");
         Node door = memory.Notepad.searchByTitle("door");
+        Node handle = memory.Notepad.searchByTitle("handle");
         Node color = memory.Notepad.searchByTitle("color");
         Node blue = memory.Notepad.searchByTitle("blue");
 
-        GhostTree gtree = new GhostTree(bmw);
+        ArrayList<Node> mahNodes = new ArrayList<Node>();
+        mahNodes.add(bmw);
+        mahNodes.add(door);
+        mahNodes.add(color);
+//
+//
 
-        gtree.filterBranches(blue);
-        gtree.filterBranches(door);
 
-        ArrayList<GhostTree.GhostNode> contenders = gtree.getContenders();
-        for (GhostTree.GhostNode c : contenders) {
-            logger.debug("YAAAAAS: " + c.toString() + " -- " + c.getParent().toString());
+//        GhostTree gtree = new GhostTree(bmw);
+//
+//
+//        logger.debug(gtree.toString());
+
+        //GHOST TREE TESTS
+//        gtree.filterBranches(blue);
+////        gtree.filterBranches(door);
+//        gtree.filterBranches(handle);
+//        ArrayList<Node> contenders = gtree.getContenders();
+//        for(Node c : contenders){
+//            logger.debug("YAAAAAS: " + c.toString() );
+//        }
+
+
+        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
+//
+        for(Node c : searched){
+            logger.debug("YAAAAAS: " + c.toString() );
         }
 
 
@@ -123,15 +149,14 @@ public final class PA {
         }
     }
 
-    public static void put(Node node) {
+    public static void put(Node node){
         start();
 
         put(node, "noun");
     }
 
     /**
-     * implemented log walker.
-     *
+     *  implement log walker.
      * @param node
      */
     private static void put(Node node, String db) {

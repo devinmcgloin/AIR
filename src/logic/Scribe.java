@@ -3,6 +3,9 @@ package logic;
 import org.apache.log4j.Logger;
 import pa.Node;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author Blazej
  * @version 8/28/2015.
@@ -33,8 +36,8 @@ public final class Scribe {
         }
 
         //Val shouldn't be an OF node.
-        if (tail.toString().contains("^")) {
-            logger.error("You cannot add an overflow node as a value. Although this may change in future.");
+        if(tail.toString().contains("^")){
+            logger.error("You cannot add an overflow node as a value. Although this may most definitely change in future.");
             return null;
         }
 
@@ -42,21 +45,30 @@ public final class Scribe {
         //Keep in mind length of nodes given.
         //Anything above 3 implies OF.
         //IF 3 exactly, B, K, V is still possible.
-        //IF 2, high likelyhood of B, K or B, V being triggered.
+        //IF 2, high likelihood of B, K or B, V being triggered.
 
 
-//        //-- check if second to last node is a Key to the Value.
-        if (SetLogic.xISyP(tail, keyTmp)) {
+        //Get all base
+        ArrayList<Node> baseNodes = searchHighLevel( new ArrayList<Node>(Arrays.asList(nodes)) );
 
-
-            //That's great news! Now we just gotta find where we can add this K:V pair within the OF and all branches.
-
-
+        if(baseNodes == null || baseNodes.size() == 0){
+            logger.error("Couldn't find any nodes in a single branch given that combination.");
+            //FUCK Could also imply there was a Key that should exist but doesn't.
+            return null;
         }
 
-//        Search Alternate
-//        just first find anywhere the value can be put in the OF tree,
-//                then filter on the keys/path.
+        //If two last nodes are KV pair, just find a place to put them.
+        boolean kvTail = false;
+        if( SetLogic.xISyP(tail, keyTmp) ){
+            kvTail = true;
+        }
+
+        if( baseNodes.size() == 1){
+            //Check for KV
+        }
+
+
+
 //
 //
 // -- FALSE K:V
@@ -67,12 +79,17 @@ public final class Scribe {
 //        it actually IS a K:V   -- ask if V is K?
 
 
+
+
+
+
+
+
         return target;
 
     }
 
-
-    public static Node addKey(Node base, Node key) {
+    public static Node addKey(Node base, Node key){
 
         //if key has no ^LP, it's honestly probably just something this base has.
         //could be a value.
