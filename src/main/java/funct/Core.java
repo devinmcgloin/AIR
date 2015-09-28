@@ -8,8 +8,8 @@ import java.util.ArrayList;
 /**
  * @author devinmcgloin
  * @version 8/20/15.
- * For small utility methods
- * Small change to push
+ *          For small utility methods
+ *          Small change to push
  */
 public class Core {
 

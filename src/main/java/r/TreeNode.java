@@ -295,7 +295,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     @Override
-    public int compareTo( TreeNode n) {
+    public int compareTo(TreeNode n) {
         return this.address.compareTo(n.address);
     }
 

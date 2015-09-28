@@ -81,9 +81,9 @@ public class Notepad {
         }
     }
 
-    public static boolean containsInMem(Node node){
-        for(Node n: workingNodes){
-            if(n.toString().equals(node.toString())){
+    public static boolean containsInMem(Node node) {
+        for (Node n : workingNodes) {
+            if (n.toString().equals(node.toString())) {
                 return true;
             }
         }

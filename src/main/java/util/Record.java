@@ -2,6 +2,7 @@ package util;
 
 /**
  * Used for putting LDBN/NBN classes and storing changes made to those nodes.
+ *
  * @author devinmcgloin
  * @version 8/16/15.
  */

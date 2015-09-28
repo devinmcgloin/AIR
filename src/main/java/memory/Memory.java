@@ -37,7 +37,7 @@ public class Memory implements Comparable<Memory> {
         this.time = time;
     }
 
-    public int compareTo( Memory m) {
+    public int compareTo(Memory m) {
         if (decay == m.getDecay())
             return 0;
         else if (decay > m.getDecay())

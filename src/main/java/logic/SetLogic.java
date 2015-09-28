@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
  * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and getCarrot all of its logical children. (Ideally)
  * Implement or filtering - filter on multiple functions or expressions and take the union of all resulting sets.
  * TODO ideally the filter functions would return a new list, and not modify the old one.
+ *
  * @author devinmcgloin
  * @version 6/3/15.
- *
  */
 public final class SetLogic {
 

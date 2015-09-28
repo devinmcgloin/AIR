@@ -42,7 +42,6 @@ import java.util.ArrayList;
  *
  * @author devinmcgloin
  * @version 6/6/15.
- *
  */
 public final class Search {
 

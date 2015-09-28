@@ -49,7 +49,7 @@ public class TreeNodeBase implements Comparable<TreeNodeBase> {
      * BASE = Strawberry  rank = 4 (contains all four search terms)	 *
      */
     @Override
-    public int compareTo( TreeNodeBase n) {
+    public int compareTo(TreeNodeBase n) {
         //Stored from largest to smallest. Seems counter intuitive but it's not.
         if (this.rank < n.rank)
             return 1;

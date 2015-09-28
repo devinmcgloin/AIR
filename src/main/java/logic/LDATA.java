@@ -8,15 +8,15 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
- *  GENERAL NOTES
+ * GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * Default return value is true.
  * <p>
  * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
  * implement functionality that allows manpulation of ldata expressions in node form.
+ *
  * @author devinmcgloin
  * @version 6/17/15.
- *
  */
 public final class LDATA {
 

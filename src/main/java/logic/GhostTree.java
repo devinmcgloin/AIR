@@ -12,6 +12,7 @@ import java.util.Collections;
 /**
  * Shit's ins@n3.
  * It's a Node with keys in it.
+ *
  * @author Blazej
  * @version 8/29/2015.
  */
@@ -70,7 +71,6 @@ public class GhostTree {
         (by nodes i mean keys)
         (marking the OF would be redundant and stupid (since it's a smaller piece of the Key) )
          */
-
 
 
         for (String k : keyStrings) {
@@ -148,11 +148,10 @@ public class GhostTree {
                 }
 
 
-
                 //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure/inheritance.
                 Node lp = SetLogic.getLogicalParents(root.getOriginNode()); //car
-                String value = Node.get( lp, gkey.toString() );    //String value, or null
-                if( value == null || !value.contains("^") || value.startsWith("^") ){
+                String value = Node.get(lp, gkey.toString());    //String value, or null
+                if (value == null || !value.contains("^") || value.startsWith("^")) {
                     //Just inherit from the Key instead.
 
                     //FUCK FUCK FUCK need inheritance method where i can store but not apply adding ^lc and ^lp relation.
@@ -169,15 +168,14 @@ public class GhostTree {
                      Good lord, that was a mouthful. That would work, just need Devin to sign off on that idea.
                      */
                     of = SetLogic.xLikey(of, gkey.getOriginNode());
-                } else{
+                } else {
                     //Get the value node (if you can)
                     Node oflp = Notepad.searchByTitle(value);
 
-                    if (oflp == null){
+                    if (oflp == null) {
                         //Just inherit from the Key instead.
                         of = SetLogic.xLikey(of, gkey.getOriginNode());
-                    }
-                    else{
+                    } else {
                         of = SetLogic.xLikey(of, oflp);
                     }
 
@@ -201,25 +199,24 @@ public class GhostTree {
             } // -------------------------------------- END GHOST PART OF GHOST TREE -------------------
 
 
-
             //CONTINUING FOR IF VAL WASN'T NULL
             //If the Key we stopped on is String Representable, send value to string rep to create into a tmp node, store as val in gtree, cont.
-            if ( StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLdata(gkey.toString())*/ ) {
-                if(  StrRep.isExpression(val) ){
+            if (StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLdata(gkey.toString())*/) {
+                if (StrRep.isExpression(val)) {
                     Node exp = StrRep.getExpression(val);
                     GhostNode gExp = new GhostNode(exp);
                     gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
                     allGNodes.add(gExp);
                     gkey.addKid(gExp);   //add as a val to the current key for sure.
-                } else if( StrRep.isMeasurement( val )){
+                } else if (StrRep.isMeasurement(val)) {
                     Node mes = StrRep.getExpression(val);
                     GhostNode gMes = new GhostNode(mes);
                     gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
                     allGNodes.add(gMes);
                     gkey.addKid(gMes);   //add as a val to the current key for sure.
-                } else if( StrRep.isCount( val )){
+                } else if (StrRep.isCount(val)) {
                     Node cnt = StrRep.getExpression(val);
-                    GhostNode gCnt= new GhostNode(cnt);
+                    GhostNode gCnt = new GhostNode(cnt);
                     gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
                     allGNodes.add(gCnt);
                     gkey.addKid(gCnt);   //add as a val to the current key for sure.
@@ -250,7 +247,6 @@ public class GhostTree {
             constructTree(lc, gnodesInThisBranch);
 
 
-
             //Further Explanation of the Overview of GhostTree construction/also the moment of realization of how to do it:
             //IT'S LIKE THIS TREE WORKS IN THREE PART INTERVALS.
             //YOU SEND IN THE ROOTS AND IT CREATES THE TREE'S KEYS
@@ -263,10 +259,6 @@ public class GhostTree {
 
 
     }
-
-
-
-
 
 
     /**
@@ -287,10 +279,10 @@ public class GhostTree {
         if (contenders.size() == 0) {
             for (GhostNode g : allGNodes) {
 
-                if ( xISy(gnode, g) ){
+                if (xISy(gnode, g)) {
                     contenders.add(g); // if it's a good key, you could place it under here.
-                }else{
-                    if(g == root)
+                } else {
+                    if (g == root)
                         continue; //DON'T DELETE THE ROOT.
                     //Don't forget to remove every one of those nodes that you eliminate from that branch from the NotePad
                     Notepad.delNode(g.getOriginNode());
@@ -298,13 +290,13 @@ public class GhostTree {
                 }
             }
             updateNotePad();
-        }else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
+        } else {//If there already are contenders, simply filter on whether or not one of the contenders has the node in its branch.
             ArrayList<GhostNode> keepPlease = new ArrayList<>();
             for (GhostNode c : contenders) {
                 if (c.containsInBranch(gnode)) {
                     keepPlease.add(c);
-                }else{
-                    if(c == root)
+                } else {
+                    if (c == root)
                         continue; //DON'T DELETE THE ROOT.
 
                     deleteNotePadBranch(c); //using NotePad.delNode isn't sufficient since you must also delete the branch from NotePad.
@@ -324,19 +316,20 @@ public class GhostTree {
 
     /**
      * Similar to updateNotePad
+     *
      * @param leaf
      */
-    private void deleteNotePadBranch(GhostNode leaf){
-        if(leaf ==null )
+    private void deleteNotePadBranch(GhostNode leaf) {
+        if (leaf == null)
             return;
-        if(leaf == root || leaf.getParent() == null)
-            if(Notepad.containsInMem(leaf.getOriginNode())) //If NotePad has the node in that branch
+        if (leaf == root || leaf.getParent() == null)
+            if (Notepad.containsInMem(leaf.getOriginNode())) //If NotePad has the node in that branch
                 Notepad.delNode(leaf.getOriginNode());     //Del that node in branch to the NotePad
         GhostNode tmp = leaf;
-        while(tmp.getParent()!=root || tmp == root){ //For their entire branch
+        while (tmp.getParent() != root || tmp == root) { //For their entire branch
 
             Node n = tmp.getOriginNode();
-            if(Notepad.containsInMem(n)) //If NotePad has the node in that branch
+            if (Notepad.containsInMem(n)) //If NotePad has the node in that branch
                 Notepad.delNode(n);     //Del that node in branch to the NotePad
             tmp = tmp.getParent();
         }
@@ -345,17 +338,16 @@ public class GhostTree {
     /**
      * Checks to make sure the contenders and their branch still exist in the NotePad.
      */
-    private void updateNotePad(){
+    private void updateNotePad() {
 
 
-
-        for(GhostNode gN : contenders){   //For each contender
+        for (GhostNode gN : contenders) {   //For each contender
             GhostNode tmp = gN;
-            if(tmp == null || tmp.getParent() == null)
+            if (tmp == null || tmp.getParent() == null)
                 continue;
-            while(tmp.getParent()!=root){ //For their entire branch
+            while (tmp.getParent() != root) { //For their entire branch
                 Node n = tmp.getOriginNode();
-                if(!Notepad.containsInMem(n)) //If NotePad doesn't have a node in that branch
+                if (!Notepad.containsInMem(n)) //If NotePad doesn't have a node in that branch
                     Notepad.addNode(n);     //Add that node in branch to the NotePad
                 tmp = tmp.getParent();
             }
@@ -366,31 +358,29 @@ public class GhostTree {
     /**
      * Not to be used with removing from NotePad surprisingly.
      */
-    public void clearContenders(){
+    public void clearContenders() {
         contenders.clear();
     }
 
 
-
-
-    public ArrayList<Node> getContenders(){
+    public ArrayList<Node> getContenders() {
         ArrayList<Node> contendersNodes = new ArrayList<Node>();
-        if(contenders == null ) //this should never happen
+        if (contenders == null) //this should never happen
             return null;
 
-        for(GhostNode g : contenders){
+        for (GhostNode g : contenders) {
             contendersNodes.add(g.getOriginNode());
         }
 
         return contendersNodes;
     }
 
-    public ArrayList<Node> getContendersBases(){
+    public ArrayList<Node> getContendersBases() {
         ArrayList<Node> contendersNodes = new ArrayList<Node>();
-        if(contenders == null ) //this should never happen
+        if (contenders == null) //this should never happen
             return null;
 
-        for(GhostNode g : contenders){
+        for (GhostNode g : contenders) {
             g = g.getParent();
             contendersNodes.add(g.getOriginNode());
         }
@@ -399,16 +389,14 @@ public class GhostTree {
     }
 
 
-
-
-    public boolean xISy(GhostNode lc, GhostNode lp){
-        if(lc.compareTo(lp) == 0) //just in case it's literally the same node.
+    public boolean xISy(GhostNode lc, GhostNode lp) {
+        if (lc.compareTo(lp) == 0) //just in case it's literally the same node.
             return true;
         return SetLogic.xISyP(lc.node, lp.node);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String treeString = export(root).toString();
 
         return treeString;
@@ -500,8 +488,8 @@ public class GhostTree {
          * @param ancestor
          * @return
          */
-        protected boolean containsInBranch(GhostNode ancestor){
-            if(parent == null)
+        protected boolean containsInBranch(GhostNode ancestor) {
+            if (parent == null)
                 return false;
             GhostNode tmp = parent;
             while (tmp != root) {          //checks to see if c has gnode in branch (going backwards towards root)
@@ -529,15 +517,13 @@ public class GhostTree {
         }
 
 
-
-
         @Override
         public String toString() {
             return this.node.toString();
         }
 
         @Override   //Compares titles of the two nodes.
-        public int compareTo( GhostNode o) {
+        public int compareTo(GhostNode o) {
             String me = this.node.toString();
             String you = o.node.toString();
             return me.compareTo(you);

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * This class is basically locked.
+ *
  * @author devinmcgloin
  * @version 8/17/15.
  */

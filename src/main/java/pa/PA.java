@@ -1,6 +1,5 @@
 package pa;
 
-import logic.GhostTree;
 import logic.Scribe;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 
 /**
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
+ *
  * @author Blazej
  * @version 6/3/2015.
  */
@@ -36,12 +36,11 @@ public final class PA {
     private static boolean started = false;
 
 
-    private PA(){}
+    private PA() {
+    }
 
 
-
-
-    public static void blaze(){
+    public static void blaze() {
 
         start();
 
@@ -86,14 +85,10 @@ public final class PA {
 //        put(ta);
 
 
-
-
     }
 
 
-
-
-    public static void test(){
+    public static void test() {
         start();
 
         Node bmw = memory.Notepad.searchByTitle("bmw");
@@ -127,8 +122,8 @@ public final class PA {
 
         ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
 //
-        for(Node c : searched){
-            logger.debug("YAAAAAS: " + c.toString() );
+        for (Node c : searched) {
+            logger.debug("YAAAAAS: " + c.toString());
         }
 
 
@@ -149,14 +144,15 @@ public final class PA {
         }
     }
 
-    public static void put(Node node){
+    public static void put(Node node) {
         start();
 
         put(node, "noun");
     }
 
     /**
-     *  implemented log walker.
+     * implemented log walker.
+     *
      * @param node
      */
     private static void put(Node node, String db) {
