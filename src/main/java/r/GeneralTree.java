@@ -22,7 +22,7 @@ import java.util.List;
 public class GeneralTree {
 
     static Logger logger = Logger.getLogger(GeneralTree.class);
-    protected final String FILEEXTENSION = "./src/main/resources/r/";
+    protected final String FILEEXTENSION = "/Users/devinmcgloin/Projects/AIR/src/main/resources/R/";
     protected TreeNode current;
     protected TreeNode tmp;
     protected File rFolder = new File(FILEEXTENSION);

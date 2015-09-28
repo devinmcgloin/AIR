@@ -30,7 +30,7 @@ public final class PA {
      * merging nodes --> tricky, idk how that function would look like
      */
 
-    protected static File rFolder = new File("./src/main/resources/r/");
+    protected static File rFolder = new File("/Users/devinmcgloin/Projects/AIR/src/main/resources/R/");
     protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
