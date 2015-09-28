@@ -8,17 +8,19 @@ import java.util.Scanner;
  */
 public class Pauser {
 
-    Scanner input = new Scanner(System.in);
+
 
     private Pauser() {
     }
 
-    public boolean trueFalse(String s) {
+    public static boolean trueFalse(String s) {
+        Scanner input = new Scanner(System.in);
         Core.println(s);
         return input.hasNextBoolean();
     }
 
-    public int tree(String s) {
+    public static int tree(String s) {
+        Scanner input = new Scanner(System.in);
         Core.println(s);
         return input.nextInt();
     }
