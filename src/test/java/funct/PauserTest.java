@@ -11,7 +11,6 @@ public class PauserTest {
 
     @Test
     public void testTrueFalse() throws Exception {
-        Assert.assertEquals("", true, Pauser.trueFalse("t"));
 
     }
 

@@ -30,7 +30,7 @@ public final class PA {
      * merging nodes --> tricky, idk how that function would look like
      */
 
-    protected static File rFolder = new File("./R/");
+    protected static File rFolder = new File("./src/main/resources/r/");
     protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
@@ -156,7 +156,7 @@ public final class PA {
     }
 
     /**
-     *  implement log walker.
+     *  implemented log walker.
      * @param node
      */
     private static void put(Node node, String db) {
