@@ -174,12 +174,15 @@ public class REPL {
                 parsedCommands = parseFull(command);
             } else if (Core.contains(terms, "has")) {
                 String[] hasSplit = command.split("has");
-                if (StrRep.isStringRepresentation(hasSplit[1])) {
-                    //TODO ~ is the special string rep character.
-
-                } else {
-
+                command = "logic.Scribe.addHighLevel";
+                for (String has : hasSplit) {
+                    if (StrRep.isStringRepresentation(has)) {
+                        command += "~" + has + ",";
+                        continue;
+                    }
+                    command += has + ",";
                 }
+                parsedCommands = parseFull(command);
             }
         } else {
             //Prefix Notation

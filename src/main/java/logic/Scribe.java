@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by Blazej on 8/28/2015.
+ * implement high level get here too. Would in some cases like to get nodes back.
+ * @author Blazej
+ * @version 8/28/2015.
+ *
  */
 public final class Scribe {
 
@@ -48,7 +51,7 @@ public final class Scribe {
 
 
         //Get all base
-        ArrayList<Node> baseNodes = searchHighLevel(new ArrayList<Node>(Arrays.asList(nodes)));
+        ArrayList<Node> baseNodes = searchHighLevel(nodes);
 
         if (baseNodes == null || baseNodes.size() == 0) {
             logger.error("Couldn't find any nodes in a single branch given that combination.");
@@ -92,10 +95,11 @@ public final class Scribe {
      * Takes an arrayList of nodes that must be in the order you think they are in the tree. (Technically I can write a method that
      * sorts them on its own to figure out how they lay in the tree, but I was told this wasn't a priority)
      *
-     * @param nodes
+     * @param args
      * @return
      */
-    public static ArrayList<Node> searchHighLevel(ArrayList<Node> nodes) {
+    public static ArrayList<Node> searchHighLevel(Node... args) {
+        ArrayList<Node> nodes = new ArrayList<Node>(Arrays.asList(args));
 
         if (nodes == null || nodes.size() < 2) {
             logger.error("Add function requires at least two arguements.");

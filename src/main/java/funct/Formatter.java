@@ -38,7 +38,6 @@ public class Formatter {
                     String kidKid = Node.get(n, kid);
                     if (kidKid != null)
                         stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
-
                 }
             }
         } else {

@@ -84,7 +84,7 @@ public class Node {
         ArrayList<String> t = node.getCarrot(key);
 
         if (t == null || t.isEmpty()) {
-            logger.warn("Throwing a null.");
+//            logger.warn("Throwing a null.");
             return null;
         }
         return node.getCarrot(key).get(0);

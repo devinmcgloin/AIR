@@ -28,7 +28,7 @@ public final class SetLogic {
     }
 
     /**
-     * implement is valid in set logic.
+     * todo QA this
      *
      * @param key
      * @param val

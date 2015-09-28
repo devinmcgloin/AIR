@@ -160,6 +160,13 @@ door
     ^notKey
     color
     handle
+expression
+    ^logicalChildren
+    ^logicalParents
+        ldata
+    ^name
+        expression
+    ^notKey
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -245,6 +252,14 @@ hood
         hood
     ^notKey
     color
+ldata
+    ^logicalChildren
+        expression
+        measurement
+    ^logicalParents
+    ^name
+        ldata
+    ^notKey
 liquid
     ^logicalChildren
     ^logicalParents
@@ -257,6 +272,13 @@ liquid
     length
     mass
     width
+measurement
+    ^logicalChildren
+    ^logicalParents
+        ldata
+    ^name
+        measurement
+    ^notKey
 meat
     ^logicalChildren
     ^logicalParents

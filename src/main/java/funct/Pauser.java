@@ -19,7 +19,7 @@ public class Pauser {
         Core.println(s + " (true | false)");
         Core.print(">>> ");
         String line = input.next();
-        return line.matches("(true|t|yes|T|True)");
+        return line.matches("(true|t|yes|T|True|y|Y)");
     }
 
     public static int tree(String s) {

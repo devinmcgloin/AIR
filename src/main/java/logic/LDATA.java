@@ -1,5 +1,6 @@
 package logic;
 
+import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * GENERAL NOTES
- * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
+ * Question not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * Default return value is true.
  * <p>
  * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
@@ -51,11 +52,14 @@ public final class LDATA {
      * @return
      */
     public static boolean expressionIsValid(Node node, Node expression) {
-        String type = Node.get(expression, "type");
-        if (type == null)
+        if (!StrRep.isExpression(Node.getStringRep(expression))) {
             return true;
+        } else {
+            Node expressionType = Scribe.get(expression, "type");
+            //Question: are options prioritized bu how close they are to the root node?
+            ArrayList<Node> options = Scribe.searchHighLevel(node, expressionType);
+        }
 
-        return true;
 
 
     }
@@ -96,7 +100,7 @@ public final class LDATA {
         }
         String[] conversionSteps = conversionStep.split(" ");
 
-        //TODO this seems to be redundant as its already done in conversionsteps. It returns the new spec. Need to check notes at home. QA this.
+        //Question this seems to be redundant as its already done in conversionsteps. It returns the new spec. Need to check notes at home. QA this.
 
         String oldVal = Double.toString(getCast(initialValue));
         String oldUnit = Node.get(initialValue, "unit");
