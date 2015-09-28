@@ -1,6 +1,7 @@
 package pa;
 
 import logic.GhostTree;
+import logic.Scribe;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -12,18 +13,17 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created by Blazej on 6/3/2015.
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- *
+ * @author Blazej
+ * @version 6/3/2015.
  */
 
-//External Methods of PA
 public final class PA {
 
 
     /**
      * HashSearch (Get set -> set logic???)
-     *
+     * <p>
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
      * reanalyze headers into their true base nodes and re-rank them.
@@ -31,7 +31,7 @@ public final class PA {
      */
 
     protected static File rFolder = new File("./R/");
-    protected static ArrayList<R>  rDB = new ArrayList<R>();
+    protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
 
@@ -96,22 +96,40 @@ public final class PA {
     public static void test(){
         start();
 
-        start();
-        Node bmw = memory.Whiteboard.search("bmw");
-        Node door =memory.Whiteboard.search("door");
-        Node color = memory.Whiteboard.search("color");
-        Node blue = memory.Whiteboard.search("blue");
+        Node bmw = memory.Notepad.searchByTitle("bmw");
+        Node door = memory.Notepad.searchByTitle("door");
+        Node handle = memory.Notepad.searchByTitle("handle");
+        Node color = memory.Notepad.searchByTitle("color");
+        Node blue = memory.Notepad.searchByTitle("blue");
 
-        GhostTree gtree = new GhostTree(bmw);
+        ArrayList<Node> mahNodes = new ArrayList<Node>();
+        mahNodes.add(bmw);
+        mahNodes.add(door);
+        mahNodes.add(color);
+//
+//
 
-        gtree.filterBranches(blue);
-        gtree.filterBranches(door);
 
-        ArrayList<GhostTree.GhostNode> contenders = gtree.getContenders();
-        for(GhostTree.GhostNode c : contenders){
-            System.out.println("YAAAAAS: " + c.toString() +" -- " +c.getParent().toString());
+//        GhostTree gtree = new GhostTree(bmw);
+//
+//
+//        logger.debug(gtree.toString());
+
+        //GHOST TREE TESTS
+//        gtree.filterBranches(blue);
+////        gtree.filterBranches(door);
+//        gtree.filterBranches(handle);
+//        ArrayList<Node> contenders = gtree.getContenders();
+//        for(Node c : contenders){
+//            logger.debug("YAAAAAS: " + c.toString() );
+//        }
+
+
+        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
+//
+        for(Node c : searched){
+            logger.debug("YAAAAAS: " + c.toString() );
         }
-
 
 
     }
@@ -138,7 +156,7 @@ public final class PA {
     }
 
     /**
-     * TODO implement log walker.
+     *  implement log walker.
      * @param node
      */
     private static void put(Node node, String db) {
@@ -153,12 +171,12 @@ public final class PA {
 
         //Check if node already exists in DB, if not, add it. Then continue regular put.
         TreeNode x = getRb(db).get("R/" + db + "/" + Node.getTitle(node));
-        if( !x.getTitle().equals(Node.getTitle(node)) ){
+        if (!x.getTitle().equals(Node.getTitle(node))) {
             getRb(db).add(Node.getTitle(node), "R/" + db + "/" + Node.getTitle(node));
         }
 
 
-        for(Record record : node.getRecord()){
+        for (Record record : node.getRecord()) {
 
             //TreeNode k = getRb("noun").getCarrot("R/");
 //            for(String name: k.getChildrenString()){
@@ -166,41 +184,45 @@ public final class PA {
 //            }
 //            System.out.println(record);
 
-            if(record.getOperation().equals("add")){
-                if(rDBexists(db)){
-                    if(record.getVal() == null ){
-                        //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
-                        //System.out.println("\n\nyup\n\n");
-                        getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node) );
-                    }else{
-                        getRb(db).add(record.getKey(),"R/" + db + "/" + Node.getTitle(node) );
-                        getRb(db).add(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey() );
+            switch (record.getOperation()) {
+                case "add":
+                    if (rDBexists(db)) {
+                        if (record.getVal() == null) {
+                            //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
+                            //System.out.println("\n\nyup\n\n");
+                            getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
+                        } else {
+                            getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
+                            getRb(db).add(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
 
-                    }
-                    //HOW R'S ADD WORKS:
-                    //add("nodeName", "R/noun")
-                    //add, this node name, to this address.
+                        }
+                        //HOW R'S ADD WORKS:
+                        //add("nodeName", "R/noun")
+                        //add, this node name, to this address.
 
 //                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() + "/" + record.getKey());
 //                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() );
-                }
-            }else if(record.getOperation().equals("rm")) {
-                if(rDBexists(db)){
-                    if(record.getVal() == null ){
-                        getRb(db).del(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                    }else{
-                        //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
-                        getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
                     }
-                }
-            }
-            else if(record.getOperation().equals("update")){
-                if(rDBexists(db)){
-                    getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                    getRb(db).add(record.getNewVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                }
-            }else{
-                logger.error("Record: " + record.toString() + "\n Is not a valid record");
+                    break;
+                case "rm":
+                    if (rDBexists(db)) {
+                        if (record.getVal() == null) {
+                            getRb(db).del(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
+                        } else {
+                            //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
+                            getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                        }
+                    }
+                    break;
+                case "update":
+                    if (rDBexists(db)) {
+                        getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                        getRb(db).add(record.getNewVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
+                    }
+                    break;
+                default:
+                    logger.error("Record: " + record.toString() + "\n Is not a valid record");
+                    break;
             }
         }
 
@@ -211,8 +233,8 @@ public final class PA {
 
         start();
 
-        for(R database : rDB){
-            if(database.getName().equals(db))
+        for (R database : rDB) {
+            if (database.getName().equals(db))
                 return database;
         }
         return null;
@@ -222,13 +244,12 @@ public final class PA {
 
         start();
 
-        for(R database : rDB){
-            if(database.getName().equals(db))
+        for (R database : rDB) {
+            if (database.getName().equals(db))
                 return true;
         }
         return false;
     }
-
 
 
     //TODO: has to count if base nodes returned match the number of terms being asked for.
@@ -238,7 +259,7 @@ public final class PA {
         start();
 
         ArrayList<TreeNodeBase> baseNodes = getRb(db).rFullHashSearch(terms);
-        ArrayList<TreeNode> treeNodeBase = new ArrayList<TreeNode>();
+        ArrayList<TreeNode> treeNodeBase = new ArrayList<>();
 
         //Check size
         int termSize = terms.split("`").length;
@@ -250,12 +271,12 @@ public final class PA {
         //Number of terms matches baseNode hits
         if (baseNodes.get(0).getRank() == termSize) {
             int i = 0;
-            //TODO assumes there will be values that dont match. This isnt always true. Fixed with for each loop.
+            // assumes there will be values that dont match. This isnt always true. Fixed with for each loop.
 
             for (TreeNodeBase node : baseNodes) {
                 if (node.getRank() == termSize) {
                     treeNodeBase.add(node.getOrigin());
-                }else{
+                } else {
                     break;
                 }
             }
@@ -278,7 +299,7 @@ public final class PA {
 
         ArrayList<Node> nounBaseNodes = new ArrayList<>();
         ArrayList<TreeNode> nodes = hashSearch("noun", terms);
-        for (TreeNode node : nodes){
+        for (TreeNode node : nodes) {
             nounBaseNodes.add(new Node(node));
         }
         return nounBaseNodes;
@@ -288,12 +309,12 @@ public final class PA {
         start();
 
         //I mirrored the logic you used in your nounHashSearch method.
-        if(rDBexists("noun")){
+        if (rDBexists("noun")) {
             TreeNode node = getRb("noun").get("R/noun/" + title);
             if (node == null)
                 return null;
             Node nounBase = new Node(node);
-            if(Node.getTitle(nounBase).equals(title))
+            if (Node.getTitle(nounBase).equals(title))
                 return nounBase;
             else
                 return null;
@@ -317,7 +338,7 @@ public final class PA {
         } else {
             int i = 0;
             while (searchExactTitle(title + i) != null) {
-                i = i++;
+                i = i + 1;
                 nodes.add(searchExactTitle(title + i));
             }
         }
@@ -325,31 +346,31 @@ public final class PA {
     }
 
 
-
     public static void save() {
 
         start();
 
-        for(R r : rDB)
+        for (R r : rDB)
             r.save();
     }
 
     /**
-     * TODO need to automatically add all the ^ headers that NBN's normally have
+     * automatically add all the ^ headers that NBN's normally have
+     *
      * @param title
      * @return
      */
-    public static Node createNode(String title){
+    public static Node createNode(String title) {
         start();
-
+        R r = getRb("noun");
         //I mirrored the logic you used in your nounHashSearch method.
-        if(rDBexists("noun")){
-            getRb("noun").add(title, "R/noun/");
-            getRb("noun").add("^name", "R/noun/" + title);
-            getRb("noun").add("^notKey", "R/noun/" + title);
-            getRb("noun").add("^logicalChildren", "R/noun/" + title);
-            getRb("noun").add("^logicalParents", "R/noun/" + title);
-            getRb("noun").add(title, "R/noun/" + title + "/" + "^name");
+        if (r != null) {
+            r.add(title, "R/noun/");
+            r.add("^name", "R/noun/" + title);
+            r.add("^notKey", "R/noun/" + title);
+            r.add("^logicalChildren", "R/noun/" + title);
+            r.add("^logicalParents", "R/noun/" + title);
+            r.add(title, "R/noun/" + title + "/" + "^name");
             return searchExactTitle(title);
         }
         return null;

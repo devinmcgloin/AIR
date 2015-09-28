@@ -1,13 +1,14 @@
 package logic;
 
-import memory.Whiteboard;
+import memory.Notepad;
 import pa.Node;
 import pa.PA;
 
 import java.util.ArrayList;
 
 /**
- * Created by devinmcgloin on 8/25/15.
+ * @author devinmcgloin
+ * @version 8/25/15
  */
 public class Scanner {
 
@@ -26,7 +27,7 @@ public class Scanner {
         for (Node n : LPAppearances) {
             for (String firstKey : Node.getKeys(n)) {
                 for (String secondKey : Node.getKeys(n)) {
-                    if (!firstKey.equals(secondKey) && SetLogic.xISyP(Whiteboard.searchByTitle(firstKey), Whiteboard.searchByTitle(secondKey))) {
+                    if (!firstKey.equals(secondKey) && SetLogic.xISyP(Notepad.searchByTitle(firstKey), Notepad.searchByTitle(secondKey))) {
                         //TODO this will add it to ^notkey, is that alright?
                         n = Node.rm(n, secondKey);
                         n = Node.add(n, firstKey, secondKey);

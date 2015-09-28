@@ -44,6 +44,38 @@ public class ANSIColorLayout extends PatternLayout {
     public static final String DEFAULT_COLOR_RESET = "\u001B[1;37m";
     public static final String DEFAULT_COLOR_STACKTRACE = "\u001B[0;31m";
     public static final String DEFAULT_COLOR = "\u001B[1;37m";
+    /**
+     * All - color string for events that do not have a specified type
+     */
+    private String all;
+    /**
+     * Fatal - color string for fatal events.  Default is red.
+     */
+    private String fatal;
+    /**
+     * Error - color string for error events.  Default is red.
+     */
+    private String error;
+    /**
+     * Warn - color string for warn events.  Default is yellow.
+     */
+    private String warn;
+    /**
+     * Info - color string for info events.  Default is gray.
+     */
+    private String info;
+    /**
+     * Debug - color string for debug events.  Default is blue.
+     */
+    private String debug;
+    /**
+     * stacktrace - color string for stacktrace events.  Default is red.
+     */
+    private String stacktrace;
+    /**
+     * defaultcolor - default terminal color.  this is the color that the terminal will be reset to after each line.  default is white
+     */
+    private String defaultcolor;
 
     public ANSIColorLayout() {
         setDefaultColors();
@@ -68,11 +100,6 @@ public class ANSIColorLayout extends PatternLayout {
         defaultcolor = DEFAULT_COLOR;
     }
 
-    /**
-     * All - color string for events that do not have a specified type
-     */
-    private String all;
-
     public String getAll() {
         return all;
     }
@@ -80,11 +107,6 @@ public class ANSIColorLayout extends PatternLayout {
     public void setAll(String inp) {
         all = inp;
     }
-
-    /**
-     * Fatal - color string for fatal events.  Default is red.
-     */
-    private String fatal;
 
     public String getFatal() {
         return fatal;
@@ -94,11 +116,6 @@ public class ANSIColorLayout extends PatternLayout {
         fatal = inp;
     }
 
-    /**
-     * Error - color string for error events.  Default is red.
-     */
-    private String error;
-
     public String getError() {
         return error;
     }
@@ -106,11 +123,6 @@ public class ANSIColorLayout extends PatternLayout {
     public void setError(String inp) {
         error = inp;
     }
-
-    /**
-     * Warn - color string for warn events.  Default is yellow.
-     */
-    private String warn;
 
     public String getWarn() {
         return warn;
@@ -120,11 +132,6 @@ public class ANSIColorLayout extends PatternLayout {
         warn = inp;
     }
 
-    /**
-     * Info - color string for info events.  Default is gray.
-     */
-    private String info;
-
     public String getInfo() {
         return info;
     }
@@ -132,11 +139,6 @@ public class ANSIColorLayout extends PatternLayout {
     public void setInfo(String inp) {
         info = inp;
     }
-
-    /**
-     * Debug - color string for debug events.  Default is blue.
-     */
-    private String debug;
 
     public String getDebug() {
         return debug;
@@ -146,11 +148,6 @@ public class ANSIColorLayout extends PatternLayout {
         debug = inp;
     }
 
-    /**
-     * stacktrace - color string for stacktrace events.  Default is red.
-     */
-    private String stacktrace;
-
     public String getStacktrace() {
         return stacktrace;
     }
@@ -158,11 +155,6 @@ public class ANSIColorLayout extends PatternLayout {
     public void setStacktrace(String inp) {
         stacktrace = inp;
     }
-
-    /**
-     * defaultcolor - default terminal color.  this is the color that the terminal will be reset to after each line.  default is white
-     */
-    private String defaultcolor;
 
     public String getDefaultcolor() {
         return defaultcolor;

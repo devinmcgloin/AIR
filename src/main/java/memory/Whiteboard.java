@@ -1,5 +1,8 @@
 package memory;
 
+import funct.Core;
+import funct.Formatter;
+import funct.Pauser;
 import pa.Node;
 import pa.PA;
 
@@ -7,25 +10,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by devinmcgloin on 8/26/15.
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
- *
- * TODO add whiteboard delete so the whiteboard isn't flooded with ghost tree nodes that were looking at, but never changed.
- *
- * TODO add temp staging area for addnode, then ask to commit after each cycle.
- *
- * TODO going to build out staging area for ghost tree / add.
+ * @author devinmcgloin
+ * @version 8/26/15.
  */
 public class Whiteboard {
 
     private static final double PROMINENCE_THRESHOLD = .6;
-    static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
+    private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
     private static ArrayList<Memory> workingMem = new ArrayList<>();
 
     private Whiteboard() {
     }
 
-    public static void addNode(Node node) {
+    protected static void addNode(Node node) {
         Memory mem = new Memory(node);
         for (Memory term : workingMem) {
             logger.debug(Node.getTitle(term.getNode()));
@@ -40,7 +38,7 @@ public class Whiteboard {
         workingMem.add(mem);
     }
 
-    public static void addNodeTime(Node node, double time) {
+    protected static void addNodeTime(Node node, double time) {
         Memory mem = new Memory(node);
         mem.setTime(time);
         for (Memory term : workingMem) {
@@ -53,10 +51,8 @@ public class Whiteboard {
         workingMem.add(mem);
     }
 
-    public static void addNodes(ArrayList<Node> nodes) {
-        for (Node n : nodes) {
-            addNode(n);
-        }
+    protected static void addNodes(ArrayList<Node> nodes) {
+        nodes.forEach(memory.Whiteboard::addNode);
     }
 
     /**
@@ -65,22 +61,25 @@ public class Whiteboard {
      * @param nodeName
      * @return
      */
-    public static Node search(String nodeName) {
+    protected static Node search(String nodeName) {
         nodeName = nodeName.trim();
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
             if (mem.nameEquals(nodeName)) {
-                mem.setTime(0.0);
                 return mem.getNode();
             }
-            }
-        //TODO may need to update this search system to accomodate blaze.
+        }
 
         ArrayList<Node> nodes = PA.searchName(nodeName);
         if (!nodes.isEmpty()) {
-            Node n = nodes.get(0); //TODO need to ask which one
+            Node n;
+            if (nodes.size() == 1) {
+                n = nodes.get(0);
+            } else {
+                int i = Pauser.whichOne(nodes);
+                n = nodes.get(i);
+            }
             if (n != null) {
-                addNodeTime(n, 0.0);
                 return n;
             }
         } else {
@@ -92,22 +91,20 @@ public class Whiteboard {
 
     /**
      * TODO May want to create a node on failed search (Perhaps this is more applicable to search by name)
+     *
      * @param title
      * @return
      */
-    public static Node searchByTitle(String title) {
+    protected static Node searchByTitle(String title) {
         Collections.sort(workingMem);
         for (Memory mem : workingMem) {
             if (mem.titleEquals(title)) {
-                mem.setTime(0.0);
                 return mem.getNode();
             }
         }
-        //TODO may need to update this search system to accomodate blaze.
 
         Node n = PA.searchExactTitle(title);
         if (n != null) {
-            addNodeTime(n, 0.0);
             return n;
         } else {
             return null;
@@ -115,8 +112,7 @@ public class Whiteboard {
     }
 
     public static void cycle() {
-        for (Memory mem : workingMem)
-            mem.cycle();
+        workingMem.forEach(memory.Memory::cycle);
     }
 
     public static void putAll() {
@@ -140,6 +136,43 @@ public class Whiteboard {
 
     public static void clearAll() {
         workingMem.clear();
+    }
+
+    public static void addAllNotepadNodes() {
+        ArrayList<Node> nodes = Notepad.getWorkingNodes();
+        if (nodes.isEmpty())
+            return;
+
+        for (Node n : nodes) {
+            Core.println(Formatter.quickView(n));
+        }
+
+        boolean cont = Pauser.trueFalse("Can these be added to whiteboard?");
+        if (cont)
+            addNodes(nodes);
+        else {
+            cont = Pauser.trueFalse("Would you like to edit the Notepad?");
+            if (cont) {
+                boolean modified = false;
+                while (nodes.size() > 0) {
+                    Core.println("Which one would you like to remove? ");
+                    int n = Pauser.whichOne(nodes);
+                    if (n >= 0) {
+                        nodes.remove(n);
+                        modified = true;
+                    } else
+                        break;
+                }
+                if (modified) {
+                    cont = Pauser.trueFalse("Can these edited be added to whiteboard?");
+                    if (cont)
+                        addNodes(nodes);
+                }
+            }
+        }
+
+
+        Notepad.erasePage();
     }
 
 }
