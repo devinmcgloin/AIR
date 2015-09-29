@@ -1,9 +1,6 @@
 package logic;
 
-<<<<<<< HEAD:src/logic/LDATA.java
-=======
 import funct.StrRep;
->>>>>>> maven-finally:src/main/java/logic/LDATA.java
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -12,18 +9,18 @@ import pa.PA;
 import java.util.ArrayList;
 
 /**
-<<<<<<< HEAD:src/logic/LDATA.java
+ <<<<<<< HEAD:src/logic/LDATA.java
  *  GENERAL NOTES
  * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
-=======
+ =======
  * GENERAL NOTES
  * Question not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
->>>>>>> maven-finally:src/main/java/logic/LDATA.java
+ >>>>>>> maven-finally:src/main/java/logic/LDATA.java
  * Default return value is true.
  * <p>
  * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
  * implement functionality that allows manpulation of ldata expressions in node form.
-<<<<<<< HEAD:src/logic/LDATA.java
+ <<<<<<< HEAD:src/logic/LDATA.java
  * @author devinmcgloin
  * @version 6/17/15.
  *
@@ -66,14 +63,7 @@ public final class LDATA {
      * @return
      */
     public static boolean expressionIsValid(Node node, Node expression) {
-<<<<<<< HEAD:src/logic/LDATA.java
-        String type = Node.get(expression, "type");
-        if (type == null)
-            return true;
 
-        return true;
-
-=======
         if (!StrRep.isExpression(Node.getStringRep(expression))) {
             return true;
         }
@@ -93,7 +83,6 @@ public final class LDATA {
 
 
         return false;
->>>>>>> maven-finally:src/main/java/logic/LDATA.java
 
     }
 

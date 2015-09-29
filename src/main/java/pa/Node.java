@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 /**
  * This class is basically locked.
-<<<<<<< HEAD:src/pa/Node.java
-=======
+ <<<<<<< HEAD:src/pa/Node.java
+ =======
  *
->>>>>>> maven-finally:src/main/java/pa/Node.java
+ >>>>>>> maven-finally:src/main/java/pa/Node.java
  * @author devinmcgloin
  * @version 8/17/15.
  */

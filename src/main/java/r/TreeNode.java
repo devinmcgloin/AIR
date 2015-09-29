@@ -1,7 +1,6 @@
 package r;
 
 import org.apache.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -296,7 +295,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     @Override
-    public int compareTo(@NotNull TreeNode n) {
+    public int compareTo(TreeNode n) {
         return this.address.compareTo(n.address);
     }
 

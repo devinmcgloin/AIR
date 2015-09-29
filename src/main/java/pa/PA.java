@@ -1,10 +1,5 @@
 package pa;
 
-<<<<<<< HEAD:src/pa/PA.java
-import logic.GhostTree;
-import logic.Scribe;
-=======
->>>>>>> maven-finally:src/main/java/pa/PA.java
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -17,10 +12,10 @@ import java.util.ArrayList;
 
 /**
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
-<<<<<<< HEAD:src/pa/PA.java
-=======
+ <<<<<<< HEAD:src/pa/PA.java
+ =======
  *
->>>>>>> maven-finally:src/main/java/pa/PA.java
+ >>>>>>> maven-finally:src/main/java/pa/PA.java
  * @author Blazej
  * @version 6/3/2015.
  */
@@ -37,11 +32,7 @@ public final class PA {
      * merging nodes --> tricky, idk how that function would look like
      */
 
-<<<<<<< HEAD:src/pa/PA.java
-    protected static File rFolder = new File("./R/");
-=======
     protected static File rFolder = new File("./src/main/resources/R/");
->>>>>>> maven-finally:src/main/java/pa/PA.java
     protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
@@ -112,42 +103,6 @@ public final class PA {
         mahNodes.add(bmw);
         mahNodes.add(door);
         mahNodes.add(color);
-//
-//
-
-
-//        GhostTree gtree = new GhostTree(bmw);
-//
-//
-//        logger.debug(gtree.toString());
-
-        //GHOST TREE TESTS
-//        gtree.filterBranches(blue);
-<<<<<<< HEAD:src/pa/PA.java
-////        gtree.filterBranches(door);
-=======
-//        gtree.filterBranches(door);
->>>>>>> maven-finally:src/main/java/pa/PA.java
-//        gtree.filterBranches(handle);
-//        ArrayList<Node> contenders = gtree.getContenders();
-//        for(Node c : contenders){
-//            logger.debug("YAAAAAS: " + c.toString() );
-//        }
-
-
-<<<<<<< HEAD:src/pa/PA.java
-        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
-//
-        for(Node c : searched){
-            logger.debug("YAAAAAS: " + c.toString() );
-        }
-=======
-//        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
-//
-//        for (Node c : searched) {
-//            logger.debug("YAAAAAS: " + c.toString());
-//        }
->>>>>>> maven-finally:src/main/java/pa/PA.java
 
 
     }
@@ -174,12 +129,12 @@ public final class PA {
     }
 
     /**
-<<<<<<< HEAD:src/pa/PA.java
+     <<<<<<< HEAD:src/pa/PA.java
      *  implement log walker.
-=======
+     =======
      * implemented log walker.
      *
->>>>>>> maven-finally:src/main/java/pa/PA.java
+     >>>>>>> maven-finally:src/main/java/pa/PA.java
      * @param node
      */
     private static void put(Node node, String db) {

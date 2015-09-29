@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * This is going to rely heavily on the more complex aspects of LDATA. Tabling for now.
-<<<<<<< HEAD:src/funct/MatrixBuilder.java
+ <<<<<<< HEAD:src/funct/MatrixBuilder.java
  * @author devinmcgloin
  * @version 6/8/15.
  *

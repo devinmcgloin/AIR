@@ -11,10 +11,10 @@ import java.util.Collections;
 
 /**
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
-<<<<<<< HEAD:src/memory/Whiteboard.java
-=======
+ <<<<<<< HEAD:src/memory/Whiteboard.java
+ =======
  *
->>>>>>> maven-finally:src/main/java/memory/Whiteboard.java
+ >>>>>>> maven-finally:src/main/java/memory/Whiteboard.java
  * @author devinmcgloin
  * @version 8/26/15.
  */

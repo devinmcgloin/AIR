@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and getCarrot all of its logical children. (Ideally)
  * Implement or filtering - filter on multiple functions or expressions and take the union of all resulting sets.
  * TODO ideally the filter functions would return a new list, and not modify the old one.
-<<<<<<< HEAD:src/logic/SetLogic.java
+ <<<<<<< HEAD:src/logic/SetLogic.java
  * @author devinmcgloin
  * @version 6/3/15.
  *
@@ -34,11 +34,11 @@ public final class SetLogic {
     }
 
     /**
-<<<<<<< HEAD:src/logic/SetLogic.java
+     <<<<<<< HEAD:src/logic/SetLogic.java
      * implement is valid in set logic.
-=======
+     =======
      * todo QA this
->>>>>>> maven-finally:src/main/java/logic/SetLogic.java
+     >>>>>>> maven-finally:src/main/java/logic/SetLogic.java
      *
      * @param key
      * @param val
@@ -306,11 +306,11 @@ public final class SetLogic {
 
     /**
      * implement Maybe has a fair bit to do with the ghost tree and search? Have to talk to blaze about it.
-<<<<<<< HEAD:src/logic/SetLogic.java
+     <<<<<<< HEAD:src/logic/SetLogic.java
      *
-=======
+     =======
      * TODO check this implementation.
->>>>>>> maven-finally:src/main/java/logic/SetLogic.java
+     >>>>>>> maven-finally:src/main/java/logic/SetLogic.java
      * @param node
      * @param key
      * @return

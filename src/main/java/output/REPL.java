@@ -23,11 +23,11 @@ import java.util.Scanner;
  * <p>
  * TODO Bulk add from a file.
  * TODO arrow up to get last command
-<<<<<<< HEAD:src/output/REPL.java
+ <<<<<<< HEAD:src/output/REPL.java
 
-=======
+ =======
  *
->>>>>>> maven-finally:src/main/java/output/REPL.java
+ >>>>>>> maven-finally:src/main/java/output/REPL.java
  * @author devinmcgloin
  * @version 8/17/2015.
  */
@@ -178,14 +178,6 @@ public class REPL {
                 parsedCommands = parseFull(command);
             } else if (Core.contains(terms, "has")) {
                 String[] hasSplit = command.split("has");
-<<<<<<< HEAD:src/output/REPL.java
-                if (StrRep.isStringRepresentation(hasSplit[1])) {
-                    //TODO ~ is the special string rep character.
-
-                } else {
-
-                }
-=======
                 command = "logic.Scribe.addHighLevel";
                 for (String has : hasSplit) {
                     if (StrRep.isStringRepresentation(has)) {
@@ -195,7 +187,6 @@ public class REPL {
                     command += has + ",";
                 }
                 parsedCommands = parseFull(command);
->>>>>>> maven-finally:src/main/java/output/REPL.java
             }
         } else {
             //Prefix Notation
