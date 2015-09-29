@@ -51,6 +51,13 @@ public final class Scribe {
         //IF 2, high likelihood of B, K or B, V being triggered.
 
 
+        //If two last nodes are KV pair, just find a place to put them. Many checks might need that
+        boolean kvTail = false;
+        if (SetLogic.xISyP(tail, keyTmp)) {
+            kvTail = true;
+        }
+
+
         //Get all base
         ArrayList<Node> baseNodes = searchHighLevel(nodes);
 
@@ -71,29 +78,43 @@ public final class Scribe {
         //The first iteration of highlevel add will ask user where they want to add something (if there is any ambiguity).
         //Only one place to put them.
         if (baseNodes.size() != 1) {
-
+            System.out.println("Which node are you trying to add to?");
             int select = Pauser.whichOne(baseNodes);
+            //FUCK am i using this correctly?
+            if(select<0)
+                return null;
+            else
+                target = baseNodes.get(select);
         }
 
 
-        //If two last nodes are KV pair, just find a place to put them.
-        boolean kvTail = false;
-        if (SetLogic.xISyP(tail, keyTmp)) {
-            kvTail = true;
-        }
 
         if(kvTail){
-            //Find a place to put them in basenode.
+            //Find a place to put them in target.
 
-            //check to see if basenode has the proper key in this tail.
+            //Check node contains that key.
+            if(Node.contains(target, keyTmp.toString()) ){
+                //Add val to that key
+
+                //Ask if that was correct.
+
+            } else{
+                //You'll have to add the key. Then add the value to that.
+
+                //Ask if that's okay.
+            }
+
 
         } else{
-            //it's a key one in basenode
+            //It's a key in the target.
 
-            //
+            //could check if it's GENERALLY a key or val in other nodes.
+
+            //It's a value in target.
 
             //Check for KV
         }
+
 
 
 
