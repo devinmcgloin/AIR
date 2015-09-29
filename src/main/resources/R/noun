@@ -1,0 +1,428 @@
+apple
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        apple
+    ^notKey
+    color
+    height
+    length
+    mass
+    stem
+    width
+audi
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        audi
+    ^notKey
+    break
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+bicycle
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        bicycle
+        bike
+        road bike
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+blue
+    ^logicalChildren
+    ^logicalParents
+        color
+    ^name
+        blue
+    ^notKey
+blueberry
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        blueberry
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+bmw
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        bavarian motor works
+        bmw
+    ^notKey
+    break
+    color
+    door
+    engine
+    height
+    hood
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+boat
+    ^logicalChildren
+        container ship
+        tug boat
+    ^logicalParents
+        transport
+    ^name
+        boat
+        ship
+    ^notKey
+    bridge
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
+car
+    ^logicalChildren
+        audi
+        bmw
+        ferrari
+        ford
+    ^logicalParents
+        transport
+    ^name
+        car
+    ^notKey
+    break
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+color
+    ^logicalChildren
+        blue
+    ^logicalParents
+    ^name
+        color
+    ^notKey
+container ship
+    ^logicalChildren
+    ^logicalParents
+        boat
+    ^name
+        container ship
+    ^notKey
+    bridge
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
+door
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        door
+    ^notKey
+    color
+    handle
+<<<<<<< HEAD:R/noun
+=======
+expression
+    ^logicalChildren
+    ^logicalParents
+        ldata
+    ^name
+        expression
+    ^notKey
+>>>>>>> maven-finally:src/main/resources/R/noun
+ferrari
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        ferrari
+    ^notKey
+    break
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+food
+    ^logicalChildren
+        fruit
+        meat
+    ^logicalParents
+        physical node
+    ^name
+        food
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+ford
+    ^logicalChildren
+    ^logicalParents
+        car
+    ^name
+        ford
+    ^notKey
+    break
+    color
+    door
+    engine
+    height
+    length
+    light
+    mass
+    seat
+    spolier
+    suspension
+    wheel
+    width
+fruit
+    ^logicalChildren
+        apple
+        blueberry
+        peach
+        pear
+        strawberry
+    ^logicalParents
+        food
+    ^name
+        fruit
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+handle
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        handle
+    ^notKey
+    color
+hood
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        hood
+    ^notKey
+    color
+<<<<<<< HEAD:R/noun
+=======
+ldata
+    ^logicalChildren
+        expression
+        measurement
+    ^logicalParents
+    ^name
+        ldata
+    ^notKey
+>>>>>>> maven-finally:src/main/resources/R/noun
+liquid
+    ^logicalChildren
+    ^logicalParents
+        physical node
+    ^name
+        liquid
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+<<<<<<< HEAD:R/noun
+=======
+measurement
+    ^logicalChildren
+    ^logicalParents
+        ldata
+    ^name
+        measurement
+    ^notKey
+>>>>>>> maven-finally:src/main/resources/R/noun
+meat
+    ^logicalChildren
+    ^logicalParents
+        food
+    ^name
+        meat
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+motorcycle
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        motorbike
+        motorcycle
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+node
+    ^logicalChildren
+        physical node
+    ^logicalParents
+    ^name
+        node
+    ^notKey
+peach
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        peach
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+pear
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        pear
+    ^notKey
+    color
+    height
+    length
+    mass
+    stem
+    width
+physical node
+    ^logicalChildren
+        food
+        liquid
+        transport
+    ^logicalParents
+        node
+    ^name
+        physical node
+        physical
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+strawberry
+    ^logicalChildren
+    ^logicalParents
+        fruit
+    ^name
+        strawberry
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+submarine
+    ^logicalChildren
+    ^logicalParents
+        transport
+    ^name
+        sub
+        submarine
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+transport
+    ^logicalChildren
+        bicycle
+        boat
+        car
+        motorcycle
+        submarine
+    ^logicalParents
+        physical node
+    ^name
+        transport
+    ^notKey
+    color
+    height
+    length
+    mass
+    width
+tug boat
+    ^logicalChildren
+    ^logicalParents
+        boat
+    ^name
+        tug boat
+    ^notKey
+    bridge
+    color
+    displacement
+    engine
+    height
+    hull
+    length
+    mass
+    width
+unit
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        unit
+    ^notKey
+    ^unit
