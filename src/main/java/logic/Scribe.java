@@ -3,6 +3,7 @@ package logic;
 import funct.Pauser;
 import org.apache.log4j.Logger;
 import pa.Node;
+import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +85,9 @@ public final class Scribe {
             if(select<0)
                 return null;
             else
-                target = baseNodes.get(select);
+                target = baseNodes.get(select); //FUCK does the select count 0, 1, 2... or 1, 2, 3....
+        }else{
+            target = baseNodes.get(0); // one and only!
         }
 
 
@@ -95,13 +98,34 @@ public final class Scribe {
             //Check node contains that key.
             if(Node.contains(target, keyTmp.toString()) ){
                 //Add val to that key
-
+                Node tmp = Node.add(target, keyTmp.toString(), tail.toString());
+                //FUCK we should also check that value isn't currently filled out! Check how Node.add() works with that.
                 //Ask if that was correct.
+                boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + keyTmp.toString() + "\n    " + tail.toString());
+                if(correct){
+                    return tmp;
+                }
+                else{
+                    logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
+                    //This means we had a K:V pair to add to a BN. So the last node was a ^lc of the second to last node and this is the only node we found.
+                    return null;
+                }
 
             } else{
                 //You'll have to add the key. Then add the value to that.
+                Node tmp = Node.add(target, keyTmp.toString());
+                tmp = Node.add(target, keyTmp.toString(), tail.toString());
 
                 //Ask if that's okay.
+                boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + keyTmp.toString() + "\n    " + tail.toString());
+                if(correct){
+                    return tmp;
+                }
+                else{
+                    logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
+                    //This means we had a K:V pair to add to a BN. So the last node was a ^lc of the second to last node and this is the only node we found.
+                    return null;
+                }
             }
 
 
@@ -110,9 +134,27 @@ public final class Scribe {
 
             //could check if it's GENERALLY a key or val in other nodes.
 
-            //It's a value in target.
+            //It's a value in target. Must have Key somewhere that can take it. (findKeyContender checks xISy)
+            Node key = findKeyContender(target, tail);
+            if(key == null){
+                //Maybe we have to add the key to the node.
+            }else{
+                Node tmp = Node.add(target, key.toString(), tail.toString());
 
-            //Check for KV
+                //Ask if that's okay.
+                boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + key.toString() + "\n    " + tail.toString());
+                if(correct){
+                    return tmp;
+                }
+                else{
+                    logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
+                    //This means we had a K:V pair to add to a BN. So the last node was a ^lc of a key within the target.
+
+                }
+                return null;
+            }
+
+
         }
 
 
@@ -177,6 +219,26 @@ public final class Scribe {
 
         return ghostTree.getContendersBases();
 
+
+    }
+
+    /**
+     * Finds a keynode within te base that the val can be placed under.
+     * @param base
+     * @param val
+     * @return
+     */
+    public static Node findKeyContender(Node base, Node val){
+        for( String k: Node.getKeys(base)){
+            Node key = PA.searchExactTitle(k);
+            if(key == null)
+                continue;
+            if( SetLogic.xISyP(val, key) ){
+                return key;
+            }
+        }
+
+        return null;
 
     }
 
