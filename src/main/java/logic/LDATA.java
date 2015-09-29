@@ -54,13 +54,23 @@ public final class LDATA {
     public static boolean expressionIsValid(Node node, Node expression) {
         if (!StrRep.isExpression(Node.getStringRep(expression))) {
             return true;
-        } else {
-            Node expressionType = Scribe.get(expression, "type");
-            //Question: are options prioritized bu how close they are to the root node?
-            ArrayList<Node> options = Scribe.searchHighLevel(node, expressionType);
+        }
+
+        //This one decides if this is true
+        if (Node.getKeys(node).contains(Node.get(expression, "type"))) {
+
+        }
+
+        //First try to validate based on the node passed in, if the key is present then that is the deciding factor. Otherwise find where the key would go and call the function again.
+        Node expressionType = Notepad.searchByTitle(Node.get(expression, "type"));
+        //Question: are options prioritized by how close they are to the root node?
+        ArrayList<Node> options = Scribe.searchHighLevel(node, expressionType);
+        for (Node option : options) {
+
         }
 
 
+        return false;
 
     }
 

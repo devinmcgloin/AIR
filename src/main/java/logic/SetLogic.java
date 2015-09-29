@@ -296,13 +296,13 @@ public final class SetLogic {
 
     /**
      * implement Maybe has a fair bit to do with the ghost tree and search? Have to talk to blaze about it.
-     *
+     * TODO check this implementation.
      * @param node
      * @param key
      * @return
      */
     public static boolean hasP(Node node, Node key) {
-        return false;
+        return Node.getKeys(node).contains(Node.getTitle(key));
     }
 
     /*
