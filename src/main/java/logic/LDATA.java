@@ -63,7 +63,7 @@ public final class LDATA {
 
         //First try to validate based on the node passed in, if the key is present then that is the deciding factor. Otherwise find where the key would go and call the function again.
         Node expressionType = Notepad.searchByTitle(Node.get(expression, "type"));
-        //Question: are options prioritized by how close they are to the root node?
+        //Question: are options prioritized by how close they are to the root node? Yes they are
         ArrayList<Node> options = Scribe.searchHighLevel(node, expressionType);
         for (Node option : options) {
 
