@@ -1,6 +1,5 @@
 package pa;
 
-import logic.Scribe;
 import logic.SetLogic;
 import org.apache.log4j.Logger;
 import r.R;
@@ -112,7 +111,7 @@ public final class PA {
 
         //GHOST TREE TESTS
 //        gtree.filterBranches(blue);
-////        gtree.filterBranches(door);
+//        gtree.filterBranches(door);
 //        gtree.filterBranches(handle);
 //        ArrayList<Node> contenders = gtree.getContenders();
 //        for(Node c : contenders){
@@ -120,11 +119,11 @@ public final class PA {
 //        }
 
 
-        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
+//        ArrayList<Node> searched = Scribe.searchHighLevel(mahNodes);
 //
-        for (Node c : searched) {
-            logger.debug("YAAAAAS: " + c.toString());
-        }
+//        for (Node c : searched) {
+//            logger.debug("YAAAAAS: " + c.toString());
+//        }
 
 
     }
