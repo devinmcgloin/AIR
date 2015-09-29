@@ -130,15 +130,34 @@ public final class Scribe {
 
 
         } else{
-            //It's a key in the target.
+
 
             //could check if it's GENERALLY a key or val in other nodes.
 
             //It's a value in target. Must have Key somewhere that can take it. (findKeyContender checks xISy)
             Node key = findKeyContender(target, tail);
+
+            //It's a key in the target.
             if(key == null){
-                //Maybe we have to add the key to the node.
-            }else{
+                //You'll have to add the key. Then add the value to that.
+                Node tmp = Node.add(target, tail.toString());
+
+                //Ask if that's okay.
+                boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + tail.toString());
+                if(correct){
+                    return tmp;
+                }
+                else{
+                    logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
+                    //This means we had non-lc lp relation anywhere within the target node, implying the tail received originally is a key for the target.
+                    return null;
+                }
+
+
+
+
+
+            }else{ //It's a value in target.
                 Node tmp = Node.add(target, key.toString(), tail.toString());
 
                 //Ask if that's okay.
@@ -149,9 +168,9 @@ public final class Scribe {
                 else{
                     logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
                     //This means we had a K:V pair to add to a BN. So the last node was a ^lc of a key within the target.
-
+                    return null;
                 }
-                return null;
+
             }
 
 
@@ -174,7 +193,6 @@ public final class Scribe {
 //If you have other nodes with a key or val, you can maybe ask if you should structure them like those nodes. *shrug*
 
 
-        return target;
 
     }
 
@@ -243,14 +261,6 @@ public final class Scribe {
     }
 
 
-    public static Node addKey(Node base, Node key) {
-
-        //if key has no ^LP, it's honestly probably just something this base has.
-        //could be a value.
-
-        return base;
-
-    }
 
 
 }
