@@ -1,5 +1,6 @@
 package logic;
 
+import funct.Pauser;
 import org.apache.log4j.Logger;
 import pa.Node;
 
@@ -55,9 +56,25 @@ public final class Scribe {
 
         if (baseNodes == null || baseNodes.size() == 0) {
             logger.error("Couldn't find any nodes in a single branch given that combination.");
-            //FUCK Could also imply there was a Key that should exist but doesn't.
+            //FUCK Could also imply there was a Key that should exist but doesn't. (Especially if it's a K:V pair.)
+            //Actually if it's a KV pair we can just rerun the search with everything but the last two, ask again if it's where it should be added.
+            //Actually, NVM. The way ghost tree filters branches is the same way you would "refilter" as described below.
+
+            //Ask that^
+            //if it's the case, "refilter" and run the search with ghost tree AGAIN, but this time use all but the last off the tail.
+            //keep doing this until we find something. if user sends back false, then just return null and forget it,
+            //the key that's missing is probably too far up the ghosttree. FUCK it's also possible we may have to RESTRUCTURE
+            //this node. If we can approximate distance to like nodes, we can better understand the internal ghost structure of it.
             return null;
         }
+
+        //The first iteration of highlevel add will ask user where they want to add something (if there is any ambiguity).
+        //Only one place to put them.
+        if (baseNodes.size() != 1) {
+
+            int select = Pauser.whichOne(baseNodes);
+        }
+
 
         //If two last nodes are KV pair, just find a place to put them.
         boolean kvTail = false;
@@ -65,9 +82,20 @@ public final class Scribe {
             kvTail = true;
         }
 
-        if (baseNodes.size() == 1) {
+        if(kvTail){
+            //Find a place to put them in basenode.
+
+            //check to see if basenode has the proper key in this tail.
+
+        } else{
+            //it's a key one in basenode
+
+            //
+
             //Check for KV
         }
+
+
 
 
 //
@@ -90,7 +118,6 @@ public final class Scribe {
 
     //Wait, question. Technically since it's a highlevel function it could ask you which node it is that you wanted with Pauser.
     //That way it only returns one node, like addHighLevel.
-
     /**
      * Takes an arrayList of nodes that must be in the order you think they are in the tree. (Technically I can write a method that
      * sorts them on its own to figure out how they lay in the tree, but I was told this wasn't a priority)
