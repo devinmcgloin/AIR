@@ -66,6 +66,7 @@ public final class LDATA {
         //Q: are options prioritized by how close they are to the root node? A: Yes they are
         //TODO make sure seach is returning the values not the keys.
         //TODO need to ensure that the options are measuremnts or counts.
+        //TODO THIS IS WRONG, NEED SPECIAL FUNCTION IN GHOSTTREE FOR VALUES.
         ArrayList<Node> options = Scribe.searchHighLevelValues(node, expressionType);
         for (Node option : options) {
             //If this is every valid we return true, other wise false
@@ -134,6 +135,7 @@ public final class LDATA {
         if (!SetLogic.xISyP(key, ldata) || !SetLogic.xISyP(value, ldata))
             return true;
 
+        Node.getCarrot(key, "^value ranges");
 
     }
 
