@@ -595,7 +595,7 @@ public class GeneralTree {
 //        //COULD REPLACE WITH A GETNODE() func
 //        for (int i = 0; i < children.size(); i++) {
 //            String childName = children.getCarrot(i).getTitle();
-//            if (name.equals(childName)) {
+//            if (name.titleEquals(childName)) {
 //                //Go into that node, go into all it's children, delete everything.
 //                current.removeChild(children.getCarrot(i));
 //                //Delete for HashMap happens on a failed search for a specific node address.

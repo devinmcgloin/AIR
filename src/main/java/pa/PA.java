@@ -51,7 +51,7 @@ public final class PA {
 //
 //
 //        for( NBN node : getNouns("ferrari", "car")) {
-//            if (node.getTitle().equals("ferrari")) {
+//            if (node.getTitle().titleEquals("ferrari")) {
 //
 //                //Earlier, adding the Key Value pair of logical child, child node was causing changes in the actual DB
 //                //This was fixed by cloning the operation level of children as well as the root.

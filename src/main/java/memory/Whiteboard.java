@@ -33,8 +33,8 @@ public class Whiteboard {
         for (Memory term : workingMem) {
             logger.debug(Node.getTitle(term.getNode()));
             logger.debug(Node.getTitle(mem.getNode()));
-            logger.debug(term.equals(mem));
-            if (term.equals(mem)) {
+            logger.debug(term.titleEquals(mem));
+            if (term.titleEquals(mem)) {
                 workingMem.remove(term);
                 workingMem.add(mem);
                 return;
@@ -47,7 +47,7 @@ public class Whiteboard {
         Memory mem = new Memory(node);
         mem.setTime(time);
         for (Memory term : workingMem) {
-            if (term.equals(mem)) {
+            if (term.titleEquals(mem)) {
                 workingMem.remove(term);
                 workingMem.add(mem);
                 return;

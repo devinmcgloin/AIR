@@ -114,7 +114,7 @@ public class Node {
 //     */
 //    public static boolean isP(Node node, String key){
 //        for (String entry : getCarrot(node, "^logicalParent")) {
-//            if(entry.equals(key))
+//            if(entry.titleEquals(key))
 //                return true;
 //        }
 //        return false;

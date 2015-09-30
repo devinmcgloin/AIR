@@ -66,7 +66,7 @@ public final class LDATA {
         //Q: are options prioritized by how close they are to the root node? A: Yes they are
         //TODO make sure seach is returning the values not the keys.
         //TODO need to ensure that the options are measuremnts or counts.
-        ArrayList<Node> options = Scribe.searchHighLevel(node, expressionType);
+        ArrayList<Node> options = Scribe.searchHighLevelValues(node, expressionType);
         for (Node option : options) {
             //If this is every valid we return true, other wise false
             if (expressionValidate(option, expression))
@@ -96,8 +96,9 @@ public final class LDATA {
         Optional<String> val = Optional.of(Node.get(expression, "value"));
         if (val.isPresent()) {
             double expressionVal = Double.valueOf(val.get());
+            String operator = Node.get(expression, "operator");
 
-            switch (Node.get(expression, "operator") != null ? Node.get(expression, "operator") : "default") {
+            switch (operator != null ? operator : "default") {
                 case "==":
                     return value == expressionVal;
                 case "<=":

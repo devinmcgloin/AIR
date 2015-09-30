@@ -240,6 +240,47 @@ public final class Scribe {
     }
 
     /**
+     * Same as search high level but this returns the actual values, not the keys for the values.
+     *
+     * @param args
+     * @return
+     */
+
+    public static ArrayList<Node> searchHighLevelValues(Node... args) {
+        ArrayList<Node> nodes = new ArrayList<Node>(Arrays.asList(args));
+
+        if (nodes == null || nodes.size() < 2) {
+            logger.error("Add function requires at least two arguements.");
+            return null;
+        }
+
+        Node target = null;     //Node that will get the change. (Might be an OF node).
+        Node branchBase = nodes.get(0);     //The branch base
+        Node tail = nodes.get(nodes.size() - 1); //Either a key that needs to be added or a val to a key.
+        Node keyTmp = nodes.get(nodes.size() - 2); //The second to last node must be checked as a contender for a Key in a K:V pair.
+
+        for (Node n : nodes) {
+            //All nodes should exist in DB (implied, might be necessary to check at later time).
+            if (n == null) {
+                logger.error("Null node. Couldn't complete function, returning null.");
+                return null;
+            }
+        }
+
+        //Create the ghost tree
+        GhostTree ghostTree = new GhostTree(branchBase);
+
+        //Filter branches incrementally.
+        for (int i = nodes.size() - 1; i > 0; i--) {
+            ghostTree.filterBranches(nodes.get(i));
+        }
+
+        return ghostTree.getContenders();
+
+
+    }
+
+    /**
      * Finds a keynode within te base that the val can be placed under.
      * @param base
      * @param val
