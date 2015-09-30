@@ -6,15 +6,9 @@ import java.util.ArrayList;
 
 /**
  * This is going to rely heavily on the more complex aspects of LDATA. Tabling for now.
- <<<<<<< HEAD:src/funct/MatrixBuilder.java
- * @author devinmcgloin
- * @version 6/8/15.
- *
-=======
  *
  * @author devinmcgloin
  * @version 6/8/15.
->>>>>>> maven-finally:src/main/java/funct/MatrixBuilder.java
  */
 public class MatrixBuilder {
 

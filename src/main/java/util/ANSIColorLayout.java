@@ -7,17 +7,17 @@ import org.apache.log4j.spi.LoggingEvent;
 
 /**
  * ANSIColorLayout is a Log4J Layout that formats messages using ANSI colors.
- * <p>
+ * <p/>
  * Each level (DEBUG,INFO,WARN) has its own color that you can customize.
  * To use this file, in your log4j.properties or log4j.xml specify ANSIColorLayout
  * instead of a PatternLayout.
- * <p>
- * <p>
+ * <p/>
+ * <p/>
  * <b>log4j.properties</b>
- * <p>
+ * <p/>
  * log4j.appender.A1.layout=org.osuosl.logging.ANSIColorLayout
  * log4j.appender.A1.layout.ConversionPattern=%-5p [%d{MM-dd-yyyy HH:mm:ss}] %c - %m%n
- * <p>
+ * <p/>
  * log4j.appender.A1.all=\u001B[1;37m
  * log4j.appender.A1.fatal=\u001B[1;31m
  * log4j.appender.A1.error=\u001B[0;31m

@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * implement high level get here too. Would in some cases like to get nodes back.
+ *
  * @author Blazej
  * @version 8/28/2015.
- *
  */
 public final class Scribe {
 

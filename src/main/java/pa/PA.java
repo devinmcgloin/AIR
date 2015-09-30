@@ -12,10 +12,11 @@ import java.util.ArrayList;
 
 /**
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- <<<<<<< HEAD:src/pa/PA.java
- =======
+ * <<<<<<< HEAD:src/pa/PA.java
+ * =======
+ * <p/>
+ * >>>>>>> maven-finally:src/main/java/pa/PA.java
  *
- >>>>>>> maven-finally:src/main/java/pa/PA.java
  * @author Blazej
  * @version 6/3/2015.
  */
@@ -25,7 +26,7 @@ public final class PA {
 
     /**
      * HashSearch (Get set -> set logic???)
-     * <p>
+     * <p/>
      * user defined matrices --> export set of BN in a csv file?
      * header logic --> failed add: create header, in all set logic, make sure to
      * reanalyze headers into their true base nodes and re-rank them.
@@ -129,12 +130,8 @@ public final class PA {
     }
 
     /**
-     <<<<<<< HEAD:src/pa/PA.java
-     *  implement log walker.
-     =======
      * implemented log walker.
      *
-     >>>>>>> maven-finally:src/main/java/pa/PA.java
      * @param node
      */
     private static void put(Node node, String db) {

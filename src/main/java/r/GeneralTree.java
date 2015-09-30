@@ -14,7 +14,7 @@ import java.util.List;
  * Thinks of the General tree as a whole.
  * Makes all changes and everything to the tree.
  * Keeps last used node in memory.
- * <p>
+ * <p/>
  * This is also what will handle loading in databases to populate a tree.
  * This is basically the tree.
  * Will also handle saving it.

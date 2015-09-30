@@ -265,7 +265,7 @@ public class GhostTree {
      * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch.
      * For the time being, the use of the filter branches method should be from leaf to root.
      * First give the values (what you truly want to add). Then add additional contextual nodes.
-     * <p>
+     * <p/>
      * If you are using filterBranches, make sure to clearContenders() first.
      *
      * @param node - this node (or a lp) must be located somewhere in a contending branch.

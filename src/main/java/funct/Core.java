@@ -6,15 +6,9 @@ import org.javatuples.Pair;
 import java.util.ArrayList;
 
 /**
+ *  For small utility methods
  * @author devinmcgloin
  * @version 8/20/15.
-<<<<<<< HEAD:src/funct/Core.java
- * For small utility methods
- * Small change to push
-=======
- *          For small utility methods
- *          Small change to push
->>>>>>> maven-finally:src/main/java/funct/Core.java
  */
 public class Core {
 
