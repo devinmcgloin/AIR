@@ -1,6 +1,8 @@
 package output;
 
 
+import funct.Reader;
+import nulp.NULP;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import pa.PA;
@@ -9,11 +11,8 @@ import pa.PA;
  * Alright bub,
  * This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
  * TODO Bulk add from a file.
- * TODO Pass in flags for different modes
  * TODO save commands and allow it to load them back in a nd execute.
  * TODO Basic matrix manipulation and reading in dictionaries, taking the nouns from the definitions and adding htem as is or has relationships.
-
-
  */
 public class Main {
 
@@ -35,7 +34,7 @@ public class Main {
                 .argName("FILE_PATH").hasArg()
                 .build());
 
-        options.addOption(Option.builder("rh").longOpt("history-reader").desc("Read in history to DB.")
+        options.addOption(Option.builder("h").longOpt("history-reader").desc("Read in history to DB.")
                 .argName("FILE_PATH").hasArg()
                 .build());
 
@@ -48,8 +47,8 @@ public class Main {
             // oops, something went wrong
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("air", options);
-            System.exit(0);
+            formatter.printHelp("AIR", options);
+            System.exit(1);
         }
 
         if (cmd.hasOption("r")) {
@@ -61,6 +60,20 @@ public class Main {
                 cont = repl.cycle();
             }
             PA.save();
+        } else if (cmd.hasOption('n')) {
+            NULP nulp = new NULP();
+
+            boolean cont = true;
+            while (cont) {
+                cont = nulp.cycle();
+            }
+            PA.save();
+        } else if (cmd.hasOption('c')) {
+            Reader.readCSV(cmd.getOptionValue('c'));
+        } else if (cmd.hasOption('d')) {
+            Reader.readDict(cmd.getOptionValue('d'));
+        } else if (cmd.hasOption('h')) {
+            Reader.readHistory(cmd.getOptionValue('h'));
         }
 
         logger.info("Exiting application.");
