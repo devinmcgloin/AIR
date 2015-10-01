@@ -21,6 +21,7 @@ target
 *.tar
 *.zip
 *.idea
+resources
  
 # Logs and databases #
 ######################
