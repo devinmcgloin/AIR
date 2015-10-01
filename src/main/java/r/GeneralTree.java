@@ -14,7 +14,7 @@ import java.util.List;
  * Thinks of the General tree as a whole.
  * Makes all changes and everything to the tree.
  * Keeps last used node in memory.
- * <p>
+ * <p/>
  * This is also what will handle loading in databases to populate a tree.
  * This is basically the tree.
  * Will also handle saving it.
@@ -595,7 +595,7 @@ public class GeneralTree {
 //        //COULD REPLACE WITH A GETNODE() func
 //        for (int i = 0; i < children.size(); i++) {
 //            String childName = children.getCarrot(i).getTitle();
-//            if (name.equals(childName)) {
+//            if (name.titleEquals(childName)) {
 //                //Go into that node, go into all it's children, delete everything.
 //                current.removeChild(children.getCarrot(i));
 //                //Delete for HashMap happens on a failed search for a specific node address.

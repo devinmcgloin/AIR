@@ -16,18 +16,12 @@ import java.util.Scanner;
 
 
 /**
- * <p>
+ * <p/>
  * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
- * <p>
- * TODO have repl check for string representations inside arguments and pass along the instantiated nodes into the functions.
- * <p>
- * TODO Bulk add from a file.
+ * <p/>
+ * <p/>
  * TODO arrow up to get last command
- <<<<<<< HEAD:src/output/REPL.java
-
- =======
  *
- >>>>>>> maven-finally:src/main/java/output/REPL.java
  * @author devinmcgloin
  * @version 8/17/2015.
  */

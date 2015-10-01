@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 /**
  * This class is basically locked.
- <<<<<<< HEAD:src/pa/Node.java
- =======
+ * <<<<<<< HEAD:src/pa/Node.java
+ * =======
+ * <p/>
+ * >>>>>>> maven-finally:src/main/java/pa/Node.java
  *
- >>>>>>> maven-finally:src/main/java/pa/Node.java
  * @author devinmcgloin
  * @version 8/17/15.
  */
@@ -113,7 +114,7 @@ public class Node {
 //     */
 //    public static boolean isP(Node node, String key){
 //        for (String entry : getCarrot(node, "^logicalParent")) {
-//            if(entry.equals(key))
+//            if(entry.titleEquals(key))
 //                return true;
 //        }
 //        return false;

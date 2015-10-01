@@ -11,10 +11,11 @@ import java.util.Collections;
 
 /**
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
- <<<<<<< HEAD:src/memory/Whiteboard.java
- =======
+ * <<<<<<< HEAD:src/memory/Whiteboard.java
+ * =======
+ * <p/>
+ * >>>>>>> maven-finally:src/main/java/memory/Whiteboard.java
  *
- >>>>>>> maven-finally:src/main/java/memory/Whiteboard.java
  * @author devinmcgloin
  * @version 8/26/15.
  */
@@ -32,8 +33,8 @@ public class Whiteboard {
         for (Memory term : workingMem) {
             logger.debug(Node.getTitle(term.getNode()));
             logger.debug(Node.getTitle(mem.getNode()));
-            logger.debug(term.equals(mem));
-            if (term.equals(mem)) {
+            logger.debug(term.titleEquals(mem));
+            if (term.titleEquals(mem)) {
                 workingMem.remove(term);
                 workingMem.add(mem);
                 return;
@@ -46,7 +47,7 @@ public class Whiteboard {
         Memory mem = new Memory(node);
         mem.setTime(time);
         for (Memory term : workingMem) {
-            if (term.equals(mem)) {
+            if (term.titleEquals(mem)) {
                 workingMem.remove(term);
                 workingMem.add(mem);
                 return;

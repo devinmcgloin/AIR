@@ -55,7 +55,7 @@ public class Memory implements Comparable<Memory> {
         return Node.getTitle(node).equals(Node.getTitle(n));
     }
 
-    public boolean equals(Memory m) {
+    public boolean titleEquals(Memory m) {
         return (Node.getTitle(node)).equals(Node.getTitle(m.getNode()));
     }
 

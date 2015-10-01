@@ -1,5 +1,6 @@
 package logic;
 
+import funct.Predicate;
 import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
@@ -7,28 +8,19 @@ import pa.Node;
 import pa.PA;
 
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
- <<<<<<< HEAD:src/logic/LDATA.java
- *  GENERAL NOTES
- * TODO not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
- =======
  * GENERAL NOTES
  * Question not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
- >>>>>>> maven-finally:src/main/java/logic/LDATA.java
  * Default return value is true.
- * <p>
+ * <p/>
  * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
- * implement functionality that allows manpulation of ldata expressions in node form.
- <<<<<<< HEAD:src/logic/LDATA.java
- * @author devinmcgloin
- * @version 6/17/15.
- *
-=======
+ * implement functionality that allows manipulation of ldata expressions in node form.
  *
  * @author devinmcgloin
  * @version 6/17/15.
->>>>>>> maven-finally:src/main/java/logic/LDATA.java
  */
 public final class LDATA {
 
@@ -50,35 +42,38 @@ public final class LDATA {
      * # of KEY
      * Overflown Node (not an ans, at all) - search takes care of this case.
      * Blank - Search should also never return a blank value.
-     * <p>
+     * <p/>
      * TODO This is used to verify that a expression node works for the given node.
      * TODO Take multiple params and run it thru blaze search.
-     * <p>
+     * <p/>
      * Implement is valid for nodes in ldata
-     * <p>
+     * <p/>
      * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level get.
      *
-     * @param node       - node that the expression is being compared to.
-     * @param expression - Expression node
+     * @param node        node that the expression is being compared to.
+     * @param expression  Expression node
      * @return
      */
     public static boolean expressionIsValid(Node node, Node expression) {
 
-        if (!StrRep.isExpression(Node.getStringRep(expression))) {
+        if (!Predicate.isExpression(expression)) {
             return true;
-        }
-
-        //This one decides if this is true
-        if (Node.getKeys(node).contains(Node.get(expression, "type"))) {
-
         }
 
         //First try to validate based on the node passed in, if the key is present then that is the deciding factor. Otherwise find where the key would go and call the function again.
         Node expressionType = Notepad.searchByTitle(Node.get(expression, "type"));
-        //Question: are options prioritized by how close they are to the root node? Yes they are
-        ArrayList<Node> options = Scribe.searchHighLevel(node, expressionType);
+        if (!SetLogic.xISyP(expressionType, Notepad.searchByTitle("ldata"))) {
+            return true;
+        }
+        //Q: are options prioritized by how close they are to the root node? A: Yes they are
+        //TODO make sure seach is returning the values not the keys.
+        //TODO need to ensure that the options are measuremnts or counts.
+        //TODO THIS IS WRONG, NEED SPECIAL FUNCTION IN GHOSTTREE FOR VALUES.
+        ArrayList<Node> options = Scribe.searchHighLevelValues(node, expressionType);
         for (Node option : options) {
-
+            //If this is every valid we return true, other wise false
+            if (expressionValidate(option, expression))
+                return true;
         }
 
 
@@ -87,10 +82,49 @@ public final class LDATA {
     }
 
     /**
+     * Deals with casting, converting an comparing values. Does not deal with any sort of set logic. The nodes passed in are the nodes compared.
+     *
+     * TODO handle nulls
+     * @param option     should be either a measurement, or a count. Nothing else should get this far
+     * @param expression should apply to the option node, if it does not it will return true.
+     * @return
+     */
+    private static boolean expressionValidate(Node option, Node expression) {
+        if (expression == null || option == null) {
+            return false;
+        }
+
+        String unit = Node.get(expression, "unit");
+        double value = getCastConvert(option, unit);
+        Optional<String> val = Optional.of(Node.get(expression, "value"));
+        if (val.isPresent()) {
+            double expressionVal = Double.valueOf(val.get());
+            String operator = Node.get(expression, "operator");
+
+            switch (operator != null ? operator : "default") {
+                case "==":
+                    return value == expressionVal;
+                case "<=":
+                    return value <= expressionVal;
+                case ">=":
+                    return value >= expressionVal;
+                case "<":
+                    return value < expressionVal;
+                case ">":
+                    return value > expressionVal;
+                default:
+                    return false;
+            }
+        } else return false;
+
+
+    }
+
+    /**
      * TODO This is used to verify when adding values to nodes in the highlevel add function.
-     * <p>
+     * <p/>
      * Implement isvalid in ldata
-     * <p>
+     * <p/>
      * Going to need some backend number crunching.
      *
      * @param key
@@ -103,9 +137,17 @@ public final class LDATA {
         if (!SetLogic.xISyP(key, ldata) || !SetLogic.xISyP(value, ldata))
             return true;
 
+        ArrayList<Node> expressions = Node.getCarrot(key, "^value ranges").stream()
+                .map(StrRep::getExpression)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        for (Node expression : expressions) {
+            if (!expressionValidate(value, expression)) {
+                return false;
+            }
+        }
+
         return true;
-
-
     }
 
     /**

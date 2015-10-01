@@ -14,5 +14,17 @@ public final class Reader {
     private Reader() {
     }
 
+    public static void readCSV(String file) {
+
+    }
+
+    public static void readDict(String file) {
+
+    }
+
+    public static void readHistory(String file) {
+
+    }
+
 
 }

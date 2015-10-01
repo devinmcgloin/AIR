@@ -40,7 +40,7 @@ public class GhostTree {
         allGNodes.add(this.root);
         ArrayList<GhostNode> gnodesInThisBranch = new ArrayList<>();
         gnodesInThisBranch.add(this.root);
-        constructTree(this.root, null); // todo should go nodes be passed in?
+        constructTree(this.root, gnodesInThisBranch); // todo should go nodes be passed in?
     }
 
     private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch) {
@@ -124,7 +124,7 @@ public class GhostTree {
 
 
                 //ANOTHER STOP (OPTIONAL)
-                //We need to stop the branch if the value is a qualitative Val that should just have a frequency Distribution or a
+                //todo We need to stop the branch if the value is a qualitative Val that should just have a frequency Distribution or a
                 //  Approximation by looking at other things close to it.
 
                 /**\
@@ -153,7 +153,7 @@ public class GhostTree {
                 String value = Node.get(lp, gkey.toString());    //String value, or null
                 if (value == null || !value.contains("^") || value.startsWith("^")) {
                     //Just inherit from the Key instead.
-
+                    //implement notepad has fucntion that takes a method name and parameters and calls them if confmirmed. Maybe a general waiting area for functions to be called in general would be good
                     //FUCK FUCK FUCK need inheritance method where i can store but not apply adding ^lc and ^lp relation.
                     //FUCK could store a boolean, then access that boolean when removing from notepad
                     /*
@@ -167,6 +167,7 @@ public class GhostTree {
                      header since that's not really important anywhere else except inbetween cycles on a GhostTree thing.)
                      Good lord, that was a mouthful. That would work, just need Devin to sign off on that idea.
                      */
+                    //todo change this
                     of = SetLogic.xLikey(of, gkey.getOriginNode());
                 } else {
                     //Get the value node (if you can)
@@ -202,24 +203,12 @@ public class GhostTree {
             //CONTINUING FOR IF VAL WASN'T NULL
             //If the Key we stopped on is String Representable, send value to string rep to create into a tmp node, store as val in gtree, cont.
             if (StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLdata(gkey.toString())*/) {
-                if (StrRep.isExpression(val)) {
-                    Node exp = StrRep.getExpression(val);
+                if (StrRep.isStringRepresentation(val)) {
+                    Node exp = StrRep.getStringRep(val);
                     GhostNode gExp = new GhostNode(exp);
                     gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
                     allGNodes.add(gExp);
                     gkey.addKid(gExp);   //add as a val to the current key for sure.
-                } else if (StrRep.isMeasurement(val)) {
-                    Node mes = StrRep.getExpression(val);
-                    GhostNode gMes = new GhostNode(mes);
-                    gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
-                    allGNodes.add(gMes);
-                    gkey.addKid(gMes);   //add as a val to the current key for sure.
-                } else if (StrRep.isCount(val)) {
-                    Node cnt = StrRep.getExpression(val);
-                    GhostNode gCnt = new GhostNode(cnt);
-                    gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
-                    allGNodes.add(gCnt);
-                    gkey.addKid(gCnt);   //add as a val to the current key for sure.
                 }
                 continue;
             }
@@ -265,7 +254,7 @@ public class GhostTree {
      * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch.
      * For the time being, the use of the filter branches method should be from leaf to root.
      * First give the values (what you truly want to add). Then add additional contextual nodes.
-     * <p>
+     * <p/>
      * If you are using filterBranches, make sure to clearContenders() first.
      *
      * @param node - this node (or a lp) must be located somewhere in a contending branch.
@@ -322,10 +311,13 @@ public class GhostTree {
     private void deleteNotePadBranch(GhostNode leaf) {
         if (leaf == null)
             return;
+
         if (leaf == root || leaf.getParent() == null)
             if (Notepad.containsInMem(leaf.getOriginNode())) //If NotePad has the node in that branch
                 Notepad.delNode(leaf.getOriginNode());     //Del that node in branch to the NotePad
+
         GhostNode tmp = leaf;
+
         while (tmp.getParent() != root || tmp == root) { //For their entire branch
 
             Node n = tmp.getOriginNode();
@@ -363,6 +355,10 @@ public class GhostTree {
     }
 
 
+    /**
+     *
+     * @return returns all possible keys
+     */
     public ArrayList<Node> getContenders() {
         ArrayList<Node> contendersNodes = new ArrayList<Node>();
         if (contenders == null) //this should never happen
@@ -375,6 +371,10 @@ public class GhostTree {
         return contendersNodes;
     }
 
+    /**
+     *
+     * @return returns the base nodes for the given search.
+     */
     public ArrayList<Node> getContendersBases() {
         ArrayList<Node> contendersNodes = new ArrayList<Node>();
         if (contenders == null) //this should never happen
