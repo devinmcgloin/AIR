@@ -1,6 +1,7 @@
 package logic;
 
 import funct.Predicate;
+import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -8,6 +9,7 @@ import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * GENERAL NOTES
@@ -15,7 +17,7 @@ import java.util.Optional;
  * Default return value is true.
  * <p/>
  * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
- * implement functionality that allows manpulation of ldata expressions in node form.
+ * implement functionality that allows manipulation of ldata expressions in node form.
  *
  * @author devinmcgloin
  * @version 6/17/15.
@@ -135,8 +137,17 @@ public final class LDATA {
         if (!SetLogic.xISyP(key, ldata) || !SetLogic.xISyP(value, ldata))
             return true;
 
-        Node.getCarrot(key, "^value ranges");
+        ArrayList<Node> expressions = Node.getCarrot(key, "^value ranges").stream()
+                .map(StrRep::getExpression)
+                .collect(Collectors.toCollection(ArrayList::new));
 
+        for (Node expression : expressions) {
+            if (!expressionValidate(value, expression)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

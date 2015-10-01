@@ -1,3 +1,12 @@
+<<<<<<< HEAD:R/noun
+<<<<<<< HEAD:R/noun
+<<<<<<< HEAD:R/noun
+=======
+=======
+=======
+>>>>>>> maven-finally:src/main/resources/R/noun
+>>>>>>> maven-finally:src/main/resources/R/noun
+>>>>>>> maven-finally:src/main/resources/R/noun
 apple
     ^logicalChildren
     ^logicalParents
@@ -160,8 +169,6 @@ door
     ^notKey
     color
     handle
-<<<<<<< HEAD:R/noun
-=======
 expression
     ^logicalChildren
     ^logicalParents
@@ -169,7 +176,6 @@ expression
     ^name
         expression
     ^notKey
->>>>>>> maven-finally:src/main/resources/R/noun
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -255,8 +261,6 @@ hood
         hood
     ^notKey
     color
-<<<<<<< HEAD:R/noun
-=======
 ldata
     ^logicalChildren
         expression
@@ -265,7 +269,6 @@ ldata
     ^name
         ldata
     ^notKey
->>>>>>> maven-finally:src/main/resources/R/noun
 liquid
     ^logicalChildren
     ^logicalParents
@@ -278,8 +281,6 @@ liquid
     length
     mass
     width
-<<<<<<< HEAD:R/noun
-=======
 measurement
     ^logicalChildren
     ^logicalParents
@@ -287,7 +288,6 @@ measurement
     ^name
         measurement
     ^notKey
->>>>>>> maven-finally:src/main/resources/R/noun
 meat
     ^logicalChildren
     ^logicalParents

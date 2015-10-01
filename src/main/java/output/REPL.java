@@ -19,13 +19,8 @@ import java.util.Scanner;
  * <p/>
  * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
  * <p/>
- * TODO have repl check for string representations inside arguments and pass along the instantiated nodes into the functions.
  * <p/>
- * TODO Bulk add from a file.
  * TODO arrow up to get last command
- * TODO Pass in flags for different modes
- * TODO save commands and allow it to load them back in a nd execute.
- * TODO Basic matrix manipulation and reading in dictionaries, taking the nouns from the definitions and adding htem as is or has relationships.
  *
  * @author devinmcgloin
  * @version 8/17/2015.
