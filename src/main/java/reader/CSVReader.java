@@ -31,9 +31,9 @@ public class CSVReader {
                 for (int j = 0; j < parsedHeader.size(); j++) {
                     if (StrRep.isStringRepresentation(record.get(i))) {
 
-                        Core.println(Formatter.formatList(n.toString(),
-                                parsedHeader.get(j).toString(), record.get(i)));
-                        Core.println("");
+//                        Core.println(Formatter.formatList(n.toString(),
+//                                parsedHeader.get(j).toString(), record.get(i)));
+//                        Core.println("");
 
                         parsed.add(Scribe.addHighLevel(n, parsedHeader.get(j),
                                 StrRep.getStringRep(record.get(i))));

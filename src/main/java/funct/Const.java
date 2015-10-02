@@ -16,10 +16,6 @@ public enum Const {
         this.representation = representation;
     }
 
-    public static void main(String[] args) {
-        Core.print(STRING_REP.toString());
-    }
-
     @Override
     public String toString() {
         return getRepresentation();
