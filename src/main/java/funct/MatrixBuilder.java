@@ -19,16 +19,9 @@ public class MatrixBuilder {
      * @param attributes
      * @return
      */
-    public static String[][] genMatrix(ArrayList<Node> nodes, ArrayList<String> attributes) {
+    public static String[][] genMatrix(ArrayList<Node> nodes, ArrayList<Node> attributes) {
         //[rows][Col]
-        String[][] matrix = new String[nodes.size()][attributes.size()];
-
-        for (int i = 0; i < nodes.size(); i++) {
-            for (int j = 0; j < attributes.size(); j++) {
-                matrix[i][j] = Node.get(nodes.get(i), attributes.get(j));
-            }
-        }
-        return matrix;
+        return new String[0][0];
     }
 
 }

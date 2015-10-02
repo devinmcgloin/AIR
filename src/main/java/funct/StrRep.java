@@ -1,6 +1,7 @@
 package funct;
 
 import logic.LDATA;
+import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
 
@@ -9,6 +10,8 @@ import pa.PA;
  * @version 8/25/15
  */
 public class StrRep {
+    static Logger logger = Logger.getLogger(StrRep.class);
+
 
     /**
      * String reps work for the following: "1283", "123.123", "1229 cm", "height > 12 ft"

@@ -1,5 +1,7 @@
 package funct;
 
+import logic.SetLogic;
+import memory.Notepad;
 import pa.Node;
 
 /**
@@ -9,6 +11,6 @@ import pa.Node;
 public class Predicate {
 
     public static boolean isExpression(Node expression) {
-        return StrRep.isExpression(Node.getStringRep(expression));
+        return SetLogic.xISyP(expression, Notepad.searchByTitle("expression"));
     }
 }

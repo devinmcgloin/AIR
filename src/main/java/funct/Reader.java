@@ -26,7 +26,7 @@ public final class Reader {
 
     /**
      * Currently prints out the contents of the CSV file to std out.
-     * TODO eventually we want to map the values of a csv to a set of nodes. With the user specifiying what keys are appropriate for each collumn.
+     * TODO eventually we want to map the values of a csv to a set of nodes. With the user specifying what keys are appropriate for each column.
      *
      * @param file
      */
@@ -46,10 +46,10 @@ public final class Reader {
             }
 
         } catch (FileNotFoundException e) {
-            System.err.printf("File %s not found. Please check your path", file);
+            System.err.printf("File %s not found. Please check your path\n", file);
             System.exit(1);
         } catch (IOException e) {
-            System.err.printf("File IO error");
+            System.err.printf("File IO error\n");
             System.exit(1);
         }
 
@@ -74,6 +74,7 @@ public final class Reader {
 
     /**
      * TODO save commands and allow it to load them back in a nd execute.
+     * Question, how to represent history of inputs / computations?
      * @param file
      */
     public static void readHistory(String file) {

@@ -2,12 +2,15 @@ package logic;
 
 import funct.Core;
 import funct.Stats;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.log4j.Logger;
 import org.javatuples.Pair;
 import pa.Node;
 import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,27 +18,50 @@ import java.util.List;
  * @version 8/15/2015
  */
 public final class Comparison {
+    static Logger logger = Logger.getLogger(Comparison.class);
 
-//    public static void getDiff(Node a, Node b){
-//        //Might be able to pass in "fidelity" level for OF?
-//
-//    }
-//
-//    public static void compareBy(metric?, Node a, Node b){
-//        //idk what metric means...
-//        //int ordering for things
-//    }
-//
-//    public static void stableSort(metric? , ArrayList<Node> nodes){
-//        //idk what metric means...
-//        //sort by a second qualifier if two are equal, without disturbing the order of the first
-//    }
-//
-//    public static void compare(Node a, Node b){
-//        //proximity. should be very simple.
-//        //it should be simple because it could be used by the AI to try and decide if a new node that's being talked about
-//            //might belong to another set. (Would allow it to ask if x is y and then inherit more keys it could ask about.
-//    }
+    /**
+     * TODO What does this return?
+     *
+     * @param a
+     * @param b
+     */
+    public static void getDiff(Node a, Node b) {
+        //Might be able to pass in "fidelity" level for OF?
+
+    }
+
+    /**
+     * @param comparator a means of comaparison between nodes. EG horsepower, or sq ft.
+     * @param a
+     * @param b
+     *
+     * @return
+     */
+    public static int compareBy(Comparator<Node> comparator, Node a, Node b) {
+        return comparator.compare(a, b);
+    }
+
+    /**
+     * @param comparator
+     * @param nodes
+     */
+    public static void stableSort(Comparator<Node> comparator, ArrayList<Node> nodes) {
+        //idk what metric means...
+        //sort by a second qualifier if two are equal, without disturbing the order of the first
+    }
+
+    /**
+     * TODO dont know what this returns either.
+     *
+     * @param a
+     * @param b
+     */
+    public static void compare(Node a, Node b) {
+        //proximity. should be very simple.
+        //it should be simple because it could be used by the AI to try and decide if a new node that's being talked about
+        //might belong to another set. (Would allow it to ask if x is y and then inherit more keys it could ask about.
+    }
 
 
     /**
@@ -50,7 +76,7 @@ public final class Comparison {
      *
      * @param set
      * @param key
-     * @param val
+     * @param val todo why is this passed in?
      * @return
      */
     public static double getProbability(ArrayList<Node> set, String key, String val) {
@@ -58,13 +84,16 @@ public final class Comparison {
         ArrayList<Pair<String, Double>> dist = getDistribution(set, key);
 
         if (Core.getVal(dist, "s") != null && Core.getVal(dist, "df") != null) {
-            double sigma = Core.getVal(dist, "s");
+            Double sigma = Core.getVal(dist, "s");
 
-            double df = Core.getVal(dist, "df");
+            Double df = Core.getVal(dist, "df");
 
-            return Stats.tcdf(sigma, df);
+            if (df != null && sigma != null) {
+                return Stats.tcdf(sigma, df);
+            }
         }
 
+        //TODO need to deal with invalid return types.
         return -123.23432413134342534;
 
     }
@@ -80,7 +109,7 @@ public final class Comparison {
 
         Node ldbn = PA.searchExactTitle(key);
         if (ldbn == null) {
-            System.out.println("Comparison: You shit outta luck");
+            logger.error("Comparison: You shit outta luck");
             return null;
         }
 
@@ -98,11 +127,11 @@ public final class Comparison {
         for (Node node : set) {
             value = Search.simpleSearch(node, key);
             if (value.startsWith("^")) {
-                System.out.println("Comparison: Yo i didn't even have that key or value, homes");
+                logger.warn("Comparison: Yo i didn't even have that key or value, homes");
                 continue;
             }
             if (value.contains("^")) {
-                System.out.println("Comparison: Yo I ain't gonna look into OF nodes                           ...bitch");
+                logger.warn("Comparison: Yo I ain't gonna look into OF nodes                           ...bitch");
                 //All these things probably belong to a similar set so should have a similar OF structure anyway.
                 //Whatever you send me should have the right values in the right place already.
                 continue;
@@ -186,31 +215,25 @@ public final class Comparison {
 
     }
 
-    private static double getMedian(List<Double> values) {
+    public static double getMedian(List<Double> values) {
 
-        Collections.sort(values);
+//        Collections.sort(values);
 
-        if (values.size() % 2 != 0) {
-            int middle = (values.size() + 1) / 2;
-            return values.get(middle);
-        } else {
-            double mid1 = values.get(values.size() / 2);
-            double mid2 = values.get(values.size() / 2 + 1);
-            return (mid1 + mid2) / 2;
+        DescriptiveStatistics stats = new DescriptiveStatistics();
+        for (double d : values) {
+            stats.addValue(d);
         }
+        return stats.getPercentile(50);
+
+//        if (values.size() % 2 != 0) {
+//            int middle = (values.size() + 1) / 2;
+//            return values.get(middle);
+//        } else {
+//            double mid1 = values.get(values.size() / 2);
+//            double mid2 = values.get(values.size() / 2 + 1);
+//            return (mid1 + mid2) / 2;
+//        }
 
 
     }
-
-//    /**
-//     * @param metric
-//     * @param A
-//     * @param B
-//     * @return
-//     */
-//    public static int compareBy(String metric, Node A, Node B) {
-//
-//    }
-
-
 }
