@@ -1,9 +1,9 @@
 package logic;
 
 import funct.Pauser;
+import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -288,7 +288,7 @@ public final class Scribe {
      */
     public static Node findKeyContender(Node base, Node val){
         for( String k: Node.getKeys(base)){
-            Node key = PA.searchExactTitle(k);
+            Node key = Notepad.searchByTitle(k);
             if(key == null)
                 continue;
             if( SetLogic.xISyP(val, key) ){

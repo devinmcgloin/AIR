@@ -5,7 +5,6 @@ import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -224,7 +223,7 @@ public final class LDATA {
             return true;
         else if (isUnit(type))
             return true;
-        else return SetLogic.xISyP(PA.searchExactTitle(type), PA.searchExactTitle("ldata"));
+        else return SetLogic.xISyP(Notepad.searchByTitle(type), Notepad.searchByTitle("ldata"));
     }
 
     public static boolean isExpression(String expression) {
@@ -244,7 +243,7 @@ public final class LDATA {
     }
 
     public static boolean isUnit(String unit) {
-        Node unitNode = PA.searchExactTitle("unit");
+        Node unitNode = Notepad.searchByTitle("unit");
         for (String possibleMatch : Node.getCarrot(unitNode, "^unit")) {
             if (possibleMatch.equals(unit))
                 return true;
@@ -322,7 +321,7 @@ public final class LDATA {
         for (String expression : valRanges) {
             String[] parsedExpression = expression.split(" ");
             if (parsedExpression.length == 3) {
-                Node tmp = PA.searchExactTitle("expression");
+                Node tmp = Notepad.searchByTitle("expression");
                 tmp = Node.add(tmp, "operator", parsedExpression[0]);
                 tmp = Node.add(tmp, "value", parsedExpression[1]);
                 tmp = Node.add(tmp, "unit", parsedExpression[2]);

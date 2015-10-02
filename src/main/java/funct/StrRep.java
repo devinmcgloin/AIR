@@ -1,9 +1,9 @@
 package funct;
 
 import logic.LDATA;
+import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
-import pa.PA;
 
 /**
  * @author devinmcgloin
@@ -58,7 +58,7 @@ public class StrRep {
 
     public static Node getExpression(String expression) {
         if (isExpression(expression)) {
-            Node template = PA.searchExactTitle("expression");
+            Node template = Notepad.searchByTitle("expression");
             String[] parsedExpression = expression.split(" ");
             if (parsedExpression.length == 3) {
                 template = Node.add(template, "type", parsedExpression[0]);
@@ -82,7 +82,7 @@ public class StrRep {
 
     public static Node getCount(String count) {
         if (isCount(count)) {
-            Node template = PA.searchExactTitle("number");
+            Node template = Notepad.searchByTitle("number");
             template = Node.add(template, "#", count);
             template = Node.add(template, "string representation", count);
             return template;
@@ -97,7 +97,7 @@ public class StrRep {
     public static Node getMeasurement(String measure) {
         if (isMeasurement(measure)) {
             String[] splitMeasuremnt = measure.split(" ");
-            Node template = PA.searchExactTitle("measurement");
+            Node template = Notepad.searchByTitle("measurement");
             template = Node.add(template, "#", splitMeasuremnt[0]);
             template = Node.add(template, "unit", splitMeasuremnt[1]);
             template = Node.add(template, "string representation", measure);

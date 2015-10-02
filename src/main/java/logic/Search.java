@@ -1,8 +1,8 @@
 package logic;
 
+import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 
@@ -91,7 +91,7 @@ public final class Search {
 
         //Search the overflown nodes for the key.
         for (String OFTitle : tmpOF) {
-            Node tmp = PA.searchExactTitle(OFTitle);
+            Node tmp = Notepad.searchByTitle(OFTitle);
             String val = simpleSearch(tmp, key);
             if (!val.startsWith("^")) {
                 //Found a valid value for the key!

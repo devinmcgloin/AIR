@@ -7,10 +7,10 @@ import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -157,63 +157,75 @@ public final class SetLogic {
      * @param node
      * @return
      */
-    public static Node getLogicalParents(Node node) {
+    public static ArrayList<Node> getLogicalParents(Node node) {
+        ArrayList<Node> parents = new ArrayList<>();
         if (node == null) {
             logger.warn("Cannot get parents of null node.");
-            return null;
+            return parents;
         }
 
-        ArrayList<Node> parents = new ArrayList<>();
-        ArrayList<String> tmp = Node.getCarrot(node, "^logicalParents");
-        if (tmp == null) {
+        ArrayList<String> logicalParentTitles = Node.getCarrot(node, "^logicalParents");
+
+        if (logicalParentTitles == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalParents.");
-            return null;
-        }
-        if (tmp.size() == 0) {
+            return parents;
+        } else if (logicalParentTitles.size() == 0) {
             logger.warn(node.toString() + " did not contain any ^logicalParents.");
-            return null;
+            return parents;
         }
-//        if(tmp.size()>1){
-//            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
-//            //FUCK what now? restructure? delete one? This shouldn't even be possible.
-//            return null;
-//        }
 
-
-        for (String title : tmp) {
-            Node foo = PA.searchExactTitle(title);
+        for (String title : logicalParentTitles) {
+            Node foo = Notepad.searchByTitle(title);
             if (foo == null) {
                 logger.error("Couldn't find node: " + title);
                 continue;
             }
-            return foo;
+            parents.add(foo);
+            getLogicalParents(foo, parents);
         }
-        return null;
+        return parents;
+    }
+
+    private static void getLogicalParents(Node node, ArrayList<Node> list) {
+        if (Node.getTitle(node).equals("node") || Node.getCarrot(node, "^logicalParents").isEmpty()) {
+            return;
+        } else {
+            for (String title : Node.getCarrot(node, "^logicalParents")) {
+                Node foo = Notepad.searchByTitle(title);
+                if (foo == null) {
+                    logger.error("Couldn't find node: " + title);
+                    continue;
+                }
+                list.add(foo);
+                getLogicalParents(foo, list);
+            }
+        }
     }
 
     /**
      * returns the closest parent that is one step away from the given node. Eg if Acura NSX is passed in, it should
      * return car.
+     * implement
      *
      * @param node
      *
      * @return
      */
-    public static Node getLogicalParent(Node node) {
+    public static Optional<Node> getLogicalParent(Node node) {
         if (node == null) {
             logger.warn("Cannot get parents of null node.");
-            return null;
+            return Optional.empty();
         }
 
         ArrayList<Node> parents = new ArrayList<>();
         ArrayList<String> tmp = Node.getCarrot(node, "^logicalParents");
         if (tmp == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalParents.");
-            return null;
+            return Optional.empty();
         }
         if (tmp.size() == 0) {
             logger.warn(node.toString() + " did not contain any ^logicalParents.");
-            return null;
+            return Optional.empty();
         }
 //        if(tmp.size()>1){
 //            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
@@ -222,15 +234,16 @@ public final class SetLogic {
 //        }
 
 
+        //todo have to decide which node is the best representation. This is not always clear.
         for (String title : tmp) {
-            Node foo = PA.searchExactTitle(title);
+            Node foo = Notepad.searchByTitle(title);
             if (foo == null) {
                 logger.error("Couldn't find node: " + title);
                 continue;
             }
-            return foo;
+            //implement here
         }
-        return null;
+        return Optional.empty();
     }
 
     public static ArrayList<Node> getLogicalChildren(Node node) {
@@ -243,14 +256,14 @@ public final class SetLogic {
         ArrayList<String> tmp = Node.getCarrot(node, "^logicalChildren");
         if (tmp == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalChildren.");
-            return null;
+            return children;
         }
         if (tmp.size() == 0) {
             logger.warn(node.toString() + " does not have any ^logicalChildren.");
-            return null;
+            return children;
         }
         for (String title : tmp) {
-            Node foo = PA.searchExactTitle(title);
+            Node foo = Notepad.searchByTitle(title);
             if (foo == null) {
                 logger.error("Couldn't find node: " + title);
                 continue;

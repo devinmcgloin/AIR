@@ -2,11 +2,11 @@ package logic;
 
 import funct.Core;
 import funct.Stats;
+import memory.Notepad;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.javatuples.Pair;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,7 +107,7 @@ public final class Comparison {
     public static ArrayList<Pair<String, Double>> getDistribution(ArrayList<Node> set, String key) {
 
 
-        Node ldbn = PA.searchExactTitle(key);
+        Node ldbn = Notepad.searchByTitle(key);
         if (ldbn == null) {
             logger.error("Comparison: You shit outta luck");
             return null;
