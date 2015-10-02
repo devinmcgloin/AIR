@@ -1,5 +1,6 @@
 package funct;
 
+import memory.Notepad;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
@@ -45,8 +46,8 @@ public final class Reader {
             }
 
             CSVReader csvReader = new CSVReader();
-            //TODO actual computations. Probably going to be outsourced to a CSVREADER.
-            csvReader.readIn(csvRecords);
+            // actual computations. Probably going to be outsourced to a CSVREADER.
+            Notepad.addNodes(csvReader.readIn(csvRecords));
 
 
         } catch (FileNotFoundException e) {
@@ -77,8 +78,8 @@ public final class Reader {
     }
 
     /**
-     * TODO save commands and allow it to load them back in a nd execute. Question, how to represent history of inputs /
-     * computations?
+     * TODO save commands and allow it to load them back in a nd execute.
+     * Question, how to represent history of inputs / computations?
      *
      * @param file
      */

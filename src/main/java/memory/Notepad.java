@@ -29,6 +29,10 @@ public class Notepad {
         workingNodes.add(node);
     }
 
+    public static void addNodes(ArrayList<Node> nodes) {
+        nodes.forEach(Notepad::addNode);
+    }
+
     public static void delNode(Node node) {
         for (Node term : workingNodes) {
             if (Node.getTitle(node).equals(Node.getTitle(term))) {
