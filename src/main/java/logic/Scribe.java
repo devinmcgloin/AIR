@@ -1,6 +1,7 @@
 package logic;
 
 import funct.Pauser;
+import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- *
  * @author Blazej
  * @version 8/28/2015.
  */
@@ -53,6 +53,7 @@ public final class Scribe {
 
         //If two last nodes are KV pair, just find a place to put them. Many checks might need that
         boolean kvTail = false;
+        //todo this is where im having problems.
         if (SetLogic.xISyP(tail, keyTmp)) {
             kvTail = true;
         }
@@ -81,46 +82,53 @@ public final class Scribe {
             System.out.println("Which node are you trying to add to?");
             int select = Pauser.whichOne(baseNodes);
             //FUCK am i using this correctly?
-            if(select<0)
+            if (select < 0)
                 return null;
             else
                 target = baseNodes.get(select); //FUCK does the select count 0, 1, 2... or 1, 2, 3....
-        }else{
+        } else {
             target = baseNodes.get(0); // one and only!
         }
 
 
-
-        if(kvTail){
+        if (kvTail) {
             //Find a place to put them in target.
 
             //Check node contains that key.
-            if(Node.contains(target, keyTmp.toString()) ){
+            if (Node.contains(target, keyTmp.toString())) {
                 //Add val to that key
-                Node tmp = Node.add(target, keyTmp.toString(), tail.toString());
+                Node tmp = null;
+                if (!StrRep.isKeyStringRepresentable(tail)) {
+                    tmp = Node.add(target, keyTmp.toString(), tail.toString());
+                } else {
+                    tmp = Node.add(target, keyTmp.toString(), Node.getStringRep(tail));
+                }
                 //FUCK we should also check that value isn't currently filled out! Check how Node.add() works with that.
                 //Ask if that was correct.
                 boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + keyTmp.toString() + "\n    " + tail.toString());
-                if(correct){
+                if (correct) {
                     return tmp;
-                }
-                else{
+                } else {
                     logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
                     //This means we had a K:V pair to add to a BN. So the last node was a ^lc of the second to last node and this is the only node we found.
                     return null;
                 }
 
-            } else{
+            } else {
                 //You'll have to add the key. Then add the value to that.
-                Node tmp = Node.add(target, keyTmp.toString());
-                tmp = Node.add(target, keyTmp.toString(), tail.toString());
+//                Node tmp = Node.add(target, keyTmp.toString());
+                Node tmp = null;
+                if (!StrRep.isKeyStringRepresentable(tail)) {
+                    tmp = Node.add(target, keyTmp.toString(), tail.toString());
+                } else {
+                    tmp = Node.add(target, keyTmp.toString(), Node.getStringRep(tail));
+                }
 
                 //Ask if that's okay.
                 boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + keyTmp.toString() + "\n    " + tail.toString());
-                if(correct){
+                if (correct) {
                     return tmp;
-                }
-                else{
+                } else {
                     logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
                     //This means we had a K:V pair to add to a BN. So the last node was a ^lc of the second to last node and this is the only node we found.
                     return null;
@@ -128,7 +136,7 @@ public final class Scribe {
             }
 
 
-        } else{
+        } else {
 
 
             //could check if it's GENERALLY a key or val in other nodes.
@@ -137,34 +145,34 @@ public final class Scribe {
             Node key = findKeyContender(target, tail);
 
             //It's a key in the target.
-            if(key == null){
+            if (key == null) {
                 //You'll have to add the key. Then add the value to that.
                 Node tmp = Node.add(target, tail.toString());
 
                 //Ask if that's okay.
                 boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + tail.toString());
-                if(correct){
+                if (correct) {
                     return tmp;
-                }
-                else{
+                } else {
                     logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
                     //This means we had non-lc lp relation anywhere within the target node, implying the tail received originally is a key for the target.
                     return null;
                 }
 
 
-
-
-
-            }else{ //It's a value in target.
-                Node tmp = Node.add(target, key.toString(), tail.toString());
+            } else { //It's a value in target.
+                Node tmp = null;
+                if (!StrRep.isKeyStringRepresentable(tail)) {
+                    tmp = Node.add(target, keyTmp.toString(), tail.toString());
+                } else {
+                    tmp = Node.add(target, keyTmp.toString(), Node.getStringRep(tail));
+                }
 
                 //Ask if that's okay.
                 boolean correct = Pauser.trueFalse("Is the correct format?\n" + target.toString() + "\n  " + key.toString() + "\n    " + tail.toString());
-                if(correct){
+                if (correct) {
                     return tmp;
-                }
-                else{
+                } else {
                     logger.error("Could not find correct place to put it. Ask Blaze. This is very, very interesting.");
                     //This means we had a K:V pair to add to a BN. So the last node was a ^lc of a key within the target.
                     return null;
@@ -174,9 +182,6 @@ public final class Scribe {
 
 
         }
-
-
-
 
 
 //
@@ -192,17 +197,18 @@ public final class Scribe {
 //If you have other nodes with a key or val, you can maybe ask if you should structure them like those nodes. *shrug*
 
 
-
     }
 
 
     //Wait, question. Technically since it's a highlevel function it could ask you which node it is that you wanted with Pauser.
     //That way it only returns one node, like addHighLevel.
+
     /**
-     * Takes an arrayList of nodes that must be in the order you think they are in the tree. (Technically I can write a method that
-     * sorts them on its own to figure out how they lay in the tree, but I was told this wasn't a priority)
+     * Takes an arrayList of nodes that must be in the order you think they are in the tree. (Technically I can write a
+     * method that sorts them on its own to figure out how they lay in the tree, but I was told this wasn't a priority)
      *
      * @param args
+     *
      * @return
      */
     public static ArrayList<Node> searchHighLevel(Node... args) {
@@ -243,6 +249,7 @@ public final class Scribe {
      * Same as search high level but this returns the actual values, not the keys for the values.
      *
      * @param args
+     *
      * @return
      */
 
@@ -282,16 +289,18 @@ public final class Scribe {
 
     /**
      * Finds a keynode within te base that the val can be placed under.
+     *
      * @param base
      * @param val
+     *
      * @return
      */
-    public static Node findKeyContender(Node base, Node val){
-        for( String k: Node.getKeys(base)){
+    public static Node findKeyContender(Node base, Node val) {
+        for (String k : Node.getKeys(base)) {
             Node key = Notepad.searchByTitle(k);
-            if(key == null)
+            if (key == null)
                 continue;
-            if( SetLogic.xISyP(val, key) ){
+            if (SetLogic.xISyP(val, key)) {
                 return key;
             }
         }
@@ -299,8 +308,6 @@ public final class Scribe {
         return null;
 
     }
-
-
 
 
 }

@@ -15,10 +15,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Set logic needs to create sets of like information
- * TODO: If we want a list of cities, no need to hash search for them, just go to the city node and getCarrot all of its logical children. (Ideally)
- * Implement or filtering - filter on multiple functions or expressions and take the union of all resulting sets.
- * TODO ideally the filter functions would return a new list, and not modify the old one.
+ * Set logic needs to create sets of like information TODO: If we want a list of cities, no need to hash search for
+ * them, just go to the city node and getCarrot all of its logical children. (Ideally) Implement or filtering - filter
+ * on multiple functions or expressions and take the union of all resulting sets. TODO ideally the filter functions
+ * would return a new list, and not modify the old one.
  *
  * @author devinmcgloin
  * @version 6/3/15.
@@ -35,6 +35,7 @@ public final class SetLogic {
      *
      * @param key
      * @param val
+     *
      * @return
      */
     public static boolean isValid(String key, String val) {
@@ -150,11 +151,13 @@ public final class SetLogic {
 
     /**
      * TODO good place to check with scanner.
-     *
+     * <p/>
      * Implement, needs to look thru logical parents and trace up.
-     *
+     * <p/>
      * TODO this is all sorts of fucked up.
+     *
      * @param node
+     *
      * @return
      */
     public static ArrayList<Node> getLogicalParents(Node node) {
@@ -204,8 +207,7 @@ public final class SetLogic {
 
     /**
      * returns the closest parent that is one step away from the given node. Eg if Acura NSX is passed in, it should
-     * return car.
-     * implement
+     * return car. implement
      *
      * @param node
      *
@@ -227,12 +229,6 @@ public final class SetLogic {
             logger.warn(node.toString() + " did not contain any ^logicalParents.");
             return Optional.empty();
         }
-//        if(tmp.size()>1){
-//            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
-//            //FUCK what now? restructure? delete one? This shouldn't even be possible.
-//            return null;
-//        }
-
 
         //todo have to decide which node is the best representation. This is not always clear.
         for (String title : tmp) {
@@ -242,6 +238,7 @@ public final class SetLogic {
                 continue;
             }
             //implement here
+            //Question, maybe determine which one to use by assessing of the ones present in the node passed in, which one has the closest proximity metric.
         }
         return Optional.empty();
     }
@@ -317,6 +314,7 @@ public final class SetLogic {
      *
      * @param x - the child
      * @param y - the parent
+     *
      * @return
      */
     public static Node xINHERITy(Node x, Node y) {
@@ -346,6 +344,7 @@ public final class SetLogic {
      *
      * @param x
      * @param y
+     *
      * @return
      */
     public static Node xLikey(Node x, Node y) {
@@ -361,6 +360,7 @@ public final class SetLogic {
      *
      * @param node
      * @param key
+     *
      * @return
      */
     public static boolean hasP(Node node, Node key) {
@@ -417,6 +417,7 @@ public final class SetLogic {
      *
      * @param setA
      * @param setB
+     *
      * @return
      */
     public boolean supersetP(ArrayList<Node> setA, ArrayList<Node> setB) {
@@ -430,6 +431,7 @@ public final class SetLogic {
      *
      * @param setA
      * @param setB
+     *
      * @return
      */
     public boolean subsetP(ArrayList<Node> setA, ArrayList<Node> setB) {

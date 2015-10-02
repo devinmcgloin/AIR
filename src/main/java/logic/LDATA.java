@@ -5,15 +5,15 @@ import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
+import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * GENERAL NOTES
- * Question not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
- * Default return value is true.
+ * GENERAL NOTES Question not sure about how to represent non numerical data, (time, geo, etc) with expressions and may
+ * just bypass it altogether. Default return value is true.
  * <p/>
  * implement functionality that allows manipulation of ldata expressions in node form.
  *
@@ -33,23 +33,20 @@ public final class LDATA {
 
 
     /**
-     * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out of the Node.
-     * K:V pair values can be either a:
-     * LData Value
-     * Ans to Set (Node)
-     * # of KEY
-     * Overflown Node (not an ans, at all) - search takes care of this case.
-     * Blank - Search should also never return a blank value.
+     * Uses the other evaluateP function to do logic comparisons, this just goes through and gets the proper value out
+     * of the Node. K:V pair values can be either a: LData Value Ans to Set (Node) # of KEY Overflown Node (not an ans,
+     * at all) - search takes care of this case. Blank - Search should also never return a blank value.
      * <p/>
-     * TODO This is used to verify that a expression node works for the given node.
-     * TODO Take multiple params and run it thru blaze search.
+     * TODO This is used to verify that a expression node works for the given node. TODO Take multiple params and run it
+     * thru blaze search.
      * <p/>
-     * Implement is valid for nodes in ldata
      * <p/>
-     * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level get.
+     * Needs to iterate over value ranges, and instantiate the strings as expressions / or maybe using a high level
+     * get.
      *
-     * @param node        node that the expression is being compared to.
-     * @param expression  Expression node
+     * @param node       node that the expression is being compared to.
+     * @param expression Expression node
+     *
      * @return
      */
     public static boolean expressionIsValid(Node node, Node expression) {
@@ -65,8 +62,6 @@ public final class LDATA {
         }
         //Q: are options prioritized by how close they are to the root node? A: Yes they are
         //TODO make sure seach is returning the values not the keys.
-        //TODO need to ensure that the options are measuremnts or counts.
-        //TODO THIS IS WRONG, NEED SPECIAL FUNCTION IN GHOSTTREE FOR VALUES.
         ArrayList<Node> options = Scribe.searchHighLevelValues(node, expressionType);
         for (Node option : options) {
             //If this is every valid we return true, other wise false
@@ -80,11 +75,14 @@ public final class LDATA {
     }
 
     /**
-     * Deals with casting, converting an comparing values. Does not deal with any sort of set logic. The nodes passed in are the nodes compared.
-     *
+     * Deals with casting, converting an comparing values. Does not deal with any sort of set logic. The nodes passed in
+     * are the nodes compared.
+     * <p/>
      * TODO handle nulls
+     *
      * @param option     should be either a measurement, or a count. Nothing else should get this far
      * @param expression should apply to the option node, if it does not it will return true.
+     *
      * @return
      */
     private static boolean expressionValidate(Node option, Node expression) {
@@ -99,7 +97,7 @@ public final class LDATA {
             double expressionVal = Double.valueOf(val.get());
             String operator = Node.get(expression, "operator");
 
-            switch (operator != null ? operator : "default") {
+            switch (operator != null ? operator : "") {
                 case "==":
                     return value == expressionVal;
                 case "<=":
@@ -119,14 +117,12 @@ public final class LDATA {
     }
 
     /**
-     * TODO This is used to verify when adding values to nodes in the highlevel add function.
-     * <p/>
-     * Implement isvalid in ldata
-     * <p/>
-     * Going to need some backend number crunching.
+     * TODO This is used to verify when adding values to nodes in the highlevel add function. Going to need some backend
+     * number crunching.
      *
      * @param key
      * @param value
+     *
      * @return
      */
     public static boolean isValid(Node key, Node value) {
@@ -151,6 +147,7 @@ public final class LDATA {
     /**
      * @param initialValue - We want this to be taj mahal^height, which is basically an instatiated height node.
      * @param unitTo
+     *
      * @return
      */
     public static Node convert(Node initialValue, String unitTo) {
@@ -194,26 +191,45 @@ public final class LDATA {
      * Takes the unit and returns the ldata node associated with it
      *
      * @param unit
+     *
      * @return
      */
     public static Node getType(String unit) {
-
+        ArrayList<Node> options = PA.generalSearch(unit);
+        Node ldata = Notepad.searchByTitle("ldata");
+        if (options.isEmpty()) {
+            return null;
+        } else if (options.size() == 1) {
+            return SetLogic.xISyP(options.get(0), ldata) ? options.get(0) : null;
+        } else {
+            options = options.stream().filter(option -> SetLogic.xISyP(option, ldata)).collect(Collectors.toCollection(ArrayList::new));
+            if (options.size() == 1)
+                return options.get(0);
+            //TODO proximity to narrow down more.
+        }
+        return null;
     }
 
     /**
      * Takes the ldata node and returns the ldata type associated with it
      *
      * @param node say a measure, or a count
+     *
      * @return the type node, if the node passed in is a heigh this should return the height node.
      */
     public static Node getType(Node node) {
-
+        Optional<Node> n = SetLogic.getLogicalParent(node);
+        if (n.isPresent())
+            return n.get();
+        else
+            return null;
     }
 
     /**
      * Takes a type of ldata, but also a string of ldata values.
      *
      * @param type
+     *
      * @return
      */
     public static boolean isLdata(String type) {
@@ -263,6 +279,7 @@ public final class LDATA {
      * accounts for periods
      *
      * @param str
+     *
      * @return
      */
     public static boolean isNumeric(String str) {
@@ -272,6 +289,7 @@ public final class LDATA {
     /**
      * @param node
      * @param unit
+     *
      * @return
      */
     public static double getCastConvert(Node node, String unit) {
@@ -281,10 +299,11 @@ public final class LDATA {
 
     /**
      * @param node
+     *
      * @return
      */
     public static double getCast(Node node) {
-        if (Node.contains(node, "#"))
+        if (node != null && Node.contains(node, "#") && !Node.get(node, "#").isEmpty())
             return Double.parseDouble(Node.get(node, "#"));
         else
             return -1;
@@ -294,6 +313,7 @@ public final class LDATA {
      * @param node
      * @param convertTitle
      * @param convertSteps
+     *
      * @return
      */
     public static Node addConversion(Node node, String convertTitle, String convertSteps) {
@@ -306,6 +326,7 @@ public final class LDATA {
     /**
      * @param node
      * @param valRange
+     *
      * @return
      */
     public static Node addValRange(Node node, Node valRange) {
@@ -343,6 +364,7 @@ public final class LDATA {
      *
      * @param node
      * @param unit
+     *
      * @return
      */
     public static Node addUnit(Node node, Node unit) {
@@ -352,6 +374,7 @@ public final class LDATA {
 
     /**
      * @param ldataType
+     *
      * @return the height^unit node.
      */
     public static Node getUnits(Node ldataType) {

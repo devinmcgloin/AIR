@@ -16,8 +16,8 @@ public class Pauser {
 
     public static boolean trueFalse(String s) {
         Scanner input = new Scanner(System.in);
-        Core.println(s + " (true | false)");
-        Core.print(">>> ");
+        Core.println(s);
+        Core.print("\n(true | false) >>> ");
         String line = input.next();
         return line.matches("(true|t|yes|T|True|y|Y)");
     }

@@ -8,8 +8,7 @@ import org.apache.log4j.Logger;
 import pa.PA;
 
 /**
- * Alright bub,
- * This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
+ * Alright bub, This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
  *
  * @author devinmcgloin
  * @author Blazej

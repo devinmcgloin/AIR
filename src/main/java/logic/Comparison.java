@@ -65,18 +65,16 @@ public final class Comparison {
 
 
     /**
-     * Returns probability of seeing a number of the value (val) or GREATER within the set of nodes.
-     * EX: getProbability( <cars>, topspeed, 220 )
-     * returns: 98.5%       (only 1.5% chance of a car having this top speed or greater)
-     * This return agrees to the standard with most cdfs and also allows you to see if you're too low or
-     * too high on the distribution.     *
-     * Mathspeak:
-     * Calculates the Student's T Cumulative Distribution Function from -INFINTY to the T-Score of the Val within the
-     * t-distribution of the set.
+     * Returns probability of seeing a number of the value (val) or GREATER within the set of nodes. EX: getProbability(
+     * <cars>, topspeed, 220 ) returns: 98.5%       (only 1.5% chance of a car having this top speed or greater) This
+     * return agrees to the standard with most cdfs and also allows you to see if you're too low or too high on the
+     * distribution.     * Mathspeak: Calculates the Student's T Cumulative Distribution Function from -INFINTY to the
+     * T-Score of the Val within the t-distribution of the set.
      *
      * @param set
      * @param key
      * @param val todo why is this passed in?
+     *
      * @return
      */
     public static double getProbability(ArrayList<Node> set, String key, String val) {

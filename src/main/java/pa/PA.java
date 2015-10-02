@@ -12,8 +12,7 @@ import java.util.ArrayList;
 
 /**
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- * <<<<<<< HEAD:src/pa/PA.java
- * =======
+ * <<<<<<< HEAD:src/pa/PA.java =======
  * <p/>
  * >>>>>>> maven-finally:src/main/java/pa/PA.java
  *
@@ -27,10 +26,9 @@ public final class PA {
     /**
      * HashSearch (Get set -> set logic???)
      * <p/>
-     * user defined matrices --> export set of BN in a csv file?
-     * header logic --> failed add: create header, in all set logic, make sure to
-     * reanalyze headers into their true base nodes and re-rank them.
-     * merging nodes --> tricky, idk how that function would look like
+     * user defined matrices --> export set of BN in a csv file? header logic --> failed add: create header, in all set
+     * logic, make sure to reanalyze headers into their true base nodes and re-rank them. merging nodes --> tricky, idk
+     * how that function would look like
      */
 
     protected static File rFolder = new File("./src/main/resources/R/");
@@ -333,6 +331,7 @@ public final class PA {
      * automatically add all the ^ headers that NBN's normally have
      *
      * @param title
+     *
      * @return
      */
     public static Node createNode(String title) {

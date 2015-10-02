@@ -17,6 +17,7 @@ public class StrRep {
      * String reps work for the following: "1283", "123.123", "1229 cm", "height > 12 ft"
      *
      * @param strRep
+     *
      * @return
      */
     public static Node getStringRep(String strRep) {
@@ -30,11 +31,11 @@ public class StrRep {
     }
 
     /**
-     * This is far easier for Devin than the previous idea:
-     * isKeyStringRepresentatble(Node key)     here you would submit "height" as a node to see that it takes a string rep.
-     * Wait no i still need that function done.
+     * This is far easier for Devin than the previous idea: isKeyStringRepresentatble(Node key)     here you would
+     * submit "height" as a node to see that it takes a string rep. Wait no i still need that function done.
      *
      * @param strRep
+     *
      * @return
      */
     public static boolean isStringRepresentation(String strRep) {
@@ -43,17 +44,20 @@ public class StrRep {
 
     /**
      * If I pass in the "Height" node from RN i need to know the values that go under it will be string representable.
-     * This is important in the construction of the ghost tree (which is responsible for searches and adding and deleting.
+     * This is important in the construction of the ghost tree (which is responsible for searches and adding and
+     * deleting.
      * <p/>
-     * I need it because if I get to a Key and I see it has no Value I need to handle creating either a GhostValue (a CI on a range
-     * of height) or if I need to create a GhostOF node (which is a LC of the Key). Those two are handled entirely differently.
+     * I need it because if I get to a Key and I see it has no Value I need to handle creating either a GhostValue (a CI
+     * on a range of height) or if I need to create a GhostOF node (which is a LC of the Key). Those two are handled
+     * entirely differently.
      *
      * @param key
+     *
      * @return
      */
     public static boolean isKeyStringRepresentable(Node key) {
-        return Node.getCarrot(key, "^logicalParents").stream()
-                .anyMatch(s -> s.equals("string representable"));
+        return Node.getCarrot(key, Const.LOGICAL_P.toString()).stream()
+                .anyMatch(s -> s.equals(Const.STRING_REP.toString()));
     }
 
     public static Node getExpression(String expression) {
@@ -70,7 +74,7 @@ public class StrRep {
                 template = Node.add(template, "operator", parsedExpression[1]);
                 template = Node.add(template, "value", parsedExpression[2]);
                 template = Node.add(template, "unit", parsedExpression[3]);
-                template = Node.add(template, "string representation", expression);
+                template = Node.add(template, Const.STRING_REP.toString(), expression);
                 return template;
             } else return null;
         } else return null;
@@ -84,7 +88,8 @@ public class StrRep {
         if (isCount(count)) {
             Node template = Notepad.searchByTitle("number");
             template = Node.add(template, "#", count);
-            template = Node.add(template, "string representation", count);
+            template = Node.add(template, Const.STRING_REP.toString(), count);
+            Core.println(Formatter.viewNode(template));
             return template;
         }
         return null;
@@ -100,7 +105,7 @@ public class StrRep {
             Node template = Notepad.searchByTitle("measurement");
             template = Node.add(template, "#", splitMeasuremnt[0]);
             template = Node.add(template, "unit", splitMeasuremnt[1]);
-            template = Node.add(template, "string representation", measure);
+            template = Node.add(template, Const.STRING_REP.toString(), measure);
             return template;
         }
         return null;

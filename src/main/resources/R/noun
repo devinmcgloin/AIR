@@ -256,7 +256,9 @@ ldata
     ^logicalChildren
         expression
         measurement
+        number
     ^logicalParents
+        string representation
     ^name
         ldata
     ^notKey
@@ -276,6 +278,7 @@ measurement
     ^logicalChildren
     ^logicalParents
         ldata
+        string representation
     ^name
         measurement
     ^notKey
@@ -310,6 +313,15 @@ node
     ^logicalParents
     ^name
         node
+    ^notKey
+number
+    #
+    ^logicalChildren
+    ^logicalParents
+        ldata
+        string representation
+    ^name
+        number
     ^notKey
 peach
     ^logicalChildren
@@ -364,6 +376,16 @@ strawberry
     length
     mass
     width
+string representation
+    ^logicalChildren
+        ldata
+        measurement
+        number
+        unit
+    ^logicalParents
+    ^name
+        string representation
+    ^notKey
 submarine
     ^logicalChildren
     ^logicalParents
@@ -413,6 +435,7 @@ tug boat
 unit
     ^logicalChildren
     ^logicalParents
+        string representation
     ^name
         unit
     ^notKey

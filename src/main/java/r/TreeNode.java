@@ -160,10 +160,11 @@ public class TreeNode implements Comparable<TreeNode> {
 
 
     /**
-     * DOES NOT CHECK IF CHILD ALREADY EXISTS. FUCK IN CASE WE SEE DOUBLING UP AGAIN.
-     * We need to make sure it adds the child to the correct place in the BS.
+     * DOES NOT CHECK IF CHILD ALREADY EXISTS. FUCK IN CASE WE SEE DOUBLING UP AGAIN. We need to make sure it adds the
+     * child to the correct place in the BS.
      *
      * @param childNode
+     *
      * @return
      */
     public void addChildBlind(TreeNode childNode) {
@@ -212,6 +213,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * Makes the current node the specifiedChild.
      *
      * @param specifiedChild - node to be changed to.
+     *
      * @return boolean
      */
     public TreeNode getChild(String specifiedChild) {
@@ -229,6 +231,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * QA on containsAll
      *
      * @param term
+     *
      * @return
      */
     public boolean containsAll(String term) {
@@ -261,6 +264,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * You can use binarySearch if you already know the information is sorted.
      *
      * @param nodeName
+     *
      * @return
      */
     public int binarySearch(String nodeName) {

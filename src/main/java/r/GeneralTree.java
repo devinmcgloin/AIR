@@ -11,13 +11,10 @@ import java.util.List;
 //Then rrename genTree to R
 
 /**
- * Thinks of the General tree as a whole.
- * Makes all changes and everything to the tree.
- * Keeps last used node in memory.
+ * Thinks of the General tree as a whole. Makes all changes and everything to the tree. Keeps last used node in memory.
  * <p/>
- * This is also what will handle loading in databases to populate a tree.
- * This is basically the tree.
- * Will also handle saving it.
+ * This is also what will handle loading in databases to populate a tree. This is basically the tree. Will also handle
+ * saving it.
  */
 public class GeneralTree {
 
@@ -113,6 +110,7 @@ public class GeneralTree {
      * utility for proper spacing on output.
      *
      * @param level
+     *
      * @return
      */
     private String lvlSpacing(int level) {
@@ -123,6 +121,7 @@ public class GeneralTree {
      * recursive export calls export recursive.
      *
      * @param node - .txt node
+     *
      * @return StringBuilder --> call toString on it for export.
      */
     protected StringBuilder export(TreeNode node) {
@@ -144,6 +143,7 @@ public class GeneralTree {
     /**
      * @param node
      * @param buffer
+     *
      * @return
      */
     private StringBuilder exportRec(TreeNode node, String buffer) {
@@ -244,6 +244,7 @@ public class GeneralTree {
      * Handles exiting DB and larger bits of logic for the getNode() function.
      *
      * @param address
+     *
      * @return
      */
     protected TreeNode getNodeByAddress(String address) {
@@ -390,6 +391,7 @@ public class GeneralTree {
      * Format address utility
      *
      * @param path
+     *
      * @return - tring array
      */
     private String[] formatRAddress(String path) {
@@ -417,6 +419,7 @@ public class GeneralTree {
      * checks if current has children with the given term all the way to leaf.
      *
      * @param searchTerm
+     *
      * @return
      */
     protected boolean containsAll(String searchTerm) {
@@ -424,8 +427,7 @@ public class GeneralTree {
     }
 
     /**
-     * No negative levels, you cant navigate to a higher level here, wouldn't
-     * know what tree to choose.
+     * No negative levels, you cant navigate to a higher level here, wouldn't know what tree to choose.
      *
      * @param level
      */
@@ -442,6 +444,7 @@ public class GeneralTree {
      * Takes the name of the next node you want to go to within current's children.
      *
      * @param next
+     *
      * @return
      */
     protected boolean childTraverse(String next) {
@@ -460,6 +463,7 @@ public class GeneralTree {
 
     /**
      * @param address
+     *
      * @return
      */
     protected TreeNode getNode(String address) {
@@ -504,6 +508,7 @@ public class GeneralTree {
 
     /**
      * @param input
+     *
      * @return - list of all addresses that contain that node name.
      */
     protected ArrayList<String> hashSearch(String input) {
@@ -514,6 +519,7 @@ public class GeneralTree {
 
     /**
      * @param terms
+     *
      * @return
      */
     protected ArrayList<TreeNodeBase> fullHashSearch(String terms) {
@@ -573,6 +579,7 @@ public class GeneralTree {
      * checks if current has children with the given term.
      *
      * @param searchTerm
+     *
      * @return
      */
     protected boolean contains(String searchTerm) {

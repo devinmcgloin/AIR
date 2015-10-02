@@ -74,7 +74,7 @@ public class LDATATest {
         Random r = new Random();
         String baseString = "";
 
-        for(int i = 0; i < 50000; i++){
+        for (int i = 0; i < 50000; i++) {
             String testString = baseString
                     + Character.getName(r.nextInt(Character.MAX_CODE_POINT))
                     + Character.getName(r.nextInt(Character.MAX_CODE_POINT))
@@ -84,9 +84,6 @@ public class LDATATest {
 
             Assert.assertFalse(testString, LDATA.isNumeric(testString));
         }
-
-
-
 
 
     }

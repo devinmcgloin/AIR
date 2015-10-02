@@ -9,16 +9,26 @@ import java.util.ArrayList;
  * @version 9/23/15
  */
 public class Formatter {
-    public static String formatNodes(ArrayList<Node> items) {
+    public static <T> String formatList(ArrayList<T> items) {
         StringBuilder output = new StringBuilder();
-        for (Node node : items) {
-            output.append(" ").append(node.toString()).append(" |");
+        for (T item : items) {
+            output.append(" ").append(item.toString()).append(" |");
         }
         return output.toString();
     }
 
+    public static <T> String formatList(T... items) {
+        StringBuilder output = new StringBuilder();
+        for (T item : items) {
+            output.append(" ").append(item.toString()).append(" |");
+        }
+        return output.toString();
+    }
+
+
     /**
      * @param n
+     *
      * @return
      */
     public static String viewNode(Node n) {

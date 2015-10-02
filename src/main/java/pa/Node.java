@@ -1,5 +1,6 @@
 package pa;
 
+import funct.Const;
 import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Record;
@@ -8,10 +9,6 @@ import java.util.ArrayList;
 
 /**
  * This class is basically locked.
- * <<<<<<< HEAD:src/pa/Node.java
- * =======
- * <p/>
- * >>>>>>> maven-finally:src/main/java/pa/Node.java
  *
  * @author devinmcgloin
  * @version 8/17/15.
@@ -69,6 +66,7 @@ public class Node {
 
     /**
      * @param node
+     *
      * @return
      */
     public static ArrayList<String> getName(Node node) {
@@ -82,6 +80,7 @@ public class Node {
     /**
      * @param node
      * @param key
+     *
      * @return
      */
     public static String get(Node node, String key) {
@@ -95,7 +94,7 @@ public class Node {
     }
 
     public static String getStringRep(Node node) {
-        return Node.get(node, "^stringRepresentation");
+        return Node.get(node, Const.STRING_REP.toString());
     }
 
     public static ArrayList<String> getCarrot(Node node, String key) {
@@ -187,6 +186,7 @@ public class Node {
      *
      * @param Key
      * @param Val
+     *
      * @return
      */
     private Node add(String Key, String Val) {
@@ -200,6 +200,7 @@ public class Node {
 
     /**
      * @param Key
+     *
      * @return
      */
     private Node rm(String Key) {
@@ -213,6 +214,7 @@ public class Node {
      *
      * @param Key
      * @param Val
+     *
      * @return
      */
     private Node rm(String Key, String Val) {
@@ -227,6 +229,7 @@ public class Node {
      * @param key
      * @param oldVal
      * @param newVal
+     *
      * @return
      */
 
@@ -244,6 +247,7 @@ public class Node {
      *
      * @param keys
      * @param vals
+     *
      * @return
      */
     private Node batchAdd(ArrayList<String> keys, ArrayList<String> vals) {
@@ -260,6 +264,7 @@ public class Node {
 
     /**
      * @param keys
+     *
      * @return
      */
     private Node batchRM(ArrayList<String> keys) {
@@ -278,6 +283,7 @@ public class Node {
      *
      * @param keys
      * @param vals
+     *
      * @return
      */
     private Node batchRM(ArrayList<String> keys, ArrayList<String> vals) {
@@ -299,6 +305,7 @@ public class Node {
      * @param keys
      * @param oldVals
      * @param newVals
+     *
      * @return
      */
     private Node batchUpdate(ArrayList<String> keys, ArrayList<String> oldVals, ArrayList<String> newVals) {
@@ -473,11 +480,11 @@ public class Node {
     }
 
     /**
-     * Removes VALUE
-     * Sinful state function.
+     * Removes VALUE Sinful state function.
      *
      * @param newNode - Node to remove from
-     * @param Key     - Does not remove the key, but only the value that the key takes on. Keys can be removed using the public method rm.
+     * @param Key     - Does not remove the key, but only the value that the key takes on. Keys can be removed using the
+     *                public method rm.
      * @param Val     - values to remove from the key node.
      */
     private void rm(TreeNode newNode, String Key, String Val) {
