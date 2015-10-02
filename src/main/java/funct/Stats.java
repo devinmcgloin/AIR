@@ -2,6 +2,7 @@ package funct;
 
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.inference.TTest;
+import org.apache.log4j.Logger;
 
 /**
  * @author devinmcgloin
@@ -9,6 +10,8 @@ import org.apache.commons.math3.stat.inference.TTest;
  * @version 8/20/15.
  */
 public class Stats {
+    static Logger logger = Logger.getLogger(Stats.class);
+
 
     public static double tcdf(double sigma, double df) {
         TTest gosset = new TTest();

@@ -10,9 +10,9 @@ import pa.PA;
 /**
  * Alright bub,
  * This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
- * TODO Bulk add from a file.
- * TODO save commands and allow it to load them back in a nd execute.
- * TODO Basic matrix manipulation and reading in dictionaries, taking the nouns from the definitions and adding htem as is or has relationships.
+ *
+ * @author devinmcgloin
+ * @author Blazej
  */
 public class Main {
 
@@ -34,7 +34,7 @@ public class Main {
                 .argName("FILE_PATH").hasArg()
                 .build());
 
-        options.addOption(Option.builder("h").longOpt("history-reader").desc("Read in history to DB.")
+        options.addOption(Option.builder("h").longOpt("hist-reader").desc("Read in history to DB.")
                 .argName("FILE_PATH").hasArg()
                 .build());
 
@@ -61,6 +61,7 @@ public class Main {
             }
             PA.save();
         } else if (cmd.hasOption('n')) {
+            //TODO this is 100% going to change.
             NULP nulp = new NULP();
 
             boolean cont = true;
