@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * Question not sure about how to represent non numerical data, (time, geo, etc) with expressions and may just bypass it altogether.
  * Default return value is true.
  * <p/>
- * implement add structured addition and removal functions as well as strucutred getCarrot for LDATA nodes
  * implement functionality that allows manipulation of ldata expressions in node form.
  *
  * @author devinmcgloin
@@ -199,17 +198,17 @@ public final class LDATA {
      * @return
      */
     public static Node getType(String unit) {
-        return SetLogic.getLogicalParents(PA.searchExactTitle(unit));
+
     }
 
     /**
-     * Takes the unit and returns the ldata node associated with it
+     * Takes the ldata node and returns the ldata type associated with it
      *
-     * @param node
-     * @return
+     * @param node say a measure, or a count
+     * @return the type node, if the node passed in is a heigh this should return the height node.
      */
     public static Node getType(Node node) {
-        return SetLogic.getLogicalParents(node);
+
     }
 
     /**
@@ -344,14 +343,12 @@ public final class LDATA {
      * Adds units to the overflow node for that nodes units.
      *
      * @param node
-     * @param key
+     * @param unit
      * @return
      */
-    public static Node addUnit(Node node, String key) {
-        Node unitNode = getUnits(node);
-        unitNode = Node.add(unitNode, "^unit", key);
-        Notepad.addNode(unitNode);
-        return unitNode;
+    public static Node addUnit(Node node, Node unit) {
+        Node n = Node.add(node, Node.getTitle(getType(unit)), Node.getStringRep(unit));
+        return n;
     }
 
     /**
@@ -387,13 +384,13 @@ public final class LDATA {
     }
 
     public static Node addValue(Node node, double value) {
-        Node tmp = Node.update(node, "#", Node.get(node, "#"), Double.toString(value));
+        Node tmp = Node.add(node, "#", Double.toString(value));
         Notepad.addNode(tmp);
         return tmp;
     }
 
     public static Node addValue(Node node, String value) {
-        Node tmp = Node.update(node, "#", Node.get(node, "#"), value);
+        Node tmp = Node.add(node, "#", value);
         Notepad.addNode(tmp);
         return tmp;
     }

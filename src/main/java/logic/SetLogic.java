@@ -1,6 +1,8 @@
 package logic;
 
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
@@ -9,6 +11,7 @@ import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -148,6 +151,9 @@ public final class SetLogic {
     /**
      * TODO good place to check with scanner.
      *
+     * Implement, needs to look thru logical parents and trace up.
+     *
+     * TODO this is all sorts of fucked up.
      * @param node
      * @return
      */
@@ -173,13 +179,56 @@ public final class SetLogic {
 //            return null;
 //        }
 
+
         for (String title : tmp) {
             Node foo = PA.searchExactTitle(title);
             if (foo == null) {
                 logger.error("Couldn't find node: " + title);
                 continue;
             }
-            parents.add(foo);
+            return foo;
+        }
+        return null;
+    }
+
+    /**
+     * returns the closest parent that is one step away from the given node. Eg if Acura NSX is passed in, it should
+     * return car.
+     *
+     * @param node
+     *
+     * @return
+     */
+    public static Node getLogicalParent(Node node) {
+        if (node == null) {
+            logger.warn("Cannot get parents of null node.");
+            return null;
+        }
+
+        ArrayList<Node> parents = new ArrayList<>();
+        ArrayList<String> tmp = Node.getCarrot(node, "^logicalParents");
+        if (tmp == null) {
+            logger.warn(node.toString() + " did not contain the header ^logicalParents.");
+            return null;
+        }
+        if (tmp.size() == 0) {
+            logger.warn(node.toString() + " did not contain any ^logicalParents.");
+            return null;
+        }
+//        if(tmp.size()>1){
+//            logger.error( node.toString() + " contained too many ^logicalParents!!!" );
+//            //FUCK what now? restructure? delete one? This shouldn't even be possible.
+//            return null;
+//        }
+
+
+        for (String title : tmp) {
+            Node foo = PA.searchExactTitle(title);
+            if (foo == null) {
+                logger.error("Couldn't find node: " + title);
+                continue;
+            }
+            return foo;
         }
         return null;
     }
@@ -311,51 +360,43 @@ public final class SetLogic {
      */
 
     public ArrayList<Node> intersection(ArrayList<Node> setA, ArrayList<Node> setB) {
-        ArrayList<Node> finalSet = new ArrayList<>();
-        for (Node node : setA) {
-            if (memberP(setB, node)) {
-                //TODO should merge nodes here.
-                finalSet.add(node);
-            }
+        Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
+        Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
+        Sets.SetView<Object> intersection = Sets.intersection(setAA, setBB);
+
+        ArrayList<Node> returnIntersection = new ArrayList<>();
+        for (Object n : intersection) {
+            returnIntersection.add((Node) n);
         }
-        return finalSet;
+
+        return returnIntersection;
+
     }
 
     public ArrayList<Node> difference(ArrayList<Node> setA, ArrayList<Node> setB) {
-        ArrayList<Node> finalSet = new ArrayList<>();
+        Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
+        Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
+        Sets.SetView<Object> difference = Sets.difference(setAA, setBB);
 
-        //Node from setA is not present in setB
-        for (Node node : setA) {
-            if (!memberP(setB, node)) {
-                finalSet.add(node);
-            }
+        ArrayList<Node> returnDifference = new ArrayList<>();
+        for (Object n : difference) {
+            returnDifference.add((Node) n);
         }
-        //Node from setB is not present in setA
-        for (Node node : setB) {
-            if (!memberP(setA, node)) {
-                finalSet.add(node);
-            }
-        }
-        return finalSet;
+
+        return returnDifference;
     }
 
     public ArrayList<Node> union(ArrayList<Node> setA, ArrayList<Node> setB) {
-        ArrayList<Node> finalSet = new ArrayList<>();
-        for (Node node : setA) {
-            if (memberP(setB, node)) {
-                //TODO merge
-            } else {
-                finalSet.add(node);
-            }
+        Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
+        Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
+        Sets.SetView<Object> union = Sets.union(setAA, setBB);
+
+        ArrayList<Node> returnUnion = new ArrayList<>();
+        for (Object n : union) {
+            returnUnion.add((Node) n);
         }
-        for (Node node : setB) {
-            if (memberP(setA, node)) {
-                //TODO merge
-            } else {
-                finalSet.add(node);
-            }
-        }
-        return finalSet;
+
+        return returnUnion;
     }
 
     /**
@@ -366,12 +407,9 @@ public final class SetLogic {
      * @return
      */
     public boolean supersetP(ArrayList<Node> setA, ArrayList<Node> setB) {
-        for (Node node : setB) {
-            if (!memberP(setA, node)) {
-                return false;
-            }
-        }
-        return true;
+        Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
+        Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
+        return setAA.containsAll(setBB);
     }
 
     /**
@@ -382,21 +420,14 @@ public final class SetLogic {
      * @return
      */
     public boolean subsetP(ArrayList<Node> setA, ArrayList<Node> setB) {
-        for (Node node : setA) {
-            if (!memberP(setB, node)) {
-                return false;
-            }
-        }
-        return true;
+        Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
+        Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
+        return setBB.containsAll(setAA);
     }
 
     public boolean memberP(ArrayList<Node> set, Node node) {
-        for (Node member : set) {
-            if (Node.getTitle(member).equals(Node.getTitle(node))) {
-                return true;
-            }
-        }
-        return false;
+        Set<Object> immutableSet = ImmutableSet.builder().addAll(set).build();
+        return immutableSet.contains(node);
     }
 
 }

@@ -5,7 +5,6 @@ import org.apache.commons.math3.stat.inference.TTest;
 import org.apache.log4j.Logger;
 
 /**
- * @author devinmcgloin
  * @author balzepoop109
  * @version 8/20/15.
  */
