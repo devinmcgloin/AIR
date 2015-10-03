@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import pa.Node;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,19 +83,19 @@ public final class SetLogic {
     }
 
     public static ArrayList<Node> isFilter(ArrayList<Node> nodes, Node isCondition) {
-        Iterator<Node> iterator = nodes.iterator();
+        ArrayList<Node> returnNodes = new ArrayList<>();
 
-        while (iterator.hasNext()) {
-            Node option = iterator.next();
+
+        for (Node option : nodes) {
             //Is filter
 
-            if (!xISyP(option, isCondition)) {
-                iterator.remove();
+            if (xISyP(option, isCondition)) {
+                returnNodes.add(option);
                 break;
             }
 
         }
-        return nodes;
+        return returnNodes;
     }
 
     public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, ArrayList<Node> hasConditions) {
@@ -109,19 +108,19 @@ public final class SetLogic {
     }
 
     public static ArrayList<Node> hasFilter(ArrayList<Node> nodes, Node hasCondition) {
-        Iterator<Node> iterator = nodes.iterator();
+        ArrayList<Node> returnNodes = new ArrayList<>();
 
-        while (iterator.hasNext()) {
-            Node option = iterator.next();
-            //Is filter
 
-            if (!hasP(option, hasCondition)) {
-                iterator.remove();
+        for (Node option : nodes) {
+            //has filter
+
+            if (hasP(option, hasCondition)) {
+                returnNodes.add(option);
                 break;
             }
 
         }
-        return nodes;
+        return returnNodes;
     }
 
     public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, ArrayList<Node> LDATAConditions) {
@@ -134,18 +133,19 @@ public final class SetLogic {
     }
 
     public static ArrayList<Node> LDATAFilter(ArrayList<Node> nodes, Node LDATACondition) {
-        Iterator<Node> iterator = nodes.iterator();
+        ArrayList<Node> returnNodes = new ArrayList<>();
 
-        while (iterator.hasNext()) {
-            Node option = iterator.next();
-            //Is filter
-            if (!LDATA.expressionIsValid(option, LDATACondition)) {
-                iterator.remove();
+
+        for (Node option : nodes) {
+            //ldata filter
+
+            if (LDATA.expressionIsValid(option, LDATACondition)) {
+                returnNodes.add(option);
                 break;
             }
 
         }
-        return nodes;
+        return returnNodes;
     }
 
 
@@ -186,7 +186,7 @@ public final class SetLogic {
             parents.add(foo);
             getLogicalParents(foo, parents);
         }
-        return parents;
+        return parents.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
     }
 
     private static void getLogicalParents(Node node, ArrayList<Node> list) {
@@ -206,50 +206,28 @@ public final class SetLogic {
     }
 
     /**
-     * returns the closest parent that is one step away from the given node. Eg if Acura NSX is passed in, it should
-     * return car. implement
-     *
+     * returns the closest parent that is one step away from the given node. Eg if Acura NSX is passed in, it should return car.
+     * implement
+     * Question, maybe determine which one to use by assessing of the ones present in the node passed in, which one has the closest proximity metric.
      * @param node
      *
      * @return
      */
     public static Optional<Node> getLogicalParent(Node node) {
-        if (node == null) {
-            logger.warn("Cannot get parents of null node.");
-            return Optional.empty();
-        }
+        ArrayList<Node> options = getLogicalParents(node);
 
-        ArrayList<Node> parents = new ArrayList<>();
-        ArrayList<String> tmp = Node.getCarrot(node, "^logicalParents");
-        if (tmp == null) {
-            logger.warn(node.toString() + " did not contain the header ^logicalParents.");
+        if (options.isEmpty())
             return Optional.empty();
-        }
-        if (tmp.size() == 0) {
-            logger.warn(node.toString() + " did not contain any ^logicalParents.");
-            return Optional.empty();
-        }
-
-        //todo have to decide which node is the best representation. This is not always clear.
-        for (String title : tmp) {
-            Node foo = Notepad.searchByTitle(title);
-            if (foo == null) {
-                logger.error("Couldn't find node: " + title);
-                continue;
-            }
-            //implement here
-            //Question, maybe determine which one to use by assessing of the ones present in the node passed in, which one has the closest proximity metric.
-        }
-        return Optional.empty();
+        else
+            return Optional.of(options.get(0));
     }
 
     public static ArrayList<Node> getLogicalChildren(Node node) {
+        ArrayList<Node> children = new ArrayList<>();
         if (node == null) {
             logger.warn("Cannot get children of null node");
-            return null;
+            return children;
         }
-
-        ArrayList<Node> children = new ArrayList<>();
         ArrayList<String> tmp = Node.getCarrot(node, "^logicalChildren");
         if (tmp == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalChildren.");
@@ -372,7 +350,7 @@ public final class SetLogic {
     TODO How to decide which ones get placed in the resulting set?
      */
 
-    public ArrayList<Node> intersection(ArrayList<Node> setA, ArrayList<Node> setB) {
+    public static ArrayList<Node> intersection(ArrayList<Node> setA, ArrayList<Node> setB) {
         Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
         Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
         Sets.SetView<Object> intersection = Sets.intersection(setAA, setBB);
@@ -386,20 +364,24 @@ public final class SetLogic {
 
     }
 
-    public ArrayList<Node> difference(ArrayList<Node> setA, ArrayList<Node> setB) {
+    public static ArrayList<Node> difference(ArrayList<Node> setA, ArrayList<Node> setB) {
         Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
         Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
-        Sets.SetView<Object> difference = Sets.difference(setAA, setBB);
+
+        Sets.SetView<Object> difference1 = Sets.difference(setBB, setAA);
+        Sets.SetView<Object> difference2 = Sets.difference(setAA, setBB);
+
+        Sets.SetView<Object> union = Sets.union(difference1, difference2);
 
         ArrayList<Node> returnDifference = new ArrayList<>();
-        for (Object n : difference) {
+        for (Object n : union) {
             returnDifference.add((Node) n);
         }
 
         return returnDifference;
     }
 
-    public ArrayList<Node> union(ArrayList<Node> setA, ArrayList<Node> setB) {
+    public static ArrayList<Node> union(ArrayList<Node> setA, ArrayList<Node> setB) {
         Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
         Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
         Sets.SetView<Object> union = Sets.union(setAA, setBB);
@@ -420,7 +402,7 @@ public final class SetLogic {
      *
      * @return
      */
-    public boolean supersetP(ArrayList<Node> setA, ArrayList<Node> setB) {
+    public static boolean supersetP(ArrayList<Node> setA, ArrayList<Node> setB) {
         Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
         Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
         return setAA.containsAll(setBB);
@@ -434,13 +416,13 @@ public final class SetLogic {
      *
      * @return
      */
-    public boolean subsetP(ArrayList<Node> setA, ArrayList<Node> setB) {
+    public static boolean subsetP(ArrayList<Node> setA, ArrayList<Node> setB) {
         Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
         Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
         return setBB.containsAll(setAA);
     }
 
-    public boolean memberP(ArrayList<Node> set, Node node) {
+    public static boolean memberP(ArrayList<Node> set, Node node) {
         Set<Object> immutableSet = ImmutableSet.builder().addAll(set).build();
         return immutableSet.contains(node);
     }

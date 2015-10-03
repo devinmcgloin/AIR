@@ -24,9 +24,9 @@ public class R {
 
 
     //Start R Interface
-    public R(String name) {
+    public R(String name, String rFolder) {
         this.name = name;
-        genTree = new GeneralTree();
+        genTree = new GeneralTree(rFolder);
         hits = new ArrayList<TreeNodeBase>();
         current = genTree.getCurrent();
         current = get("R/" + name);

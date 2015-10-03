@@ -136,6 +136,9 @@ public class REPL {
                     Notepad.addNode((Node) returnedObject.getResult());
                 else if (returnedObject.getResult() instanceof String)
                     System.out.println(returnedObject.getResult());
+                else if (returnedObject.getResult().getClass().equals(ArrayList.class))
+                    Core.println(Formatter.formatList((ArrayList<Node>) returnedObject.getResult()));
+
             }
         }
         Whiteboard.addAllNotepadNodes();

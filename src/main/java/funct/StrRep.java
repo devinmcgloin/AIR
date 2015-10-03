@@ -68,6 +68,7 @@ public class StrRep {
                 template = Node.add(template, "type", parsedExpression[0]);
                 template = Node.add(template, "operator", parsedExpression[1]);
                 template = Node.add(template, "value", parsedExpression[2]);
+                template = Node.add(template, Const.STRING_REP.toString(), expression);
                 return template;
             } else if (parsedExpression.length == 4) {
                 template = Node.add(template, "type", parsedExpression[0]);

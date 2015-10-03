@@ -19,15 +19,17 @@ import java.util.List;
 public class GeneralTree {
 
     static Logger logger = Logger.getLogger(GeneralTree.class);
-    protected final String FILEEXTENSION = "./src/main/resources/R/";
+    protected String fileExtension;
     protected TreeNode current;
     protected TreeNode tmp;
-    protected File rFolder = new File(FILEEXTENSION);
+    protected File rFolder;
     protected HashBrowns hash;
 
 
-    protected GeneralTree() {
+    protected GeneralTree(String path) {
         //Start the R/ node.
+        fileExtension = path + "/";
+        rFolder = new File(fileExtension);
         current = new TreeNode("R");
         current.setAddress("R");
 
@@ -97,7 +99,7 @@ public class GeneralTree {
 //            if (!name.endsWith(".txt")) {
 //                name += ".txt";
 //            }
-            BufferedWriter out = new BufferedWriter(new FileWriter(FILEEXTENSION + name));
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileExtension + name));
             out.write(DBout);
             out.close();
         } catch (Exception e) {
@@ -180,9 +182,9 @@ public class GeneralTree {
 
         //Open File
         try {
-            in = new FileReader(FILEEXTENSION + dbName);
+            in = new FileReader(fileExtension + dbName);
         } catch (FileNotFoundException e) {
-            logger.fatal("Invalid database name.");
+            logger.fatal(String.format("Invalid database name. fileExtension: %s dbName: %s", fileExtension, dbName));
             return;
         }
 

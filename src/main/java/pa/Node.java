@@ -1,6 +1,8 @@
 package pa;
 
 import funct.Const;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 import r.TreeNode;
 import util.Record;
@@ -63,7 +65,6 @@ public class Node {
         return node.rm(key, val);
     }
 
-
     /**
      * @param node
      *
@@ -106,6 +107,14 @@ public class Node {
         return node.update(key, oldVal, newVal);
     }
 
+    public static String getTitle(Node node) {
+        return node.getTitle();
+    }
+
+    public static boolean titleEquals(Node nodeA, Node nodeB) {
+        return getTitle(nodeA).equals(getTitle(nodeB));
+    }
+
 //    /**
 //     * @param node
 //     * @param key
@@ -119,14 +128,6 @@ public class Node {
 //        return false;
 //    }
 
-    public static String getTitle(Node node) {
-        return node.getTitle();
-    }
-
-    public static boolean titleEquals(Node nodeA, Node nodeB) {
-        return getTitle(nodeA).equals(getTitle(nodeB));
-    }
-
     public static boolean nameEquals(Node nodeA, String name) {
         for (String nameA : Node.getName(nodeA)) {
             if (nameA.equals(name))
@@ -134,6 +135,26 @@ public class Node {
 
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(TN)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Node node = (Node) o;
+
+        return new EqualsBuilder()
+                .append(TN, node.TN)
+                .isEquals();
     }
 
     private String getTitle() {
