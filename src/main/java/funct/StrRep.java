@@ -1,6 +1,5 @@
 package funct;
 
-import logic.LDATA;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -82,7 +81,7 @@ public class StrRep {
     }
 
     public static boolean isExpression(String expression) {
-        return LDATA.isExpression(expression);
+        return Predicate.isExpression(expression);
     }
 
     public static Node getCount(String count) {
@@ -97,7 +96,7 @@ public class StrRep {
     }
 
     public static boolean isCount(String count) {
-        return LDATA.isNumeric(count);
+        return Predicate.isNumeric(count);
     }
 
     public static Node getMeasurement(String measure) {
@@ -117,6 +116,6 @@ public class StrRep {
         if (splitMeasuremnt.length != 2) {
             return false;
         }
-        return isCount(splitMeasuremnt[0]) && LDATA.isUnit(splitMeasuremnt[1]);
+        return isCount(splitMeasuremnt[0]) && Predicate.isUnit(splitMeasuremnt[1]);
     }
 }

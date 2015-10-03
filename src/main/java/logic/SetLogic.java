@@ -3,6 +3,7 @@ package logic;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import funct.Predicate;
 import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
@@ -38,7 +39,7 @@ public final class SetLogic {
      * @return
      */
     public static boolean isValid(String key, String val) {
-        if (StrRep.isStringRepresentation(val) && LDATA.isLdata(key))
+        if (StrRep.isStringRepresentation(val) && Predicate.isLDATA(key))
             return true;
 
         Node keyNode = Notepad.searchByTitle(key);

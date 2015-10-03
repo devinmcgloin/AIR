@@ -27,8 +27,9 @@ public class CSVReader {
         ArrayList<Node> parsed = new ArrayList<>();
         ArrayList<Node> parsedHeader = matchHeader(csvRecords.get(0));
 
-        for (CSVRecord record : csvRecords) {
-            Node n = PA.createNode(record.get(0));
+        for (int a = 1; a < csvRecords.size(); a++) {
+            Node n = PA.createNode(csvRecords.get(a).get(0));
+            CSVRecord record = csvRecords.get(a);
             for (int i = 1; i < record.size(); i++) {
 
                     if (StrRep.isStringRepresentation(record.get(i))) {
