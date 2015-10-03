@@ -4,6 +4,9 @@ import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
 
+import static funct.Const.LOGICAL_P;
+import static funct.Const.STRING_REP;
+
 /**
  * @author devinmcgloin
  * @version 8/25/15
@@ -55,8 +58,8 @@ public class StrRep {
      * @return
      */
     public static boolean isKeyStringRepresentable(Node key) {
-        return Node.getCarrot(key, Const.LOGICAL_P.toString()).stream()
-                .anyMatch(s -> s.equals(Const.STRING_REP.toString()));
+        return Node.getCarrot(key, LOGICAL_P.toString()).stream()
+                .anyMatch(s -> s.equals(STRING_REP.toString()));
     }
 
     public static Node getExpression(String expression) {
@@ -67,14 +70,14 @@ public class StrRep {
                 template = Node.add(template, "type", parsedExpression[0]);
                 template = Node.add(template, "operator", parsedExpression[1]);
                 template = Node.add(template, "value", parsedExpression[2]);
-                template = Node.add(template, Const.STRING_REP.toString(), expression);
+                template = Node.add(template, STRING_REP.toString(), expression);
                 return template;
             } else if (parsedExpression.length == 4) {
                 template = Node.add(template, "type", parsedExpression[0]);
                 template = Node.add(template, "operator", parsedExpression[1]);
                 template = Node.add(template, "value", parsedExpression[2]);
                 template = Node.add(template, "unit", parsedExpression[3]);
-                template = Node.add(template, Const.STRING_REP.toString(), expression);
+                template = Node.add(template, STRING_REP.toString(), expression);
                 return template;
             } else return null;
         } else return null;
@@ -88,7 +91,7 @@ public class StrRep {
         if (isCount(count)) {
             Node template = Notepad.searchByTitle("number");
             template = Node.add(template, "#", count);
-            template = Node.add(template, Const.STRING_REP.toString(), count);
+            template = Node.add(template, STRING_REP.toString(), count);
             logger.debug(Formatter.viewNode(template));
             return template;
         }
@@ -105,7 +108,7 @@ public class StrRep {
             Node template = Notepad.searchByTitle("measurement");
             template = Node.add(template, "#", splitMeasuremnt[0]);
             template = Node.add(template, "unit", splitMeasuremnt[1]);
-            template = Node.add(template, Const.STRING_REP.toString(), measure);
+            template = Node.add(template, STRING_REP.toString(), measure);
             return template;
         }
         return null;

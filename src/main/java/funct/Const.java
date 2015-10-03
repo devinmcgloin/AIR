@@ -8,7 +8,8 @@ public enum Const {
     STRING_REP("string representation"),
     NAME("^name"),
     LOGICAL_P("^logicalParents"),
-    LOGICAL_C("^logicalChildren");
+    LOGICAL_C("^logicalChildren"),
+    NOT_KEY("^notkey");
 
     private final String representation;
 
