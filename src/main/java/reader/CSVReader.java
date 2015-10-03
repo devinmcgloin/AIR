@@ -1,11 +1,11 @@
 package reader;
 
-import funct.Core;
 import funct.Formatter;
 import funct.StrRep;
 import logic.Scribe;
 import memory.Notepad;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
 
@@ -16,6 +16,8 @@ import java.util.ArrayList;
  * @version 10/2/15.
  */
 public class CSVReader {
+    static Logger logger = Logger.getLogger(CSVReader.class);
+
 
 
     public CSVReader() {
@@ -25,28 +27,29 @@ public class CSVReader {
         ArrayList<Node> parsed = new ArrayList<>();
         ArrayList<Node> parsedHeader = matchHeader(csvRecords.get(0));
 
-        for (CSVRecord record : csvRecords) {
-            Node n = PA.createNode(record.get(0));
+        for (int a = 1; a < csvRecords.size(); a++) {
+            Node n = PA.createNode(csvRecords.get(a).get(0));
+            CSVRecord record = csvRecords.get(a);
             for (int i = 1; i < record.size(); i++) {
-                for (int j = 0; j < parsedHeader.size(); j++) {
+
                     if (StrRep.isStringRepresentation(record.get(i))) {
 
-//                        Core.println(Formatter.formatList(n.toString(),
-//                                parsedHeader.get(j).toString(), record.get(i)));
-//                        Core.println("");
+                        logger.debug(Formatter.formatList(n.toString(),
+                                parsedHeader.get(i - 1).toString(), record.get(i)));
 
-                        parsed.add(Scribe.addHighLevel(n, parsedHeader.get(j),
-                                StrRep.getStringRep(record.get(i))));
+                        n = Scribe.addHighLevel(n, parsedHeader.get(i - 1),
+                                StrRep.getStringRep(record.get(i)));
 
                     }
-                }
+
             }
+            parsed.add(n);
         }
 
-        Core.println(Formatter.formatList(parsed));
+        logger.debug(Formatter.formatList(parsed));
 
         for (Node n : parsed) {
-            Core.println(Formatter.viewNode(n));
+            logger.debug(Formatter.viewNode(n));
         }
 
         return parsed;
@@ -63,10 +66,10 @@ public class CSVReader {
     public ArrayList<Node> matchHeader(CSVRecord header) {
         ArrayList<Node> keyNodes = new ArrayList<>();
         for (int i = 1; i < header.size(); i++) {
-            Core.println(header.get(i));
+            logger.debug(header.get(i));
             Node n = Notepad.search(header.get(i));
             if (n != null) {
-                Core.println(Formatter.quickView(n));
+                logger.debug(Formatter.quickView(n));
                 keyNodes.add(n);
             }
         }

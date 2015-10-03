@@ -42,7 +42,8 @@ public final class ExecutionFlow {
                 result = method.invoke(null, arguments[0], arguments[1], arguments[2]);
                 completedP = true;
             } else if (argTypes.length == 4) {
-                result = method.invoke(null, arguments[0], arguments[1], arguments[2], arguments[3]);
+                result = method.invoke(null, arguments[0], arguments[1],
+                        arguments[2], arguments[3]);
                 completedP = true;
             }
         } catch (IllegalAccessException e) {

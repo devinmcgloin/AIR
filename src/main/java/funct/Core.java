@@ -1,5 +1,6 @@
 package funct;
 
+import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 import org.javatuples.Pair;
 
@@ -17,10 +18,12 @@ public class Core {
 
 
     public static void println(String s) {
+        Preconditions.checkNotNull(s);
         System.out.println(s);
     }
 
     public static void print(String s) {
+        Preconditions.checkNotNull(s);
         System.out.print(s);
     }
 
