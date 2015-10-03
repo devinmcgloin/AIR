@@ -4,8 +4,7 @@ import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
 
-import static funct.Const.LOGICAL_P;
-import static funct.Const.STRING_REP;
+import static funct.Const.*;
 
 /**
  * @author devinmcgloin
