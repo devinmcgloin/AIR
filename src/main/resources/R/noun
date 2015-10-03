@@ -269,6 +269,7 @@ ldata
         expression
         measurement
         number
+        population
     ^logicalParents
         string representation
     ^name
@@ -331,6 +332,7 @@ number
     ^logicalChildren
     ^logicalParents
         ldata
+        population
         string representation
     ^name
         number
@@ -376,6 +378,14 @@ physical node
     length
     mass
     width
+population
+    ^logicalChildren
+        number
+    ^logicalParents
+        ldata
+    ^name
+        population
+    ^notKey
 red
     B
     G

@@ -90,7 +90,7 @@ public class StrRep {
             Node template = Notepad.searchByTitle("number");
             template = Node.add(template, "#", count);
             template = Node.add(template, Const.STRING_REP.toString(), count);
-            Core.println(Formatter.viewNode(template));
+            logger.debug(Formatter.viewNode(template));
             return template;
         }
         return null;

@@ -161,7 +161,7 @@ public class HashBrowns {
         if (map.get(name) != null) {
             addresses = map.get(name);
         }
-        logger.debug("Trying hash del for first time! Only on failed search.");
+//        logger.debug("Trying hash del for first time! Only on failed search.");
         addresses.remove(address);
 
         //Replace the old hash key (name) with the update list of addresses
