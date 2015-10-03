@@ -7,11 +7,11 @@ import pa.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 
 /**
- * Shit's ins@n3.
- * It's a Node with keys in it.
+ * Shit's ins@n3. It's a Node with keys in it.
  *
  * @author Blazej
  * @version 8/29/2015.
@@ -40,7 +40,8 @@ public class GhostTree {
         allGNodes.add(this.root);
         ArrayList<GhostNode> gnodesInThisBranch = new ArrayList<>();
         gnodesInThisBranch.add(this.root);
-        constructTree(this.root, gnodesInThisBranch); // todo should go nodes be passed in?
+        contenders.add(this.root); //QUESTION IS THIS ALRIGHT?
+        constructTree(this.root, gnodesInThisBranch);
     }
 
     private void constructTree(GhostNode base, ArrayList<GhostNode> gnodesInThisBranch) {
@@ -149,7 +150,11 @@ public class GhostTree {
 
 
                 //If it's creating a OF node (bmw^door) it checks ^lp (car) to see if (car^door) is something that exists. Uses that for structure/inheritance.
-                Node lp = SetLogic.getLogicalParents(root.getOriginNode()); //car
+                Optional<Node> optionalLp = SetLogic.getLogicalParent(root.getOriginNode()); //car
+                if (!optionalLp.isPresent()) {
+                    continue;
+                }
+                Node lp = optionalLp.get();
                 String value = Node.get(lp, gkey.toString());    //String value, or null
                 if (value == null || !value.contains("^") || value.startsWith("^")) {
                     //Just inherit from the Key instead.
@@ -251,9 +256,9 @@ public class GhostTree {
 
 
     /**
-     * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch.
-     * For the time being, the use of the filter branches method should be from leaf to root.
-     * First give the values (what you truly want to add). Then add additional contextual nodes.
+     * If this node can go as a LC child somewhere in the GhostTree, we will keep that branch. For the time being, the
+     * use of the filter branches method should be from leaf to root. First give the values (what you truly want to
+     * add). Then add additional contextual nodes.
      * <p/>
      * If you are using filterBranches, make sure to clearContenders() first.
      *
@@ -285,8 +290,10 @@ public class GhostTree {
                 if (c.containsInBranch(gnode)) {
                     keepPlease.add(c);
                 } else {
-                    if (c == root)
+                    if (c == root) {
+                        keepPlease.add(root); //QUESTION IS THIS ALRIGHT?
                         continue; //DON'T DELETE THE ROOT.
+                    }
 
                     deleteNotePadBranch(c); //using NotePad.delNode isn't sufficient since you must also delete the branch from NotePad.
                     //Deleting the branch does not delete shared parents of still viable contenders since they will be added in the updateNotePad().
@@ -356,7 +363,6 @@ public class GhostTree {
 
 
     /**
-     *
      * @return returns all possible keys
      */
     public ArrayList<Node> getContenders() {
@@ -372,7 +378,6 @@ public class GhostTree {
     }
 
     /**
-     *
      * @return returns the base nodes for the given search.
      */
     public ArrayList<Node> getContendersBases() {
@@ -381,8 +386,12 @@ public class GhostTree {
             return null;
 
         for (GhostNode g : contenders) {
-            g = g.getParent();
-            contendersNodes.add(g.getOriginNode());
+            if (g.getLevel() == 0) {
+                contendersNodes.add(g.getOriginNode());
+            } else {
+                g = g.getParent(); // fixme this does not work for the root.
+                contendersNodes.add(g.getOriginNode());
+            }
         }
 
         return contendersNodes;
@@ -428,6 +437,7 @@ public class GhostTree {
     /**
      * @param node
      * @param buffer
+     *
      * @return
      */
     private StringBuilder exportRec(GhostNode node, String buffer) {
@@ -486,6 +496,7 @@ public class GhostTree {
          * Checks to see if current node has node as ancestor in the branch.
          *
          * @param ancestor
+         *
          * @return
          */
         protected boolean containsInBranch(GhostNode ancestor) {

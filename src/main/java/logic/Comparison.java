@@ -2,11 +2,11 @@ package logic;
 
 import funct.Core;
 import funct.Stats;
+import memory.Notepad;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.javatuples.Pair;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,18 +65,16 @@ public final class Comparison {
 
 
     /**
-     * Returns probability of seeing a number of the value (val) or GREATER within the set of nodes.
-     * EX: getProbability( <cars>, topspeed, 220 )
-     * returns: 98.5%       (only 1.5% chance of a car having this top speed or greater)
-     * This return agrees to the standard with most cdfs and also allows you to see if you're too low or
-     * too high on the distribution.     *
-     * Mathspeak:
-     * Calculates the Student's T Cumulative Distribution Function from -INFINTY to the T-Score of the Val within the
-     * t-distribution of the set.
+     * Returns probability of seeing a number of the value (val) or GREATER within the set of nodes. EX: getProbability(
+     * <cars>, topspeed, 220 ) returns: 98.5%       (only 1.5% chance of a car having this top speed or greater) This
+     * return agrees to the standard with most cdfs and also allows you to see if you're too low or too high on the
+     * distribution.     * Mathspeak: Calculates the Student's T Cumulative Distribution Function from -INFINTY to the
+     * T-Score of the Val within the t-distribution of the set.
      *
      * @param set
      * @param key
      * @param val todo why is this passed in?
+     *
      * @return
      */
     public static double getProbability(ArrayList<Node> set, String key, String val) {
@@ -107,7 +105,7 @@ public final class Comparison {
     public static ArrayList<Pair<String, Double>> getDistribution(ArrayList<Node> set, String key) {
 
 
-        Node ldbn = PA.searchExactTitle(key);
+        Node ldbn = Notepad.searchByTitle(key);
         if (ldbn == null) {
             logger.error("Comparison: You shit outta luck");
             return null;

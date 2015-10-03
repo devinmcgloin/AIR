@@ -1,8 +1,10 @@
 package funct;
 
+import memory.Notepad;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
+import reader.CSVReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,8 +27,8 @@ public final class Reader {
     }
 
     /**
-     * Currently prints out the contents of the CSV file to std out.
-     * TODO eventually we want to map the values of a csv to a set of nodes. With the user specifying what keys are appropriate for each column.
+     * Currently prints out the contents of the CSV file to std out. TODO eventually we want to map the values of a csv
+     * to a set of nodes. With the user specifying what keys are appropriate for each column.
      *
      * @param file
      */
@@ -38,12 +40,15 @@ public final class Reader {
         try {
             java.io.Reader reader = new FileReader(file);
             ArrayList<CSVRecord> csvRecords = new ArrayList<>();
+
             for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
                 csvRecords.add(record);
             }
-            for (CSVRecord rec : csvRecords) {
-                System.out.println(rec);
-            }
+
+            CSVReader csvReader = new CSVReader();
+            // actual computations. Probably going to be outsourced to a CSVREADER.
+            Notepad.addNodes(csvReader.readIn(csvRecords));
+
 
         } catch (FileNotFoundException e) {
             System.err.printf("File %s not found. Please check your path\n", file);
@@ -53,11 +58,11 @@ public final class Reader {
             System.exit(1);
         }
 
-        //TODO actual computations. Probably going to be outsourced to a CSVREADER.
     }
 
     /**
      * TODO Bulk add from a file. taking the nouns from the definitions and adding them as is or has relationships.
+     *
      * @param file
      */
     public static void readDict(String file) {
@@ -75,6 +80,7 @@ public final class Reader {
     /**
      * TODO save commands and allow it to load them back in a nd execute.
      * Question, how to represent history of inputs / computations?
+     *
      * @param file
      */
     public static void readHistory(String file) {

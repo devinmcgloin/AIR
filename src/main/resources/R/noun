@@ -1,12 +1,3 @@
-<<<<<<< HEAD:R/noun
-<<<<<<< HEAD:R/noun
-<<<<<<< HEAD:R/noun
-=======
-=======
-=======
->>>>>>> maven-finally:src/main/resources/R/noun
->>>>>>> maven-finally:src/main/resources/R/noun
->>>>>>> maven-finally:src/main/resources/R/noun
 apple
     ^logicalChildren
     ^logicalParents
@@ -55,6 +46,9 @@ bicycle
     mass
     width
 blue
+    B
+    G
+    R
     ^logicalChildren
     ^logicalParents
         color
@@ -139,11 +133,16 @@ car
     wheel
     width
 color
+    B
+    G
+    R
     ^logicalChildren
         blue
+        red
     ^logicalParents
     ^name
         color
+        colour
     ^notKey
 container ship
     ^logicalChildren
@@ -176,6 +175,10 @@ expression
     ^name
         expression
     ^notKey
+    operator
+    type
+    unit
+    value
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -265,7 +268,9 @@ ldata
     ^logicalChildren
         expression
         measurement
+        number
     ^logicalParents
+        string representation
     ^name
         ldata
     ^notKey
@@ -285,6 +290,7 @@ measurement
     ^logicalChildren
     ^logicalParents
         ldata
+        string representation
     ^name
         measurement
     ^notKey
@@ -319,6 +325,15 @@ node
     ^logicalParents
     ^name
         node
+    ^notKey
+number
+    #
+    ^logicalChildren
+    ^logicalParents
+        ldata
+        string representation
+    ^name
+        number
     ^notKey
 peach
     ^logicalChildren
@@ -361,6 +376,16 @@ physical node
     length
     mass
     width
+red
+    B
+    G
+    R
+    ^logicalChildren
+    ^logicalParents
+        color
+    ^name
+        red
+    ^notKey
 strawberry
     ^logicalChildren
     ^logicalParents
@@ -373,6 +398,16 @@ strawberry
     length
     mass
     width
+string representation
+    ^logicalChildren
+        ldata
+        measurement
+        number
+        unit
+    ^logicalParents
+    ^name
+        string representation
+    ^notKey
 submarine
     ^logicalChildren
     ^logicalParents
@@ -422,6 +457,7 @@ tug boat
 unit
     ^logicalChildren
     ^logicalParents
+        string representation
     ^name
         unit
     ^notKey

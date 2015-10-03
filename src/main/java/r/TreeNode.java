@@ -1,5 +1,7 @@
 package r;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -22,6 +24,26 @@ public class TreeNode implements Comparable<TreeNode> {
         this.title = title;
         this.children = new ArrayList<>();
 
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final TreeNode treeNode = (TreeNode) o;
+
+        return new EqualsBuilder()
+                .append(title, treeNode.title)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(title)
+                .toHashCode();
     }
 
     /**
@@ -160,10 +182,11 @@ public class TreeNode implements Comparable<TreeNode> {
 
 
     /**
-     * DOES NOT CHECK IF CHILD ALREADY EXISTS. FUCK IN CASE WE SEE DOUBLING UP AGAIN.
-     * We need to make sure it adds the child to the correct place in the BS.
+     * DOES NOT CHECK IF CHILD ALREADY EXISTS. FUCK IN CASE WE SEE DOUBLING UP AGAIN. We need to make sure it adds the
+     * child to the correct place in the BS.
      *
      * @param childNode
+     *
      * @return
      */
     public void addChildBlind(TreeNode childNode) {
@@ -212,6 +235,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * Makes the current node the specifiedChild.
      *
      * @param specifiedChild - node to be changed to.
+     *
      * @return boolean
      */
     public TreeNode getChild(String specifiedChild) {
@@ -229,6 +253,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * QA on containsAll
      *
      * @param term
+     *
      * @return
      */
     public boolean containsAll(String term) {
@@ -261,6 +286,7 @@ public class TreeNode implements Comparable<TreeNode> {
      * You can use binarySearch if you already know the information is sorted.
      *
      * @param nodeName
+     *
      * @return
      */
     public int binarySearch(String nodeName) {

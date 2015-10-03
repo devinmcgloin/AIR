@@ -17,7 +17,8 @@ import java.util.Scanner;
 
 /**
  * <p/>
- * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class methods on the objects of their class.
+ * currently REPL only works for static library methods in which the parameters are explicit. You cannot call class
+ * methods on the objects of their class.
  * <p/>
  * <p/>
  * TODO arrow up to get last command
@@ -25,7 +26,7 @@ import java.util.Scanner;
  * @author devinmcgloin
  * @version 8/17/2015.
  */
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings ("FieldCanBeLocal")
 public class REPL {
     static Logger logger = Logger.getLogger(REPL.class);
     private final String HELP_STRING = "REPL Help:\n" +
@@ -105,7 +106,7 @@ public class REPL {
 
     public boolean cycle() {
         System.out.println("\n");
-        System.out.println("Nodes:    " + Formatter.formatNodes(Whiteboard.getProminentNodes()));
+        System.out.println("Nodes:    " + Formatter.formatList(Whiteboard.getProminentNodes()));
         System.out.print(">>> ");
         String command = input.nextLine().trim();
         if (command.toLowerCase().equals("q")) {
@@ -135,6 +136,9 @@ public class REPL {
                     Notepad.addNode((Node) returnedObject.getResult());
                 else if (returnedObject.getResult() instanceof String)
                     System.out.println(returnedObject.getResult());
+                else if (returnedObject.getResult().getClass().equals(ArrayList.class))
+                    Core.println(Formatter.formatList((ArrayList<Node>) returnedObject.getResult()));
+
             }
         }
         Whiteboard.addAllNotepadNodes();

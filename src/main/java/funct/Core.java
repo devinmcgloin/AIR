@@ -6,7 +6,8 @@ import org.javatuples.Pair;
 import java.util.ArrayList;
 
 /**
- *  For small utility methods
+ * For small utility methods
+ *
  * @author devinmcgloin
  * @version 8/20/15.
  */

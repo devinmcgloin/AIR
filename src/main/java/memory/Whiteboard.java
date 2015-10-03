@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by relevance in order to give the most recently referenced result if you are searching by name.
- * <<<<<<< HEAD:src/memory/Whiteboard.java
- * =======
- * <p/>
- * >>>>>>> maven-finally:src/main/java/memory/Whiteboard.java
+ * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus
+ * a double which is updated with a decay function to ascertain relevance. Items are searched thu while ordered by
+ * relevance in order to give the most recently referenced result if you are searching by name.
  *
  * @author devinmcgloin
  * @version 8/26/15.
@@ -64,6 +62,7 @@ public class Whiteboard {
      * TODO May want to create a node on failed search
      *
      * @param nodeName
+     *
      * @return
      */
     protected static Node search(String nodeName) {
@@ -98,6 +97,7 @@ public class Whiteboard {
      * TODO May want to create a node on failed search (Perhaps this is more applicable to search by name)
      *
      * @param title
+     *
      * @return
      */
     protected static Node searchByTitle(String title) {

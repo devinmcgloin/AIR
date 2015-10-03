@@ -5,6 +5,7 @@ import pa.Node;
 import pa.PA;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * @author devinmcgloin
@@ -27,6 +28,10 @@ public class Notepad {
             }
         }
         workingNodes.add(node);
+    }
+
+    public static void addNodes(ArrayList<Node> nodes) {
+        nodes.forEach(Notepad::addNode);
     }
 
     public static void delNode(Node node) {
@@ -55,6 +60,17 @@ public class Notepad {
         n = PA.searchExactTitle(title);
 
         return n != null ? n : null;
+    }
+
+    public static ArrayList<Node> searchByTitles(ArrayList<String> titles) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (String title : titles) {
+            nodes.add(searchByTitle(title));
+        }
+        return nodes.stream()
+                .distinct()
+                .filter(n -> n != null)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static Node search(String name) {
