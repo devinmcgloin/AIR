@@ -186,7 +186,10 @@ public final class SetLogic {
             parents.add(foo);
             getLogicalParents(foo, parents);
         }
-        return parents;
+        for (Node n : parents) {
+            System.out.printf("%10s %20d \n", Node.getTitle(n), n.hashCode());
+        }
+        return parents.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
     }
 
     private static void getLogicalParents(Node node, ArrayList<Node> list) {

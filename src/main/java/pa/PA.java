@@ -32,7 +32,7 @@ public final class PA {
      * how that function would look like
      */
 
-    protected static File rFolder;
+    protected static File rFolder = null;
     protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
@@ -112,6 +112,9 @@ public final class PA {
     }
 
     public static void start() {
+        if (rFolder == null) {
+            rFolder = new File("./src/main/resources/R");
+        }
         if (!started) {
             if (rFolder.length() >= 1) {
                 for (File fileEntry : rFolder.listFiles()) {

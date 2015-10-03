@@ -1,5 +1,7 @@
 package r;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -22,6 +24,26 @@ public class TreeNode implements Comparable<TreeNode> {
         this.title = title;
         this.children = new ArrayList<>();
 
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final TreeNode treeNode = (TreeNode) o;
+
+        return new EqualsBuilder()
+                .append(title, treeNode.title)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(title)
+                .toHashCode();
     }
 
     /**

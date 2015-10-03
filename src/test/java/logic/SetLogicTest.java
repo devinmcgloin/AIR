@@ -1,10 +1,16 @@
 package logic;
 
+import funct.Core;
+import funct.Formatter;
+import memory.Notepad;
 import org.junit.Test;
+import pa.Node;
+
+import java.util.ArrayList;
 
 /**
  * @author devinmcgloin
- * @version 9/27/15
+ * @version 10/2/15.
  */
 public class SetLogicTest {
 
@@ -51,6 +57,15 @@ public class SetLogicTest {
     @Test
     public void testLDATAFilter1() throws Exception {
 
+    }
+
+    @Test
+    public void testGetLogicalParents() throws Exception {
+        Node number = Notepad.searchByTitle("number");
+        Core.println(Formatter.viewNode(number));
+        ArrayList<Node> logicalParents = SetLogic.getLogicalParents(number);
+        Core.println(Formatter.formatList(logicalParents));
+//        Assert.assertThat(logicalParents, hasItem(Notepad.searchByTitle("ldata")));
     }
 
     @Test
