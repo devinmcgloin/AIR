@@ -8,6 +8,7 @@ import r.TreeNodeBase;
 import util.Record;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,7 @@ public final class PA {
      * how that function would look like
      */
 
-    protected static File rFolder = new File("./src/main/resources/R/");
+    protected static File rFolder;
     protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
@@ -106,6 +107,10 @@ public final class PA {
 
     }
 
+    public static void setDB(String file) {
+        rFolder = new File(file);
+    }
+
     public static void start() {
         if (!started) {
             if (rFolder.length() >= 1) {
@@ -113,7 +118,11 @@ public final class PA {
                     if (fileEntry.isDirectory()) {
 
                     } else {
-                        rDB.add(new R(fileEntry.getName()));
+                        try {
+                            rDB.add(new R(fileEntry.getName(), rFolder.getCanonicalPath()));
+                        } catch (IOException e) {
+                            System.err.print("Error reading database");
+                        }
                     }
                 }
             }
@@ -329,6 +338,7 @@ public final class PA {
 
     /**
      * automatically add all the ^ headers that NBN's normally have
+     * todo maybe need to check later if there are nodes without children in the db and delete them.
      *
      * @param title
      *

@@ -22,6 +22,11 @@ public class Main {
     public static void main(String[] args) {
 
         logger.info("Entering application.");
+
+        options.addOption(Option.builder("db").longOpt("db-path").desc("DB folder to read files from")
+                .argName("FILE_PATH").hasArg().required()
+                .build());
+
         options.addOption("r", "repl", false, "Launch air in REPL mode.");
         options.addOption("n", "nulp", false, "Launch air in NULP mode.");
 
@@ -49,6 +54,8 @@ public class Main {
             formatter.printHelp("AIR", options);
             System.exit(1);
         }
+
+        PA.setDB(cmd.getOptionValue("db"));
 
         if (cmd.hasOption("r")) {
 
