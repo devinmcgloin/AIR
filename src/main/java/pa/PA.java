@@ -8,12 +8,12 @@ import r.TreeNodeBase;
 import util.Record;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- * <<<<<<< HEAD:src/pa/PA.java
- * =======
+ * <<<<<<< HEAD:src/pa/PA.java =======
  * <p/>
  * >>>>>>> maven-finally:src/main/java/pa/PA.java
  *
@@ -27,13 +27,12 @@ public final class PA {
     /**
      * HashSearch (Get set -> set logic???)
      * <p/>
-     * user defined matrices --> export set of BN in a csv file?
-     * header logic --> failed add: create header, in all set logic, make sure to
-     * reanalyze headers into their true base nodes and re-rank them.
-     * merging nodes --> tricky, idk how that function would look like
+     * user defined matrices --> export set of BN in a csv file? header logic --> failed add: create header, in all set
+     * logic, make sure to reanalyze headers into their true base nodes and re-rank them. merging nodes --> tricky, idk
+     * how that function would look like
      */
 
-    protected static File rFolder = new File("./src/main/resources/R/");
+    protected static File rFolder = null;
     protected static ArrayList<R> rDB = new ArrayList<>();
     static Logger logger = Logger.getLogger(PA.class);
     private static boolean started = false;
@@ -108,14 +107,25 @@ public final class PA {
 
     }
 
+    public static void setDB(String file) {
+        rFolder = new File(file);
+    }
+
     public static void start() {
+        if (rFolder == null) {
+            rFolder = new File("./src/main/resources/R");
+        }
         if (!started) {
             if (rFolder.length() >= 1) {
                 for (File fileEntry : rFolder.listFiles()) {
                     if (fileEntry.isDirectory()) {
 
                     } else {
-                        rDB.add(new R(fileEntry.getName()));
+                        try {
+                            rDB.add(new R(fileEntry.getName(), rFolder.getCanonicalPath()));
+                        } catch (IOException e) {
+                            System.err.print("Error reading database");
+                        }
                     }
                 }
             }
@@ -331,8 +341,10 @@ public final class PA {
 
     /**
      * automatically add all the ^ headers that NBN's normally have
+     * todo maybe need to check later if there are nodes without children in the db and delete them.
      *
      * @param title
+     *
      * @return
      */
     public static Node createNode(String title) {

@@ -11,26 +11,25 @@ import java.util.List;
 //Then rrename genTree to R
 
 /**
- * Thinks of the General tree as a whole.
- * Makes all changes and everything to the tree.
- * Keeps last used node in memory.
+ * Thinks of the General tree as a whole. Makes all changes and everything to the tree. Keeps last used node in memory.
  * <p/>
- * This is also what will handle loading in databases to populate a tree.
- * This is basically the tree.
- * Will also handle saving it.
+ * This is also what will handle loading in databases to populate a tree. This is basically the tree. Will also handle
+ * saving it.
  */
 public class GeneralTree {
 
     static Logger logger = Logger.getLogger(GeneralTree.class);
-    protected final String FILEEXTENSION = "./src/main/resources/R/";
+    protected String fileExtension;
     protected TreeNode current;
     protected TreeNode tmp;
-    protected File rFolder = new File(FILEEXTENSION);
+    protected File rFolder;
     protected HashBrowns hash;
 
 
-    protected GeneralTree() {
+    protected GeneralTree(String path) {
         //Start the R/ node.
+        fileExtension = path + "/";
+        rFolder = new File(fileExtension);
         current = new TreeNode("R");
         current.setAddress("R");
 
@@ -100,7 +99,7 @@ public class GeneralTree {
 //            if (!name.endsWith(".txt")) {
 //                name += ".txt";
 //            }
-            BufferedWriter out = new BufferedWriter(new FileWriter(FILEEXTENSION + name));
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileExtension + name));
             out.write(DBout);
             out.close();
         } catch (Exception e) {
@@ -113,6 +112,7 @@ public class GeneralTree {
      * utility for proper spacing on output.
      *
      * @param level
+     *
      * @return
      */
     private String lvlSpacing(int level) {
@@ -123,6 +123,7 @@ public class GeneralTree {
      * recursive export calls export recursive.
      *
      * @param node - .txt node
+     *
      * @return StringBuilder --> call toString on it for export.
      */
     protected StringBuilder export(TreeNode node) {
@@ -144,6 +145,7 @@ public class GeneralTree {
     /**
      * @param node
      * @param buffer
+     *
      * @return
      */
     private StringBuilder exportRec(TreeNode node, String buffer) {
@@ -180,9 +182,9 @@ public class GeneralTree {
 
         //Open File
         try {
-            in = new FileReader(FILEEXTENSION + dbName);
+            in = new FileReader(fileExtension + dbName);
         } catch (FileNotFoundException e) {
-            logger.fatal("Invalid database name.");
+            logger.fatal(String.format("Invalid database name. fileExtension: %s dbName: %s", fileExtension, dbName));
             return;
         }
 
@@ -244,6 +246,7 @@ public class GeneralTree {
      * Handles exiting DB and larger bits of logic for the getNode() function.
      *
      * @param address
+     *
      * @return
      */
     protected TreeNode getNodeByAddress(String address) {
@@ -390,6 +393,7 @@ public class GeneralTree {
      * Format address utility
      *
      * @param path
+     *
      * @return - tring array
      */
     private String[] formatRAddress(String path) {
@@ -417,6 +421,7 @@ public class GeneralTree {
      * checks if current has children with the given term all the way to leaf.
      *
      * @param searchTerm
+     *
      * @return
      */
     protected boolean containsAll(String searchTerm) {
@@ -424,8 +429,7 @@ public class GeneralTree {
     }
 
     /**
-     * No negative levels, you cant navigate to a higher level here, wouldn't
-     * know what tree to choose.
+     * No negative levels, you cant navigate to a higher level here, wouldn't know what tree to choose.
      *
      * @param level
      */
@@ -442,6 +446,7 @@ public class GeneralTree {
      * Takes the name of the next node you want to go to within current's children.
      *
      * @param next
+     *
      * @return
      */
     protected boolean childTraverse(String next) {
@@ -460,6 +465,7 @@ public class GeneralTree {
 
     /**
      * @param address
+     *
      * @return
      */
     protected TreeNode getNode(String address) {
@@ -504,6 +510,7 @@ public class GeneralTree {
 
     /**
      * @param input
+     *
      * @return - list of all addresses that contain that node name.
      */
     protected ArrayList<String> hashSearch(String input) {
@@ -514,6 +521,7 @@ public class GeneralTree {
 
     /**
      * @param terms
+     *
      * @return
      */
     protected ArrayList<TreeNodeBase> fullHashSearch(String terms) {
@@ -573,6 +581,7 @@ public class GeneralTree {
      * checks if current has children with the given term.
      *
      * @param searchTerm
+     *
      * @return
      */
     protected boolean contains(String searchTerm) {
