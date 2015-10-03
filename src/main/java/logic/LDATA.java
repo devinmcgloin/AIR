@@ -245,13 +245,13 @@ public final class LDATA {
     public static boolean isExpression(String expression) {
         String[] parsedExpression = expression.split(" ");
         if (parsedExpression.length == 4) {
-            if (!parsedExpression[1].matches("^(<|>|=<|=>|==)$"))
+            if (!parsedExpression[1].matches("^(<|>|<=|>=|==)$"))
                 return false;
             else if (!isNumeric(parsedExpression[2]))
                 return false;
             return isUnit(parsedExpression[3]);
         } else if (parsedExpression.length == 3) {
-            if (!parsedExpression[1].matches("^(<|>|=<|=>|==)$"))
+            if (!parsedExpression[1].matches("^(<|>|<=|>=|==)$"))
                 return false;
             else return isNumeric(parsedExpression[2]);
         }

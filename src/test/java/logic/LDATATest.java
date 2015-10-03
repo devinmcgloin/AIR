@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import java.util.Random;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 /**
  * @author devinmcgloin
  * @version 9/27/15
@@ -43,7 +47,18 @@ public class LDATATest {
 
     @Test
     public void testIsExpression() throws Exception {
+        //count tests
+        assertThat("height < 13", LDATA.isExpression("height < 13"), is(true));
+        assertThat("height > 1.3", LDATA.isExpression("height > 1.3"), is(true));
+        assertThat("height < 13v", LDATA.isExpression("height < 13v"), not(is(true)));
+        assertThat("height < .13", LDATA.isExpression("height < .13"), not(is(true)));
+        assertThat("height <- 13", LDATA.isExpression("height <- 13"), not(is(true)));
+        assertThat("height =< 13v", LDATA.isExpression("height =< 13v"), not(is(true)));
+        assertThat("height =< 13", LDATA.isExpression("height =< 13"), not(is(true)));
+        assertThat("height <. 13v", LDATA.isExpression("height <. 13v"), not(is(true)));
+        assertThat("height <= 13.0", LDATA.isExpression("height <= 13.0"), is(true));
 
+        //todo measurment tests cant complete now due to lack of unit types in the db
     }
 
     @Test
@@ -90,6 +105,7 @@ public class LDATATest {
 
     @Test
     public void testGetCastConvert() throws Exception {
+
     }
 
     @Test

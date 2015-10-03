@@ -46,6 +46,9 @@ bicycle
     mass
     width
 blue
+    B
+    G
+    R
     ^logicalChildren
     ^logicalParents
         color
@@ -130,11 +133,16 @@ car
     wheel
     width
 color
+    B
+    G
+    R
     ^logicalChildren
         blue
+        red
     ^logicalParents
     ^name
         color
+        colour
     ^notKey
 container ship
     ^logicalChildren
@@ -167,6 +175,10 @@ expression
     ^name
         expression
     ^notKey
+    operator
+    type
+    unit
+    value
 ferrari
     ^logicalChildren
     ^logicalParents
@@ -364,6 +376,16 @@ physical node
     length
     mass
     width
+red
+    B
+    G
+    R
+    ^logicalChildren
+    ^logicalParents
+        color
+    ^name
+        red
+    ^notKey
 strawberry
     ^logicalChildren
     ^logicalParents
