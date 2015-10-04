@@ -4,6 +4,8 @@ import logic.SetLogic;
 import memory.Notepad;
 import pa.Node;
 
+import static funct.Const.EXPRESSION;
+
 /**
  * @author devinmcgloin
  * @version 9/29/15
@@ -11,7 +13,7 @@ import pa.Node;
 public class Predicate {
 
     public static boolean isExpression(Node expression) {
-        return SetLogic.xISyP(expression, Notepad.searchByTitle("expression"));
+        return Node.getTitle(expression).equals(EXPRESSION.toString());
     }
 
     public static boolean isLDATA(Node expression) {
