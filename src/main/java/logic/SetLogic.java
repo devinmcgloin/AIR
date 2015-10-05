@@ -3,6 +3,7 @@ package logic;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import funct.Predicate;
 import funct.StrRep;
 import memory.Notepad;
 import org.apache.log4j.Logger;
@@ -38,7 +39,7 @@ public final class SetLogic {
      * @return
      */
     public static boolean isValid(String key, String val) {
-        if (StrRep.isStringRepresentation(val) && LDATA.isLdata(key))
+        if (StrRep.isStringRepresentation(val) && Predicate.isLDATA(key))
             return true;
 
         Node keyNode = Notepad.searchByTitle(key);
@@ -208,7 +209,7 @@ public final class SetLogic {
     /**
      * returns the closest parent that is one step away from the given node. Eg if Acura NSX is passed in, it should return car.
      * implement
-     * Question, maybe determine which one to use by assessing of the ones present in the node passed in, which one has the closest proximity metric.
+     * Question, maybe determine which one to use by assessing of the ones present in the node passed in, which one has the closest proximity metric using Comparison.compare
      * @param node
      *
      * @return
@@ -368,13 +369,11 @@ public final class SetLogic {
         Set<Object> setAA = ImmutableSet.builder().addAll(setA).build();
         Set<Object> setBB = ImmutableSet.builder().addAll(setB).build();
 
-        Sets.SetView<Object> difference1 = Sets.difference(setBB, setAA);
-        Sets.SetView<Object> difference2 = Sets.difference(setAA, setBB);
+        Sets.SetView<Object> difference = Sets.symmetricDifference(setBB, setAA);
 
-        Sets.SetView<Object> union = Sets.union(difference1, difference2);
 
         ArrayList<Node> returnDifference = new ArrayList<>();
-        for (Object n : union) {
+        for (Object n : difference) {
             returnDifference.add((Node) n);
         }
 

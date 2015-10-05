@@ -53,7 +53,9 @@ public final class Scribe {
 
         //If two last nodes are KV pair, just find a place to put them. Many checks might need that
         boolean kvTail = false;
-        //todo this is where im having problems.
+        //todo this is where im having problems. This doesnt really work for ldata where you trace up.
+        //The only x IS y relationship for something like number is ldata.
+        logger.debug(tail.toString() + " is " + keyTmp + " : " + SetLogic.xISyP(tail, keyTmp));
         if (SetLogic.xISyP(tail, keyTmp)) {
             kvTail = true;
         }

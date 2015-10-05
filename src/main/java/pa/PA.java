@@ -11,11 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static funct.Const.DB_TITLE;
+
+
 /**
  * This is the only class in PA that deals with actual tree nodes, everything as it comes out is wrapped into NBN.
- * <<<<<<< HEAD:src/pa/PA.java =======
- * <p/>
- * >>>>>>> maven-finally:src/main/java/pa/PA.java
  *
  * @author Blazej
  * @version 6/3/2015.
@@ -136,7 +136,7 @@ public final class PA {
     public static void put(Node node) {
         start();
 
-        put(node, "noun");
+        put(node, DB_TITLE.toString());
     }
 
     /**
@@ -294,8 +294,8 @@ public final class PA {
         start();
 
         //I mirrored the logic you used in your nounHashSearch method.
-        if (rDBexists("noun")) {
-            TreeNode node = getRb("noun").get("R/noun/" + title);
+        if (rDBexists(DB_TITLE.toString())) {
+            TreeNode node = getRb(DB_TITLE.toString()).get("R/" + DB_TITLE.toString() + "/" + title);
             if (node == null)
                 return null;
             Node nounBase = new Node(node);
@@ -352,12 +352,12 @@ public final class PA {
         R r = getRb("noun");
         //I mirrored the logic you used in your nounHashSearch method.
         if (r != null) {
-            r.add(title, "R/noun/");
-            r.add("^name", "R/noun/" + title);
-            r.add("^notKey", "R/noun/" + title);
-            r.add("^logicalChildren", "R/noun/" + title);
-            r.add("^logicalParents", "R/noun/" + title);
-            r.add(title, "R/noun/" + title + "/" + "^name");
+            r.add(title, "R/" + DB_TITLE.toString() + "/");
+            r.add("^name", "R/" + DB_TITLE.toString() + "/" + title);
+            r.add("^notKey", "R/" + DB_TITLE.toString() + "/" + title);
+            r.add("^logicalChildren", "R/" + DB_TITLE.toString() + "/" + title);
+            r.add("^logicalParents", "R/" + DB_TITLE.toString() + "/" + title);
+            r.add(title, "R/" + DB_TITLE.toString() + "/" + title + "/" + "^name");
             return searchExactTitle(title);
         }
         return null;

@@ -2,7 +2,6 @@ package memory;
 
 import funct.Pauser;
 import pa.Node;
-import pa.PA;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -57,9 +56,7 @@ public class Notepad {
         if (n != null)
             return n;
 
-        n = PA.searchExactTitle(title);
-
-        return n != null ? n : null;
+        return null;
     }
 
     public static ArrayList<Node> searchByTitles(ArrayList<String> titles) {

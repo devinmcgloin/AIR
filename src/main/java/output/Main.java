@@ -66,7 +66,7 @@ public class Main {
                 cont = repl.cycle();
             }
             PA.save();
-        } else if (cmd.hasOption('n')) {
+        } else if (cmd.hasOption("n")) {
             //TODO this is 100% going to change.
             NULP nulp = new NULP();
 
@@ -75,12 +75,12 @@ public class Main {
                 cont = nulp.cycle();
             }
             PA.save();
-        } else if (cmd.hasOption('c')) {
-            Reader.readCSV(cmd.getOptionValue('c'));
-        } else if (cmd.hasOption('d')) {
-            Reader.readDict(cmd.getOptionValue('d'));
-        } else if (cmd.hasOption('h')) {
-            Reader.readHistory(cmd.getOptionValue('h'));
+        } else if (cmd.hasOption("c")) {
+            Reader.readCSV(cmd.getOptionValue("c"));
+        } else if (cmd.hasOption("d")) {
+            Reader.readDict(cmd.getOptionValue("d"));
+        } else if (cmd.hasOption("h")) {
+            Reader.readHistory(cmd.getOptionValue("h"));
         }
 
         logger.info("Exiting application.");

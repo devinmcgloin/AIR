@@ -1,5 +1,7 @@
 package logic;
 
+import funct.Core;
+import funct.Formatter;
 import memory.Notepad;
 import org.junit.Assert;
 import org.junit.Test;
@@ -64,8 +66,9 @@ public class SetLogicTest {
 
     @Test
     public void testGetLogicalParents() throws Exception {
-        Node number = Notepad.searchByTitle("number");
-        ArrayList<Node> logicalParents = SetLogic.getLogicalParents(number);
+        Node expression = Notepad.searchByTitle("expression");
+        ArrayList<Node> logicalParents = SetLogic.getLogicalParents(expression);
+        Core.println(Formatter.formatList(logicalParents));
         Assert.assertThat(logicalParents, hasItem(Notepad.searchByTitle("ldata")));
 
         Node boat = Notepad.searchByTitle("boat");
