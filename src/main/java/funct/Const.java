@@ -9,7 +9,7 @@ public enum Const {
     NAME("^name"),
     LOGICAL_P("^logicalParents"),
     LOGICAL_C("^logicalChildren"),
-    NOT_KEY("^notkey"),
+    NOT_KEY("^notKey"),
     EXPRESSION("expression"),
     DB_TITLE("noun");
 
