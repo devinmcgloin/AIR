@@ -10,7 +10,8 @@ public enum Const {
     LOGICAL_P("^logicalParents"),
     LOGICAL_C("^logicalChildren"),
     NOT_KEY("^notkey"),
-    EXPRESSION("expression");
+    EXPRESSION("expression"),
+    DB_TITLE("name");
 
     private final String representation;
 
