@@ -66,6 +66,6 @@ public class FormatterTest {
                 .addLP("ldata")
                 .build();
         quickView = Formatter.quickView(n);
-        assertThat(quickView, allOf(containsString("test"), containsString("N/A")));
+        assertThat(quickView, allOf(containsString("test"), containsString("ldata")));
     }
 }

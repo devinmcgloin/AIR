@@ -11,7 +11,7 @@ public enum Const {
     LOGICAL_C("^logicalChildren"),
     NOT_KEY("^notkey"),
     EXPRESSION("expression"),
-    DB_TITLE("name");
+    DB_TITLE("noun");
 
     private final String representation;
 
