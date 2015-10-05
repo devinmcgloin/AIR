@@ -9,7 +9,8 @@ public enum Const {
     NAME("^name"),
     LOGICAL_P("^logicalParents"),
     LOGICAL_C("^logicalChildren"),
-    NOT_KEY("^notkey");
+    NOT_KEY("^notkey"),
+    EXPRESSION("expression");
 
     private final String representation;
 
