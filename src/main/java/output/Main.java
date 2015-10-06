@@ -1,11 +1,11 @@
 package output;
 
 
-import funct.Reader;
 import nulp.NULP;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import pa.PA;
+import reader.Reader;
 
 /**
  * Alright bub, This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
