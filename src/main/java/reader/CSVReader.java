@@ -2,7 +2,7 @@ package reader;
 
 import funct.Formatter;
 import funct.StrRep;
-import logic.Scribe;
+import method.Scribe;
 import memory.Notepad;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;

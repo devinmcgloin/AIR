@@ -72,7 +72,7 @@ public class REPL {
             PA.save();
             Whiteboard.clearAll();
         } else {
-            Triplet<String, String, ArrayList<String>> parsedCommands = Parser.commandPreproccessor(command);
+            Triplet<String, String, ArrayList<String>> parsedCommands = Parser.commandPreprocessor(command);
 
 
             ExecutionFlow returnedObject = null;

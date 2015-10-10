@@ -28,7 +28,7 @@ public class Parser {
         return new Triplet<>(className, methodName, arguments);
     }
 
-    public static Triplet<String, String, ArrayList<String>> commandPreproccessor(String command) {
+    public static Triplet<String, String, ArrayList<String>> commandPreprocessor(String command) {
         String[] terms = command.split(" ");
         Triplet<String, String, ArrayList<String>> parsedCommands = null;
         //Have the full class and method name
@@ -57,7 +57,7 @@ public class Parser {
                 parsedCommands = parseFull(command);
             } else if (Core.contains(terms, "has")) {
                 String[] hasSplit = command.split("has");
-                command = "logic.Scribe.addHighLevel";
+                command = "method.Scribe.addHighLevel";
                 for (String has : hasSplit) {
                     if (StrRep.isStringRepresentation(has)) {
                         command += "~" + has + ",";
