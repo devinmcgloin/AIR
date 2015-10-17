@@ -140,10 +140,10 @@ public class HashBrowns {
 
         //Then it'll have to check if that add entry already exits. Although it never should.
         //TODO THIS IS WHERE ITS SLOW
-        if (addresses.contains(name)) {
-            logger.debug("HashBrowns: addresses already contained: " + name);
-            return false;
-        }
+//        if (addresses.contains(name)) {
+//            logger.debug("HashBrowns: addresses already contained: " + name);
+//            return false;
+//        }
 
         //Then it adds this new address entry. Order of addresses doesn't matter for the time being.
         addresses.add(address);
