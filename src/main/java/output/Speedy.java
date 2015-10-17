@@ -2,11 +2,12 @@ package output;
 
 import com.google.common.base.Stopwatch;
 import funct.Core;
+import memory.Notepad;
+import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;
 
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Stack;
 
 import static funct.Const.NAME;
@@ -18,6 +19,7 @@ import static funct.Const.NAME;
  */
 public class Speedy {
 
+    static Logger logger = Logger.getLogger(Speedy.class);
     private static Random rand = new Random();
     private static Stack<String> content;
     private static Node n;
@@ -27,17 +29,14 @@ public class Speedy {
     private static Stack<String> hashSearching = new Stack<>();
     private static Stack<String> namesSearching = new Stack<>();
 
-
     public static void speed() {
-        Scanner input = new Scanner(System.in);
-        input.next();
         Core.println("Begin generation");
-        content = genWords(500000);
+        content = genWords(800000);
         Core.println("Completed generation");
 
         Stopwatch timer = Stopwatch.createStarted();
         PA.start();
-        System.out.printf("Loading DB took %s\n", timer.stop());
+        logger.info(String.format("Loading DB took %s\n", timer.stop()));
 
         n = PA.createNode(content.pop());
         nodesAdded++;
@@ -47,36 +46,39 @@ public class Speedy {
         while (content.size() > 2) {
             populate();
         }
-        System.out.printf("Populating took %s\n", timer.stop());
-        System.out.printf("%d nodes added\n", nodesAdded);
-        System.out.printf("%d terms added\n", termsAdded);
+        logger.info(String.format("Populating took %s\n", timer.stop()));
+        logger.info(String.format("%d nodes added\n", nodesAdded));
+        logger.info(String.format("%d terms added\n", termsAdded));
 
         timer.reset().start();
         PA.save();
-        System.out.printf("Saving took %s\n", timer.stop());
+        logger.info(String.format("Saving took %s\n", timer.stop()));
 
+        logger.info(String.format("Hash Searching for %s items\n", nodeTitleForSearching.size()));
         timer.reset().start();
         while (!nodeTitleForSearching.isEmpty()) {
-            PA.searchExactTitle(nodeTitleForSearching.pop());
+            Notepad.searchByTitle(nodeTitleForSearching.pop());
         }
-        System.out.printf("Searching took %s\n", timer.stop());
+        logger.info(String.format("Searching took %s\n", timer.stop()));
 
+        logger.info(String.format("Hash Searching for %s items\n", hashSearching.size()));
         timer.reset().start();
         while (!hashSearching.isEmpty()) {
             PA.generalSearch(hashSearching.pop());
         }
-        System.out.printf("Hash Searching took %s\n", timer.stop());
+        logger.info(String.format("Hash Searching took %s\n", timer.stop()));
 
+        logger.info(String.format("Hash Searching for %s items\n", namesSearching.size()));
         timer.reset().start();
         while (!namesSearching.isEmpty()) {
             PA.searchName(namesSearching.pop());
         }
-        System.out.printf("Name Searching took %s\n", timer.stop());
+        logger.info(String.format("Name Searching took %s\n", timer.stop()));
 
     }
 
     private static void populate() {
-        int choice = rand.nextInt(5);
+        int choice = rand.nextInt(4);
         switch (choice) {
             case 0:
                 nodesAdded++;
@@ -90,14 +92,16 @@ public class Speedy {
                 break;
             case 2:
                 termsAdded++;
-                hashSearching.push(content.pop());
+                hashSearching.push(content.peek());
                 n = Node.add(n, content.pop(), content.pop());
                 break;
             case 3:
                 termsAdded++;
-                namesSearching.push(content.pop());
+                namesSearching.push(content.peek());
                 n = Node.add(n, NAME.toString(), content.pop());
                 break;
+            default:
+                logger.warn(String.format("Wasted term %s : %d", content.peek(), choice));
         }
     }
 
