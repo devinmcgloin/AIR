@@ -3,6 +3,7 @@ package logic;
 import funct.Predicate;
 import funct.StrRep;
 import memory.Notepad;
+import method.Scribe;
 import org.apache.log4j.Logger;
 import pa.Node;
 import pa.PA;

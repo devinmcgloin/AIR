@@ -75,7 +75,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     protected void updateAddress() {
-        address = parent.getAddress() + title + "/";
+        address = new StringBuilder().append(parent.getAddress()).append(title).append("/").toString();
     }
 
 //    /**
@@ -284,7 +284,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     /**
      * You can use binarySearch if you already know the information is sorted.
-     *
+     * we insert at (index*-1)-1 or (index+1)*-1
      * @param nodeName
      *
      * @return
@@ -292,27 +292,20 @@ public class TreeNode implements Comparable<TreeNode> {
     public int binarySearch(String nodeName) {
         int low = 0;
         int high = children.size() - 1;
-        int middle = 0;
+
         while (high >= low) {
-            middle = (low + high) / 2;
-            if (children.get(middle).getTitle().equals(nodeName)) {
-                return middle;
-            }
-            if (children.get(middle).getTitle().compareTo(nodeName) < 0) {
+            int middle = (low + high) >>> 1;
+            String middleTitle = children.get(middle).getTitle();
+            int cmp = middleTitle.compareTo(nodeName);
+
+            if (cmp < 0) {
                 low = middle + 1;
-            }
-            if (children.get(middle).getTitle().compareTo(nodeName) > 0) {
+            } else if (cmp > 0) {
                 high = middle - 1;
-            }
+            } else
+                return middle;
         }
-
-        //We couldn't find the node, however, we CAN return the index it
-        //  SHOULD be placed into. (low) However, we can't return low since
-        //  low might equal 0! So we return (low+1)*-1
-        //  Then, we insert at (index*-1)-1 or (index+1)*-1
-
-
-        return (low + 1) * -1;
+        return -(low + 1);
     }
 
 

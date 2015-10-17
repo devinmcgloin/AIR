@@ -439,7 +439,7 @@ public class Node {
         int index = node.binarySearch(value.getTitle());
 
         if (index >= 0) {
-            logger.warn("Dimension: " + value.getTitle() + " already exists.\n");
+//            logger.warn("Dimension: " + value.getTitle() + " already exists.\n");
             return;
         }
 
