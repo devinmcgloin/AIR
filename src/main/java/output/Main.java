@@ -4,6 +4,9 @@ package output;
 import nulp.NULP;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import pa.PA;
 import reader.Reader;
 
@@ -24,6 +27,10 @@ public class Main {
         logger.info("Entering application.");
 
         options.addOption(Option.builder("db").longOpt("db-path").desc("DB folder to read files from")
+                .argName("FILE_PATH").hasArg().required()
+                .build());
+
+        options.addOption(Option.builder("graph").longOpt("graph-path").desc("Graph folder to read files from")
                 .argName("FILE_PATH").hasArg().required()
                 .build());
 
@@ -88,7 +95,14 @@ public class Main {
             Reader.readHistory(cmd.getOptionValue("h"));
         } else if (cmd.hasOption("s")) {
             Speedy.speed();
+        } else if (cmd.hasOption("g")) {
+            GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(cmd.getOptionValue("g"));
+            try (Transaction tx = graphDb.beginTx()) {
+                // Database operations go here
+                tx.success();
+            }
         }
+
 
         logger.info("Exiting application.");
     }

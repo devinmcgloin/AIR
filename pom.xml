@@ -86,6 +86,13 @@
             <artifactId>guava</artifactId>
             <version>18.0</version>
         </dependency>
+
+        <!--neo4j-->
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>2.2.6</version>
+        </dependency>
     </dependencies>
 
 
