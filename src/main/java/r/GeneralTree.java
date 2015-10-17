@@ -275,14 +275,14 @@ public class GeneralTree {
 
         //Options, we're in R, or we're at the db.
         //Wrong db or no DB or right db.
-
+        boolean currentContainsdbName = current.contains(dbName);
         //NO DB loaded
-        if (current.isRoot() && current.contains(dbName)) {
+        if (current.isRoot() && currentContainsdbName) {
             childTraverse(dbName);
             loadDB(dbName);
         }
         //NO DB loaded and asking for incorrect DB
-        if (!current.contains(dbName) && current.isRoot()) {
+        if (!currentContainsdbName && current.isRoot()) {
             logger.error("No DB by name: " + dbName);
             return current;
         }
@@ -296,7 +296,7 @@ public class GeneralTree {
                 goBack();
             }
             //Now check if that DB exists
-            if (!current.contains(dbName) && current.isRoot()) {
+            if (!currentContainsdbName && current.isRoot()) {
                 logger.error("No DB by name: " + dbName);
                 return current;
             }
@@ -450,15 +450,20 @@ public class GeneralTree {
      * @return
      */
     protected boolean childTraverse(String next) {
-        //Implementing using BS.
-        int index = current.binarySearch(next);
-        if (index >= 0) {
-            current = current.getChildren().get(index);
-            return true;
+        try {
+            //Implementing using BS.
+            int index = current.binarySearch(next);
+            if (index >= 0) {
+                current = current.getChildren().get(index);
+                return true;
+            }
+            //Why is this retuning a boolean. Who uses this?
+            //Hope the binarySearch method is working well.
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+            logger.error(e);
+            return false;
         }
-        //Why is this retuning a boolean. Who uses this?
-        //Hope the binarySearch method is working well.
-        return false;
 
 
     }
@@ -564,7 +569,7 @@ public class GeneralTree {
         int index = current.binarySearch(name);
 
         if (index >= 0) {
-            logger.warn(String.format("Dimension: %s already exists.\n", name));
+//            logger.warn(String.format("Dimension: %s already exists.\n", name));
             return;
         }
         tmp = new TreeNode(name);

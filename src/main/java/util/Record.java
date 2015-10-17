@@ -1,5 +1,7 @@
 package util;
 
+import com.google.common.base.Objects;
+
 /**
  * Used for putting LDBN/NBN classes and storing changes made to those nodes.
  *
@@ -65,4 +67,19 @@ public final class Record {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Record record = (Record) o;
+        return Objects.equal(operation, record.operation) &&
+                Objects.equal(key, record.key) &&
+                Objects.equal(valOne, record.valOne) &&
+                Objects.equal(valTwo, record.valTwo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(operation, key, valOne, valTwo);
+    }
 }

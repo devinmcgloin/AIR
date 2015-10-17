@@ -42,6 +42,11 @@ public class Main {
                 .argName("FILE_PATH").hasArg()
                 .build());
 
+        options.addOption(Option.builder("s")
+                .longOpt("speed-test")
+                .desc("Tests the DB for efficiency")
+                .build());
+
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
         try {
@@ -81,6 +86,8 @@ public class Main {
             Reader.readDict(cmd.getOptionValue("d"));
         } else if (cmd.hasOption("h")) {
             Reader.readHistory(cmd.getOptionValue("h"));
+        } else if (cmd.hasOption("s")) {
+            Speedy.speed();
         }
 
         logger.info("Exiting application.");
