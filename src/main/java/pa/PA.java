@@ -147,7 +147,13 @@ public final class PA {
     private static void put(Node node, String db) {
 
         start();
+        if (!rDBexists(db)) {
+            logger.error(String.format("Database: %s does not exist. Failed to put.", db));
+            return;
+        }
 
+        R database = getRb(db);
+        String nodeTitle = Node.getTitle(node);
         //Contextualy creating new Nodes:
         //-node you wanted doesn't exist, New TreeNode, New NBN
         //-put it back when done
@@ -155,65 +161,58 @@ public final class PA {
         //-then continue the regular adding methods PA has.
 
         //Check if node already exists in DB, if not, add it. Then continue regular put.
-        TreeNode x = getRb(db).get("R/" + db + "/" + Node.getTitle(node));
-        if (!x.getTitle().equals(Node.getTitle(node))) {
-            getRb(db).add(Node.getTitle(node), "R/" + db + "/" + Node.getTitle(node));
+        TreeNode x = database.get("R/" + db + "/" + nodeTitle);
+        if (x == null) {
+            database.add(Node.getTitle(node), "R/" + db + "/" + nodeTitle);
         }
+
+//        node.getRecord().stream()
+//                .forEach(record -> recordMapper(record,database,db,nodeTitle));
 
 
         for (Record record : node.getRecord()) {
-
-            //TreeNode k = getRb("noun").getCarrot("R/");
-//            for(String name: k.getChildrenString()){
-//                System.out.println("ROOT: "+name);
-//            }
-//            System.out.println(record);
-
-            switch (record.getOperation()) {
-                case "add":
-                    if (rDBexists(db)) {
-                        if (record.getVal() == null) {
-                            //getRb("noun").del(record.getKey(), "R/noun/" + node.getTitle());
-                            //System.out.println("\n\nyup\n\n");
-                            getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                        } else {
-                            getRb(db).add(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                            getRb(db).add(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-
-                        }
-                        //HOW R'S ADD WORKS:
-                        //add("nodeName", "R/noun")
-                        //add, this node name, to this address.
-
-//                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() + "/" + record.getKey());
-//                    System.out.println("ADDING: " + "R/noun/" + node.getTitle() );
-                    }
-                    break;
-                case "rm":
-                    if (rDBexists(db)) {
-                        if (record.getVal() == null) {
-                            getRb(db).del(record.getKey(), "R/" + db + "/" + Node.getTitle(node));
-                        } else {
-                            //System.out.println("R/noun/" + node.getTitle() + "/" + record.getKey());
-                            getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                        }
-                    }
-                    break;
-                case "update":
-                    if (rDBexists(db)) {
-                        getRb(db).del(record.getVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                        getRb(db).add(record.getNewVal(), "R/" + db + "/" + Node.getTitle(node) + "/" + record.getKey());
-                    }
-                    break;
-                default:
-                    logger.error("Record: " + record.toString() + "\n Is not a valid record");
-                    break;
-            }
+            recordMapper(record, database, db, nodeTitle);
         }
 
 
     }
 
+    /**
+     * HOW R'S ADD WORKS:
+     * add("nodeName", "R/noun")
+     * add, this node name, to this address.
+     *
+     * @param record
+     * @param database
+     * @param db
+     * @param nodeTitle
+     */
+    private static void recordMapper(Record record, R database, String db, String nodeTitle) {
+        switch (record.getOperation()) {
+            case "add":
+                if (record.getVal() == null) {
+                    database.add(record.getKey(), "R/" + db + "/" + nodeTitle);
+                } else {
+                    database.add(record.getKey(), "R/" + db + "/" + nodeTitle);
+                    database.add(record.getVal(), "R/" + db + "/" + nodeTitle + "/" + record.getKey());
+                }
+                break;
+            case "rm":
+                if (record.getVal() == null) {
+                    database.del(record.getKey(), "R/" + db + "/" + nodeTitle);
+                } else {
+                    database.del(record.getVal(), "R/" + db + "/" + nodeTitle + "/" + record.getKey());
+                }
+                break;
+            case "update":
+                database.del(record.getVal(), "R/" + db + "/" + nodeTitle + "/" + record.getKey());
+                database.add(record.getNewVal(), "R/" + db + "/" + nodeTitle + "/" + record.getKey());
+                break;
+            default:
+                logger.error("Record: " + record.toString() + "\n Is not a valid record");
+                break;
+        }
+    }
     private static R getRb(String db) {
 
         start();
@@ -353,12 +352,14 @@ public final class PA {
         //I mirrored the logic you used in your nounHashSearch method.
         if (r != null) {
             r.add(title, "R/" + DB_TITLE.toString() + "/");
-            r.add("^name", "R/" + DB_TITLE.toString() + "/" + title);
-            r.add("^notKey", "R/" + DB_TITLE.toString() + "/" + title);
-            r.add("^logicalChildren", "R/" + DB_TITLE.toString() + "/" + title);
-            r.add("^logicalParents", "R/" + DB_TITLE.toString() + "/" + title);
-            r.add(title, "R/" + DB_TITLE.toString() + "/" + title + "/" + "^name");
+            Node n = searchExactTitle(title);
+            n = Node.add(n, "^name", title);
+            n = Node.add(n, "^logicalParents");
+            n = Node.add(n, "^notKey");
+            n = Node.add(n, "^logicalChildren");
+            put(n);
             return searchExactTitle(title);
+
         }
         return null;
     }

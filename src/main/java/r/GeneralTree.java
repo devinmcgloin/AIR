@@ -132,7 +132,6 @@ public class GeneralTree {
             String buffer = "";
             //Organize children alphabetically on export. (Check if already sorted, duh).
             Collections.sort(node.getChildren());
-            TreeNode tmp;
             for (TreeNode child : node.getChildren()) {
                 DBout.append(buffer).append(child.getTitle()).append("\n");
                 DBout.append(exportRec(child, buffer));
@@ -175,9 +174,9 @@ public class GeneralTree {
 
         //FOR OPTIMIZATION:
         //Replace the current "children" with a NEW longer initial ArrayList
-        if (current.getTitle().equals("test")) {
-            //current.setChildrenSize(120000);
-        }
+//        if (current.getTitle().equals("test")) {
+//            //current.setChildrenSize(120000);
+//        }
 
 
         //Open File
@@ -275,14 +274,14 @@ public class GeneralTree {
 
         //Options, we're in R, or we're at the db.
         //Wrong db or no DB or right db.
-
+        boolean currentContainsdbName = current.contains(dbName);
         //NO DB loaded
-        if (current.isRoot() && current.contains(dbName)) {
+        if (current.isRoot() && currentContainsdbName) {
             childTraverse(dbName);
             loadDB(dbName);
         }
         //NO DB loaded and asking for incorrect DB
-        if (!current.contains(dbName) && current.isRoot()) {
+        if (!currentContainsdbName && current.isRoot()) {
             logger.error("No DB by name: " + dbName);
             return current;
         }
@@ -296,7 +295,7 @@ public class GeneralTree {
                 goBack();
             }
             //Now check if that DB exists
-            if (!current.contains(dbName) && current.isRoot()) {
+            if (!currentContainsdbName && current.isRoot()) {
                 logger.error("No DB by name: " + dbName);
                 return current;
             }
@@ -450,15 +449,20 @@ public class GeneralTree {
      * @return
      */
     protected boolean childTraverse(String next) {
-        //Implementing using BS.
-        int index = current.binarySearch(next);
-        if (index >= 0) {
-            current = current.getChildren().get(index);
-            return true;
+        try {
+            //Implementing using BS.
+            int index = current.binarySearch(next);
+            if (index >= 0) {
+                current = current.getChildren().get(index);
+                return true;
+            }
+            //Why is this retuning a boolean. Who uses this?
+            //Hope the binarySearch method is working well.
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+            logger.error(e);
+            return false;
         }
-        //Why is this retuning a boolean. Who uses this?
-        //Hope the binarySearch method is working well.
-        return false;
 
 
     }
@@ -493,12 +497,12 @@ public class GeneralTree {
             //System.out.println(foundNextNode + ":  "  +nodeNames[i]);
 
             //Deletes from Hashmap if it couldn't find the node name.
-            String delAddress = nodeNames[0] + "/" + nodeNames[1] + "/";
+            StringBuilder delAddress = new StringBuilder().append(nodeNames[0]).append("/").append(nodeNames[1]).append("/");
             if (!foundNextNode) {
                 //Iterate over all the words that contain that address.
                 for (int j = 2; j < nodeNames.length; j++) {
-                    delAddress += nodeNames[j] + "/";
-                    hash.del(nodeNames[j], delAddress);
+                    delAddress.append(nodeNames[j]).append("/").toString();
+                    hash.del(nodeNames[j], delAddress.toString());
                 }
                 return current; //FUCK //TODO:: DONT KNOW WHY THIS WAS REUTURNING THE CURRENT. HAVE NO WAY TO KNOW IF IT FAILS.
             }
@@ -564,7 +568,7 @@ public class GeneralTree {
         int index = current.binarySearch(name);
 
         if (index >= 0) {
-            logger.warn(String.format("Dimension: %s already exists.\n", name));
+//            logger.warn(String.format("Dimension: %s already exists.\n", name));
             return;
         }
         tmp = new TreeNode(name);

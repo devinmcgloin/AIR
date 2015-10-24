@@ -1,7 +1,10 @@
-package logic;
+package method;
 
 import funct.Pauser;
 import funct.StrRep;
+import logic.GhostTree;
+import logic.LDATA;
+import logic.SetLogic;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;

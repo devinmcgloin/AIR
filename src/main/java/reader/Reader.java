@@ -1,10 +1,10 @@
-package funct;
+package reader;
 
+import funct.Core;
 import memory.Notepad;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
-import reader.CSVReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;

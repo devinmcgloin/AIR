@@ -14,10 +14,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static funct.Const.*;
+
 /**
- * Set logic needs to create sets of like information TODO: If we want a list of cities, no need to hash search for
- * them, just go to the city node and getCarrot all of its logical children. (Ideally) Implement or filtering - filter
- * on multiple functions or expressions and take the union of all resulting sets. TODO ideally the filter functions
+ * Set logic needs to create sets of like information
+ * TODO: If we want a list of cities, no need to hash search for them,
+ * just go to the city node and getCarrot all of its logical children. (Ideally)
+ *
+ * Implement or filtering
+ * - filter on multiple functions or expressions and take the union of all resulting sets.
+ *
+ *  TODO ideally the filter functions
  * would return a new list, and not modify the old one.
  *
  * @author devinmcgloin
@@ -168,7 +175,7 @@ public final class SetLogic {
             return parents;
         }
 
-        ArrayList<String> logicalParentTitles = Node.getCarrot(node, "^logicalParents");
+        ArrayList<String> logicalParentTitles = Node.getCarrot(node, LOGICAL_P.toString());
 
         if (logicalParentTitles == null) {
             logger.warn(node.toString() + " did not contain the header ^logicalParents.");
@@ -191,10 +198,10 @@ public final class SetLogic {
     }
 
     private static void getLogicalParents(Node node, ArrayList<Node> list) {
-        if (Node.getTitle(node).equals("node") || Node.getCarrot(node, "^logicalParents").isEmpty()) {
+        if (Node.getTitle(node).equals("node") || Node.getCarrot(node, LOGICAL_P.toString()).isEmpty()) {
             return;
         } else {
-            for (String title : Node.getCarrot(node, "^logicalParents")) {
+            for (String title : Node.getCarrot(node, LOGICAL_P.toString())) {
                 Node foo = Notepad.searchByTitle(title);
                 if (foo == null) {
                     logger.error("Couldn't find node: " + title);
@@ -299,16 +306,16 @@ public final class SetLogic {
     public static Node xINHERITy(Node x, Node y) {
 
         //SR-71 Blackbird   INHERITS        supersonic jet
-        x = Node.add(x, "^logicalParents", Node.getTitle(y));
+        x = Node.add(x, LOGICAL_P.toString(), Node.getTitle(y));
 
         //supersonice jet   gets        SR-71 Blackbird     as a child
-        y = Node.add(y, "^logicalChildren", Node.getTitle(x));
+        y = Node.add(y, LOGICAL_C.toString(), Node.getTitle(x));
 
         //Additional logic:
         //Now the child gets all the keys from the parent, with the exception of the carrot headers. (Even though those should be fine...)
         ArrayList<String> keys = Node.getKeys(y);
         for (String key : keys) {
-            if (!Node.getCarrot(x, "^notKey").contains(key)) {
+            if (!Node.getCarrot(x, NOT_KEY.toString()).contains(key)) {
                 x = Node.add(x, key);
             }
         }

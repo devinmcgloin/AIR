@@ -1,11 +1,11 @@
 package output;
 
 
-import funct.Reader;
 import nulp.NULP;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import pa.PA;
+import reader.Reader;
 
 /**
  * Alright bub, This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
@@ -40,6 +40,11 @@ public class Main {
 
         options.addOption(Option.builder("h").longOpt("hist-reader").desc("Read in history to DB.")
                 .argName("FILE_PATH").hasArg()
+                .build());
+
+        options.addOption(Option.builder("s")
+                .longOpt("speed-test")
+                .desc("Tests the DB for efficiency")
                 .build());
 
         CommandLineParser parser = new DefaultParser();
@@ -81,6 +86,8 @@ public class Main {
             Reader.readDict(cmd.getOptionValue("d"));
         } else if (cmd.hasOption("h")) {
             Reader.readHistory(cmd.getOptionValue("h"));
+        } else if (cmd.hasOption("s")) {
+            Speedy.speed();
         }
 
         logger.info("Exiting application.");
