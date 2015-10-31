@@ -2,7 +2,6 @@ package logic;
 
 import funct.Core;
 import funct.Predicate;
-import funct.Stats;
 import memory.Notepad;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;

@@ -1,8 +1,8 @@
 package memory;
 
+import executor.Pauser;
 import funct.Core;
 import funct.Formatter;
-import funct.Pauser;
 import pa.Node;
 import pa.PA;
 

@@ -4,7 +4,7 @@ import funct.Core;
 import funct.Formatter;
 import memory.Whiteboard;
 import molecule.Molecule;
-import nulp.NlpReader;
+import nulp.Reader;
 import org.apache.log4j.Logger;
 import timeline.Timeline;
 
@@ -50,12 +50,11 @@ public class REPL {
 
 
     public boolean cycle() {
-        Core.printf("Nodes : %s", Formatter.formatList(Whiteboard.getProminentNodes()));
+        Core.printf("Nodes : %s\n", Formatter.formatList(Whiteboard.getProminentNodes()));
         Core.print(">>> ");
         String msg = input.nextLine();
-        Molecule parsed = NlpReader.parse(msg);
+        Molecule parsed = Reader.parse(msg);
         Timeline.addEvent(parsed);
-
         return true;
     }
 

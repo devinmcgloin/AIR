@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author devinmcgloin
  * @version 8/28/15
  */
-public class Memory implements Comparable<Memory> {
+class Memory implements Comparable<Memory> {
 
     private final double DECAY_CONSTANT = -.10;
     private final Node node;

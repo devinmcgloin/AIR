@@ -257,6 +257,12 @@ handle
         handle
     ^notKey
     color
+has
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        has
+    ^notKey
 hood
     ^logicalChildren
     ^logicalParents
@@ -274,6 +280,12 @@ ldata
         string representation
     ^name
         ldata
+    ^notKey
+like
+    ^logicalChildren
+    ^logicalParents
+    ^name
+        like
     ^notKey
 liquid
     ^logicalChildren

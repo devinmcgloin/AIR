@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
  * @author devinmcgloin
  * @version 8/14/15
  */
-public final class ExecutionFlow {
+final class ExecutionFlow {
     static Logger logger = Logger.getLogger(ExecutionFlow.class);
     private final Method method;
     private final Type[] argTypes;

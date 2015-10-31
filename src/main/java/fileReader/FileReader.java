@@ -1,4 +1,4 @@
-package reader;
+package fileReader;
 
 import funct.Core;
 import memory.Notepad;
@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -18,12 +17,12 @@ import java.util.Scanner;
  * @author devinmcgloin
  * @version 8/4/15
  */
-public final class Reader {
+public final class FileReader {
 
-    static Logger logger = Logger.getLogger(Reader.class);
+    static Logger logger = Logger.getLogger(FileReader.class);
 
 
-    private Reader() {
+    private FileReader() {
     }
 
     /**
@@ -38,7 +37,7 @@ public final class Reader {
             System.exit(1);
         }
         try {
-            java.io.Reader reader = new FileReader(file);
+            java.io.Reader reader = new java.io.FileReader(file);
             ArrayList<CSVRecord> csvRecords = new ArrayList<>();
 
             for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
@@ -70,7 +69,7 @@ public final class Reader {
         if (result.isPresent()) {
             Scanner scanner = result.get();
             while (scanner.hasNextLine()) {
-                //TODO add whatever specific dictionary stuff you want here. Prob outsourced to a dict reader.
+                //TODO add whatever specific dictionary stuff you want here. Prob outsourced to a dict fileReader.
                 Core.println(scanner.nextLine());
             }
         }
@@ -89,7 +88,7 @@ public final class Reader {
             Scanner scanner = result.get();
 
             while (scanner.hasNextLine()) {
-                //TODO add whatever specific history stuff you want here. Prob outsourced to a history reader.
+                //TODO add whatever specific history stuff you want here. Prob outsourced to a history fileReader.
                 Core.println(scanner.nextLine());
             }
         }

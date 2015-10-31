@@ -1,6 +1,6 @@
 package memory;
 
-import funct.Pauser;
+import executor.Pauser;
 import pa.Node;
 
 import java.util.ArrayList;

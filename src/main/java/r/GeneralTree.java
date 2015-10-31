@@ -187,7 +187,7 @@ public class GeneralTree {
             return;
         }
 
-        //Create a reader
+        //Create a fileReader
         br = new BufferedReader(in);
         try {
             //LOOP: Read line by line. "name" of node starts at first character, ends at "\r\n"

@@ -4,10 +4,10 @@ Algorithms for Intelligent Reasoning
 #Usage
 ```
 usage: AIR
- -c,--csv-reader <FILE_PATH>    Read files in from CSV.
- -d,--dict-reader <FILE_PATH>   Read in standard dictionary files
+ -c,--csv-fileReader <FILE_PATH>    Read files in from CSV.
+ -d,--dict-fileReader <FILE_PATH>   Read in standard dictionary files
  -db,--db-path <FILE_PATH>      DB folder to read files from
- -h,--hist-reader <FILE_PATH>   Read in history to DB.
+ -h,--hist-fileReader <FILE_PATH>   Read in history to DB.
  -n,--nulp                      Launch air in NULP mode.
  -r,--repl                      Launch air in REPL mode.
  ```

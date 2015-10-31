@@ -1,4 +1,4 @@
-package funct;
+package logic;
 
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.inference.TTest;

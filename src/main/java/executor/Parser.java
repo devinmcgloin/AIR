@@ -1,4 +1,4 @@
-package funct;
+package executor;
 
 import memory.Notepad;
 import molecule.Molecule;

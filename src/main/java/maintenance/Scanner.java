@@ -1,5 +1,6 @@
-package logic;
+package maintenance;
 
+import logic.SetLogic;
 import memory.Notepad;
 import pa.Node;
 import pa.PA;

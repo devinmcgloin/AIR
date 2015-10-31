@@ -1,5 +1,7 @@
-package funct;
+package executor;
 
+
+import funct.Core;
 
 import java.util.ArrayList;
 import java.util.Scanner;

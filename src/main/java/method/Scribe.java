@@ -1,6 +1,6 @@
 package method;
 
-import funct.Pauser;
+import executor.Pauser;
 import funct.StrRep;
 import logic.GhostTree;
 import logic.LDATA;

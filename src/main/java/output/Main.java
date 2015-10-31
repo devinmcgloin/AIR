@@ -1,10 +1,10 @@
 package output;
 
 
+import fileReader.FileReader;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import pa.PA;
-import reader.Reader;
 
 /**
  * Alright bub, This will be the "main". Nothin' fancy. No thinking. Just the terminal for talking to PA.
@@ -28,21 +28,16 @@ public class Main {
 
         options.addOption("r", "repl", false, "Launch air in REPL mode.");
 
-        options.addOption(Option.builder("c").longOpt("csv-reader").desc("Read files in from CSV.")
+        options.addOption(Option.builder("c").longOpt("csv-fileReader").desc("Read files in from CSV.")
                 .argName("FILE_PATH").hasArg()
                 .build());
 
-        options.addOption(Option.builder("d").longOpt("dict-reader").desc("Read in standard dictionary files")
+        options.addOption(Option.builder("d").longOpt("dict-fileReader").desc("Read in standard dictionary files")
                 .argName("FILE_PATH").hasArg()
                 .build());
 
-        options.addOption(Option.builder("h").longOpt("hist-reader").desc("Read in history to DB.")
+        options.addOption(Option.builder("h").longOpt("hist-fileReader").desc("Read in history to DB.")
                 .argName("FILE_PATH").hasArg()
-                .build());
-
-        options.addOption(Option.builder("s")
-                .longOpt("speed-test")
-                .desc("Tests the DB for efficiency")
                 .build());
 
         CommandLineParser parser = new DefaultParser();
@@ -70,13 +65,11 @@ public class Main {
             }
             PA.save();
         } else if (cmd.hasOption("c")) {
-            Reader.readCSV(cmd.getOptionValue("c"));
+            FileReader.readCSV(cmd.getOptionValue("c"));
         } else if (cmd.hasOption("d")) {
-            Reader.readDict(cmd.getOptionValue("d"));
+            FileReader.readDict(cmd.getOptionValue("d"));
         } else if (cmd.hasOption("h")) {
-            Reader.readHistory(cmd.getOptionValue("h"));
-        } else if (cmd.hasOption("s")) {
-            Speedy.speed();
+            FileReader.readHistory(cmd.getOptionValue("h"));
         }
 
         logger.info("Exiting application.");

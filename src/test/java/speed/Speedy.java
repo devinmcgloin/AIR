@@ -1,4 +1,4 @@
-package output;
+package speed;
 
 import com.google.common.base.Stopwatch;
 import funct.Core;

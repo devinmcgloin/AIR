@@ -1,9 +1,9 @@
-package reader;
+package fileReader;
 
 import funct.Formatter;
 import funct.StrRep;
-import method.Scribe;
 import memory.Notepad;
+import method.Scribe;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
 import pa.Node;

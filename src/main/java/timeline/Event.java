@@ -8,7 +8,7 @@ import java.util.Date;
  * @author devinmcgloin
  * @version 10/31/15.
  */
-public class Event {
+class Event {
     final Molecule m;
     final Date timestamp;
 
