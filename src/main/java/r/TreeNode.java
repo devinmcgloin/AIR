@@ -46,15 +46,6 @@ public class TreeNode implements Comparable<TreeNode> {
                 .toHashCode();
     }
 
-    /**
-     * Use in case of priming ArrayList for optimization.
-     *
-     * @param size
-     */
-    protected void setChildrenSize(int size) {
-        this.children = new ArrayList<>(size);
-
-    }
 
     public ArrayList<String> getAllNames() {
         ArrayList<String> names = new ArrayList<>();

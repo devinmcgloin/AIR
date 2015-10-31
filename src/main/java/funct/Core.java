@@ -24,6 +24,10 @@ public class Core {
         System.out.print(s);
     }
 
+    public static void printf(String format, Object... args) {
+        System.out.printf(format, args);
+    }
+
     public static boolean all(boolean[] list) {
         for (boolean bool : list) {
             if (!bool)

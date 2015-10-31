@@ -1,7 +1,6 @@
 package output;
 
 
-import nulp.NULP;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import pa.PA;
@@ -28,7 +27,6 @@ public class Main {
                 .build());
 
         options.addOption("r", "repl", false, "Launch air in REPL mode.");
-        options.addOption("n", "nulp", false, "Launch air in NULP mode.");
 
         options.addOption(Option.builder("c").longOpt("csv-reader").desc("Read files in from CSV.")
                 .argName("FILE_PATH").hasArg()
@@ -69,15 +67,6 @@ public class Main {
             boolean cont = true;
             while (cont) {
                 cont = repl.cycle();
-            }
-            PA.save();
-        } else if (cmd.hasOption("n")) {
-            //TODO this is 100% going to change.
-            NULP nulp = new NULP();
-
-            boolean cont = true;
-            while (cont) {
-                cont = nulp.cycle();
             }
             PA.save();
         } else if (cmd.hasOption("c")) {

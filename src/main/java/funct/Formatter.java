@@ -54,7 +54,6 @@ public class Formatter {
                     stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");
                     for (String kidKid : Node.getCarrot(n, kid)) {
                         stringBuilder.append(stringSpacer(depth * 8)).append("├── ").append(kidKid).append("\n");
-
                     }
                 } else {
                     stringBuilder.append(stringSpacer(depth * 4)).append("├── ").append(kid).append("\n");

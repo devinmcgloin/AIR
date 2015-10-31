@@ -14,6 +14,15 @@ import java.util.ArrayList;
 public class Invoker {
     static Logger logger = Logger.getLogger(Invoker.class);
 
+    /**
+     * todo this needs to take a molecule
+     *
+     * @param className
+     * @param methodName
+     * @param argumentID
+     *
+     * @return
+     */
     public static ExecutionFlow invoke(String className, String methodName, ArrayList<String> argumentID) {
         try {
 

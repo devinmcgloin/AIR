@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
+ * This is for short term intercycle memory. Memories that need to be kept longer than one cycle need to be added to the Whiteboard.
  * @author devinmcgloin
  * @version 9/23/15
  */

@@ -1,18 +1,13 @@
 package output;
 
-import executor.ExecutionFlow;
-import executor.Invoker;
 import funct.Core;
 import funct.Formatter;
-import funct.Parser;
-import memory.Notepad;
 import memory.Whiteboard;
+import molecule.Molecule;
+import nulp.NlpReader;
 import org.apache.log4j.Logger;
-import org.javatuples.Triplet;
-import pa.Node;
-import pa.PA;
+import timeline.Timeline;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -55,44 +50,12 @@ public class REPL {
 
 
     public boolean cycle() {
-        System.out.println("\n");
-        System.out.println("Nodes:    " + Formatter.formatList(Whiteboard.getProminentNodes()));
-        System.out.print(">>> ");
-        String command = input.nextLine().trim();
-        if (command.toLowerCase().equals("q")) {
-            Whiteboard.putAll();
-            PA.save();
-            Whiteboard.clearAll();
-            return false;
-        } else if (command.toLowerCase().equals("help") || command.toLowerCase().equals("?")) {
-            Core.println(HELP_STRING);
-        } else if (command.toLowerCase().equals("end")) {
-            Core.println("Ending this conversation");
-            Whiteboard.putAll();
-            PA.save();
-            Whiteboard.clearAll();
-        } else {
-            Triplet<String, String, ArrayList<String>> parsedCommands = Parser.commandPreprocessor(command);
+        Core.printf("Nodes : %s", Formatter.formatList(Whiteboard.getProminentNodes()));
+        Core.print(">>> ");
+        String msg = input.nextLine();
+        Molecule parsed = NlpReader.parse(msg);
+        Timeline.addEvent(parsed);
 
-
-            ExecutionFlow returnedObject = null;
-
-            if (parsedCommands != null) {
-                returnedObject = Invoker.invoke(parsedCommands.getValue0(), parsedCommands.getValue1(), parsedCommands.getValue2());
-            }
-
-            if (returnedObject != null && returnedObject.completedP()) {
-                if (returnedObject.getResult() instanceof Node)
-                    Notepad.addNode((Node) returnedObject.getResult());
-                else if (returnedObject.getResult() instanceof String)
-                    System.out.println(returnedObject.getResult());
-                else if (returnedObject.getResult().getClass().equals(ArrayList.class))
-                    Core.println(Formatter.formatList((ArrayList<Object>) returnedObject.getResult()));
-
-            }
-        }
-        Whiteboard.addAllNotepadNodes();
-        Whiteboard.cycle();
         return true;
     }
 

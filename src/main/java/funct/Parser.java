@@ -1,8 +1,9 @@
 package funct;
 
 import memory.Notepad;
+import molecule.Molecule;
 import org.javatuples.Triplet;
-import pa.PA;
+import pa.Node;
 
 import java.util.ArrayList;
 
@@ -28,63 +29,36 @@ public class Parser {
         return new Triplet<>(className, methodName, arguments);
     }
 
-    public static Triplet<String, String, ArrayList<String>> commandPreprocessor(String command) {
-        String[] terms = command.split(" ");
-        Triplet<String, String, ArrayList<String>> parsedCommands = null;
-        //Have the full class and method name
+    public static boolean isDefault(String msg) {
+        String[] split = msg.split(" ");
+        if (split[1].equals("has")) {
+            if (split.length == 3) {
+                return true;
+            } else return split.length == 4;
+        } else if (split[1].equals("is")) {
+            return split.length == 3;
+        } else return false;
 
+    }
 
-        if (terms.length == 1) {
-            if (terms[0].equals("test"))
-                PA.test();
-            else
-                Notepad.search(terms[0]);
-        } else if (terms[0].contains(".") && terms.length > 1) {
-            parsedCommands = parseFull(command);
-        } else if (Core.contains(terms, "like") || Core.contains(terms, "is") || Core.contains(terms, "called") || Core.contains(terms, "has")) {
-            //Infix Notation
-            if (Core.contains(terms, "like")) {
-                command = command.replace("like", ",");
-                command = "logic.SetLogic.xLikey " + command;
-                parsedCommands = parseFull(command);
-            } else if (Core.contains(terms, "is")) {
-                command = command.replace("is", ",");
-                command = "logic.SetLogic.xINHERITy " + command;
-                parsedCommands = parseFull(command);
-            } else if (Core.contains(terms, "called")) {
-                String[] calledSplit = command.split("called");
-                command = "pa.Node.add " + calledSplit[0].trim() + ", \"^name\", \"" + calledSplit[1].trim() + "\"";
-                parsedCommands = parseFull(command);
-            } else if (Core.contains(terms, "has")) {
-                String[] hasSplit = command.split("has");
-                command = "method.Scribe.addHighLevel";
-                for (String has : hasSplit) {
-                    if (StrRep.isStringRepresentation(has)) {
-                        command += "~" + has + ",";
-                        continue;
-                    }
-                    command += has + ",";
-                }
-                parsedCommands = parseFull(command);
-            }
-        } else {
-            //Prefix Notation
-            switch (terms[0]) {
-                case "create":
-                    Notepad.addNode(PA.createNode(command.replace("create", "").trim()));
-                    break;
-                case "view":
-                    Core.println(Formatter.viewNode(Notepad.search(command.replace("view", ""))));
-                    break;
-                case "add":
-                    command = command.replace("add", "pa.Node.add");
-                    parsedCommands = parseFull(command);
-                    break;
-                default:
-                    return null;
-            }
-        }
-        return parsedCommands;
+    public static Molecule parseDefault(String msg) {
+        String[] split = msg.split(" ");
+        if (split[1].equals("has")) {
+            if (split.length == 3) {
+                return new Molecule(getNode(split[0]), getNode(split[1]), getNode(split[2]));
+            } else if (split.length == 4) {
+                // todo need to reduce here
+                return null;
+            } else return null;
+        } else if (split[1].equals("is")) {
+            if (split.length == 3) {
+                return new Molecule(getNode(split[0]), getNode(split[1]), getNode(split[2]));
+            } else return null;
+        } else return null;
+    }
+
+    private static Node getNode(String nodeName) {
+        return Notepad.search(nodeName);
     }
 
 }
