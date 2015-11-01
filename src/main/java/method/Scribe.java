@@ -1,13 +1,13 @@
 package method;
 
 import executor.Pauser;
-import funct.StrRep;
 import logic.GhostTree;
 import logic.LDATA;
 import logic.SetLogic;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
+import parse.Parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,7 +103,7 @@ public final class Scribe {
             if (Node.contains(target, keyTmp.toString())) {
                 //Add val to that key
                 Node tmp = null;
-                if (!StrRep.isKeyStringRepresentable(tail)) {
+                if (!Parser.isKeyStringRepresentable.apply(tail)) {
                     tmp = Node.add(target, keyTmp.toString(), tail.toString());
                 } else {
                     tmp = Node.add(target, keyTmp.toString(), Node.getStringRep(tail));
@@ -123,7 +123,7 @@ public final class Scribe {
                 //You'll have to add the key. Then add the value to that.
 //                Node tmp = Node.add(target, keyTmp.toString());
                 Node tmp = null;
-                if (!StrRep.isKeyStringRepresentable(tail)) {
+                if (!Parser.isKeyStringRepresentable.apply(tail)) {
                     tmp = Node.add(target, keyTmp.toString(), tail.toString());
                 } else {
                     tmp = Node.add(target, keyTmp.toString(), Node.getStringRep(tail));
@@ -167,7 +167,7 @@ public final class Scribe {
 
             } else { //It's a value in target.
                 Node tmp = null;
-                if (!StrRep.isKeyStringRepresentable(tail)) {
+                if (!Parser.isKeyStringRepresentable.apply(tail)) {
                     tmp = Node.add(target, keyTmp.toString(), tail.toString());
                 } else {
                     tmp = Node.add(target, keyTmp.toString(), Node.getStringRep(tail));

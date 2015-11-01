@@ -8,6 +8,7 @@ import pa.PA;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import org.apache.log4j.Logger;
 
 /**
  * This will be where all items that the system is thinking about will reside. They hold memories which is a Node, plus
@@ -20,7 +21,7 @@ import java.util.Collections;
 public class Whiteboard {
 
     private static final double PROMINENCE_THRESHOLD = .6;
-    private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Whiteboard.class);
+    private static Logger logger = Logger.getLogger(Whiteboard.class);
     private static ArrayList<Memory> workingMem = new ArrayList<>();
 
     private Whiteboard() {

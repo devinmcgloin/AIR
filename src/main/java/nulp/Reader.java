@@ -1,6 +1,6 @@
 package nulp;
 
-import executor.Parser;
+import parse.Parser;
 import molecule.Molecule;
 
 /**

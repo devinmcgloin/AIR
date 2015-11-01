@@ -1,7 +1,6 @@
 package logic;
 
-import funct.Predicate;
-import funct.StrRep;
+import parse.Parser;
 import memory.Notepad;
 import method.Scribe;
 import org.apache.log4j.Logger;
@@ -52,7 +51,7 @@ public final class LDATA {
      */
     public static boolean expressionIsValid(Node node, Node expression) {
 
-        if (!Predicate.isExpression(expression)) {
+        if (!Parser.isExpression(expression)) {
             return true;
         }
 
@@ -133,7 +132,7 @@ public final class LDATA {
             return true;
 
         ArrayList<Node> expressions = Node.getCarrot(key, "^value ranges").stream()
-                .map(StrRep::getExpression)
+                .map(Parser::getExpression)
                 .collect(Collectors.toCollection(ArrayList::new));
 
         for (Node expression : expressions) {

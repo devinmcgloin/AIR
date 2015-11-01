@@ -1,12 +1,12 @@
 package logic;
 
 import funct.Core;
-import funct.Predicate;
 import memory.Notepad;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.javatuples.Pair;
 import pa.Node;
+import parse.Parser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,7 +136,7 @@ public final class Comparison {
             }
 
             value = value.split(" ")[0];
-            if (Predicate.isNumeric(value)) {
+            if (Parser.isNumeric.apply(value)) {
                 double tmp = Double.parseDouble(value);
                 values.add(tmp);
                 total += tmp;

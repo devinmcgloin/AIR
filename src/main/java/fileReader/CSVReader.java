@@ -1,7 +1,7 @@
 package fileReader;
 
+import parse.Parser;
 import funct.Formatter;
-import funct.StrRep;
 import memory.Notepad;
 import method.Scribe;
 import org.apache.commons.csv.CSVRecord;
@@ -32,13 +32,13 @@ public class CSVReader {
             CSVRecord record = csvRecords.get(a);
             for (int i = 1; i < record.size(); i++) {
 
-                    if (StrRep.isStringRepresentation(record.get(i))) {
+                    if (Parser.isStringRepresentation.apply(record.get(i))) {
 
                         logger.debug(Formatter.formatList(n.toString(),
                                 parsedHeader.get(i - 1).toString(), record.get(i)));
 
                         n = Scribe.addHighLevel(n, parsedHeader.get(i - 1),
-                                StrRep.getStringRep(record.get(i)));
+                                Parser.getStringRep(record.get(i)));
 
                     }
 

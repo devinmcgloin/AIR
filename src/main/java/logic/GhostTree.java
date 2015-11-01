@@ -1,7 +1,6 @@
 package logic;
 
-import funct.Predicate;
-import funct.StrRep;
+import parse.Parser;
 import memory.Notepad;
 import org.apache.log4j.Logger;
 import pa.Node;
@@ -105,7 +104,7 @@ public class GhostTree {
                 //--------DIFFERENT STOPS
                 //STOP #0
                 //If the Key we stopped on is String Representable, we need to STOP. Do not get CI. That is a cognitive postulating brain thing.
-                if (StrRep.isKeyStringRepresentable(gkey.getOriginNode()) || Predicate.isLDATA(gkey.toString())) {
+                if (Parser.isKeyStringRepresentable.apply(gkey.getOriginNode()) || Parser.isLDATA.apply(gkey.toString())) {
                     continue;
                 }
 
@@ -208,9 +207,9 @@ public class GhostTree {
 
             //CONTINUING FOR IF VAL WASN'T NULL
             //If the Key we stopped on is String Representable, send value to string rep to create into a tmp node, store as val in gtree, cont.
-            if (StrRep.isKeyStringRepresentable(gkey.getOriginNode()) /*|| LDATA.isLDATA(gkey.toString())*/) {
-                if (StrRep.isStringRepresentation(val)) {
-                    Node exp = StrRep.getStringRep(val);
+            if (Parser.isKeyStringRepresentable.apply(gkey.getOriginNode()) /*|| LDATA.isLDATA(gkey.toString())*/) {
+                if (Parser.isStringRepresentation.apply(val)) {
+                    Node exp = Parser.getStringRep(val);
                     GhostNode gExp = new GhostNode(exp);
                     gnodesInThisBranch.add(gkey); //Mark the key that's in this branch.
                     allGNodes.add(gExp);
