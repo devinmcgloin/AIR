@@ -1,10 +1,10 @@
 # AIR
 Algorithms for Intelligent Reasoning  
-**This project is now defunct.**
 
-# Overview
+## Overview
+AIR operated under the assumption that content is key to intelligence. The central idea of the system was to represent content in a universal manner, let that content form a web of relationships, and then parse that web for information useful to NLP, and other tasks. 
 
-# Motivations 
+## Motivations 
 
 The point of computing is to learn something about the world. We tell the machine some information, and build up the content it knows about. We teach it what a clock is, what a calendar event is, or what a bicycle is. We create these objects and apply manipulations to them and store them away.
 
@@ -18,7 +18,13 @@ Contextual Computing means you can convey instructions in natural language, that
 
 You get to focus on being you, and not you being your technology.
 
-#Usage
+## Theory
+
+### NLP and Recursive SVO
+
+### Output Graph
+
+## Usage
 ```
 usage: AIR
  -c,--csv-reader <FILE_PATH>    Read files in from CSV.
