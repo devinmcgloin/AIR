@@ -1,10 +1,11 @@
 # AIR
 Algorithms for Intelligent Reasoning  
+**This project is defunct**
 
 ## Overview
-AIR operated under the assumption that content is key to intelligence. The central idea of the system was to represent content in a universal manner, let that content form a web of relationships, and then parse that web for information useful to NLP, and other tasks. 
+AIR operated under the assumption that content is key to intelligence. The central idea of the system was to represent content in a universal manner, let that content form a web of relationships, and then parse that web for information useful to NLP, and other tasks.
 
-## Motivations 
+## Motivations
 
 The point of computing is to learn something about the world. We tell the machine some information, and build up the content it knows about. We teach it what a clock is, what a calendar event is, or what a bicycle is. We create these objects and apply manipulations to them and store them away.
 
@@ -16,13 +17,39 @@ In short, we want contextual computing.
 
 Contextual Computing means you can convey instructions in natural language, that you don’t worry about the computer being a computer, and that the technology fades into the background.
 
-You get to focus on being you, and not you being your technology.
-
 ## Theory
+These are some of the general ideas behind how AIR operated.
 
 ### NLP and Recursive SVO
+We theorized that all sentences can be broken into discrete parts that either follow Subject - Verb structure, or Subject - Verb - Object Structure. We call a SV or SVO structure to be a molecule.
+
+A sentence can be reduced from "The small orange cat jumped over the child's toys." to in its most simple for "cat jumped toys", such data would look like this:
+
+```
+cat{
+  size: small
+  color: orange
+  numOf: 1
+}
+
+jumped{
+  prep: over
+}
+
+toys{
+  possession: child{
+    numOf: 1
+  }
+}
+```
+
+We call this recursive SVO as each item in the sentence can hold infinitely many other SVO structures.
 
 ### Output Graph
+The output graph is a dynamic programming environment.
+
+### Set Operations
+
 
 ## Usage
 ```
@@ -34,7 +61,7 @@ usage: AIR
  -n,--nulp                      Launch air in NULP mode.
  -r,--repl                      Launch air in REPL mode.
  ```
- 
+
  - You must specify the `-db` path, which should be a folder that contains the database titled `noun`.
- - If no additional args are present then the program will terminate. The other commands do as they say, and are pretty straightforward. 
+ - If no additional args are present then the program will terminate. The other commands do as they say, and are pretty straightforward.
  - The db filename can be changed in `funct.Const` class.
