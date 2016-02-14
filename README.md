@@ -46,10 +46,12 @@ toys{
 We call this recursive SVO as each item in the sentence can hold infinitely many other SVO structures.
 
 ### Output Graph
-The output graph is a dynamic programming environment.
+The output graph is a dynamic programming environment. The graph is build for each starting dataset and explored using common graph search algorithms (A* or DFS). We had in mind that the graph would be goal oriented, and would explore until a suitable outcome is found.
+
+The graph has to be generated for each time due to certain edges being invalidated for the initial dataset.
 
 ### Set Operations
-
+We figure you can get a lot of logic by having a comprehensive set system, that does basic membership tests common set operations (union, symmetric difference, difference, intersection). As well as statistical operations on those sets. With such information you can infer answers to membership tests, if the answer is not know, as well as make inferences regarding the relationship between members of two different sets. Most queries into AIR were going to be treated as set operations.
 
 ## Usage
 ```
@@ -65,3 +67,6 @@ usage: AIR
  - You must specify the `-db` path, which should be a folder that contains the database titled `noun`.
  - If no additional args are present then the program will terminate. The other commands do as they say, and are pretty straightforward.
  - The db filename can be changed in `funct.Const` class.
+
+----
+If you think some of these ideas are interesting, get in touch! We'd love to hear from you. 
